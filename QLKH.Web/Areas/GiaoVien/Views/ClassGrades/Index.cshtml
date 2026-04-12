@@ -1,0 +1,60 @@
+﻿@model QLKH.Application.ViewModels.TeacherGradeOverviewViewModel
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Bảng điểm lớp";
+}
+
+<h2>Bảng điểm lớp</h2>
+
+<div class="mb-3">
+    <p><strong>Lớp:</strong> @Model.ClassName</p>
+    <p><strong>Khóa học:</strong> @Model.CourseName</p>
+</div>
+
+@if (!Model.Assignments.Any())
+{
+    <div class="alert alert-warning">
+        Lớp này hiện chưa có bài tập nào.
+    </div>
+}
+else if (!Model.Students.Any())
+{
+    <div class="alert alert-warning">
+        Lớp này hiện chưa có học viên nào.
+    </div>
+}
+else
+{
+    <div style="overflow-x:auto;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Mã học viên</th>
+                    <th>Họ tên</th>
+                    @foreach (var assignment in Model.Assignments)
+                    {
+                        <th>@assignment.AssignmentTitle</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td>@student.StudentCode</td>
+                        <td>@student.StudentName</td>
+                        @foreach (var assignment in Model.Assignments)
+                        {
+                            var score = student.ScoresByAssignmentId.ContainsKey(assignment.AssignmentId)
+                            ? student.ScoresByAssignmentId[assignment.AssignmentId]
+                            : null;
+
+                            <td>@(score.HasValue? score.Value.ToString("0.##") : "")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

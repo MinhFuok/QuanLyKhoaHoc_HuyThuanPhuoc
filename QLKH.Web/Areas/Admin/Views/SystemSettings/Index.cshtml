@@ -1,0 +1,105 @@
+﻿@model QLKH.Web.Areas.Admin.Models.SystemSettingViewModel
+
+@{
+    ViewData["Title"] = "Cấu hình hệ thống";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Cấu hình hệ thống</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post" enctype="multipart/form-data">
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="HomeBannerImageUrl" type="hidden" />
+
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <h5 class="mb-3">Thông tin chung</h5>
+
+            <div class="mb-3">
+                <label asp-for="SiteName" class="form-label"></label>
+                <input asp-for="SiteName" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="HomeBannerTitle" class="form-label"></label>
+                <input asp-for="HomeBannerTitle" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="BannerImageFile" class="form-label"></label>
+                <input asp-for="BannerImageFile" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                <span asp-validation-for="BannerImageFile" class="text-danger"></span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.HomeBannerImageUrl))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Ảnh banner hiện tại</label><br />
+                    <img src="@Model.HomeBannerImageUrl" alt="Banner hiện tại" style="max-width:300px; height:auto; border:1px solid #ddd; padding:4px;" />
+                    <div class="mt-2 text-muted">@Model.HomeBannerImageUrl</div>
+                </div>
+            }
+
+            <hr />
+
+            <h5 class="mb-3">Cấu hình email</h5>
+
+            <div class="form-check mb-3">
+                <input asp-for="EnableEmail" class="form-check-input" />
+                <label asp-for="EnableEmail" class="form-check-label"></label>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SmtpServer" class="form-label"></label>
+                <input asp-for="SmtpServer" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SmtpPort" class="form-label"></label>
+                <input asp-for="SmtpPort" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SenderName" class="form-label"></label>
+                <input asp-for="SenderName" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SenderEmail" class="form-label"></label>
+                <input asp-for="SenderEmail" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SmtpUsername" class="form-label"></label>
+                <input asp-for="SmtpUsername" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SmtpPassword" class="form-label"></label>
+                <input asp-for="SmtpPassword" class="form-control" />
+            </div>
+
+            <hr />
+
+            <h5 class="mb-3">Cấu hình thanh toán</h5>
+
+            <div class="form-check mb-2">
+                <input asp-for="EnableVnPay" class="form-check-input" />
+                <label asp-for="EnableVnPay" class="form-check-label"></label>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="EnableMomo" class="form-check-input" />
+                <label asp-for="EnableMomo" class="form-check-label"></label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu cấu hình</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

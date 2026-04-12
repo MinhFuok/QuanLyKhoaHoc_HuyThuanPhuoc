@@ -1,0 +1,55 @@
+﻿@using QLKH.Domain.Entities
+@{
+    ViewData["Title"] = "Đánh giá giáo viên";
+    var classRoom = ViewBag.ClassRoom as ClassRoom;
+    var existingReview = ViewBag.ExistingReview as TeacherReview;
+}
+
+<h2>Đánh giá giáo viên</h2>
+
+@if (classRoom != null)
+{
+    <div class="mb-3">
+        <p><strong>Lớp:</strong> @classRoom.ClassName</p>
+        <p><strong>Khóa học:</strong> @classRoom.Course?.CourseName</p>
+        <p><strong>Giáo viên:</strong> @classRoom.Teacher?.FullName</p>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="classRoomId" value="@classRoom?.Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Điểm đánh giá (1 đến 5)</label>
+        <select name="rating" class="form-control">
+            <option value="1" selected="@(existingReview?.Rating == 1)">1</option>
+            <option value="2" selected="@(existingReview?.Rating == 2)">2</option>
+            <option value="3" selected="@(existingReview?.Rating == 3)">3</option>
+            <option value="4" selected="@(existingReview?.Rating == 4)">4</option>
+            <option value="5" selected="@(existingReview?.Rating == 5)">5</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nhận xét</label>
+        <textarea name="comment" class="form-control" rows="6">@existingReview?.Comment</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+</form>

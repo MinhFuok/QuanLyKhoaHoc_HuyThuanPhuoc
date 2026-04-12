@@ -1,0 +1,148 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.Department>
+
+@{
+    ViewData["Title"] = "Khoa/ngành đào tạo";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+
+    var parentDepartments = Model?
+        .Where(d => d.ParentDepartmentId == null)
+        .OrderBy(d => d.DepartmentCode)
+        .ToList() ?? new List<QLKH.Domain.Entities.Department>();
+
+    var childDepartments = Model?
+        .Where(d => d.ParentDepartmentId != null)
+        .OrderBy(d => d.ParentDepartmentId)
+        .ThenBy(d => d.DepartmentCode)
+        .ToList() ?? new List<QLKH.Domain.Entities.Department>();
+}
+
+<h2 class="mb-4">Khoa/ngành đào tạo</h2>
+
+<div class="mb-3">
+    <a asp-area="Admin" asp-controller="Department" asp-action="Create" class="btn btn-primary">
+        + Thêm khoa/ngành
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 90px;">Mã</th>
+                    <th>Tên khoa/ngành</th>
+                    <th>Mô tả</th>
+                    <th style="width: 100px;">Cấp</th>
+                    <th style="width: 140px;">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (parentDepartments.Any())
+                {
+                    foreach (var parent in parentDepartments)
+                    {
+                        var children = childDepartments
+                        .Where(c => c.ParentDepartmentId == parent.Id)
+                        .ToList();
+
+                        var groupId = $"group-{parent.Id}";
+
+                        <tr class="table-light fw-bold">
+                            <td>@parent.DepartmentCode</td>
+                            <td>
+                                <span class="toggle-arrow me-2"
+                                      data-target="@groupId"
+                                      style="cursor:pointer; user-select:none; display:inline-block; width:16px; color:#6c757d; font-size:14px;">
+                                    ▼
+                                </span>
+                                @parent.DepartmentName
+                            </td>
+                            <td>@parent.Description</td>
+                            <td>
+                                <span class="badge bg-primary">Khoa</span>
+                            </td>
+                            <td>
+                                @if (parent.IsActive)
+                                {
+                                    <span class="badge bg-success">Đang sử dụng</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Ngưng sử dụng</span>
+                                }
+                            </td>
+                        </tr>
+
+                        @if (children.Any())
+                        {
+                            foreach (var child in children)
+                            {
+                                <tr class="@groupId child-row">
+                                    <td>@child.DepartmentCode</td>
+                                    <td class="ps-5">↳ @child.DepartmentName</td>
+                                    <td>@child.Description</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">Ngành</span>
+                                    </td>
+                                    <td>
+                                        @if (child.IsActive)
+                                        {
+                                            <span class="badge bg-success">Đang sử dụng</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Ngưng sử dụng</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr class="@groupId child-row">
+                                <td colspan="5" class="text-center text-muted">
+                                    Khoa này chưa có ngành con.
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">Chưa có dữ liệu khoa/ngành.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const arrows = document.querySelectorAll(".toggle-arrow");
+
+            arrows.forEach(arrow => {
+                arrow.addEventListener("click", function () {
+                    const targetClass = this.getAttribute("data-target");
+                    const rows = document.querySelectorAll("." + targetClass);
+
+                    let isVisible = false;
+
+                    rows.forEach(row => {
+                        if (row.style.display !== "none") {
+                            isVisible = true;
+                        }
+                    });
+
+                    rows.forEach(row => {
+                        row.style.display = isVisible ? "none" : "table-row";
+                    });
+
+                    this.textContent = isVisible ? "▶" : "▼";
+                });
+            });
+        });
+    </script>
+}

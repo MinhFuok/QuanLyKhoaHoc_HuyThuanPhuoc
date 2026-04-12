@@ -1,0 +1,54 @@
+﻿@using QLKH.Domain.Entities
+@using System.Linq
+@{
+    ViewData["Title"] = "Tạo bài tập";
+    var myClasses = ViewBag.MyClasses as IEnumerable<ClassRoom> ?? Enumerable.Empty<ClassRoom>();
+}
+
+<h2>Tạo bài tập cho lớp mình dạy</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label class="form-label">Chọn lớp</label>
+        <select name="classRoomId" class="form-control">
+            <option value="">-- Chọn lớp --</option>
+            @foreach (var item in myClasses)
+            {
+                <option value="@item.Id">@item.ClassName (@item.ClassCode)</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tiêu đề bài tập</label>
+        <input type="text" name="title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Mô tả</label>
+        <textarea name="description" class="form-control" rows="5"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Hạn nộp</label>
+        <input type="date" name="dueDate" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Tạo bài tập</button>
+</form>

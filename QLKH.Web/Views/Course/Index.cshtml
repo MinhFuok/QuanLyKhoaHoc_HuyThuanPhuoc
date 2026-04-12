@@ -1,0 +1,47 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.Course>
+
+@{
+    ViewData["Title"] = "Danh sách khóa học";
+}
+
+<h2>Danh sách khóa học</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Mã khóa học</th>
+            <th>Tên khóa học</th>
+            <th>Thời lượng</th>
+            <th>Học phí</th>
+            <th>Trạng thái</th>
+            <th width="220">Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CourseCode</td>
+                <td>@item.CourseName</td>
+                <td>@item.DurationInMonths tháng</td>
+                <td>@item.Fee.ToString("N0")</td>
+                <td>@item.Status</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a>
+                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

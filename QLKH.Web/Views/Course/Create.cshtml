@@ -1,0 +1,50 @@
+﻿@model QLKH.Domain.Entities.Course
+
+@{
+    ViewData["Title"] = "Thêm khóa học";
+}
+
+<h2>Thêm khóa học</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="CourseCode" class="form-label"></label>
+        <input asp-for="CourseCode" class="form-control" />
+        <span asp-validation-for="CourseCode" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CourseName" class="form-label"></label>
+        <input asp-for="CourseName" class="form-control" />
+        <span asp-validation-for="CourseName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DurationInMonths" class="form-label"></label>
+        <input asp-for="DurationInMonths" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Fee" class="form-label"></label>
+        <input asp-for="Fee" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.CourseStatus>()"></select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

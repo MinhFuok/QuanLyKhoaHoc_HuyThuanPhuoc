@@ -1,0 +1,34 @@
+﻿@model QLKH.Domain.Entities.Course
+
+@{
+    ViewData["Title"] = "Chi tiết khóa học";
+}
+
+<h2>Chi tiết khóa học</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Mã khóa học</dt>
+        <dd class="col-sm-9">@Model.CourseCode</dd>
+
+        <dt class="col-sm-3">Tên khóa học</dt>
+        <dd class="col-sm-9">@Model.CourseName</dd>
+
+        <dt class="col-sm-3">Mô tả</dt>
+        <dd class="col-sm-9">@Model.Description</dd>
+
+        <dt class="col-sm-3">Thời lượng</dt>
+        <dd class="col-sm-9">@Model.DurationInMonths tháng</dd>
+
+        <dt class="col-sm-3">Học phí</dt>
+        <dd class="col-sm-9">@Model.Fee.ToString("N0")</dd>
+
+        <dt class="col-sm-3">Trạng thái</dt>
+        <dd class="col-sm-9">@Model.Status</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</p>

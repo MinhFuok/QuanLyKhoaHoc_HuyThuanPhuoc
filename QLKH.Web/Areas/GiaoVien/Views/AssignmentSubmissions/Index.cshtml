@@ -1,0 +1,61 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.Submission>
+@using QLKH.Domain.Entities
+
+@{
+    ViewData["Title"] = "Danh sách bài nộp";
+    var assignment = ViewBag.Assignment as Assignment;
+}
+
+<h2>Danh sách bài nộp</h2>
+
+@if (assignment != null)
+{
+    <div class="mb-3">
+        <p><strong>Lớp:</strong> @assignment.ClassRoom?.ClassName</p>
+        <p><strong>Khóa học:</strong> @assignment.ClassRoom?.Course?.CourseName</p>
+        <p><strong>Bài tập:</strong> @assignment.Title</p>
+        <p><strong>Hạn nộp:</strong> @assignment.DueDate.ToString("dd/MM/yyyy")</p>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        Chưa có học viên nào nộp bài.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Học viên</th>
+                <th>Mã học viên</th>
+                <th>Nội dung bài nộp</th>
+                <th>File nộp</th>
+                <th>Thời gian nộp</th>
+                <th>Điểm</th>
+                <th>Nhận xét</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Student?.FullName</td>
+                    <td>@item.Student?.StudentCode</td>
+                    <td>@item.SubmissionText</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                        {
+                            <a href="@item.FilePath" target="_blank">Mở file</a>
+                        }
+                    </td>
+                    <td>@item.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.Score</td>
+                    <td>@item.Feedback</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Dashboard Giáo viên";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <h2 class="mb-2">Dashboard Giáo viên</h2>
+        <p class="text-muted mb-0">
+            Chào mừng giáo viên vào hệ thống QLKH. Chọn nhanh nghiệp vụ bạn muốn thao tác bên dưới.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Lớp học</h5>
+                    <p class="card-text text-muted">
+                        Xem các lớp đang phụ trách.
+                    </p>
+                    <a href="/GiaoVien/MyClasses" class="btn btn-primary">
+                        Lớp tôi dạy
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Lịch dạy</h5>
+                    <p class="card-text text-muted">
+                        Xem thời khóa biểu các buổi học của lớp mình dạy.
+                    </p>
+                    <a href="/GiaoVien/MySchedule" class="btn btn-primary">
+                        Lịch dạy của tôi
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Tài liệu lớp học</h5>
+                    <p class="card-text text-muted">
+                        Xem danh sách tài liệu của các lớp đang dạy.
+                    </p>
+                    <a href="/GiaoVien/MyMaterials" class="btn btn-primary">
+                        Xem tài liệu
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Tạo tài liệu</h5>
+                    <p class="card-text text-muted">
+                        Upload tài liệu mới cho lớp mình dạy.
+                    </p>
+                    <a href="/GiaoVien/ClassMaterials/Create" class="btn btn-success">
+                        Tạo tài liệu
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Bài tập</h5>
+                    <p class="card-text text-muted">
+                        Xem danh sách bài tập của các lớp mình dạy.
+                    </p>
+                    <a href="/GiaoVien/MyAssignments" class="btn btn-primary">
+                        Xem bài tập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Tạo bài tập</h5>
+                    <p class="card-text text-muted">
+                        Tạo assignment mới cho lớp mình dạy.
+                    </p>
+                    <a href="/GiaoVien/Assignments/Create" class="btn btn-success">
+                        Tạo bài tập
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Gợi ý thao tác tiếp theo</h5>
+            <ul class="mb-0">
+                <li>Vào <strong>Bài tập</strong> để xác định assignment cần theo dõi.</li>
+                <li>Sau khi học viên nộp bài, dùng link chi tiết/route hiện có để xem bài nộp và chấm điểm.</li>
+                <li>Dùng trang <strong>Bảng điểm lớp</strong> theo đúng <code>classRoomId</code> khi cần xem tổng hợp điểm.</li>
+            </ul>
+        </div>
+    </div>
+</div>

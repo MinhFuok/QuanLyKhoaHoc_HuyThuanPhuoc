@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using QLKH.Domain.Enums;
+
+namespace QLKH.Domain.Entities
+{
+    public class Enrollment
+    {
+        public int Id { get; set; }
+
+        public int StudentId { get; set; }
+
+        public int ClassRoomId { get; set; }
+
+        public DateTime EnrolledAt { get; set; } = DateTime.Now;
+
+        public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;
+
+        public Student Student { get; set; } = null!;
+        public ClassRoom ClassRoom { get; set; } = null!;
+    }
+}

@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using QLKH.Domain.Entities;
+
+namespace QLKH.Application.Interfaces.Services
+{
+    public interface IClassScheduleService
+    {
+        Task<IEnumerable<ClassSchedule>> GetAllAsync();
+        Task<ClassSchedule?> GetByIdAsync(int id);
+        Task<IEnumerable<ClassSchedule>> GetByClassRoomIdAsync(int classRoomId);
+        Task<IEnumerable<ClassSchedule>> GetMyTeachingScheduleAsync(string applicationUserId);
+        Task<IEnumerable<ClassSchedule>> GetMyLearningScheduleAsync(string applicationUserId);
+        Task AddAsync(ClassSchedule classSchedule);
+        Task UpdateAsync(ClassSchedule classSchedule);
+        Task<bool> DeleteAsync(int id);
+    }
+}

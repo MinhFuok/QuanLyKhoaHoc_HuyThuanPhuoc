@@ -1,0 +1,49 @@
+﻿@model QLKH.Application.ViewModels.StudentGradeOverviewViewModel
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Bảng điểm của tôi";
+}
+
+<h2>Bảng điểm của tôi</h2>
+
+<div class="mb-3">
+    <p><strong>Học viên:</strong> @Model.StudentName</p>
+</div>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-warning">
+        Hiện tại chưa có dữ liệu bài tập hoặc điểm số.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Lớp</th>
+                <th>Bài tập</th>
+                <th>Hạn nộp</th>
+                <th>Trạng thái nộp</th>
+                <th>Thời gian nộp</th>
+                <th>Điểm</th>
+                <th>Nhận xét</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ClassName</td>
+                    <td>@item.AssignmentTitle</td>
+                    <td>@item.DueDate.ToString("dd/MM/yyyy")</td>
+                    <td>@(item.IsSubmitted ? "Đã nộp" : "Chưa nộp")</td>
+                    <td>@(item.SubmittedAt.HasValue? item.SubmittedAt.Value.ToString("dd/MM/yyyy HH:mm") : "")</td>
+                    <td>@(item.Score.HasValue? item.Score.Value.ToString("0.##") : "Chưa chấm")</td>
+                    <td>@(string.IsNullOrWhiteSpace(item.Feedback) ? "" : item.Feedback)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

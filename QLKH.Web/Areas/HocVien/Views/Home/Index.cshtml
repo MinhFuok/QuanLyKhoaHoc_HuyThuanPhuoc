@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Dashboard Học viên";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <h2 class="mb-2">Dashboard Học viên</h2>
+        <p class="text-muted mb-0">
+            Chào mừng học viên vào hệ thống QLKH. Chọn nhanh nghiệp vụ bạn muốn thao tác bên dưới.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Lớp học</h5>
+                    <p class="card-text text-muted">
+                        Xem các lớp bạn đang theo học.
+                    </p>
+                    <a href="/HocVien/MyClasses" class="btn btn-primary">
+                        Lớp tôi học
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Lịch học</h5>
+                    <p class="card-text text-muted">
+                        Xem thời khóa biểu các buổi học của lớp bạn đang học.
+                    </p>
+                    <a href="/HocVien/MySchedule" class="btn btn-primary">
+                        Lịch học của tôi
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Tài liệu lớp học</h5>
+                    <p class="card-text text-muted">
+                        Xem tài liệu của các lớp bạn đang học.
+                    </p>
+                    <a href="/HocVien/MyMaterials" class="btn btn-primary">
+                        Xem tài liệu
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Bài tập</h5>
+                    <p class="card-text text-muted">
+                        Xem danh sách bài tập của các lớp bạn đang học.
+                    </p>
+                    <a href="/HocVien/MyAssignments" class="btn btn-primary">
+                        Xem bài tập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Bảng điểm</h5>
+                    <p class="card-text text-muted">
+                        Xem bảng điểm tổng hợp của bạn.
+                    </p>
+                    <a href="/HocVien/MyGrades" class="btn btn-primary">
+                        Bảng điểm của tôi
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Tiến độ học tập</h5>
+                    <p class="card-text text-muted">
+                        Theo dõi tiến độ học tập và mức độ hoàn thành khóa học.
+                    </p>
+                    <a href="/HocVien/MyLearningProgress" class="btn btn-success">
+                        Xem tiến độ học tập
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Gợi ý thao tác tiếp theo</h5>
+            <ul class="mb-0">
+                <li>Vào <strong>Bài tập</strong> để xem assignment hiện có.</li>
+                <li>Sau khi xác định assignment, dùng route nộp bài hiện có để thực hiện nộp bài.</li>
+                <li>Sau khi giáo viên chấm xong, xem lại ở <strong>Kết quả bài nộp</strong>, <strong>Bảng điểm</strong> hoặc <strong>Tiến độ học tập</strong>.</li>
+            </ul>
+        </div>
+    </div>
+</div>

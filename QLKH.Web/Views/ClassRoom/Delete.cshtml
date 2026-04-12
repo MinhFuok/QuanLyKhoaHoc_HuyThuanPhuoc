@@ -1,0 +1,40 @@
+﻿@model QLKH.Domain.Entities.ClassRoom
+
+@{
+    ViewData["Title"] = "Xóa lớp học";
+}
+
+<h2>Xóa lớp học</h2>
+
+<h4>Bạn có chắc muốn xóa lớp học này không?</h4>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Mã lớp</dt>
+        <dd class="col-sm-9">@Model.ClassCode</dd>
+
+        <dt class="col-sm-3">Tên lớp</dt>
+        <dd class="col-sm-9">@Model.ClassName</dd>
+
+        <dt class="col-sm-3">Khóa học</dt>
+        <dd class="col-sm-9">@Model.Course?.CourseName</dd>
+
+        <dt class="col-sm-3">Giảng viên</dt>
+        <dd class="col-sm-9">@Model.Teacher?.FullName</dd>
+
+        <dt class="col-sm-3">Ngày bắt đầu</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Ngày kết thúc</dt>
+        <dd class="col-sm-9">@Model.EndDate.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Sĩ số tối đa</dt>
+        <dd class="col-sm-9">@Model.MaxStudents</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

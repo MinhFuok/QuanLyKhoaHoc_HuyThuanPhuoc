@@ -1,0 +1,51 @@
+﻿@using QLKH.Domain.Entities
+@{
+    ViewData["Title"] = "Nộp bài";
+    var assignment = ViewBag.Assignment as Assignment;
+}
+
+<h2>Nộp bài</h2>
+
+@if (assignment != null)
+{
+    <div class="mb-3">
+        <p><strong>Lớp:</strong> @assignment.ClassRoom?.ClassName</p>
+        <p><strong>Khóa học:</strong> @assignment.ClassRoom?.Course?.CourseName</p>
+        <p><strong>Bài tập:</strong> @assignment.Title</p>
+        <p><strong>Mô tả:</strong> @assignment.Description</p>
+        <p><strong>Hạn nộp:</strong> @assignment.DueDate.ToString("dd/MM/yyyy")</p>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<form method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="assignmentId" value="@assignment?.Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Nội dung bài nộp</label>
+        <textarea name="submissionText" class="form-control" rows="8"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">File bài nộp</label>
+        <input type="file" name="submissionFile" class="form-control" />
+        <small class="text-muted">Bạn có thể nộp nội dung text, file, hoặc cả hai.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Nộp bài</button>
+</form>

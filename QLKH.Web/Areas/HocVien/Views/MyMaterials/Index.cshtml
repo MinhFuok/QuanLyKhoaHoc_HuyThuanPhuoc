@@ -1,0 +1,49 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.ClassMaterial>
+
+@{
+    ViewData["Title"] = "Tài liệu lớp tôi học";
+}
+
+<h2>Tài liệu lớp tôi học</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        Hiện tại chưa có tài liệu nào cho các lớp bạn đang học.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Lớp</th>
+                <th>Khóa học</th>
+                <th>Giáo viên</th>
+                <th>Tiêu đề</th>
+                <th>Mô tả</th>
+                <th>Tài liệu</th>
+                <th>Ngày tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ClassRoom?.ClassName</td>
+                    <td>@item.ClassRoom?.Course?.CourseName</td>
+                    <td>@item.ClassRoom?.Teacher?.FullName</td>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                        {
+                            <a href="@item.FilePath" target="_blank">Mở tài liệu</a>
+                        }
+                    </td>
+                    <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

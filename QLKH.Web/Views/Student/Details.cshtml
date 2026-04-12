@@ -1,0 +1,34 @@
+﻿@model QLKH.Domain.Entities.Student
+
+@{
+    ViewData["Title"] = "Chi tiết học viên";
+}
+
+<h2>Chi tiết học viên</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Mã học viên</dt>
+        <dd class="col-sm-9">@Model.StudentCode</dd>
+
+        <dt class="col-sm-3">Họ tên</dt>
+        <dd class="col-sm-9">@Model.FullName</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Số điện thoại</dt>
+        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-3">Ngày sinh</dt>
+        <dd class="col-sm-9">@Model.DateOfBirth.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Địa chỉ</dt>
+        <dd class="col-sm-9">@Model.Address</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</p>

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.ClassRoom>
+
+@{
+    ViewData["Title"] = "Danh sách lớp học";
+}
+
+<h2>Danh sách lớp học</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Mã lớp</th>
+            <th>Tên lớp</th>
+            <th>Khóa học</th>
+            <th>Giảng viên</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Sĩ số tối đa</th>
+            <th width="220">Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ClassCode</td>
+                <td>@item.ClassName</td>
+                <td>@item.Course?.CourseName</td>
+                <td>@item.Teacher?.FullName</td>
+                <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.MaxStudents</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a>
+                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

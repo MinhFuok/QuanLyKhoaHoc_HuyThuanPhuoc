@@ -1,0 +1,34 @@
+﻿@model QLKH.Domain.Entities.Teacher
+
+@{
+    ViewData["Title"] = "Xóa giảng viên";
+}
+
+<h2>Xóa giảng viên</h2>
+
+<h4>Bạn có chắc muốn xóa giảng viên này không?</h4>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Mã giảng viên</dt>
+        <dd class="col-sm-9">@Model.TeacherCode</dd>
+
+        <dt class="col-sm-3">Họ tên</dt>
+        <dd class="col-sm-9">@Model.FullName</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Số điện thoại</dt>
+        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-3">Chuyên môn</dt>
+        <dd class="col-sm-9">@Model.Specialization</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

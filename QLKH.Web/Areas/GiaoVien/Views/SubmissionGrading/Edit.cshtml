@@ -1,0 +1,66 @@
+﻿@model QLKH.Domain.Entities.Submission
+
+@{
+    ViewData["Title"] = "Chấm bài nộp";
+}
+
+<h2>Chấm bài nộp</h2>
+
+<div class="mb-3">
+    <p><strong>Học viên:</strong> @Model.Student?.FullName</p>
+    <p><strong>Mã học viên:</strong> @Model.Student?.StudentCode</p>
+    <p><strong>Lớp:</strong> @Model.Assignment?.ClassRoom?.ClassName</p>
+    <p><strong>Khóa học:</strong> @Model.Assignment?.ClassRoom?.Course?.CourseName</p>
+    <p><strong>Bài tập:</strong> @Model.Assignment?.Title</p>
+    <p><strong>Hạn nộp:</strong> @Model.Assignment?.DueDate.ToString("dd/MM/yyyy")</p>
+    <p><strong>Thời gian nộp:</strong> @Model.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</p>
+</div>
+
+<div class="mb-3">
+    <label class="form-label"><strong>Nội dung bài nộp</strong></label>
+    <div class="form-control" style="min-height: 120px; white-space: pre-wrap;">@Model.SubmissionText</div>
+</div>
+<div class="mb-3">
+    <label class="form-label"><strong>File bài nộp</strong></label>
+    @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+    {
+        <div>
+            <a href="@Model.FilePath" target="_blank">Mở file bài nộp</a>
+        </div>
+    }
+    else
+    {
+        <div class="form-control">Không có file đính kèm</div>
+    }
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Điểm</label>
+        <input type="number" step="0.01" name="score" value="@Model.Score" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nhận xét</label>
+        <textarea name="feedback" class="form-control" rows="6">@Model.Feedback</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu chấm điểm</button>
+</form>

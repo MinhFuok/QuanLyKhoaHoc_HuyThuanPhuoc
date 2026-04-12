@@ -1,0 +1,38 @@
+﻿@model QLKH.Domain.Entities.Enrollment
+
+@{
+    ViewData["Title"] = "Sửa ghi danh";
+}
+
+<h2>Sửa ghi danh</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="StudentId" />
+    <input type="hidden" asp-for="ClassRoomId" />
+    <input type="hidden" asp-for="EnrolledAt" />
+
+    <div class="mb-3">
+        <label class="form-label">Học viên</label>
+        <select asp-for="StudentId" asp-items="ViewBag.StudentId" class="form-control" disabled></select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Lớp học</label>
+        <select asp-for="ClassRoomId" asp-items="ViewBag.ClassRoomId" class="form-control" disabled></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.EnrollmentStatus>()"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

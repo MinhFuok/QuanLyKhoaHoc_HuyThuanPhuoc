@@ -1,0 +1,48 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.ClassSchedule>
+
+@{
+    ViewData["Title"] = "Lịch học của tôi";
+}
+
+<h2>Lịch học của tôi</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        Hiện tại bạn chưa có lịch học nào.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Lớp</th>
+                <th>Khóa học</th>
+                <th>Giáo viên</th>
+                <th>Tiêu đề buổi học</th>
+                <th>Ngày học</th>
+                <th>Giờ bắt đầu</th>
+                <th>Giờ kết thúc</th>
+                <th>Phòng</th>
+                <th>Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ClassRoom?.ClassName</td>
+                    <td>@item.ClassRoom?.Course?.CourseName</td>
+                    <td>@item.ClassRoom?.Teacher?.FullName</td>
+                    <td>@item.LessonTitle</td>
+                    <td>@item.StudyDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.StartTime.ToString(@"hh\:mm")</td>
+                    <td>@item.EndTime.ToString(@"hh\:mm")</td>
+                    <td>@item.RoomName</td>
+                    <td>@item.Note</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

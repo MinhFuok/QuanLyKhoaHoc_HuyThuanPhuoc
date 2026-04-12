@@ -1,0 +1,37 @@
+﻿@model QLKH.Domain.Entities.ClassRoom
+
+@{
+    ViewData["Title"] = "Chi tiết lớp học";
+}
+
+<h2>Chi tiết lớp học</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Mã lớp</dt>
+        <dd class="col-sm-9">@Model.ClassCode</dd>
+
+        <dt class="col-sm-3">Tên lớp</dt>
+        <dd class="col-sm-9">@Model.ClassName</dd>
+
+        <dt class="col-sm-3">Khóa học</dt>
+        <dd class="col-sm-9">@Model.Course?.CourseName</dd>
+
+        <dt class="col-sm-3">Giảng viên</dt>
+        <dd class="col-sm-9">@Model.Teacher?.FullName</dd>
+
+        <dt class="col-sm-3">Ngày bắt đầu</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Ngày kết thúc</dt>
+        <dd class="col-sm-9">@Model.EndDate.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Sĩ số tối đa</dt>
+        <dd class="col-sm-9">@Model.MaxStudents</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</p>

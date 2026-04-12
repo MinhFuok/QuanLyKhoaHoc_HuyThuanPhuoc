@@ -1,0 +1,43 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.ClassRoom>
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Chọn lớp để xem bảng điểm";
+}
+
+<h2>Chọn lớp để xem bảng điểm</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        Hiện tại bạn chưa có lớp nào để xem bảng điểm.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+                <th>Khóa học</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ClassCode</td>
+                    <td>@item.ClassName</td>
+                    <td>@item.Course?.CourseName</td>
+                    <td>
+                        <a href="/GiaoVien/ClassGrades/Index?classRoomId=@item.Id" class="btn btn-primary btn-sm">
+                            Xem bảng điểm
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

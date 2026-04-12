@@ -1,0 +1,123 @@
+﻿@model QLKH.Application.ViewModels.StudentLearningProgressOverviewViewModel
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Tiến độ học tập";
+}
+
+<h2>Tiến độ học tập tổng thể</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<div class="mb-3">
+    <p><strong>Học viên:</strong> @Model.StudentName</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted">Số lớp</div>
+                <h4>@Model.TotalClasses</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted">Tổng bài tập</div>
+                <h4>@Model.TotalAssignments</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted">Đã nộp</div>
+                <h4>@Model.SubmittedAssignments</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted">Chưa nộp</div>
+                <h4>@Model.PendingAssignments</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted">Đã chấm</div>
+                <h4>@Model.GradedAssignments</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-muted">Điểm TB</div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="card shadow-sm h-100 border-success">
+                        <div class="card-body">
+                            <div class="text-muted">Hoàn thành</div>
+                            <h4>@Model.OverallCompletionPercent.ToString("0.##")%</h4>
+                        </div>
+                    </div>
+                </div>
+                <h4>@(Model.AverageScore.HasValue? Model.AverageScore.Value.ToString("0.##") : "-")</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>Tiến độ hoàn thành theo từng lớp</h4>
+
+@if (!Model.Classes.Any())
+{
+    <div class="alert alert-warning">
+        Hiện tại chưa có dữ liệu tiến độ học tập.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Lớp</th>
+                <th>Tổng bài tập</th>
+                <th>Đã nộp</th>
+                <th>Đã chấm</th>
+                <th>% hoàn thành</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Classes)
+            {
+                <tr>
+                    <td>@item.ClassName</td>
+                    <td>@item.TotalAssignments</td>
+                    <td>@item.SubmittedAssignments</td>
+                    <td>@item.GradedAssignments</td>
+                    <td>@item.CompletionPercent.ToString("0.##")%</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
