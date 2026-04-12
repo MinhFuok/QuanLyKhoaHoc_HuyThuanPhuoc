@@ -264,8 +264,19 @@ namespace QLKH.Infrastructure.Seed
                 var setting = new SystemSetting
                 {
                     SiteName = "QLKH",
-                    HomeBannerTitle = "Hệ thống quản lý khóa học",
+                    HomeBannerTitle = "Hệ thống quản lý khóa học online",
+                    HomeBannerSubtitle = "Học mọi lúc, mọi nơi với các khóa học trực tuyến chất lượng",
                     HomeBannerImageUrl = "/images/banner-default.jpg",
+
+                    FooterText = "© 2026 QLKH - Nền tảng quản lý khóa học online",
+                    ContactEmail = "support@qlkh.com",
+                    ContactPhone = "0123456789",
+                    ContactAddress = "Thủ Dầu Một, Bình Dương",
+                    FacebookUrl = "https://facebook.com/",
+                    YoutubeUrl = "https://youtube.com/",
+
+                    IsWebsiteEnabled = true,
+                    MaintenanceMessage = "Hệ thống đang bảo trì. Vui lòng quay lại sau.",
 
                     EnableEmail = true,
                     SmtpServer = "smtp.gmail.com",

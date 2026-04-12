@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QLKH.Domain.Entities
+﻿namespace QLKH.Domain.Entities
 {
     public class SystemSetting
     {
@@ -12,7 +6,21 @@ namespace QLKH.Domain.Entities
 
         public string SiteName { get; set; } = "QLKH";
         public string? HomeBannerTitle { get; set; }
+        public string? HomeBannerSubtitle { get; set; }
         public string? HomeBannerImageUrl { get; set; }
+
+        public string? FooterText { get; set; }
+
+        public string? ContactEmail { get; set; }
+        public string? ContactPhone { get; set; }
+        public string? ContactAddress { get; set; }
+
+        public string? FacebookUrl { get; set; }
+        public string? YoutubeUrl { get; set; }
+        public string? TiktokUrl { get; set; }
+        public string? XUrl { get; set; }
+        public bool IsWebsiteEnabled { get; set; } = true;
+        public string? MaintenanceMessage { get; set; }
 
         public bool EnableEmail { get; set; } = true;
         public string? SmtpServer { get; set; }

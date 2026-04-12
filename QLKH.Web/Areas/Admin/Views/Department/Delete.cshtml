@@ -1,0 +1,52 @@
+﻿@model QLKH.Domain.Entities.Department
+
+@{
+    ViewData["Title"] = "Xóa khoa/ngành";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Xóa khoa/ngành đào tạo</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="alert alert-warning">
+            Bạn có chắc chắn muốn xóa mục này không?
+        </div>
+
+        <dl class="row">
+            <dt class="col-sm-3">Mã</dt>
+            <dd class="col-sm-9">@Model.DepartmentCode</dd>
+
+            <dt class="col-sm-3">Tên</dt>
+            <dd class="col-sm-9">@Model.DepartmentName</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Đang sử dụng</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Ngưng sử dụng</span>
+                }
+            </dd>
+        </dl>
+
+        <form asp-area="Admin" asp-controller="Department" asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="d-flex gap-2">
+                <button type="submit"
+                        class="btn btn-danger"
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa mục này không?');">
+                    Xóa
+                </button>
+                <a asp-area="Admin" asp-controller="Department" asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

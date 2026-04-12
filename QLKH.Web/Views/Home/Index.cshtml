@@ -1,9 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model QLKH.Domain.Entities.SystemSetting
+
+@{
+    ViewData["Title"] = "Trang chủ";
     Layout = "_PublicLayout";
+
+    var bannerTitle = Model?.HomeBannerTitle ?? "Hệ thống quản lý khóa học online";
+    var bannerSubtitle = Model?.HomeBannerSubtitle ?? "Nền tảng học trực tuyến linh hoạt, hiện đại và dễ quản lý";
+    var bannerImage = !string.IsNullOrEmpty(Model?.HomeBannerImageUrl)
+        ? Model.HomeBannerImageUrl
+        : "/images/banner-default.jpg";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold">@bannerTitle</h1>
+            <p class="lead text-muted">@bannerSubtitle</p>
+
+            <div class="mt-4">
+                <a href="/Account/Login" class="btn btn-primary btn-lg me-2">Đăng nhập</a>
+                <a href="/Home/Privacy" class="btn btn-outline-secondary btn-lg">Tìm hiểu thêm</a>
+            </div>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="@bannerImage"
+                 alt="Banner trang chủ"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 400px; object-fit: cover;" />
+        </div>
+    </div>
 </div>

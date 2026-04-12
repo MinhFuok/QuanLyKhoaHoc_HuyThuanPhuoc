@@ -33,7 +33,9 @@
                     <th>Tên khoa/ngành</th>
                     <th>Mô tả</th>
                     <th style="width: 100px;">Cấp</th>
+                    <th style="width: 180px;">Thuộc khoa</th>
                     <th style="width: 140px;">Trạng thái</th>
+                    <th style="width: 160px;">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +63,7 @@
                             <td>
                                 <span class="badge bg-primary">Khoa</span>
                             </td>
+                            <td>-</td>
                             <td>
                                 @if (parent.IsActive)
                                 {
@@ -71,9 +74,25 @@
                                     <span class="badge bg-secondary">Ngưng sử dụng</span>
                                 }
                             </td>
+                            <td>
+                                <a asp-area="Admin"
+                                   asp-controller="Department"
+                                   asp-action="Edit"
+                                   asp-route-id="@parent.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Sửa
+                                </a>
+                                <a asp-area="Admin"
+                                   asp-controller="Department"
+                                   asp-action="Delete"
+                                   asp-route-id="@parent.Id"
+                                   class="btn btn-danger btn-sm">
+                                    Xóa
+                                </a>
+                            </td>
                         </tr>
 
-                        @if (children.Any())
+                        if (children.Any())
                         {
                             foreach (var child in children)
                             {
@@ -84,6 +103,7 @@
                                     <td>
                                         <span class="badge bg-info text-dark">Ngành</span>
                                     </td>
+                                    <td>@parent.DepartmentName</td>
                                     <td>
                                         @if (child.IsActive)
                                         {
@@ -94,13 +114,29 @@
                                             <span class="badge bg-secondary">Ngưng sử dụng</span>
                                         }
                                     </td>
+                                    <td>
+                                        <a asp-area="Admin"
+                                           asp-controller="Department"
+                                           asp-action="Edit"
+                                           asp-route-id="@child.Id"
+                                           class="btn btn-warning btn-sm">
+                                            Sửa
+                                        </a>
+                                        <a asp-area="Admin"
+                                           asp-controller="Department"
+                                           asp-action="Delete"
+                                           asp-route-id="@child.Id"
+                                           class="btn btn-danger btn-sm">
+                                            Xóa
+                                        </a>
+                                    </td>
                                 </tr>
                             }
                         }
                         else
                         {
                             <tr class="@groupId child-row">
-                                <td colspan="5" class="text-center text-muted">
+                                <td colspan="7" class="text-center text-muted">
                                     Khoa này chưa có ngành con.
                                 </td>
                             </tr>
@@ -110,7 +146,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="5" class="text-center">Chưa có dữ liệu khoa/ngành.</td>
+                        <td colspan="7" class="text-center">Chưa có dữ liệu khoa/ngành.</td>
                     </tr>
                 }
             </tbody>

@@ -57,9 +57,104 @@ namespace QLKH.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task LoadParentDepartmentsAsync()
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var department = await _departmentService.GetByIdAsync(id);
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            var model = new DepartmentEditViewModel
+            {
+                Id = department.Id,
+                DepartmentCode = department.DepartmentCode,
+                DepartmentName = department.DepartmentName,
+                Description = department.Description,
+                ParentDepartmentId = department.ParentDepartmentId,
+                IsActive = department.IsActive
+            };
+
+            await LoadParentDepartmentsAsync(department.Id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(DepartmentEditViewModel model)
+        {
+            await LoadParentDepartmentsAsync(model.Id);
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var department = await _departmentService.GetByIdAsync(model.Id);
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            department.DepartmentCode = model.DepartmentCode.Trim();
+            department.DepartmentName = model.DepartmentName.Trim();
+            department.Description = model.Description;
+            department.ParentDepartmentId = model.ParentDepartmentId;
+            department.IsActive = model.IsActive;
+
+            await _departmentService.UpdateAsync(department);
+
+            TempData["SuccessMessage"] = "Cập nhật khoa/ngành thành công.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var department = await _departmentService.GetByIdAsync(id);
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var departments = await _departmentService.GetAllAsync();
+            var department = departments.FirstOrDefault(d => d.Id == id);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            var hasChildren = departments.Any(d => d.ParentDepartmentId == id);
+
+            if (hasChildren)
+            {
+                TempData["ErrorMessage"] = "Không thể xóa khoa này vì đang có ngành con.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _departmentService.DeleteAsync(id);
+            TempData["SuccessMessage"] = "Xóa khoa/ngành thành công.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task LoadParentDepartmentsAsync(int? excludeId = null)
         {
             var parents = await _departmentService.GetParentDepartmentsAsync();
+
+            if (excludeId.HasValue)
+            {
+                parents = parents.Where(d => d.Id != excludeId.Value);
+            }
 
             ViewBag.ParentDepartments = parents.Select(d => new SelectListItem
             {

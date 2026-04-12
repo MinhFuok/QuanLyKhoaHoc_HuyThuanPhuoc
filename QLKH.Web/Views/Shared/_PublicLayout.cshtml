@@ -1,63 +1,115 @@
-﻿<!DOCTYPE html>
+﻿@using QLKH.Application.Interfaces.Services
+@inject ISystemSettingService SystemSettingService
+
+@{
+    var systemSetting = await SystemSettingService.GetAsync();
+
+    var siteName = systemSetting?.SiteName ?? "QLKH";
+    var footerText = systemSetting?.FooterText ?? "© 2026 QLKH";
+
+    var contactEmail = systemSetting?.ContactEmail ?? "support@qlkh.com";
+    var contactPhone = systemSetting?.ContactPhone ?? "0123456789";
+    var contactAddress = systemSetting?.ContactAddress ?? "Bình Dương";
+
+    var facebookUrl = systemSetting?.FacebookUrl;
+    var youtubeUrl = systemSetting?.YoutubeUrl;
+    var tiktokUrl = systemSetting?.TiktokUrl;
+    var xUrl = systemSetting?.XUrl;
+}
+
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QLKH.Web</title>
+    <title>@ViewData["Title"] - @siteName</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QLKH.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-light bg-white border-bottom box-shadow mb-4">
-            <div class="container">
-                <a class="navbar-brand fw-bold" href="/">QLKH</a>
+    <partial name="_PublicHeader" />
 
-                <div>
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                Đăng xuất
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Account" asp-action="Login">
-                            Đăng nhập
-                        </a>
-                    }
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="mt-5">
+        <div style="background-color:#1f2d6b; color:white;">
+            <div class="container py-5">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <h4 class="fw-bold mb-3 text-uppercase">@siteName</h4>
+                        <p class="mb-3">
+                            Nền tảng quản lý và tổ chức các khóa học online, hỗ trợ học viên học tập linh hoạt và thuận tiện.
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Điện thoại:</strong> @contactPhone
+                        </p>
+                        <p class="mb-2">
+                            <strong>Email:</strong> @contactEmail
+                        </p>
+                        <p class="mb-0">
+                            <strong>Địa chỉ:</strong> @contactAddress
+                        </p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h4 class="fw-bold mb-3 text-uppercase">Liên kết</h4>
+                        <p class="mb-2"><a href="/" class="text-white text-decoration-none">Trang chủ</a></p>
+                        <p class="mb-2"><a href="/Home/Privacy" class="text-white text-decoration-none">Giới thiệu</a></p>
+                        <p class="mb-2"><a href="/Account/Login" class="text-white text-decoration-none">Đăng nhập</a></p>
+                        <p class="mb-0"><a href="/Home/Privacy" class="text-white text-decoration-none">Liên hệ</a></p>
+                    </div>
+
+                    <div class="col-md-2">
+                        <h4 class="fw-bold mb-3 text-uppercase">Kết nối</h4>
+
+                        @if (!string.IsNullOrWhiteSpace(facebookUrl))
+                        {
+                            <p class="mb-2">
+                                <a href="@facebookUrl" target="_blank" class="text-white text-decoration-none">Facebook</a>
+                            </p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(youtubeUrl))
+                        {
+                            <p class="mb-2">
+                                <a href="@youtubeUrl" target="_blank" class="text-white text-decoration-none">YouTube</a>
+                            </p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(tiktokUrl))
+                        {
+                            <p class="mb-2">
+                                <a href="@tiktokUrl" target="_blank" class="text-white text-decoration-none">TikTok</a>
+                            </p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(xUrl))
+                        {
+                            <p class="mb-0">
+                                <a href="@xUrl" target="_blank" class="text-white text-decoration-none">X</a>
+                            </p>
+                        }
+                    </div>
+
+                    <div class="col-md-3">
+                        <h4 class="fw-bold mb-3 text-uppercase">Hỗ trợ</h4>
+                        <p class="mb-2">Câu hỏi thường gặp</p>
+                        <p class="mb-2">Hướng dẫn đăng ký học</p>
+                        <p class="mb-2">Hướng dẫn thanh toán</p>
+                        <p class="mb-0">Liên hệ hỗ trợ học viên</p>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
 
-    <div class="container">
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success">
-                @TempData["SuccessMessage"]
+        <div style="background-color:#18245a; color:white;">
+            <div class="container py-3 text-center">
+                @footerText
             </div>
-        }
-
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger">
-                @TempData["ErrorMessage"]
-            </div>
-        }
-
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted mt-4">
-        <div class="container">
-            &copy; 2026 - QLKH.Web
         </div>
     </footer>
 

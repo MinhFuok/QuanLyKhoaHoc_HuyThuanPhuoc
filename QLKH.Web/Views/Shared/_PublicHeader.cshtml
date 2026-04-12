@@ -1,0 +1,37 @@
+﻿@using QLKH.Application.Interfaces.Services
+@inject ISystemSettingService SystemSettingService
+
+@{
+    var systemSetting = await SystemSettingService.GetAsync();
+    var siteName = systemSetting?.SiteName ?? "QLKH";
+}
+
+<header class="border-bottom bg-white shadow-sm">
+    <div class="container-fluid py-3 d-flex justify-content-between align-items-center">
+        <a href="/" class="text-decoration-none text-dark">
+            <h4 class="mb-0">@siteName</h4>
+        </a>
+
+        <div class="d-flex align-items-center gap-2">
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <span class="text-muted small me-2">
+                    Xin chào, @User.Identity.Name
+                </span>
+
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="mb-0">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        Đăng xuất
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary btn-sm">
+                    Đăng nhập
+                </a>
+            }
+        </div>
+    </div>
+</header>

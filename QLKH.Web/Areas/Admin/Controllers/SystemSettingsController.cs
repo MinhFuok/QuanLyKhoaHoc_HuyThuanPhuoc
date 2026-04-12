@@ -36,7 +36,18 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 Id = setting.Id,
                 SiteName = setting.SiteName,
                 HomeBannerTitle = setting.HomeBannerTitle,
+                HomeBannerSubtitle = setting.HomeBannerSubtitle,
                 HomeBannerImageUrl = setting.HomeBannerImageUrl,
+                FooterText = setting.FooterText,
+                ContactEmail = setting.ContactEmail,
+                ContactPhone = setting.ContactPhone,
+                ContactAddress = setting.ContactAddress,
+                FacebookUrl = setting.FacebookUrl,
+                YoutubeUrl = setting.YoutubeUrl,
+                TiktokUrl = setting.TiktokUrl,
+                XUrl = setting.XUrl,
+                IsWebsiteEnabled = setting.IsWebsiteEnabled,
+                MaintenanceMessage = setting.MaintenanceMessage,
                 EnableEmail = setting.EnableEmail,
                 SmtpServer = setting.SmtpServer,
                 SmtpPort = setting.SmtpPort,
@@ -68,6 +79,17 @@ namespace QLKH.Web.Areas.Admin.Controllers
 
             setting.SiteName = model.SiteName;
             setting.HomeBannerTitle = model.HomeBannerTitle;
+            setting.HomeBannerSubtitle = model.HomeBannerSubtitle;
+            setting.FooterText = model.FooterText;
+            setting.ContactEmail = model.ContactEmail;
+            setting.ContactPhone = model.ContactPhone;
+            setting.ContactAddress = model.ContactAddress;
+            setting.FacebookUrl = model.FacebookUrl;
+            setting.YoutubeUrl = model.YoutubeUrl;
+            setting.TiktokUrl = model.TiktokUrl;
+            setting.XUrl = model.XUrl;
+            setting.IsWebsiteEnabled = model.IsWebsiteEnabled;
+            setting.MaintenanceMessage = model.MaintenanceMessage;
             setting.EnableEmail = model.EnableEmail;
             setting.SmtpServer = model.SmtpServer;
             setting.SmtpPort = model.SmtpPort;
