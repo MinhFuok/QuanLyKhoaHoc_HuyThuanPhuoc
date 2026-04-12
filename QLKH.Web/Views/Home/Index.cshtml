@@ -6,28 +6,287 @@
 
     var bannerTitle = Model?.HomeBannerTitle ?? "Hệ thống quản lý khóa học online";
     var bannerSubtitle = Model?.HomeBannerSubtitle ?? "Nền tảng học trực tuyến linh hoạt, hiện đại và dễ quản lý";
-    var bannerImage = !string.IsNullOrEmpty(Model?.HomeBannerImageUrl)
-        ? Model.HomeBannerImageUrl
-        : "/images/banner-default.jpg";
 }
 
-<div class="container py-5">
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <h1 class="display-4 fw-bold">@bannerTitle</h1>
-            <p class="lead text-muted">@bannerSubtitle</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+}
 
-            <div class="mt-4">
-                <a href="/Account/Login" class="btn btn-primary btn-lg me-2">Đăng nhập</a>
-                <a href="/Home/Privacy" class="btn btn-outline-secondary btn-lg">Tìm hiểu thêm</a>
+<div class="lp">
+    <section class="lp-hero" aria-label="Giới thiệu hệ thống">
+        <div class="container lp-hero__inner">
+
+            <div class="lp-hero__copy">
+                <p class="lp-kicker">Nền tảng quản lý học tập</p>
+                <h1 class="lp-hero__title">@bannerTitle</h1>
+                <p class="lp-hero__lead">@bannerSubtitle</p>
+                <div class="lp-hero__actions">
+                    <a href="/Account/Login" class="lp-btn lp-btn--primary">
+                        Đăng nhập
+                    </a>
+                    <a href="#lp-intro" class="lp-btn lp-btn--ghost" data-lp-scroll>
+                        Tìm hiểu thêm
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lp-hero__media">
+                <div id="lpCarousel"
+                     class="carousel slide lp-carousel"
+                     data-bs-ride="carousel"
+                     data-bs-interval="5000">
+
+                    <div class="carousel-indicators lp-carousel__dots">
+                        <button type="button" data-bs-target="#lpCarousel" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Ảnh 1"></button>
+                        <button type="button" data-bs-target="#lpCarousel" data-bs-slide-to="1"
+                                aria-label="Ảnh 2"></button>
+                    </div>
+
+                    <div class="carousel-inner lp-carousel__track">
+                        <div class="carousel-item active lp-carousel__item">
+                            <img src="/uploads/banners/banner2.png"
+                                 class="lp-carousel__img"
+                                 alt="Học tập trực tuyến mọi lúc mọi nơi" />
+                        </div>
+                        <div class="carousel-item lp-carousel__item">
+                            <img src="/uploads/banners/banner1.png"
+                                 class="lp-carousel__img lp-carousel__img--center"
+                                 alt="Khóa học online chất lượng" />
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev lp-carousel__ctrl" type="button"
+                            data-bs-target="#lpCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Trước</span>
+                    </button>
+                    <button class="carousel-control-next lp-carousel__ctrl" type="button"
+                            data-bs-target="#lpCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sau</span>
+                    </button>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="col-md-6 text-center">
-            <img src="@bannerImage"
-                 alt="Banner trang chủ"
-                 class="img-fluid rounded shadow-sm"
-                 style="max-height: 400px; object-fit: cover;" />
+    <div class="lp-stats-strip" aria-label="Số liệu hệ thống">
+        <div class="container lp-stats-strip__inner">
+            <div class="lp-stat">
+                <span class="lp-stat__num">4</span>
+                <span class="lp-stat__label">Vai trò hệ thống</span>
+            </div>
+            <div class="lp-stat-divider" aria-hidden="true"></div>
+            <div class="lp-stat">
+                <span class="lp-stat__num">100%</span>
+                <span class="lp-stat__label">Trực tuyến</span>
+            </div>
+            <div class="lp-stat-divider" aria-hidden="true"></div>
+            <div class="lp-stat">
+                <span class="lp-stat__num">4</span>
+                <span class="lp-stat__label">Bước triển khai</span>
+            </div>
+            <div class="lp-stat-divider" aria-hidden="true"></div>
+            <div class="lp-stat">
+                <span class="lp-stat__num">24/7</span>
+                <span class="lp-stat__label">Truy cập mọi lúc</span>
+            </div>
         </div>
     </div>
+
+    <section id="lp-intro" class="lp-section" aria-labelledby="lp-intro-heading">
+        <div class="container">
+            <div class="lp-section__head">
+                <p class="lp-kicker">Tổng quan</p>
+                <h2 id="lp-intro-heading">Quản lý khóa học từ lúc mở lớp đến khi đánh giá kết quả</h2>
+                <p>Toàn bộ hoạt động học tập được gom về một nơi để học viên, giảng viên và bộ phận học vụ làm việc thống nhất.</p>
+            </div>
+
+            <div class="lp-feature-grid">
+                <article class="lp-feature lp-animate">
+                    <div class="lp-feature__icon lp-feature__icon--teal" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <span class="lp-feature__num" aria-hidden="true">01</span>
+                    <h3>Khóa học rõ ràng</h3>
+                    <p>Lưu mã khóa học, tên khóa học, mô tả và trạng thái để dễ theo dõi và tìm kiếm.</p>
+                </article>
+
+                <article class="lp-feature lp-animate">
+                    <div class="lp-feature__icon lp-feature__icon--coral" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <span class="lp-feature__num" aria-hidden="true">02</span>
+                    <h3>Lớp học tập trung</h3>
+                    <p>Gắn khóa học với giảng viên, lịch học và danh sách học viên theo từng lớp cụ thể.</p>
+                </article>
+
+                <article class="lp-feature lp-animate">
+                    <div class="lp-feature__icon lp-feature__icon--green" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                        </svg>
+                    </div>
+                    <span class="lp-feature__num" aria-hidden="true">03</span>
+                    <h3>Tài liệu và bài tập</h3>
+                    <p>Giảng viên đăng tài liệu, giao bài và nhận bài nộp theo đúng lớp phụ trách.</p>
+                </article>
+
+                <article class="lp-feature lp-animate">
+                    <div class="lp-feature__icon lp-feature__icon--gold" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <span class="lp-feature__num" aria-hidden="true">04</span>
+                    <h3>Điểm số và tiến độ</h3>
+                    <p>Học viên xem kết quả học tập, tiến độ hoàn thành và phản hồi từ giảng viên.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="lp-section lp-section--alt" aria-labelledby="lp-roles-heading">
+        <div class="container">
+            <div class="lp-section__head">
+                <p class="lp-kicker">Vai trò</p>
+                <h2 id="lp-roles-heading">Mỗi người vào đúng phần việc của mình</h2>
+                <p>Sau khi đăng nhập, hệ thống điều hướng người dùng về khu vực phù hợp với quyền đang có.</p>
+            </div>
+
+            <div class="lp-role-grid">
+                <article class="lp-role lp-animate">
+                    <div class="lp-role__badge lp-role__badge--blue" aria-hidden="true">HV</div>
+                    <h3>Học viên</h3>
+                    <p>Xem lớp đang học, nhận tài liệu, nộp bài tập, xem điểm và theo dõi lịch học.</p>
+                </article>
+                <article class="lp-role lp-animate">
+                    <div class="lp-role__badge lp-role__badge--green" aria-hidden="true">GV</div>
+                    <h3>Giảng viên</h3>
+                    <p>Quản lý lớp phụ trách, đăng tài liệu, giao bài, chấm điểm và xem phản hồi.</p>
+                </article>
+                <article class="lp-role lp-animate">
+                    <div class="lp-role__badge lp-role__badge--amber" aria-hidden="true">HỌC VỤ</div>
+                    <h3>Học vụ</h3>
+                    <p>Mở lớp, phân công giảng viên, quản lý học viên và theo dõi ghi danh.</p>
+                </article>
+                <article class="lp-role lp-animate">
+                    <div class="lp-role__badge lp-role__badge--coral" aria-hidden="true">QT</div>
+                    <h3>Quản trị</h3>
+                    <p>Quản lý tài khoản, phòng ban và cấu hình thông tin hiển thị của hệ thống.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="lp-section" aria-labelledby="lp-process-heading">
+        <div class="container">
+            <div class="lp-process">
+                <div class="lp-process__media">
+                    <img src="/uploads/banners/banner1.png"
+                         alt="Minh họa quy trình học tập 4 bước"
+                         class="lp-process__img" />
+                </div>
+                <div class="lp-process__steps">
+                    <p class="lp-kicker">Bắt đầu nhanh</p>
+                    <h2 id="lp-process-heading">Quy trình học tập gọn trong 4 bước</h2>
+                    <ol class="lp-steps" aria-label="Các bước triển khai">
+                        <li class="lp-step lp-animate">
+                            <span class="lp-step__num" aria-hidden="true">1</span>
+                            <div>
+                                <strong>Tạo khóa học</strong>
+                                <p>Nhập thông tin khóa học, mô tả, yêu cầu đầu vào và trạng thái kích hoạt.</p>
+                            </div>
+                        </li>
+                        <li class="lp-step lp-animate">
+                            <span class="lp-step__num" aria-hidden="true">2</span>
+                            <div>
+                                <strong>Mở lớp và phân công</strong>
+                                <p>Học vụ mở lớp, chọn giảng viên phụ trách và sắp xếp lịch học cụ thể.</p>
+                            </div>
+                        </li>
+                        <li class="lp-step lp-animate">
+                            <span class="lp-step__num" aria-hidden="true">3</span>
+                            <div>
+                                <strong>Học viên học và nộp bài</strong>
+                                <p>Học viên nhận tài liệu, làm bài tập và nộp bài đúng thời hạn quy định.</p>
+                            </div>
+                        </li>
+                        <li class="lp-step lp-animate">
+                            <span class="lp-step__num" aria-hidden="true">4</span>
+                            <div>
+                                <strong>Chấm điểm và theo dõi kết quả</strong>
+                                <p>Giảng viên chấm điểm, học viên xem kết quả và tiến độ hoàn thành khóa học.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lp-section lp-section--alt" aria-labelledby="lp-courses-heading">
+        <div class="container">
+            <div class="lp-section__head">
+                <p class="lp-kicker">Khóa học</p>
+                <h2 id="lp-courses-heading">Bắt đầu với các nội dung học tập quen thuộc</h2>
+            </div>
+
+            <div class="lp-course-grid">
+                <article class="lp-course lp-animate">
+                    <span class="lp-course__tag lp-course__tag--green">Lập trình</span>
+                    <h3>Lập trình C# cơ bản</h3>
+                    <p>Nền tảng ngôn ngữ, cú pháp, lập trình hướng đối tượng và bài tập thực hành đa dạng.</p>
+                    <span class="lp-course__meta">12 bài giảng · Cơ bản</span>
+                </article>
+                <article class="lp-course lp-animate">
+                    <span class="lp-course__tag lp-course__tag--blue">Web</span>
+                    <h3>ASP.NET Core MVC</h3>
+                    <p>Xây dựng ứng dụng web theo mô hình MVC, xử lý dữ liệu và phân quyền người dùng.</p>
+                    <span class="lp-course__meta">18 bài giảng · Trung cấp</span>
+                </article>
+                <article class="lp-course lp-animate">
+                    <span class="lp-course__tag lp-course__tag--amber">Quản lý</span>
+                    <h3>Quản lý lớp học online</h3>
+                    <p>Tổ chức lớp, quản lý học viên, tài liệu, bài tập, điểm số và tiến độ hoàn thành.</p>
+                    <span class="lp-course__meta">10 bài giảng · Thực hành</span>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="lp-cta" aria-labelledby="lp-cta-heading">
+        <div class="container lp-cta__inner">
+            <p class="lp-kicker lp-kicker--light">Sẵn sàng bắt đầu</p>
+            <h2 id="lp-cta-heading">Đăng nhập để vào đúng khu vực làm việc của bạn</h2>
+            <a href="/Account/Login" class="lp-btn lp-btn--white">Đăng nhập ngay</a>
+        </div>
+    </section>
+
 </div>
+
+@section Scripts {
+    <script src="~/js/index.js" asp-append-version="true"></script>
+}
