@@ -4,47 +4,71 @@
     ViewData["Title"] = "Sửa giảng viên";
 }
 
-<h2>Sửa giảng viên</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+<div class="course-page admin-profession-page teacher-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Sửa giảng viên</h1>
+            <p class="cp-subtitle">Cập nhật hồ sơ giảng viên <strong>@Model.TeacherCode</strong>.</p>
+        </div>
 
-    <div class="mb-3">
-        <label asp-for="TeacherCode" class="form-label"></label>
-        <input asp-for="TeacherCode" class="form-control" />
-        <span asp-validation-for="TeacherCode" class="text-danger"></span>
+        <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="FullName" class="form-label"></label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
-    </div>
+    <form asp-action="Edit" method="post" id="teacherForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+        <div class="cp-form-group-label">Thông tin giảng viên</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="TeacherCode" class="cp-label">Mã giảng viên</label>
+                <input asp-for="TeacherCode" class="cp-input" />
+                <span asp-validation-for="TeacherCode" class="cp-field-error"></span>
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="PhoneNumber" class="form-label"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
+            <div class="cp-field">
+                <label asp-for="FullName" class="cp-label">Họ tên</label>
+                <input asp-for="FullName" class="cp-input" />
+                <span asp-validation-for="FullName" class="cp-field-error"></span>
+            </div>
+        </div>
 
-    <div class="mb-3">
-        <label asp-for="Specialization" class="form-label"></label>
-        <input asp-for="Specialization" class="form-control" />
-        <span asp-validation-for="Specialization" class="text-danger"></span>
-    </div>
+        <div class="cp-form-group-label">Thông tin liên hệ</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="Email" class="cp-label">Email</label>
+                <input asp-for="Email" class="cp-input" />
+                <span asp-validation-for="Email" class="cp-field-error"></span>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Cập nhật</button>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</form>
+            <div class="cp-field">
+                <label asp-for="PhoneNumber" class="cp-label">Số điện thoại</label>
+                <input asp-for="PhoneNumber" class="cp-input" />
+                <span asp-validation-for="PhoneNumber" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Chuyên môn</div>
+        <div class="cp-field">
+            <label asp-for="Specialization" class="cp-label">Chuyên môn</label>
+            <input asp-for="Specialization" class="cp-input" />
+            <span asp-validation-for="Specialization" class="cp-field-error"></span>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật</button>
+            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
 }

@@ -4,28 +4,51 @@
     ViewData["Title"] = "Chi tiết giảng viên";
 }
 
-<h2>Chi tiết giảng viên</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-3">Mã giảng viên</dt>
-        <dd class="col-sm-9">@Model.TeacherCode</dd>
+<div class="course-page admin-profession-page teacher-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Chi tiết giảng viên</h1>
+            <p class="cp-subtitle">Thông tin hồ sơ và chuyên môn của giảng viên <strong>@Model.TeacherCode</strong>.</p>
+        </div>
+    </div>
 
-        <dt class="col-sm-3">Họ tên</dt>
-        <dd class="col-sm-9">@Model.FullName</dd>
+    <div class="cp-detail-card">
+        <div class="cp-detail-hero">
+            <div class="cp-detail-hero-left">
+                <span class="cp-code cp-code--lg">@Model.TeacherCode</span>
+                <h2 class="cp-detail-name">@Model.FullName</h2>
+            </div>
+            <span class="cp-badge cp-badge--lg">Giảng viên</span>
+        </div>
 
-        <dt class="col-sm-3">Email</dt>
-        <dd class="col-sm-9">@Model.Email</dd>
+        <div class="cp-detail-body">
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Email</div>
+                <div class="cp-detail-value">@Model.Email</div>
+            </div>
 
-        <dt class="col-sm-3">Số điện thoại</dt>
-        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Số điện thoại</div>
+                <div class="cp-detail-value">@Model.PhoneNumber</div>
+            </div>
 
-        <dt class="col-sm-3">Chuyên môn</dt>
-        <dd class="col-sm-9">@Model.Specialization</dd>
-    </dl>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Chuyên môn</div>
+                <div class="cp-detail-value">@Model.Specialization</div>
+            </div>
+        </div>
+
+        <div class="cp-detail-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">Sửa</a>
+            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </div>
 </div>
 
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</p>
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

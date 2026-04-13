@@ -4,34 +4,61 @@
     ViewData["Title"] = "Chi tiết lớp học";
 }
 
-<h2>Chi tiết lớp học</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-3">Mã lớp</dt>
-        <dd class="col-sm-9">@Model.ClassCode</dd>
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Chi tiết lớp học</h1>
+            <p class="cp-subtitle">Thông tin tổng quan của lớp <strong>@Model.ClassCode</strong>.</p>
+        </div>
+    </div>
 
-        <dt class="col-sm-3">Tên lớp</dt>
-        <dd class="col-sm-9">@Model.ClassName</dd>
+    <div class="cp-detail-card">
+        <div class="cp-detail-hero">
+            <div class="cp-detail-hero-left">
+                <span class="cp-code cp-code--lg">@Model.ClassCode</span>
+                <h2 class="cp-detail-name">@Model.ClassName</h2>
+            </div>
+            <span class="cp-badge cp-badge--lg">@Model.MaxStudents học viên</span>
+        </div>
 
-        <dt class="col-sm-3">Khóa học</dt>
-        <dd class="col-sm-9">@Model.Course?.CourseName</dd>
+        <div class="cp-detail-body">
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Khóa học</div>
+                <div class="cp-detail-value">@Model.Course?.CourseName</div>
+            </div>
 
-        <dt class="col-sm-3">Giảng viên</dt>
-        <dd class="col-sm-9">@Model.Teacher?.FullName</dd>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Giảng viên</div>
+                <div class="cp-detail-value">@Model.Teacher?.FullName</div>
+            </div>
 
-        <dt class="col-sm-3">Ngày bắt đầu</dt>
-        <dd class="col-sm-9">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Ngày bắt đầu</div>
+                <div class="cp-detail-value">@Model.StartDate.ToString("dd/MM/yyyy")</div>
+            </div>
 
-        <dt class="col-sm-3">Ngày kết thúc</dt>
-        <dd class="col-sm-9">@Model.EndDate.ToString("dd/MM/yyyy")</dd>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Ngày kết thúc</div>
+                <div class="cp-detail-value">@Model.EndDate.ToString("dd/MM/yyyy")</div>
+            </div>
 
-        <dt class="col-sm-3">Sĩ số tối đa</dt>
-        <dd class="col-sm-9">@Model.MaxStudents</dd>
-    </dl>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Sĩ số tối đa</div>
+                <div class="cp-detail-value"><strong>@Model.MaxStudents</strong> học viên</div>
+            </div>
+        </div>
+
+        <div class="cp-detail-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">Sửa</a>
+            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </div>
 </div>
 
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</p>
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}
