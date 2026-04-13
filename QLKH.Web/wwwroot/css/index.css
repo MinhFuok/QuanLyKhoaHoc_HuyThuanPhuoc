@@ -5,10 +5,10 @@
 
 /* ── Custom properties ─────────────────────────────────────── */
 :root {
-    --lp-green: #2a5c45;
-    --lp-green-hover: #1f4534;
-    --lp-green-mid: #3d7a5e;
-    --lp-green-light: #eef7f2;
+    --lp-green: #7c3cff;
+    --lp-green-hover: #4f46e5;
+    --lp-green-mid: #38bdf8;
+    --lp-green-light: #eef2ff;
     --lp-text: #1a1916;
     --lp-muted: #6b6860;
     --lp-border: #e3e1db;
@@ -67,7 +67,7 @@
 }
 
 .lp-kicker--light {
-    color: #a8dfc5;
+    color: #b8c7ff;
     background: rgba(255,255,255,0.13);
 }
 
@@ -102,7 +102,7 @@
         background: var(--lp-green-hover);
         border-color: var(--lp-green-hover);
         color: #fff;
-        box-shadow: 0 4px 16px rgba(42,92,69,0.32);
+        box-shadow: 0 4px 18px rgba(124,60,255,0.38);
     }
 
 /* Ghost (hero) */
@@ -146,7 +146,7 @@
    HERO
    ============================================================ */
 .lp-hero {
-    background: linear-gradient(145deg, #18201c 0%, #2a5c45 52%, #1a2a20 100%);
+    background: linear-gradient(145deg, #070a24 0%, #4f46e5 52%, #11103a 100%);
     overflow: hidden;
 }
 
@@ -378,11 +378,11 @@
     }
 
 .lp-feature__icon--teal {
-    background: #e1f5ee;
+    background: #e0f2fe;
 }
 
     .lp-feature__icon--teal svg {
-        stroke: #2a5c45;
+        stroke: #0284c7;
     }
 
 .lp-feature__icon--coral {
@@ -394,11 +394,11 @@
     }
 
 .lp-feature__icon--green {
-    background: #eaf3de;
+    background: #ede9fe;
 }
 
     .lp-feature__icon--green svg {
-        stroke: #3b6d11;
+        stroke: #7c3cff;
     }
 
 .lp-feature__icon--gold {
@@ -464,8 +464,8 @@
 }
 
 .lp-role__badge--green {
-    background: #dcfce7;
-    color: #166534;
+    background: #ede9fe;
+    color: #6d28d9;
 }
 
 .lp-role__badge--amber {
@@ -598,8 +598,8 @@
 }
 
 .lp-course__tag--green {
-    background: #dcfce7;
-    color: #166534;
+    background: #ede9fe;
+    color: #6d28d9;
 }
 
 .lp-course__tag--blue {
@@ -637,7 +637,7 @@
    CTA
    ============================================================ */
 .lp-cta {
-    background: linear-gradient(140deg, #18201c 0%, #2a5c45 100%);
+    background: linear-gradient(140deg, #070a24 0%, #7c3cff 56%, #22d3ee 100%);
     padding: 80px 0;
     text-align: center;
 }
