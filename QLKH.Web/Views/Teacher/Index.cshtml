@@ -4,38 +4,64 @@
     ViewData["Title"] = "Danh sách giảng viên";
 }
 
-<h2>Danh sách giảng viên</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
-</p>
+<div class="course-page admin-profession-page teacher-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Danh sách giảng viên</h1>
+            <p class="cp-subtitle">Quản lý hồ sơ giảng viên, chuyên môn và thông tin liên hệ.</p>
+        </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Mã giảng viên</th>
-            <th>Họ tên</th>
-            <th>Email</th>
-            <th>Số điện thoại</th>
-            <th>Chuyên môn</th>
-            <th width="220">Chức năng</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.TeacherCode</td>
-                <td>@item.FullName</td>
-                <td>@item.Email</td>
-                <td>@item.PhoneNumber</td>
-                <td>@item.Specialization</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <a asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
+    </div>
+
+    <div class="cp-table-wrap">
+        <table class="cp-table">
+            <thead>
+                <tr>
+                    <th>Mã giảng viên</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Chuyên môn</th>
+                    <th class="cp-col-action">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="cp-row">
+                            <td><span class="cp-code">@item.TeacherCode</span></td>
+                            <td><div class="cp-name">@item.FullName</div></td>
+                            <td>@item.Email</td>
+                            <td>@item.PhoneNumber</td>
+                            <td><span class="cp-badge">@item.Specialization</span></td>
+                            <td>
+                                <div class="cp-actions">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="cp-empty">Chưa có giảng viên nào trong hệ thống.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

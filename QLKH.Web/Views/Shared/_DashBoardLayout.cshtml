@@ -4,6 +4,15 @@
 @{
     var systemSetting = await SystemSettingService.GetAsync();
     var siteName = systemSetting?.SiteName ?? "QLKH";
+
+    var userName = User.Identity?.Name ?? "";
+    var initials = userName.Length > 0 ? userName[..1].ToUpper() : "?";
+
+    string userRole = "Người dùng";
+    if (User.IsInRole("Admin")) userRole = "Quản trị viên";
+    else if (User.IsInRole("HocVu")) userRole = "Học vụ";
+    else if (User.IsInRole("GiaoVien")) userRole = "Giáo viên";
+    else if (User.IsInRole("HocVien")) userRole = "Học viên";
 }
 
 <!DOCTYPE html>
@@ -13,171 +22,223 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @siteName</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/dashboardlayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QLKH.Web.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-    <div class="container-fluid">
-        <div class="row min-vh-100">
-            <aside class="col-md-3 col-lg-2 bg-light border-end p-3 d-flex flex-column">
-                <div>
-                    <h4 class="mb-4">@siteName</h4>
+<body class="db-body">
 
-                    <ul class="nav flex-column gap-2">
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/Admin/Home">Dashboard Admin</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
-                                        Quản lý tài khoản
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Admin" asp-controller="SystemSettings" asp-action="Index">
-                                        Cấu hình hệ thống
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <span class="nav-link text-uppercase fw-bold text-secondary">Danh mục</span>
-                                    <ul class="nav flex-column ms-3">
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-area="Admin" asp-controller="Department" asp-action="Index">
-                                                Khoa/ngành đào tạo
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link text-muted" href="javascript:void(0)">
-                                                Loại chứng chỉ
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            }
+    <div class="db-overlay" id="dbOverlay"></div>
 
-                            if (User.IsInRole("HocVu"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVu/Home">Dashboard Học vụ</a>
-                                </li>
-                            }
+    <aside class="db-sidebar" id="dbSidebar">
 
-                            if (User.IsInRole("GiaoVien"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/Home">Dashboard</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/MyClasses">Lớp tôi dạy</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/MySchedule">Lịch dạy</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/MyMaterials">Tài liệu</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/ClassMaterials/Create">Tạo tài liệu</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/MyAssignments">Bài tập</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/ClassGrades/Classes">Bảng điểm lớp</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/GiaoVien/Assignments/Create">Tạo bài tập</a>
-                                </li>
-                            }
+        <div class="db-sidebar-header">
+            <a class="db-brand" href="/">
+                <span class="db-brand-icon">🎓</span>
+                <span class="db-brand-text">@siteName</span>
+            </a>
+            <button class="db-sidebar-close" id="dbSidebarClose" aria-label="Đóng menu">&#x2715;</button>
+        </div>
 
-                            if (User.IsInRole("HocVien"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/Home">Dashboard</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/MyClasses">Lớp tôi học</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/MySchedule">Lịch học</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/MyMaterials">Tài liệu</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/MyAssignments">Bài tập</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/MyGrades">Bảng điểm</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/HocVien/MyLearningProgress">Tiến độ học tập</a>
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Trang chủ</a>
-                            </li>
-                        }
-                    </ul>
-
-                    <hr />
-                    <ul class="nav flex-column gap-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/ChangePassword">Đổi mật khẩu</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="mt-auto pt-3">
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        <div class="mb-2 text-muted small">Xin chào, @User.Identity.Name</div>
-
-                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">
-                                Đăng xuất
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a class="btn btn-primary btn-sm w-100" asp-area="" asp-controller="Account" asp-action="Login">
-                            Đăng nhập
+        <nav class="db-nav" id="dbNav">
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="db-nav-group">
+                        <a class="db-nav-link" href="/Admin/Home">
+                            <span class="db-nav-icon">⊞</span> Dashboard
                         </a>
-                    }
-                </div>
-            </aside>
+                    </div>
 
-            <main class="col-md-9 col-lg-10 p-4">
+                    <div class="db-nav-group">
+                        <span class="db-nav-group-label">Quản lý</span>
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
+                            <span class="db-nav-icon">👥</span> Tài khoản
+                        </a>
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="SystemSettings" asp-action="Index">
+                            <span class="db-nav-icon">⚙️</span> Cấu hình hệ thống
+                        </a>
+                    </div>
+
+                    <div class="db-nav-group">
+                        <span class="db-nav-group-label">Danh mục</span>
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="Department" asp-action="Index">
+                            <span class="db-nav-icon">🏫</span> Khoa/Ngành đào tạo
+                        </a>
+                        <a class="db-nav-link" href="javascript:void(0)">
+                            <span class="db-nav-icon">📋</span> Loại chứng chỉ
+                        </a>
+                    </div>
+                }
+
+                @if (User.IsInRole("HocVu"))
+                {
+                    <div class="db-nav-group">
+                        <a class="db-nav-link" href="/HocVu/Home">
+                            <span class="db-nav-icon">⊞</span> Dashboard
+                        </a>
+                    </div>
+                }
+
+                @if (User.IsInRole("GiaoVien"))
+                {
+                    <div class="db-nav-group">
+                        <a class="db-nav-link" href="/GiaoVien/Home">
+                            <span class="db-nav-icon">⊞</span> Dashboard
+                        </a>
+                    </div>
+
+                    <div class="db-nav-group">
+                        <span class="db-nav-group-label">Giảng dạy</span>
+                        <a class="db-nav-link" href="/GiaoVien/MyClasses">
+                            <span class="db-nav-icon">🏷️</span> Lớp tôi dạy
+                        </a>
+                        <a class="db-nav-link" href="/GiaoVien/MySchedule">
+                            <span class="db-nav-icon">📅</span> Lịch dạy
+                        </a>
+                        <a class="db-nav-link" href="/GiaoVien/MyMaterials">
+                            <span class="db-nav-icon">📁</span> Tài liệu
+                        </a>
+                        <a class="db-nav-link" href="/GiaoVien/ClassMaterials/Create">
+                            <span class="db-nav-icon">➕</span> Tạo tài liệu
+                        </a>
+                        <a class="db-nav-link" href="/GiaoVien/MyAssignments">
+                            <span class="db-nav-icon">📝</span> Bài tập
+                        </a>
+                        <a class="db-nav-link" href="/GiaoVien/Assignments/Create">
+                            <span class="db-nav-icon">➕</span> Tạo bài tập
+                        </a>
+                        <a class="db-nav-link" href="/GiaoVien/ClassGrades/Classes">
+                            <span class="db-nav-icon">📊</span> Bảng điểm lớp
+                        </a>
+                    </div>
+                }
+
+                @if (User.IsInRole("HocVien"))
+                {
+                    <div class="db-nav-group">
+                        <a class="db-nav-link" href="/HocVien/Home">
+                            <span class="db-nav-icon">⊞</span> Dashboard
+                        </a>
+                    </div>
+
+                    <div class="db-nav-group">
+                        <span class="db-nav-group-label">Học tập</span>
+                        <a class="db-nav-link" href="/HocVien/MyClasses">
+                            <span class="db-nav-icon">🏷️</span> Lớp tôi học
+                        </a>
+                        <a class="db-nav-link" href="/HocVien/MySchedule">
+                            <span class="db-nav-icon">📅</span> Lịch học
+                        </a>
+                        <a class="db-nav-link" href="/HocVien/MyMaterials">
+                            <span class="db-nav-icon">📁</span> Tài liệu
+                        </a>
+                        <a class="db-nav-link" href="/HocVien/MyAssignments">
+                            <span class="db-nav-icon">📝</span> Bài tập
+                        </a>
+                        <a class="db-nav-link" href="/HocVien/MyGrades">
+                            <span class="db-nav-icon">📊</span> Bảng điểm
+                        </a>
+                        <a class="db-nav-link" href="/HocVien/MyLearningProgress">
+                            <span class="db-nav-icon">📈</span> Tiến độ học tập
+                        </a>
+                    </div>
+                }
+
+                <div class="db-nav-group">
+                    <span class="db-nav-group-label">Tài khoản</span>
+                    <a class="db-nav-link" href="/Account/ChangePassword">
+                        <span class="db-nav-icon">🔑</span> Đổi mật khẩu
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="db-nav-group">
+                    <a class="db-nav-link" href="/">
+                        <span class="db-nav-icon">🏠</span> Trang chủ
+                    </a>
+                </div>
+            }
+        </nav>
+
+        <div class="db-sidebar-footer">
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <div class="db-user-info">
+                    <div class="db-user-avatar">@initials</div>
+                    <div class="db-user-detail">
+                        <span class="db-user-name">@userName</span>
+                        <span class="db-user-role">@userRole</span>
+                    </div>
+                </div>
+
+                <form class="db-logout-form" asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="db-logout-btn">
+                        <span>⏻</span> Đăng xuất
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a class="db-login-btn" asp-area="" asp-controller="Account" asp-action="Login">
+                    Đăng nhập
+                </a>
+            }
+        </div>
+    </aside>
+
+    <div class="db-main-wrap">
+
+        <header class="db-topbar">
+            <button class="db-menu-toggle" id="dbMenuToggle" aria-label="Mở menu">
+                <span class="db-hamburger-bar"></span>
+                <span class="db-hamburger-bar"></span>
+                <span class="db-hamburger-bar"></span>
+            </button>
+            <span class="db-topbar-title">@(ViewData["Title"] ?? siteName)</span>
+            <div class="db-topbar-right">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span class="db-topbar-user">Xin chào, @User.Identity.Name</span>
+                }
+            </div>
+        </header>
+
+        <main class="db-content">
+
+            <div id="dbAlertZone">
                 @if (TempData["SuccessMessage"] != null)
                 {
-                    <div class="alert alert-success">
-                        @TempData["SuccessMessage"]
+                    <div class="db-alert db-alert-success">
+                        <span class="db-alert-icon">✓</span>
+                        <span class="db-alert-text">@TempData["SuccessMessage"]</span>
+                        <button class="db-alert-close" aria-label="Đóng">&#x2715;</button>
                     </div>
                 }
 
                 @if (TempData["ErrorMessage"] != null)
                 {
-                    <div class="alert alert-danger">
-                        @TempData["ErrorMessage"]
+                    <div class="db-alert db-alert-danger">
+                        <span class="db-alert-icon">!</span>
+                        <span class="db-alert-text">@TempData["ErrorMessage"]</span>
+                        <button class="db-alert-close" aria-label="Đóng">&#x2715;</button>
                     </div>
                 }
+            </div>
 
-                @RenderBody()
-            </main>
-        </div>
+            @RenderBody()
+        </main>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/dashboardlayout.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

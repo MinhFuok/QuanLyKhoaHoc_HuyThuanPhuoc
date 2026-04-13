@@ -2,33 +2,59 @@
 
 @{
     ViewData["Title"] = "Chi tiết khóa học";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 }
 
-<h2>Chi tiết khóa học</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-3">Mã khóa học</dt>
-        <dd class="col-sm-9">@Model.CourseCode</dd>
+<div class="course-page course-details">
 
-        <dt class="col-sm-3">Tên khóa học</dt>
-        <dd class="col-sm-9">@Model.CourseName</dd>
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Chi tiết khóa học</h1>
+            <p class="cp-subtitle">Thông tin đầy đủ về khóa học</p>
+        </div>
+        <a asp-action="Index" class="cp-btn cp-btn--ghost">← Quay lại</a>
+    </div>
 
-        <dt class="col-sm-3">Mô tả</dt>
-        <dd class="col-sm-9">@Model.Description</dd>
+    <div class="cp-detail-card">
 
-        <dt class="col-sm-3">Thời lượng</dt>
-        <dd class="col-sm-9">@Model.DurationInMonths tháng</dd>
+        <div class="cp-detail-hero">
+            <div class="cp-detail-hero-left">
+                <span class="cp-code cp-code--lg">@Model.CourseCode</span>
+                <h2 class="cp-detail-name">@Model.CourseName</h2>
+            </div>
+            <span class="cp-badge cp-badge--lg cp-badge--@Model.Status.ToString().ToLower()">
+                @Model.Status
+            </span>
+        </div>
 
-        <dt class="col-sm-3">Học phí</dt>
-        <dd class="col-sm-9">@Model.Fee.ToString("N0")</dd>
+        <div class="cp-detail-body">
+            <div class="cp-detail-row">
+                <span class="cp-detail-label">Mô tả</span>
+                <span class="cp-detail-value">@(string.IsNullOrWhiteSpace(Model.Description) ? "—" : Model.Description)</span>
+            </div>
+            <div class="cp-detail-row">
+                <span class="cp-detail-label">Thời lượng</span>
+                <span class="cp-detail-value"><strong>@Model.DurationInMonths</strong> tháng</span>
+            </div>
+            <div class="cp-detail-row">
+                <span class="cp-detail-label">Học phí</span>
+                <span class="cp-detail-value cp-fee-lg">@Model.Fee.ToString("N0") ₫</span>
+            </div>
+        </div>
 
-        <dt class="col-sm-3">Trạng thái</dt>
-        <dd class="col-sm-9">@Model.Status</dd>
-    </dl>
+        <div class="cp-detail-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">✏ Sửa</a>
+            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+
+    </div>
+
 </div>
 
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</p>
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

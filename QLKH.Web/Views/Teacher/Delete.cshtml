@@ -4,31 +4,64 @@
     ViewData["Title"] = "Xóa giảng viên";
 }
 
-<h2>Xóa giảng viên</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<h4>Bạn có chắc muốn xóa giảng viên này không?</h4>
+<div class="course-page admin-profession-page teacher-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Xóa giảng viên</h1>
+            <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
+        </div>
+    </div>
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-3">Mã giảng viên</dt>
-        <dd class="col-sm-9">@Model.TeacherCode</dd>
+    <div class="cp-delete-card">
+        <div class="cp-delete-warning">
+            <div class="cp-delete-warning-icon">!</div>
+            <div>
+                <strong>Bạn có chắc muốn xóa giảng viên này không?</strong>
+                <p>Hành động này có thể ảnh hưởng đến lớp học, lịch dạy và các nghiệp vụ liên quan.</p>
+            </div>
+        </div>
 
-        <dt class="col-sm-3">Họ tên</dt>
-        <dd class="col-sm-9">@Model.FullName</dd>
+        <div class="cp-detail-body">
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Mã giảng viên</div>
+                <div class="cp-detail-value"><span class="cp-code">@Model.TeacherCode</span></div>
+            </div>
 
-        <dt class="col-sm-3">Email</dt>
-        <dd class="col-sm-9">@Model.Email</dd>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Họ tên</div>
+                <div class="cp-detail-value"><strong>@Model.FullName</strong></div>
+            </div>
 
-        <dt class="col-sm-3">Số điện thoại</dt>
-        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Email</div>
+                <div class="cp-detail-value">@Model.Email</div>
+            </div>
 
-        <dt class="col-sm-3">Chuyên môn</dt>
-        <dd class="col-sm-9">@Model.Specialization</dd>
-    </dl>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Số điện thoại</div>
+                <div class="cp-detail-value">@Model.PhoneNumber</div>
+            </div>
 
-    <form asp-action="Delete" method="post">
-        <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger">Xóa</button>
-        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
-    </form>
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Chuyên môn</div>
+                <div class="cp-detail-value">@Model.Specialization</div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" id="deleteForm" data-delete-label="giảng viên">
+            <input type="hidden" asp-for="Id" />
+            <div class="cp-delete-actions">
+                <button type="submit" class="cp-btn cp-btn--danger">Xóa giảng viên</button>
+                <a asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

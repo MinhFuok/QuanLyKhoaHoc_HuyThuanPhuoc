@@ -4,61 +4,88 @@
     ViewData["Title"] = "Thêm lớp học";
 }
 
-<h2>Thêm lớp học</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="ClassCode" class="form-label"></label>
-        <input asp-for="ClassCode" class="form-control" />
-        <span asp-validation-for="ClassCode" class="text-danger"></span>
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Thêm lớp học</h1>
+            <p class="cp-subtitle">Tạo lớp mới, gán khóa học, giảng viên và thời gian học.</p>
+        </div>
+
+        <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="ClassName" class="form-label"></label>
-        <input asp-for="ClassName" class="form-control" />
-        <span asp-validation-for="ClassName" class="text-danger"></span>
-    </div>
+    <form asp-action="Create" method="post" id="classroomForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+        <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
-    <div class="mb-3">
-        <label asp-for="CourseId" class="form-label">Khóa học</label>
-        <select asp-for="CourseId" asp-items="ViewBag.CourseId" class="form-control">
-            <option value="">-- Chọn khóa học --</option>
-        </select>
-        <span asp-validation-for="CourseId" class="text-danger"></span>
-    </div>
+        <div class="cp-form-group-label">Thông tin lớp học</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="ClassCode" class="cp-label">Mã lớp</label>
+                <input asp-for="ClassCode" class="cp-input" placeholder="VD: CL001" />
+                <span asp-validation-for="ClassCode" class="cp-field-error"></span>
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="TeacherId" class="form-label">Giảng viên</label>
-        <select asp-for="TeacherId" asp-items="ViewBag.TeacherId" class="form-control">
-            <option value="">-- Chọn giảng viên --</option>
-        </select>
-        <span asp-validation-for="TeacherId" class="text-danger"></span>
-    </div>
+            <div class="cp-field">
+                <label asp-for="ClassName" class="cp-label">Tên lớp</label>
+                <input asp-for="ClassName" class="cp-input" placeholder="VD: Lớp C# K1" />
+                <span asp-validation-for="ClassName" class="cp-field-error"></span>
+            </div>
+        </div>
 
-    <div class="mb-3">
-        <label asp-for="StartDate" class="form-label"></label>
-        <input asp-for="StartDate" type="date" class="form-control" />
-        <span asp-validation-for="StartDate" class="text-danger"></span>
-    </div>
+        <div class="cp-form-group-label">Khóa học và giảng viên</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="CourseId" class="cp-label">Khóa học</label>
+                <select asp-for="CourseId" asp-items="ViewBag.CourseId" class="cp-input cp-select">
+                    <option value="">-- Chọn khóa học --</option>
+                </select>
+                <span asp-validation-for="CourseId" class="cp-field-error"></span>
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="EndDate" class="form-label"></label>
-        <input asp-for="EndDate" type="date" class="form-control" />
-        <span asp-validation-for="EndDate" class="text-danger"></span>
-    </div>
+            <div class="cp-field">
+                <label asp-for="TeacherId" class="cp-label">Giảng viên</label>
+                <select asp-for="TeacherId" asp-items="ViewBag.TeacherId" class="cp-input cp-select">
+                    <option value="">-- Chọn giảng viên --</option>
+                </select>
+                <span asp-validation-for="TeacherId" class="cp-field-error"></span>
+            </div>
+        </div>
 
-    <div class="mb-3">
-        <label asp-for="MaxStudents" class="form-label"></label>
-        <input asp-for="MaxStudents" class="form-control" />
-        <span asp-validation-for="MaxStudents" class="text-danger"></span>
-    </div>
+        <div class="cp-form-group-label">Thời gian và sĩ số</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="StartDate" class="cp-label">Ngày bắt đầu</label>
+                <input asp-for="StartDate" type="date" class="cp-input" />
+                <span asp-validation-for="StartDate" class="cp-field-error"></span>
+            </div>
 
-    <button type="submit" class="btn btn-success">Lưu</button>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</form>
+            <div class="cp-field">
+                <label asp-for="EndDate" class="cp-label">Ngày kết thúc</label>
+                <input asp-for="EndDate" type="date" class="cp-input" />
+                <span asp-validation-for="EndDate" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="MaxStudents" class="cp-label">Sĩ số tối đa</label>
+                <input asp-for="MaxStudents" type="number" min="1" class="cp-input" placeholder="VD: 30" />
+                <span asp-validation-for="MaxStudents" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--primary">Lưu lớp học</button>
+            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
 }
