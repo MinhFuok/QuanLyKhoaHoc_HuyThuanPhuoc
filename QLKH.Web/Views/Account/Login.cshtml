@@ -5,11 +5,13 @@
     Layout = "_PublicLayout";
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5">
-        <div class="card shadow">
+<link rel="stylesheet" href="~/css/account.css" />
+
+<div class="login-page">
+    <div style="max-width:420px; width:100%;">
+        <div class="card login-card">
             <div class="card-header text-center">
-                <h3>Đăng nhập hệ thống QLKH</h3>
+                <h3>Đăng nhập hệ thống<span>LOGIN</span></h3>
             </div>
             <div class="card-body">
                 <form asp-action="Login" method="post">
@@ -18,27 +20,27 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="email@example.com" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" />
+                        <label asp-for="Password" class="form-label">Mật khẩu</label>
+                        <input asp-for="Password" class="form-control" placeholder="••••••••" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
-                    <div class="form-check mb-3">
+                    <div class="form-check mb-2">
                         <input asp-for="RememberMe" class="form-check-input" />
-                        <label asp-for="RememberMe" class="form-check-label"></label>
-                    </div>  
-                    <div class="mb-3 text-end">
+                        <label asp-for="RememberMe" class="form-check-label">Ghi nhớ đăng nhập</label>
+                    </div>
+
+                    <div class="mb-3 text-end forgot-link">
                         <a href="/Account/ForgotPassword">Quên mật khẩu?</a>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">
-                        Đăng nhập
-                    </button>
+
+                    <button type="submit" class="btn-login">Đăng nhập</button>
                 </form>
             </div>
         </div>
@@ -49,4 +51,5 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/account.js"></script>
 }
