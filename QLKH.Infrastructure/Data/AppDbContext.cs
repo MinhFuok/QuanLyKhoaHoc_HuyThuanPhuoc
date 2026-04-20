@@ -23,6 +23,8 @@ namespace QLKH.Infrastructure.Data
         public DbSet<TeacherReview> TeacherReviews { get; set; }
         public DbSet<SystemSetting> SystemSettings { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<HomeBannerSlide> HomeBannerSlides { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -282,11 +284,13 @@ namespace QLKH.Infrastructure.Data
                 entity.HasIndex(x => new { x.StudentId, x.ClassRoomId })
                     .IsUnique();
             });
+
             modelBuilder.Entity<Department>()
                 .HasOne(d => d.ParentDepartment)
                 .WithMany(d => d.Children)
                 .HasForeignKey(d => d.ParentDepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

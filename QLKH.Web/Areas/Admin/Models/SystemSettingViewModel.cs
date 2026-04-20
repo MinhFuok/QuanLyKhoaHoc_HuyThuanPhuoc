@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace QLKH.Web.Areas.Admin.Models
 {
@@ -7,74 +7,87 @@ namespace QLKH.Web.Areas.Admin.Models
     {
         public int Id { get; set; }
 
+        // =========================
+        // TAB: GIAO DIỆN WEBSITE
+        // =========================
         [Display(Name = "Tên website")]
-        public string SiteName { get; set; } = "QLKH";
+        public string SiteName { get; set; } = string.Empty;
 
-        [Display(Name = "Tiêu đề banner")]
-        public string? HomeBannerTitle { get; set; }
+        [Display(Name = "Tiêu đề chính trang chủ")]
+        public string HomeBannerTitle { get; set; } = string.Empty;
 
-        [Display(Name = "Phụ đề banner")]
-        public string? HomeBannerSubtitle { get; set; }
+        [Display(Name = "Phụ đề trang chủ")]
+        public string HomeBannerSubtitle { get; set; } = string.Empty;
 
-        public string? HomeBannerImageUrl { get; set; }
+        [Display(Name = "Footer text")]
+        public string FooterText { get; set; } = string.Empty;
 
+        // =========================
+        // TAB: LIÊN HỆ
+        // =========================
+        [Display(Name = "Email liên hệ")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        public string ContactEmail { get; set; } = string.Empty;
+
+        [Display(Name = "Số điện thoại")]
+        public string ContactPhone { get; set; } = string.Empty;
+
+        [Display(Name = "Địa chỉ")]
+        public string ContactAddress { get; set; } = string.Empty;
+
+        [Display(Name = "Link Facebook")]
+        public string FacebookUrl { get; set; } = string.Empty;
+
+        [Display(Name = "Link YouTube")]
+        public string YoutubeUrl { get; set; } = string.Empty;
+
+        [Display(Name = "Link TikTok")]
+        public string TiktokUrl { get; set; } = string.Empty;
+
+        [Display(Name = "Link X")]
+        public string XUrl { get; set; } = string.Empty;
+
+        // =========================
+        // TAB: TRẠNG THÁI WEBSITE
+        // =========================
+        [Display(Name = "Website đang hoạt động")]
+        public bool IsWebsiteEnabled { get; set; }
+
+        [Display(Name = "Thông báo bảo trì")]
+        public string MaintenanceMessage { get; set; } = string.Empty;
+
+        // =========================
+        // TAB: EMAIL HỆ THỐNG
+        // =========================
+        [Display(Name = "Bật gửi email")]
+        public bool EnableEmail { get; set; }
+
+        [Display(Name = "SMTP Server")]
+        public string SmtpServer { get; set; } = string.Empty;
+
+        [Display(Name = "SMTP Port")]
+        [Range(1, 65535, ErrorMessage = "SMTP Port không hợp lệ")]
+        public int SmtpPort { get; set; } = 587;
+
+        [Display(Name = "Tên người gửi")]
+        public string SenderName { get; set; } = string.Empty;
+
+        [Display(Name = "Email người gửi")]
+        [EmailAddress(ErrorMessage = "Email người gửi không hợp lệ")]
+        public string SenderEmail { get; set; } = string.Empty;
+
+        [Display(Name = "SMTP Username")]
+        public string SmtpUsername { get; set; } = string.Empty;
+
+        [Display(Name = "SMTP Password")]
+        public string SmtpPassword { get; set; } = string.Empty;
+
+        // =========================
+        // TAB: BANNER / ẢNH
+        // =========================
         [Display(Name = "Ảnh banner")]
         public IFormFile? BannerImageFile { get; set; }
 
-        [Display(Name = "Footer text")]
-        public string? FooterText { get; set; }
-
-        [Display(Name = "Email liên hệ")]
-        public string? ContactEmail { get; set; }
-
-        [Display(Name = "Số điện thoại")]
-        public string? ContactPhone { get; set; }
-
-        [Display(Name = "Địa chỉ")]
-        public string? ContactAddress { get; set; }
-
-        [Display(Name = "Facebook URL")]
-        public string? FacebookUrl { get; set; }
-
-        [Display(Name = "YouTube URL")]
-        public string? YoutubeUrl { get; set; }
-        [Display(Name = "TikTok URL")]
-        public string? TiktokUrl { get; set; }
-
-        [Display(Name = "X URL")]
-        public string? XUrl { get; set; }
-
-        [Display(Name = "Bật website")]
-        public bool IsWebsiteEnabled { get; set; } = true;
-
-        [Display(Name = "Thông báo bảo trì")]
-        public string? MaintenanceMessage { get; set; }
-
-        [Display(Name = "Bật gửi email")]
-        public bool EnableEmail { get; set; } = true;
-
-        [Display(Name = "SMTP Server")]
-        public string? SmtpServer { get; set; }
-
-        [Display(Name = "SMTP Port")]
-        public int? SmtpPort { get; set; }
-
-        [Display(Name = "Tên người gửi")]
-        public string? SenderName { get; set; }
-
-        [Display(Name = "Email người gửi")]
-        public string? SenderEmail { get; set; }
-
-        [Display(Name = "SMTP Username")]
-        public string? SmtpUsername { get; set; }
-
-        [Display(Name = "SMTP Password")]
-        public string? SmtpPassword { get; set; }
-
-        [Display(Name = "Bật VNPay")]
-        public bool EnableVnPay { get; set; }
-
-        [Display(Name = "Bật Momo")]
-        public bool EnableMomo { get; set; }
+        public string HomeBannerImageUrl { get; set; } = string.Empty;
     }
 }

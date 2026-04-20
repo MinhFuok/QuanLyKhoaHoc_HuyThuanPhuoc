@@ -285,9 +285,6 @@ namespace QLKH.Infrastructure.Seed
                     SenderEmail = "example@gmail.com",
                     SmtpUsername = "example@gmail.com",
                     SmtpPassword = "app-password-demo",
-
-                    EnableVnPay = false,
-                    EnableMomo = false
                 };
 
                 await context.SystemSettings.AddAsync(setting);
@@ -367,6 +364,31 @@ namespace QLKH.Infrastructure.Seed
                 };
 
                 await context.Departments.AddRangeAsync(childDepartments);
+                await context.SaveChangesAsync();
+            }
+            if (!context.HomeBannerSlides.Any())
+            {
+                var slides = new List<HomeBannerSlide>
+                {
+                    new HomeBannerSlide
+                    {
+                        Title = "Slide 1",
+                        ImageUrl = "/uploads/banners/banner2.png",
+                        AltText = "Học tập trực tuyến mọi lúc mọi nơi",
+                        DisplayOrder = 1,
+                        IsActive = true
+                    },
+                    new HomeBannerSlide
+                    {
+                        Title = "Slide 2",
+                        ImageUrl = "/uploads/banners/banner1.png",
+                        AltText = "Khóa học online chất lượng",
+                        DisplayOrder = 2,
+                        IsActive = true
+                    }
+                };
+
+                await context.HomeBannerSlides.AddRangeAsync(slides);
                 await context.SaveChangesAsync();
             }
         }

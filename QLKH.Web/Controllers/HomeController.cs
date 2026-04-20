@@ -9,19 +9,30 @@ namespace QLKH.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ISystemSettingService _systemSettingService;
+        private readonly IHomeBannerSlideService _homeBannerSlideService;
 
         public HomeController(
             ILogger<HomeController> logger,
-            ISystemSettingService systemSettingService)
+            ISystemSettingService systemSettingService,
+            IHomeBannerSlideService homeBannerSlideService)
         {
             _logger = logger;
             _systemSettingService = systemSettingService;
+            _homeBannerSlideService = homeBannerSlideService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var setting = await _systemSettingService.GetAsync();
-            return View(setting);
+            var systemSetting = await _systemSettingService.GetAsync();
+            var bannerSlides = await _homeBannerSlideService.GetActiveSlidesAsync();
+
+            var model = new HomePageViewModel
+            {
+                SystemSetting = systemSetting,
+                BannerSlides = bannerSlides
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

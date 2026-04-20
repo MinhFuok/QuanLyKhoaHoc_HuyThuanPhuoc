@@ -12,8 +12,8 @@ using QLKH.Infrastructure.Data;
 namespace QLKH.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260410030920_AddClassSchedule")]
-    partial class AddClassSchedule
+    [Migration("20260420070029_InitDB2")]
+    partial class InitDB2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,6 +158,74 @@ namespace QLKH.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassRoomId");
+
+                    b.ToTable("Assignments");
+                });
+
+            modelBuilder.Entity("QLKH.Domain.Entities.ClassMaterial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassRoomId");
+
+                    b.ToTable("ClassMaterials");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.ClassRoom", b =>
                 {
                     b.Property<int>("Id")
@@ -282,6 +350,38 @@ namespace QLKH.Infrastructure.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DepartmentCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ParentDepartmentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentDepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Enrollment", b =>
                 {
                     b.Property<int>("Id")
@@ -310,6 +410,35 @@ namespace QLKH.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("QLKH.Domain.Entities.HomeBannerSlide", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AltText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomeBannerSlides");
                 });
 
             modelBuilder.Entity("QLKH.Domain.Entities.Student", b =>
@@ -363,6 +492,124 @@ namespace QLKH.Infrastructure.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Submission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssignmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Feedback")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("FilePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal?>("Score")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubmissionText")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("AssignmentId", "StudentId")
+                        .IsUnique();
+
+                    b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("QLKH.Domain.Entities.SystemSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContactAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EnableEmail")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FacebookUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FooterText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HomeBannerImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HomeBannerSubtitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HomeBannerTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsWebsiteEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MaintenanceMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SiteName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmtpPassword")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SmtpPort")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SmtpServer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmtpUsername")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TiktokUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("XUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("YoutubeUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSettings");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Teacher", b =>
                 {
                     b.Property<int>("Id")
@@ -409,6 +656,45 @@ namespace QLKH.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("QLKH.Domain.Entities.TeacherReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassRoomId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("StudentId", "ClassRoomId")
+                        .IsUnique();
+
+                    b.ToTable("TeacherReviews");
                 });
 
             modelBuilder.Entity("QLKH.Infrastructure.Identity.ApplicationUser", b =>
@@ -531,6 +817,28 @@ namespace QLKH.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Assignment", b =>
+                {
+                    b.HasOne("QLKH.Domain.Entities.ClassRoom", "ClassRoom")
+                        .WithMany("Assignments")
+                        .HasForeignKey("ClassRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassRoom");
+                });
+
+            modelBuilder.Entity("QLKH.Domain.Entities.ClassMaterial", b =>
+                {
+                    b.HasOne("QLKH.Domain.Entities.ClassRoom", "ClassRoom")
+                        .WithMany("ClassMaterials")
+                        .HasForeignKey("ClassRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassRoom");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.ClassRoom", b =>
                 {
                     b.HasOne("QLKH.Domain.Entities.Course", "Course")
@@ -561,6 +869,16 @@ namespace QLKH.Infrastructure.Migrations
                     b.Navigation("ClassRoom");
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("QLKH.Domain.Entities.Department", "ParentDepartment")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentDepartment");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Enrollment", b =>
                 {
                     b.HasOne("QLKH.Domain.Entities.ClassRoom", "ClassRoom")
@@ -588,6 +906,25 @@ namespace QLKH.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Submission", b =>
+                {
+                    b.HasOne("QLKH.Domain.Entities.Assignment", "Assignment")
+                        .WithMany("Submissions")
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QLKH.Domain.Entities.Student", "Student")
+                        .WithMany("Submissions")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Assignment");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Teacher", b =>
                 {
                     b.HasOne("QLKH.Infrastructure.Identity.ApplicationUser", null)
@@ -596,11 +933,49 @@ namespace QLKH.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.TeacherReview", b =>
+                {
+                    b.HasOne("QLKH.Domain.Entities.ClassRoom", "ClassRoom")
+                        .WithMany("TeacherReviews")
+                        .HasForeignKey("ClassRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QLKH.Domain.Entities.Student", "Student")
+                        .WithMany("TeacherReviews")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QLKH.Domain.Entities.Teacher", "Teacher")
+                        .WithMany("TeacherReviews")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassRoom");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("QLKH.Domain.Entities.Assignment", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.ClassRoom", b =>
                 {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("ClassMaterials");
+
                     b.Navigation("ClassSchedules");
 
                     b.Navigation("Enrollments");
+
+                    b.Navigation("TeacherReviews");
                 });
 
             modelBuilder.Entity("QLKH.Domain.Entities.Course", b =>
@@ -608,14 +983,25 @@ namespace QLKH.Infrastructure.Migrations
                     b.Navigation("ClassRooms");
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.Department", b =>
+                {
+                    b.Navigation("Children");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Student", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Submissions");
+
+                    b.Navigation("TeacherReviews");
                 });
 
             modelBuilder.Entity("QLKH.Domain.Entities.Teacher", b =>
                 {
                     b.Navigation("ClassRooms");
+
+                    b.Navigation("TeacherReviews");
                 });
 #pragma warning restore 612, 618
         }

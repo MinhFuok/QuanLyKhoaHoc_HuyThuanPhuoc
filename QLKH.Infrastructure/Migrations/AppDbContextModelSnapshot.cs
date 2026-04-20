@@ -409,6 +409,35 @@ namespace QLKH.Infrastructure.Migrations
                     b.ToTable("Enrollments");
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.HomeBannerSlide", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AltText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomeBannerSlides");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -522,12 +551,6 @@ namespace QLKH.Infrastructure.Migrations
                     b.Property<bool>("EnableEmail")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("EnableMomo")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("EnableVnPay")
-                        .HasColumnType("bit");
-
                     b.Property<string>("FacebookUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -556,13 +579,12 @@ namespace QLKH.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SiteName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SmtpPassword")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SmtpPort")
+                    b.Property<int>("SmtpPort")
                         .HasColumnType("int");
 
                     b.Property<string>("SmtpServer")

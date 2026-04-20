@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace QLKH.Domain.Entities
+{
+    public class HomeBannerSlide
+    {
+        public int Id { get; set; }
+
+        public string? Title { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
+        public string? AltText { get; set; }
+
+        public int DisplayOrder { get; set; }
+        public bool IsActive { get; set; } = true;
+    }
+}

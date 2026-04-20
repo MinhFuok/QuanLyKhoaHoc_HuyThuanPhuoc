@@ -1,0 +1,48 @@
+﻿@model QLKH.Web.Areas.Admin.Models.HomeBannerSlideViewModel
+
+@{
+    ViewData["Title"] = "Xóa slide banner";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Xóa slide banner</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa slide này không?
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Tiêu đề</dt>
+            <dd class="col-sm-9">@Model.Title</dd>
+
+            <dt class="col-sm-3">Ảnh</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrWhiteSpace(Model.ExistingImageUrl))
+                {
+                    <img src="@Model.ExistingImageUrl" alt="@Model.AltText" style="max-height:120px; border-radius:8px;" />
+                }
+            </dd>
+
+            <dt class="col-sm-3">Mô tả ảnh</dt>
+            <dd class="col-sm-9">@Model.AltText</dd>
+
+            <dt class="col-sm-3">Thứ tự hiển thị</dt>
+            <dd class="col-sm-9">@Model.DisplayOrder</dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">
+                @(Model.IsActive ? "Đang hiển thị" : "Đã ẩn")
+            </dd>
+        </dl>
+
+        <form asp-area="Admin" asp-controller="HomeBannerSlide" asp-action="Delete" method="post">
+            <input asp-for="Id" type="hidden" />
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <a asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" class="btn btn-secondary">
+                Quay lại
+            </a><a asp-area="Admin" asp-controller="HomeBannerSlide" asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>
