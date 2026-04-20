@@ -2,8 +2,9 @@
 using QLKH.Application.Interfaces.Services;
 using QLKH.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-namespace QLKH.Web.Controllers
+namespace QLKH.Web.Areas.HocVu.Controllers
 {
+    [Area("HocVu")]
     [Authorize(Roles = "Admin,HocVu")]
     public class StudentController : Controller
     {
@@ -41,7 +42,7 @@ namespace QLKH.Web.Controllers
                 return View(student);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Student", new { area = "HocVu" });
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -70,9 +71,9 @@ namespace QLKH.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Student", new { area = "HocVu" });
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,HocVu")]
         public async Task<IActionResult> Delete(int id)
         {
             var student = await _studentService.GetByIdAsync(id);
@@ -83,7 +84,7 @@ namespace QLKH.Web.Controllers
 
             return View(student);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,HocVu")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -94,7 +95,7 @@ namespace QLKH.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Student", new { area = "HocVu" });
         }
 
         public async Task<IActionResult> Details(int id)

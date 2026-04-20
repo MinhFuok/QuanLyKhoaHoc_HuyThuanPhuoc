@@ -1,28 +1,28 @@
-﻿@model QLKH.Domain.Entities.Student
+﻿@model QLKH.Domain.Entities.Teacher
 
 @{
-    ViewData["Title"] = "Chi tiết học viên";
+    ViewData["Title"] = "Chi tiết giảng viên";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
 }
 
-<div class="course-page admin-profession-page student-page">
+<div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Chi tiết học viên</h1>
-            <p class="cp-subtitle">Thông tin hồ sơ của học viên <strong>@Model.StudentCode</strong>.</p>
+            <h1 class="cp-title">Chi tiết giảng viên</h1>
+            <p class="cp-subtitle">Thông tin hồ sơ và chuyên môn của giảng viên <strong>@Model.TeacherCode</strong>.</p>
         </div>
     </div>
 
     <div class="cp-detail-card">
         <div class="cp-detail-hero">
             <div class="cp-detail-hero-left">
-                <span class="cp-code cp-code--lg">@Model.StudentCode</span>
+                <span class="cp-code cp-code--lg">@Model.TeacherCode</span>
                 <h2 class="cp-detail-name">@Model.FullName</h2>
             </div>
-            <span class="cp-badge cp-badge--lg">Học viên</span>
+            <span class="cp-badge cp-badge--lg">Giảng viên</span>
         </div>
 
         <div class="cp-detail-body">
@@ -37,19 +37,14 @@
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Ngày sinh</div>
-                <div class="cp-detail-value">@Model.DateOfBirth.ToString("dd/MM/yyyy")</div>
-            </div>
-
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Địa chỉ</div>
-                <div class="cp-detail-value">@Model.Address</div>
+                <div class="cp-detail-label">Chuyên môn</div>
+                <div class="cp-detail-value">@Model.Specialization</div>
             </div>
         </div>
 
         <div class="cp-detail-footer">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">Sửa</a>
-            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <a asp-area="HocVu" asp-controller="Teacher" asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">Sửa</a>
+            <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
         </div>
     </div>
 </div>

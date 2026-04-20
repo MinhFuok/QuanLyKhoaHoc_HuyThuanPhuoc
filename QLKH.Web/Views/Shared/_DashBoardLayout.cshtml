@@ -77,11 +77,32 @@
                 @if (User.IsInRole("HocVu"))
                 {
                     <div class="db-nav-group">
-                        <a class="db-nav-link" href="/HocVu/Home">
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Home" asp-action="Index">
                             <span class="db-nav-icon">⊞</span> Dashboard
                         </a>
-                        <a asp-area="HocVu" asp-controller="StudentCertificate" asp-action="Index" class="nav-link">
-                            Chứng chỉ học viên
+
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Course" asp-action="Index">
+                            <span class="db-nav-icon">📘</span> Khóa học
+                        </a>
+
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index">
+                            <span class="db-nav-icon">🏫</span> Lớp học
+                        </a>
+
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Enrollment" asp-action="Index">
+                            <span class="db-nav-icon">📝</span> Ghi danh
+                        </a>
+
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Student" asp-action="Index">
+                            <span class="db-nav-icon">🎓</span> Học viên
+                        </a>
+
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Teacher" asp-action="Index">
+                            <span class="db-nav-icon">👨‍🏫</span> Giảng viên
+                        </a>
+
+                        <a class="db-nav-link" asp-area="HocVu" asp-controller="StudentCertificate" asp-action="Index">
+                            <span class="db-nav-icon">🏅</span> Chứng chỉ học viên
                         </a>
                     </div>
                 }

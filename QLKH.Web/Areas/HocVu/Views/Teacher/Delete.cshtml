@@ -1,17 +1,17 @@
-﻿@model QLKH.Domain.Entities.Student
+﻿@model QLKH.Domain.Entities.Teacher
 
 @{
-    ViewData["Title"] = "Xóa học viên";
+    ViewData["Title"] = "Xóa giảng viên";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
 }
 
-<div class="course-page admin-profession-page student-page">
+<div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa học viên</h1>
+            <h1 class="cp-title">Xóa giảng viên</h1>
             <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
         </div>
     </div>
@@ -20,15 +20,15 @@
         <div class="cp-delete-warning">
             <div class="cp-delete-warning-icon">!</div>
             <div>
-                <strong>Bạn có chắc muốn xóa học viên này không?</strong>
-                <p>Hành động này có thể ảnh hưởng đến dữ liệu đăng ký lớp và các nghiệp vụ liên quan.</p>
+                <strong>Bạn có chắc muốn xóa giảng viên này không?</strong>
+                <p>Hành động này có thể ảnh hưởng đến lớp học, lịch dạy và các nghiệp vụ liên quan.</p>
             </div>
         </div>
 
         <div class="cp-detail-body">
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Mã học viên</div>
-                <div class="cp-detail-value"><span class="cp-code">@Model.StudentCode</span></div>
+                <div class="cp-detail-label">Mã giảng viên</div>
+                <div class="cp-detail-value"><span class="cp-code">@Model.TeacherCode</span></div>
             </div>
 
             <div class="cp-detail-row">
@@ -47,21 +47,16 @@
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Ngày sinh</div>
-                <div class="cp-detail-value">@Model.DateOfBirth.ToString("dd/MM/yyyy")</div>
-            </div>
-
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Địa chỉ</div>
-                <div class="cp-detail-value">@Model.Address</div>
+                <div class="cp-detail-label">Chuyên môn</div>
+                <div class="cp-detail-value">@Model.Specialization</div>
             </div>
         </div>
 
-        <form asp-action="Delete" method="post" id="deleteForm" data-delete-label="học viên">
+        <form asp-area="HocVu" asp-controller="Teacher" asp-action="Delete" method="post" id="deleteForm" data-delete-label="giảng viên">
             <input type="hidden" asp-for="Id" />
             <div class="cp-delete-actions">
-                <button type="submit" class="cp-btn cp-btn--danger">Xóa học viên</button>
-                <a asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
+                <button type="submit" class="cp-btn cp-btn--danger">Xóa giảng viên</button>
+                <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>
         </form>
     </div>

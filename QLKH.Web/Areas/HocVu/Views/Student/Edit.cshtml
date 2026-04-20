@@ -1,7 +1,7 @@
 ﻿@model QLKH.Domain.Entities.Student
 
 @{
-    ViewData["Title"] = "Thêm học viên";
+    ViewData["Title"] = "Sửa học viên";
 }
 
 @section Styles {
@@ -11,27 +11,28 @@
 <div class="course-page admin-profession-page student-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm học viên</h1>
-            <p class="cp-subtitle">Tạo hồ sơ học viên mới trong hệ thống.</p>
+            <h1 class="cp-title">Sửa học viên</h1>
+            <p class="cp-subtitle">Cập nhật hồ sơ học viên <strong>@Model.StudentCode</strong>.</p>
         </div>
 
-        <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <form asp-action="Create" method="post" id="studentForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+    <form asp-area="HocVu" asp-controller="Student" asp-action="Edit" method="post" id="studentForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+        <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
         <div class="cp-form-group-label">Thông tin học viên</div>
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="StudentCode" class="cp-label">Mã học viên</label>
-                <input asp-for="StudentCode" class="cp-input" placeholder="VD: HV001" />
+                <input asp-for="StudentCode" class="cp-input" />
                 <span asp-validation-for="StudentCode" class="cp-field-error"></span>
             </div>
 
             <div class="cp-field">
                 <label asp-for="FullName" class="cp-label">Họ tên</label>
-                <input asp-for="FullName" class="cp-input" placeholder="Nhập họ tên học viên" />
+                <input asp-for="FullName" class="cp-input" />
                 <span asp-validation-for="FullName" class="cp-field-error"></span>
             </div>
         </div>
@@ -40,13 +41,13 @@
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="Email" class="cp-label">Email</label>
-                <input asp-for="Email" class="cp-input" placeholder="hocvien@example.com" />
+                <input asp-for="Email" class="cp-input" />
                 <span asp-validation-for="Email" class="cp-field-error"></span>
             </div>
 
             <div class="cp-field">
                 <label asp-for="PhoneNumber" class="cp-label">Số điện thoại</label>
-                <input asp-for="PhoneNumber" class="cp-input" placeholder="VD: 0900000000" />
+                <input asp-for="PhoneNumber" class="cp-input" />
                 <span asp-validation-for="PhoneNumber" class="cp-field-error"></span>
             </div>
         </div>
@@ -61,14 +62,14 @@
 
             <div class="cp-field">
                 <label asp-for="Address" class="cp-label">Địa chỉ</label>
-                <input asp-for="Address" class="cp-input" placeholder="Nhập địa chỉ" />
+                <input asp-for="Address" class="cp-input" />
                 <span asp-validation-for="Address" class="cp-field-error"></span>
             </div>
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu học viên</button>
-            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật</button>
+            <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
         </div>
     </form>
 </div>

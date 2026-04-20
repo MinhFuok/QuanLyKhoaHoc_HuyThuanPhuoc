@@ -15,7 +15,7 @@
             <p class="cp-subtitle">Quản lý hồ sơ giảng viên, chuyên môn và thông tin liên hệ.</p>
         </div>
 
-        <a asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
+        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
     </div>
 
     <div class="cp-table-wrap">
@@ -43,9 +43,9 @@
                             <td><span class="cp-badge">@item.Specialization</span></td>
                             <td>
                                 <div class="cp-actions">
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
+                                    <a asp-area="HocVu" asp-controller="Teacher" asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
+                                    <a asp-area="HocVu" asp-controller="Teacher" asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
+                                    <a asp-area="HocVu" asp-controller="Teacher" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
                                 </div>
                             </td>
                         </tr>

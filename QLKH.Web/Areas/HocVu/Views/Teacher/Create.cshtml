@@ -15,10 +15,10 @@
             <p class="cp-subtitle">Tạo hồ sơ giảng viên mới và thông tin chuyên môn.</p>
         </div>
 
-        <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <form asp-action="Create" method="post" id="teacherForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+    <form asp-area="HocVu" asp-controller="Teacher" asp-action="Create" method="post" id="teacherForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
         <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
         <div class="cp-form-group-label">Thông tin giảng viên</div>
@@ -60,7 +60,7 @@
 
         <div class="cp-form-actions">
             <button type="submit" class="cp-btn cp-btn--primary">Lưu giảng viên</button>
-            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
         </div>
     </form>
 </div>

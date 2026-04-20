@@ -15,10 +15,10 @@
             <p class="cp-subtitle">Cập nhật hồ sơ giảng viên <strong>@Model.TeacherCode</strong>.</p>
         </div>
 
-        <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <form asp-action="Edit" method="post" id="teacherForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+    <form asp-area="HocVu" asp-controller="Teacher" asp-action="Edit" method="post" id="teacherForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
         <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
@@ -61,7 +61,7 @@
 
         <div class="cp-form-actions">
             <button type="submit" class="cp-btn cp-btn--warning">Cập nhật</button>
-            <a asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
         </div>
     </form>
 </div>

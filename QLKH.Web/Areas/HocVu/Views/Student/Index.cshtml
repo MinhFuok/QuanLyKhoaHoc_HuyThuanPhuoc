@@ -15,7 +15,7 @@
             <p class="cp-subtitle">Quản lý hồ sơ học viên, thông tin liên hệ và ngày sinh.</p>
         </div>
 
-        <a asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
+        <a asp-area="HocVu" asp-controller="Student" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
     </div>
 
     <div class="cp-table-wrap">
@@ -45,16 +45,16 @@
                             <td>@item.Address</td>
                             <td>
                                 <div class="cp-actions">
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
+                                    <a asp-area="HocVu" asp-controller="Student" asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
 
                                     @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
                                     {
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
+                                        <a asp-area="HocVu" asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
                                     }
 
-                                    @if (User.IsInRole("Admin"))
+                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
                                     {
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
+                                        <a asp-area="HocVu" asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
                                     }
                                 </div>
                             </td>
