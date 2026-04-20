@@ -1,0 +1,381 @@
+﻿/* ===== BODY & BACKGROUND ===== */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    overflow-x: hidden;
+}
+
+/* ===== STARFIELD WRAPPER ===== */
+.stars-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#stars {
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    box-shadow: 501px 811px #fff, 1450px 324px #fff, 1093px 780px #fff, 469px 678px #fff, 904px 241px #fff, 1160px 781px #fff, 841px 962px #fff, 630px 667px #fff, 788px 376px #fff, 367px 734px #fff, 343px 156px #fff, 283px 142px #fff, 162px 378px #fff, 395px 467px #fff, 217px 891px #fff, 137px 114px #fff, 767px 403px #fff, 543px 11px #fff, 178px 181px #fff, 189px 574px #fff, 697px 551px #fff, 439px 472px #fff, 491px 677px #fff, 364px 599px #fff, 34px 382px #fff, 221px 584px #fff, 266px 499px #fff, 169px 907px #fff, 219px 125px #fff, 659px 18px #fff, 731px 959px #fff, 332px 216px #fff, 913px 788px #fff, 80px 712px #fff, 326px 605px #fff, 574px 502px #fff, 473px 653px #fff, 404px 975px #fff, 322px 797px #fff, 425px 321px #fff, 121px 797px #fff, 731px 647px #fff, 891px 584px #fff, 523px 109px #fff, 379px 244px #fff, 865px 64px #fff, 493px 956px #fff, 624px 380px #fff, 440px 619px #fff, 630px 767px #fff, 955px 196px #fff, 62px 729px #fff, 126px 946px #fff, 256px 896px #fff, 444px 256px #fff, 661px 628px #fff, 178px 716px #fff, 300px 737px #fff, 734px 413px #fff, 296px 129px #fff, 771px 678px #fff, 977px 764px #fff, 879px 549px #fff, 665px 531px #fff, 89px 701px #fff, 184px 183px #fff, 597px 576px #fff, 354px 774px #fff, 554px 471px #fff, 469px 287px #fff, 887px 106px #fff, 962px 766px #fff, 638px 805px #fff, 651px 741px #fff, 517px 826px #fff, 124px 452px #fff, 783px 291px #fff, 209px 638px #fff, 544px 173px #fff, 877px 445px #fff, 312px 867px #fff, 698px 134px #fff, 456px 789px #fff, 91px 356px #fff, 1200px 543px #fff, 847px 678px #fff, 673px 912px #fff, 1350px 234px #fff, 78px 823px #fff, 521px 456px #fff, 1190px 378px #fff, 389px 712px #fff, 734px 867px #fff, 156px 590px #fff, 923px 312px #fff, 1089px 645px #fff, 445px 178px #fff, 812px 534px #fff, 267px 945px #fff, 1178px 89px #fff, 589px 723px #fff, 134px 412px #fff, 978px 567px #fff, 723px 834px #fff, 356px 123px #fff;
+    animation: animStar 50s linear infinite;
+}
+
+    #stars::after {
+        content: " ";
+        position: absolute;
+        top: 2000px;
+        width: 1px;
+        height: 1px;
+        background: transparent;
+        box-shadow: inherit;
+    }
+
+#stars2 {
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: 925px 320px #fff, 693px 778px #fff, 116px 711px #fff, 171px 563px #fff, 661px 919px #fff, 610px 44px #fff, 275px 140px #fff, 208px 802px #fff, 473px 587px #fff, 11px 117px #fff, 853px 757px #fff, 149px 937px #fff, 353px 428px #fff, 270px 279px #fff, 258px 404px #fff, 417px 188px #fff, 286px 561px #fff, 393px 765px #fff, 147px 881px #fff, 666px 97px #fff, 425px 278px #fff, 806px 156px #fff, 252px 561px #fff, 218px 52px #fff, 371px 980px #fff, 171px 745px #fff, 424px 89px #fff, 137px 244px #fff, 939px 922px #fff, 137px 80px #fff, 757px 50px #fff, 904px 536px #fff, 938px 1001px #fff, 172px 440px #fff, 72px 475px #fff, 102px 121px #fff, 804px 671px #fff, 314px 270px #fff, 440px 341px #fff, 216px 511px #fff, 161px 523px #fff, 97px 274px #fff, 704px 318px #fff, 52px 872px #fff, 962px 296px #fff, 111px 289px #fff, 157px 236px #fff, 347px 451px #fff, 820px 286px #fff, 389px 169px #fff, 644px 841px #fff, 286px 522px #fff, 955px 659px #fff, 428px 805px #fff, 237px 557px #fff, 689px 58px #fff, 636px 882px #fff, 349px 664px #fff, 548px 432px #fff, 841px 504px #fff, 302px 252px #fff, 827px 765px #fff, 620px 123px #fff, 207px 748px #fff, 454px 234px #fff, 967px 790px #fff, 542px 33px #fff, 742px 214px #fff, 255px 402px #fff, 74px 772px #fff, 699px 475px #fff, 980px 253px #fff, 534px 676px #fff, 909px 202px #fff, 498px 251px #fff, 796px 120px #fff, 409px 263px #fff, 627px 995px #fff;
+    animation: animStar 100s linear infinite;
+}
+
+    #stars2::after {
+        content: " ";
+        position: absolute;
+        top: 2000px;
+        width: 2px;
+        height: 2px;
+        background: transparent;
+        box-shadow: inherit;
+    }
+
+#stars3 {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: 200px 981px #fff, 731px 521px #fff, 132px 39px #fff, 888px 547px #fff, 899px 226px #fff, 887px 580px #fff, 548px 92px #fff, 626px 689px #fff, 254px 72px #fff, 684px 211px #fff, 672px 267px #fff, 939px 668px #fff, 969px 645px #fff, 126px 983px #fff, 457px 568px #fff, 476px 876px #fff, 829px 896px #fff, 364px 846px #fff, 507px 120px #fff, 936px 948px #fff, 833px 832px #fff, 424px 285px #fff, 377px 596px #fff, 432px 153px #fff, 348px 410px #fff, 529px 954px #fff, 102px 387px #fff, 264px 297px #fff, 811px 977px #fff, 931px 673px #fff, 734px 978px #fff, 772px 567px #fff, 197px 400px #fff, 764px 282px #fff, 103px 822px #fff, 872px 803px #fff, 57px 763px #fff, 52px 299px #fff, 312px 236px #fff, 235px 82px #fff, 299px 86px #fff, 17px 602px #fff, 950px 626px #fff, 306px 132px #fff, 358px 618px #fff;
+    animation: animStar 150s linear infinite;
+}
+
+    #stars3::after {
+        content: " ";
+        position: absolute;
+        top: 2000px;
+        width: 3px;
+        height: 3px;
+        background: transparent;
+        box-shadow: inherit;
+    }
+
+@keyframes animStar {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(-2000px);
+    }
+}
+
+/* ===== SHOOTING STARS ===== */
+.bg-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.star-shoot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,0.1);
+    animation: shoot 3s linear infinite;
+}
+
+    .star-shoot::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 300px;
+        height: 1px;
+        background: linear-gradient(90deg, #fff, transparent);
+    }
+
+@keyframes shoot {
+    0% {
+        transform: rotate(315deg) translateX(0);
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: rotate(315deg) translateX(-1000px);
+        opacity: 0;
+    }
+}
+
+.star-shoot:nth-child(1) {
+    top: 0;
+    right: 0;
+    left: initial;
+    animation-delay: 0s;
+    animation-duration: 1s;
+}
+
+.star-shoot:nth-child(2) {
+    top: 0;
+    right: 100px;
+    left: initial;
+    animation-delay: 0.2s;
+    animation-duration: 3s;
+}
+
+.star-shoot:nth-child(3) {
+    top: 0;
+    right: 220px;
+    left: initial;
+    animation-delay: 2.75s;
+    animation-duration: 2.75s;
+}
+
+.star-shoot:nth-child(4) {
+    top: 0;
+    right: -220px;
+    left: initial;
+    animation-delay: 1.6s;
+    animation-duration: 1.6s;
+}
+
+/* ===== PAGE LAYOUT ===== */
+.login-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 2rem 1rem;
+}
+
+/* ===== CARD ===== */
+.card.login-card {
+    position: relative;
+    background: linear-gradient( 14deg, rgba(2,0,36,0.88) 0%, rgba(24,24,65,0.78) 66%, rgba(20,76,99,0.92) 100% ), radial-gradient( circle, rgba(2,0,36,0.5) 0%, rgba(32,15,53,0.2) 65%, rgba(14,29,28,0.9) 100% );
+    border: 2px solid rgba(255,255,255,0.6);
+    box-shadow: rgba(0,212,255) 0px 0px 50px -15px;
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+}
+
+    /* ===== CARD HEADER ===== */
+    .card.login-card .card-header {
+        background: transparent;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        padding: 1.6rem 2rem 1.2rem;
+    }
+
+        .card.login-card .card-header h3 {
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+            letter-spacing: 0.05rem;
+            margin: 0;
+            animation: flickering 4s linear infinite;
+        }
+
+            .card.login-card .card-header h3 span {
+                display: block;
+                font-size: 2rem;
+                font-weight: 800;
+                font-family: Arial, Helvetica, sans-serif;
+                -webkit-text-stroke: #fff 0.08rem;
+                letter-spacing: 0.2rem;
+                color: transparent;
+                text-shadow: 0px 0px 16px #cecece;
+                margin-top: -4px;
+            }
+
+@keyframes flickering {
+    0%,100% {
+        opacity: 1;
+    }
+
+    41.99% {
+        opacity: 1;
+    }
+
+    42% {
+        opacity: 0;
+    }
+
+    43% {
+        opacity: 0;
+    }
+
+    43.01% {
+        opacity: 1;
+    }
+
+    47.99% {
+        opacity: 1;
+    }
+
+    48% {
+        opacity: 0;
+    }
+
+    49% {
+        opacity: 0;
+    }
+
+    49.01% {
+        opacity: 1;
+    }
+}
+
+/* ===== CARD BODY ===== */
+.card.login-card .card-body {
+    padding: 1.8rem 2rem;
+}
+
+/* ===== FORM LABEL ===== */
+.card.login-card .form-label {
+    color: #d0d8e4;
+    font-family: monospace;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+/* ===== INPUT ===== */
+.card.login-card .form-control {
+    background-color: rgba(255,255,255,0.93);
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: #1a1a2e;
+    padding: 7px 10px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+    .card.login-card .form-control:focus {
+        background-color: #fff;
+        border-color: #00d4ff;
+        box-shadow: 0 0 0 3px rgba(0,212,255,0.25);
+    }
+
+        .card.login-card .form-control:focus::placeholder {
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+/* ===== CHECKBOX ===== */
+.card.login-card .form-check-label {
+    color: #c0c0c0;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.card.login-card .form-check-input:checked {
+    background-color: #517fa4;
+    border-color: #517fa4;
+}
+
+/* ===== FORGOT LINK ===== */
+.card.login-card .forgot-link a {
+    color: #7ecfea;
+    font-size: 0.82rem;
+    font-family: monospace;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+    .card.login-card .forgot-link a:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+
+/* ===== SUBMIT BUTTON ===== */
+.card.login-card .btn-login {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #243949 0%, #517fa4 100%);
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-family: monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-out;
+}
+
+    .card.login-card .btn-login:hover {
+        box-shadow: 4px 5px 17px -4px rgba(255,255,255,0.6);
+    }
+
+    .card.login-card .btn-login::before {
+        content: "";
+        display: block;
+        width: 0;
+        height: 85%;
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        opacity: 0;
+        background: #fff;
+        box-shadow: 0 0 50px 30px #fff;
+        transform: skewX(-20deg);
+    }
+
+    .card.login-card .btn-login:hover::before {
+        animation: shimmer 0.5s linear;
+    }
+
+@keyframes shimmer {
+    from {
+        opacity: 0;
+        left: 0%;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        left: 100%;
+    }
+}
+
+/* ===== VALIDATION ===== */
+.card.login-card .text-danger {
+    font-family: monospace;
+    font-size: 0.78rem;
+}

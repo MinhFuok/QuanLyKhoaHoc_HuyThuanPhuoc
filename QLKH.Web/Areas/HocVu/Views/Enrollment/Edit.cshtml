@@ -1,0 +1,63 @@
+﻿@model QLKH.Domain.Entities.Enrollment
+
+@{
+    ViewData["Title"] = "Sửa ghi danh";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page admin-profession-page enrollment-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Sửa ghi danh</h1>
+            <p class="cp-subtitle">Cập nhật trạng thái ghi danh, giữ nguyên học viên và lớp học.</p>
+        </div>
+
+        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+    </div>
+
+    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Edit" method="post" id="enrollmentForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="StudentId" />
+        <input type="hidden" asp-for="ClassRoomId" />
+        <input type="hidden" asp-for="EnrolledAt" />
+
+        <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
+
+        <div class="cp-form-group-label">Thông tin cố định</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label class="cp-label">Học viên</label>
+                <select asp-for="StudentId" asp-items="ViewBag.StudentId" class="cp-input cp-select" disabled></select>
+            </div>
+
+            <div class="cp-field">
+                <label class="cp-label">Lớp học</label>
+                <select asp-for="ClassRoomId" asp-items="ViewBag.ClassRoomId" class="cp-input cp-select" disabled></select>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Trạng thái</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="Status" class="cp-label">Trạng thái ghi danh</label>
+                <select asp-for="Status" class="cp-input cp-select" asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.EnrollmentStatus>()"></select>
+                <span asp-validation-for="Status" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật</button>
+            <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

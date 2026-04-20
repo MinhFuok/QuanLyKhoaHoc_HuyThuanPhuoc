@@ -1,0 +1,84 @@
+﻿@model QLKH.Web.Areas.HocVu.Models.StudentCertificateViewModel
+
+@{
+    ViewData["Title"] = "Thêm chứng chỉ học viên";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Thêm chứng chỉ học viên</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-area="HocVu"
+              asp-controller="StudentCertificate"
+              asp-action="Create"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="StudentId" class="form-label"></label>
+                <select asp-for="StudentId" asp-items="Model.StudentOptions" class="form-select">
+                    <option value="">-- Chọn học viên --</option>
+                </select>
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CertificateName" class="form-label"></label>
+                <input asp-for="CertificateName" class="form-control" />
+                <span asp-validation-for="CertificateName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CertificateCode" class="form-label"></label>
+                <input asp-for="CertificateCode" class="form-control" />
+                <span asp-validation-for="CertificateCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IssuedDate" class="form-label"></label>
+                <input asp-for="IssuedDate" class="form-control" />
+                <span asp-validation-for="IssuedDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IssuedBy" class="form-label"></label>
+                <input asp-for="IssuedBy" class="form-control" />
+                <span asp-validation-for="IssuedBy" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Note" class="form-label"></label>
+                <textarea asp-for="Note" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EvidenceFile" class="form-label"></label>
+                <input asp-for="EvidenceFile" type="file" class="form-control" />
+                <span asp-validation-for="EvidenceFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="IsApproved" class="form-check-input" />
+                <label asp-for="IsApproved" class="form-check-label"></label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a asp-area="HocVu"
+                   asp-controller="StudentCertificate"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Quay lại
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -59,6 +59,7 @@ builder.Services.AddScoped<ITeacherReviewRepository, TeacherReviewRepository>();
 builder.Services.AddScoped<ISystemSettingRepository, SystemSettingRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IHomeBannerSlideRepository, HomeBannerSlideRepository>();
+builder.Services.AddScoped<IStudentCertificateRepository, StudentCertificateRepository>();
 
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
@@ -73,6 +74,7 @@ builder.Services.AddScoped<ITeacherReviewService, TeacherReviewService>();
 builder.Services.AddScoped<ISystemSettingService, SystemSettingService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IHomeBannerSlideService, HomeBannerSlideService>();
+builder.Services.AddScoped<IStudentCertificateService, StudentCertificateService>();
 
 builder.Services.AddScoped<IMessagePublisher, RabbitMqPublisher>();
 

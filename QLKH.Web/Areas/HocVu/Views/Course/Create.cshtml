@@ -1,0 +1,78 @@
+@model QLKH.Domain.Entities.Course
+
+@{
+    ViewData["Title"] = "Thêm khóa học";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page course-form">
+
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Thêm khóa học</h1>
+            <p class="cp-subtitle">Tạo khóa học mới trong hệ thống</p>
+        </div>
+        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">← Quay lại</a>
+    </div>
+
+    <div class="cp-form-card">
+        <form asp-area="HocVu" asp-controller="Course" asp-action="Create" method="post" id="courseForm">
+            <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
+
+            <div class="cp-form-group-label">Thông tin cơ bản</div>
+            <div class="cp-form-row">
+                <div class="cp-field">
+                    <label asp-for="CourseCode" class="cp-label">Mã khóa học</label>
+                    <input asp-for="CourseCode" class="cp-input" />
+                    <span asp-validation-for="CourseCode" class="cp-field-error"></span>
+                </div>
+                <div class="cp-field">
+                    <label asp-for="CourseName" class="cp-label">Tên khóa học</label>
+                    <input asp-for="CourseName" class="cp-input" />
+                    <span asp-validation-for="CourseName" class="cp-field-error"></span>
+                </div>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="Description" class="cp-label">Mô tả</label>
+                <textarea asp-for="Description" class="cp-input cp-textarea" rows="4"></textarea>
+            </div>
+
+            <div class="cp-form-group-label">Thông tin chi tiết</div>
+            <div class="cp-form-row">
+                <div class="cp-field">
+                    <label asp-for="DurationInMonths" class="cp-label">Thời lượng (tháng)</label>
+                    <input asp-for="DurationInMonths" class="cp-input" type="number" min="1" />
+                    <span asp-validation-for="DurationInMonths" class="cp-field-error"></span>
+                </div>
+                <div class="cp-field">
+                    <label asp-for="Fee" class="cp-label">Học phí (₫)</label>
+                    <input asp-for="Fee" class="cp-input" type="number" min="0" />
+                    <span asp-validation-for="Fee" class="cp-field-error"></span>
+                </div>
+                <div class="cp-field">
+                    <label asp-for="Status" class="cp-label">Trạng thái</label>
+                    <select asp-for="Status" class="cp-input cp-select" asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.CourseStatus>()"></select>
+                </div>
+            </div>
+
+            <div class="cp-form-actions">
+                <button type="submit" class="cp-btn cp-btn--primary">＋ Thêm mới</button>
+                <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

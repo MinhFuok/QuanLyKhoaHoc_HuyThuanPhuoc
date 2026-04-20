@@ -7,13 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DependencyInjection\**" />
+    <Compile Remove="Messaging\**" />
+    <EmbeddedResource Remove="DependencyInjection\**" />
+    <EmbeddedResource Remove="Messaging\**" />
+    <None Remove="DependencyInjection\**" />
+    <None Remove="Messaging\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\QLKH.Application\QLKH.Application.csproj" />
     <ProjectReference Include="..\QLKH.Domain\QLKH.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DependencyInjection\" />
-    <Folder Include="Messaging\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

@@ -28,5 +28,6 @@ namespace QLKH.Domain.Entities
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
         public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
         public ICollection<TeacherReview> TeacherReviews { get; set; } = new List<TeacherReview>();
+        public ICollection<StudentCertificate>? StudentCertificates { get; set; }
     }
 }

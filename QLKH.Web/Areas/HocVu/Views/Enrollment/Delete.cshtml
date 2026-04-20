@@ -1,0 +1,72 @@
+﻿@model QLKH.Domain.Entities.Enrollment
+
+@{
+    ViewData["Title"] = "Xóa ghi danh";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page admin-profession-page enrollment-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Xóa ghi danh</h1>
+            <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
+        </div>
+    </div>
+
+    <div class="cp-delete-card">
+        <div class="cp-delete-warning">
+            <div class="cp-delete-warning-icon">!</div>
+            <div>
+                <strong>Bạn có chắc muốn xóa ghi danh này không?</strong>
+                <p>Hành động này có thể ảnh hưởng đến dữ liệu lớp học và tiến độ học tập liên quan.</p>
+            </div>
+        </div>
+
+        <div class="cp-detail-body">
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Học viên</div>
+                <div class="cp-detail-value"><strong>@Model.Student?.FullName</strong></div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Lớp học</div>
+                <div class="cp-detail-value">@Model.ClassRoom?.ClassName</div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Khóa học</div>
+                <div class="cp-detail-value">@Model.ClassRoom?.Course?.CourseName</div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Giảng viên</div>
+                <div class="cp-detail-value">@Model.ClassRoom?.Teacher?.FullName</div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Ngày ghi danh</div>
+                <div class="cp-detail-value">@Model.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Trạng thái</div>
+                <div class="cp-detail-value"><span class="cp-badge cp-badge--@Model.Status.ToString().ToLower()">@Model.Status</span></div>
+            </div>
+        </div>
+
+        <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Delete" method="post" id="deleteForm" data-delete-label="ghi danh">
+            <input type="hidden" asp-for="Id" />
+            <div class="cp-delete-actions">
+                <button type="submit" class="cp-btn cp-btn--danger">Xóa ghi danh</button>
+                <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

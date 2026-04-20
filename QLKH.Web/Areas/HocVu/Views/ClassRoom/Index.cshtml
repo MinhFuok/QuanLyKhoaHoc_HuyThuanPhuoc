@@ -1,0 +1,102 @@
+@model IEnumerable<QLKH.Domain.Entities.ClassRoom>
+
+@{
+    ViewData["Title"] = "Danh sách lớp học";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Danh sách lớp học</h1>
+            <p class="cp-subtitle">Quản lý lớp học, khóa học phụ trách, giảng viên và thời gian đào tạo.</p>
+        </div>
+
+        <a asp-area="HocVu"
+           asp-controller="ClassRoom"
+           asp-action="Create"
+           class="cp-btn cp-btn--primary">
+            + Thêm mới
+        </a>
+    </div>
+
+    <div class="cp-table-wrap">
+        <table class="cp-table">
+            <thead>
+                <tr>
+                    <th>Mã lớp</th>
+                    <th>Tên lớp</th>
+                    <th>Khóa học</th>
+                    <th>Giảng viên</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Sĩ số</th>
+                    <th class="cp-col-action">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="cp-row">
+                            <td><span class="cp-code">@item.ClassCode</span></td>
+                            <td><div class="cp-name">@item.ClassName</div></td>
+                            <td>@(item.Course?.CourseName ?? "Chưa có")</td>
+                            <td>@(item.Teacher?.FullName ?? "Chưa phân công")</td>
+                            <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                            <td><span class="cp-badge">@item.MaxStudents học viên</span></td>
+                            <td>
+                                <div class="cp-actions">
+                                    <a asp-area="HocVu"
+                                       asp-controller="ClassRoom"
+                                       asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--info cp-btn--sm">
+                                        Chi tiết
+                                    </a>
+
+                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                    {
+                                        <a asp-area="HocVu"
+                                           asp-controller="ClassRoom"
+                                           asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="cp-btn cp-btn--warning cp-btn--sm">
+                                            Sửa
+                                        </a>
+                                    }
+
+                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                    {
+                                        <a asp-area="HocVu"
+                                           asp-controller="ClassRoom"
+                                           asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="cp-btn cp-btn--danger cp-btn--sm">
+                                            Xóa
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="cp-empty">Chưa có lớp học nào trong hệ thống.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

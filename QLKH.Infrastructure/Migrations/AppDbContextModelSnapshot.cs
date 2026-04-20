@@ -489,6 +489,54 @@ namespace QLKH.Infrastructure.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.StudentCertificate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CertificateCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("CertificateName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EvidenceFilePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IssuedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("IssuedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentCertificates");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Submission", b =>
                 {
                     b.Property<int>("Id")
@@ -903,6 +951,17 @@ namespace QLKH.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
+            modelBuilder.Entity("QLKH.Domain.Entities.StudentCertificate", b =>
+                {
+                    b.HasOne("QLKH.Domain.Entities.Student", "Student")
+                        .WithMany("StudentCertificates")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("QLKH.Domain.Entities.Submission", b =>
                 {
                     b.HasOne("QLKH.Domain.Entities.Assignment", "Assignment")
@@ -988,6 +1047,8 @@ namespace QLKH.Infrastructure.Migrations
             modelBuilder.Entity("QLKH.Domain.Entities.Student", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("StudentCertificates");
 
                     b.Navigation("Submissions");
 

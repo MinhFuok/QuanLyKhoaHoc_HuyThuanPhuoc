@@ -24,7 +24,7 @@ namespace QLKH.Infrastructure.Data
         public DbSet<SystemSetting> SystemSettings { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<HomeBannerSlide> HomeBannerSlides { get; set; }
-
+        public DbSet<StudentCertificate> StudentCertificates { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -291,6 +291,11 @@ namespace QLKH.Infrastructure.Data
                 .HasForeignKey(d => d.ParentDepartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<StudentCertificate>()
+            .HasOne(sc => sc.Student)
+            .WithMany(s => s.StudentCertificates)
+            .HasForeignKey(sc => sc.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

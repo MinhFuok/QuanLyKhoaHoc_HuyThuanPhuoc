@@ -1,0 +1,94 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.StudentCertificate>
+
+@{
+    ViewData["Title"] = "Chứng chỉ học viên";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Quản lý chứng chỉ học viên</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="mb-3">
+    <a asp-area="HocVu"
+       asp-controller="StudentCertificate"
+       asp-action="Create"
+       class="btn btn-primary">
+        + Thêm chứng chỉ
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Học viên</th>
+                    <th>Tên chứng chỉ</th>
+                    <th>Mã/Số chứng chỉ</th>
+                    <th>Ngày cấp</th>
+                    <th>Đơn vị cấp</th>
+                    <th>Trạng thái</th>
+                    <th>Minh chứng</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Student?.FullName</td>
+                        <td>@item.CertificateName</td>
+                        <td>@item.CertificateCode</td>
+                        <td>@(item.IssuedDate?.ToString("dd/MM/yyyy"))</td>
+                        <td>@item.IssuedBy</td>
+                        <td>
+                            @if (item.IsApproved)
+                            {
+                                <span class="badge bg-success">Đã xác nhận</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(item.EvidenceFilePath))
+                            {
+                                <a href="@item.EvidenceFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    Xem file
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Không có</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-area="HocVu"
+                               asp-controller="StudentCertificate"
+                               asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-warning">
+                                Sửa
+                            </a>
+
+                            <a asp-area="HocVu"
+                               asp-controller="StudentCertificate"
+                               asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-danger">
+                                Xóa
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

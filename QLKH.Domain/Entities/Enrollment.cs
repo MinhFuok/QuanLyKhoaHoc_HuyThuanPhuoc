@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using QLKH.Domain.Enums;
 
 namespace QLKH.Domain.Entities
@@ -20,7 +15,8 @@ namespace QLKH.Domain.Entities
 
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;
 
-        public Student Student { get; set; } = null!;
-        public ClassRoom ClassRoom { get; set; } = null!;
+        public Student? Student { get; set; }
+
+        public ClassRoom? ClassRoom { get; set; }
     }
 }

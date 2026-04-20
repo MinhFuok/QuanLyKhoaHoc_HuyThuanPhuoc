@@ -1,0 +1,103 @@
+﻿@model QLKH.Domain.Entities.Enrollment
+
+@{
+    ViewData["Title"] = "Thêm ghi danh";
+    var modelErrors = ViewData.ModelState.Values
+        .SelectMany(v => v.Errors)
+        .Select(e => e.ErrorMessage)
+        .Where(e => !string.IsNullOrWhiteSpace(e))
+        .ToList();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page admin-profession-page enrollment-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Thêm ghi danh</h1>
+            <p class="cp-subtitle">Ghi danh học viên vào lớp học và thiết lập trạng thái ban đầu.</p>
+        </div>
+
+        <a asp-area="HocVu"
+           asp-controller="Enrollment"
+           asp-action="Index"
+           class="cp-btn cp-btn--ghost js-click-sound">
+            Quay lại
+        </a>
+    </div>
+
+    <form asp-area="HocVu"
+          asp-controller="Enrollment"
+          asp-action="Create"
+          method="post"
+          id="enrollmentForm"
+          data-admin-form
+          data-loading-text="Đang lưu..."
+          class="cp-form-card">
+
+        @if (modelErrors.Any())
+        {
+            <div class="cp-validation-summary">
+                <ul class="mb-0">
+                    @foreach (var error in modelErrors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="cp-form-group-label">Thông tin ghi danh</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="StudentId" class="cp-label">Học viên</label>
+                <select asp-for="StudentId" asp-items="ViewBag.StudentId" class="cp-input cp-select">
+                    <option value="">-- Chọn học viên --</option>
+                </select>
+                <span asp-validation-for="StudentId" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="ClassRoomId" class="cp-label">Lớp học</label>
+                <select asp-for="ClassRoomId" asp-items="ViewBag.ClassRoomId" class="cp-input cp-select">
+                    <option value="">-- Chọn lớp học --</option>
+                </select>
+                <span asp-validation-for="ClassRoomId" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Trạng thái</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="Status" class="cp-label">Trạng thái ghi danh</label>
+                <select asp-for="Status"
+                        class="cp-input cp-select"
+                        asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.EnrollmentStatus>()">
+                </select>
+                <span asp-validation-for="Status" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--primary js-click-sound">
+                Lưu ghi danh
+            </button>
+
+            <a asp-area="HocVu"
+               asp-controller="Enrollment"
+               asp-action="Index"
+               class="cp-btn cp-btn--ghost js-click-sound">
+                Quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,47 @@
+﻿@model QLKH.Domain.Entities.StudentCertificate
+
+@{
+    ViewData["Title"] = "Xóa chứng chỉ học viên";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Xóa chứng chỉ học viên</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="text-danger mb-3">Bạn có chắc chắn muốn xóa chứng chỉ này không?</h5>
+
+        <dl class="row">
+            <dt class="col-sm-3">Học viên</dt>
+            <dd class="col-sm-9">@Model.Student?.FullName</dd>
+
+            <dt class="col-sm-3">Tên chứng chỉ</dt>
+            <dd class="col-sm-9">@Model.CertificateName</dd>
+
+            <dt class="col-sm-3">Mã/Số chứng chỉ</dt>
+            <dd class="col-sm-9">@Model.CertificateCode</dd>
+
+            <dt class="col-sm-3">Ngày cấp</dt>
+            <dd class="col-sm-9">@(Model.IssuedDate?.ToString("dd/MM/yyyy"))</dd>
+
+            <dt class="col-sm-3">Đơn vị cấp</dt>
+            <dd class="col-sm-9">@Model.IssuedBy</dd>
+        </dl>
+
+        <form asp-area="HocVu"
+              asp-controller="StudentCertificate"
+              asp-action="Delete"
+              asp-route-id="@Model.Id"
+              method="post">
+            @Html.AntiForgeryToken()
+
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <a asp-area="HocVu"
+               asp-controller="StudentCertificate"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Quay lại
+            </a>
+        </form>
+    </div>
+</div>
