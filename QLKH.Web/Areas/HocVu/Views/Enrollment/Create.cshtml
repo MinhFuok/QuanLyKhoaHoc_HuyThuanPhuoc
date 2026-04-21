@@ -71,12 +71,9 @@
         <div class="cp-form-group-label">Trạng thái</div>
         <div class="cp-form-row">
             <div class="cp-field">
-                <label asp-for="Status" class="cp-label">Trạng thái ghi danh</label>
-                <select asp-for="Status"
-                        class="cp-input cp-select"
-                        asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.EnrollmentStatus>()">
-                </select>
-                <span asp-validation-for="Status" class="cp-field-error"></span>
+                <label class="cp-label">Trạng thái ghi danh</label>
+                <input type="text" class="cp-input" value="Chờ duyệt" readonly />
+                <small class="text-muted">Khi tạo mới, hệ thống tự đặt trạng thái là chờ duyệt.</small>
             </div>
         </div>
 

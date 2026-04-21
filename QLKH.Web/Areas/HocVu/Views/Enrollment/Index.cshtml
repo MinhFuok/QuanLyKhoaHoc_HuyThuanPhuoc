@@ -2,76 +2,144 @@
 
 @{
     ViewData["Title"] = "Danh sách ghi danh";
+
+    var pendingList = Model?.Where(x => x.Status == QLKH.Domain.Enums.EnrollmentStatus.Pending).ToList()
+                      ?? new List<QLKH.Domain.Entities.Enrollment>();
+
+    var confirmedList = Model?.Where(x => x.Status == QLKH.Domain.Enums.EnrollmentStatus.Confirmed).ToList()
+                        ?? new List<QLKH.Domain.Entities.Enrollment>();
+
+    var cancelledList = Model?.Where(x => x.Status == QLKH.Domain.Enums.EnrollmentStatus.Cancelled).ToList()
+                        ?? new List<QLKH.Domain.Entities.Enrollment>();
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+
+    <style>
+        .enrollment-tabs-wrap {
+            margin-top: 20px;
+        }
+
+        .enrollment-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .enrollment-tab-btn {
+            border: none;
+            outline: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: #eef2ff;
+            color: #1e3a8a;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .enrollment-tab-btn:hover {
+            background: #dbeafe;
+        }
+
+        .enrollment-tab-btn.active {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .enrollment-tab-pane {
+            display: none;
+        }
+
+        .enrollment-tab-pane.active {
+            display: block;
+        }
+
+        .enrollment-count {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            background: rgba(255,255,255,0.25);
+        }
+
+        .enrollment-empty-box {
+            padding: 24px;
+            text-align: center;
+            border: 1px dashed #d1d5db;
+            border-radius: 12px;
+            background: #f9fafb;
+            color: #6b7280;
+        }
+    </style>
 }
 
 <div class="course-page admin-profession-page enrollment-page">
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">Danh sách ghi danh</h1>
-            <p class="cp-subtitle">Theo dõi học viên, lớp học, khóa học và trạng thái ghi danh.</p>
+            <p class="cp-subtitle">Quản lý ghi danh theo từng trạng thái để Học vụ dễ theo dõi và xử lý.</p>
         </div>
 
-        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
+        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Create" class="cp-btn cp-btn--primary">
+            + Thêm mới
+        </a>
     </div>
 
-    <div class="cp-table-wrap">
-        <table class="cp-table">
-            <thead>
-                <tr>
-                    <th>Học viên</th>
-                    <th>Lớp học</th>
-                    <th>Khóa học</th>
-                    <th>Giảng viên</th>
-                    <th>Ngày ghi danh</th>
-                    <th>Trạng thái</th>
-                    <th class="cp-col-action">Chức năng</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model?.Any() == true)
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr class="cp-row">
-                            <td><div class="cp-name">@item.Student?.FullName</div></td>
-                            <td>@item.ClassRoom?.ClassName</td>
-                            <td>@item.ClassRoom?.Course?.CourseName</td>
-                            <td>@item.ClassRoom?.Teacher?.FullName</td>
-                            <td>@item.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td><span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">@item.Status</span></td>
-                            <td>
-                                <div class="cp-actions">
-                                    <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
+    <div class="enrollment-tabs-wrap">
+        <div class="enrollment-tabs">
+            <button type="button" class="enrollment-tab-btn active" data-tab="pendingTab">
+                Chờ duyệt
+                <span class="enrollment-count">@pendingList.Count</span>
+            </button>
 
-                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                                    {
-                                        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
-                                    }
+            <button type="button" class="enrollment-tab-btn" data-tab="confirmedTab">
+                Đã xác nhận
+                <span class="enrollment-count">@confirmedList.Count</span>
+            </button>
 
-                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                                    {
-                                        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
-                                    }
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="7" class="cp-empty">Chưa có ghi danh nào trong hệ thống.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            <button type="button" class="enrollment-tab-btn" data-tab="cancelledTab">
+                Đã hủy
+                <span class="enrollment-count">@cancelledList.Count</span>
+            </button>
+        </div>
+
+        <div id="pendingTab" class="enrollment-tab-pane active">
+            @await Html.PartialAsync("_EnrollmentTablePartial", pendingList)
+        </div>
+
+        <div id="confirmedTab" class="enrollment-tab-pane">
+            @await Html.PartialAsync("_EnrollmentTablePartial", confirmedList)
+        </div>
+
+        <div id="cancelledTab" class="enrollment-tab-pane">
+            @await Html.PartialAsync("_EnrollmentTablePartial", cancelledList)
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll(".enrollment-tab-btn");
+            const panes = document.querySelectorAll(".enrollment-tab-pane");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const target = this.getAttribute("data-tab");
+
+                    buttons.forEach(b => b.classList.remove("active"));
+                    panes.forEach(p => p.classList.remove("active"));
+
+                    this.classList.add("active");
+                    document.getElementById(target).classList.add("active");
+                });
+            });
+        });
+    </script>
 }

@@ -217,22 +217,6 @@
     </aside>
 
     <div class="db-main-wrap">
-
-        <header class="db-topbar">
-            <button class="db-menu-toggle" id="dbMenuToggle" aria-label="Mở menu">
-                <span class="db-hamburger-bar"></span>
-                <span class="db-hamburger-bar"></span>
-                <span class="db-hamburger-bar"></span>
-            </button>
-            <span class="db-topbar-title">@(ViewData["Title"] ?? siteName)</span>
-            <div class="db-topbar-right">
-                @if (User.Identity != null && User.Identity.IsAuthenticated)
-                {
-                    <span class="db-topbar-user">Xin chào, @User.Identity.Name</span>
-                }
-            </div>
-        </header>
-
         <main class="db-content">
 
             <div id="dbAlertZone">

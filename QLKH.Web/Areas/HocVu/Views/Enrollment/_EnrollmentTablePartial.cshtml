@@ -1,0 +1,78 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.Enrollment>
+
+@if (Model != null && Model.Any())
+{
+    <div class="cp-table-wrap">
+        <table class="cp-table">
+            <thead>
+                <tr>
+                    <th>Học viên</th>
+                    <th>Lớp học</th>
+                    <th>Khóa học</th>
+                    <th>Giảng viên</th>
+                    <th>Ngày ghi danh</th>
+                    <th>Trạng thái</th>
+                    <th class="cp-col-action">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="cp-row">
+                        <td>
+                            <div class="cp-name">@item.Student?.FullName</div>
+                        </td>
+                        <td>@item.ClassRoom?.ClassName</td>
+                        <td>@item.ClassRoom?.Course?.CourseName</td>
+                        <td>@item.ClassRoom?.Teacher?.FullName</td>
+                        <td>@item.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
+                                @item.Status
+                            </span>
+                        </td>
+                        <td>
+                            <div class="cp-actions">
+                                <a asp-area="HocVu"
+                                   asp-controller="Enrollment"
+                                   asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="cp-btn cp-btn--info cp-btn--sm">
+                                    Chi tiết
+                                </a>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                {
+                                    <a asp-area="HocVu"
+                                       asp-controller="Enrollment"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--warning cp-btn--sm">
+                                        Sửa
+                                    </a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                {
+                                    <a asp-area="HocVu"
+                                       asp-controller="Enrollment"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--danger cp-btn--sm">
+                                        Xóa
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="enrollment-empty-box">
+        Không có ghi danh nào trong nhóm trạng thái này.
+    </div>
+}

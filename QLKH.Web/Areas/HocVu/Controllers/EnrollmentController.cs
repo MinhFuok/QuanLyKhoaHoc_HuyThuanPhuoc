@@ -49,15 +49,17 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             enrollment.EnrolledAt = DateTime.Now;
 
+            enrollment.Status = EnrollmentStatus.Pending;
+
             var result = await _enrollmentService.CreateAsync(enrollment);
             if (!result)
             {
-                ModelState.AddModelError(string.Empty, "Không thể ghi danh. Có thể học viên đã tồn tại trong lớp hoặc lớp đã đủ sĩ số.");
+                ModelState.AddModelError("", "Không thể ghi danh. Có thể học viên đã tồn tại trong lớp hoặc lớp đã đủ sĩ số.");
                 await LoadDropdownDataAsync(enrollment.StudentId, enrollment.ClassRoomId);
                 return View(enrollment);
             }
 
-            TempData["SuccessMessage"] = "Ghi danh thành công.";
+            TempData["SuccessMessage"] = "Tạo ghi danh thành công.";
             return RedirectToAction(nameof(Index));
         }
 
