@@ -3,6 +3,7 @@ using QLKH.Application.Interfaces.Repositories;
 using QLKH.Application.Interfaces.Services;
 using QLKH.Application.Messages;
 using QLKH.Domain.Entities;
+using QLKH.Domain.Enums;
 
 namespace QLKH.Application.Services
 {
@@ -42,78 +43,109 @@ namespace QLKH.Application.Services
 
         public async Task<bool> CreateAsync(Enrollment enrollment)
         {
-            if (!await _studentRepository.ExistsAsync(enrollment.StudentId))
-            {
-                Console.WriteLine("Student does not exist");
-                return false;
-            }
-
+            var student = await _studentRepository.GetByIdAsync(enrollment.StudentId);
             var classRoom = await _classRoomRepository.GetByIdAsync(enrollment.ClassRoomId);
-            if (classRoom == null)
+
+            if (student == null || classRoom == null)
             {
-                Console.WriteLine("ClassRoom does not exist");
                 return false;
             }
 
-            if (await _enrollmentRepository.IsStudentEnrolledInClassAsync(enrollment.StudentId, enrollment.ClassRoomId))
+            var existingEnrollments = await _enrollmentRepository.GetAllAsync();
+            var duplicated = existingEnrollments.Any(e =>
+                e.StudentId == enrollment.StudentId &&
+                e.ClassRoomId == enrollment.ClassRoomId);
+
+            if (duplicated)
             {
-                Console.WriteLine("Student already enrolled in this class");
                 return false;
             }
 
-            var currentStudentCount = await _enrollmentRepository.CountByClassRoomIdAsync(enrollment.ClassRoomId);
-            if (currentStudentCount >= classRoom.MaxStudents)
-            {
-                Console.WriteLine("Class is full");
-                return false;
-            }
+            enrollment.EnrolledAt = DateTime.Now;
+            enrollment.Status = EnrollmentStatus.Pending;
 
             await _enrollmentRepository.AddAsync(enrollment);
-            await _enrollmentRepository.SaveChangesAsync();
-
-            Console.WriteLine("Saved enrollment to database");
-
-            var message = new EnrollmentCreatedMessage
-            {
-                EnrollmentId = enrollment.Id,
-                StudentId = enrollment.StudentId,
-                ClassRoomId = enrollment.ClassRoomId,
-                EnrolledAt = enrollment.EnrolledAt,
-                Status = enrollment.Status.ToString()
-            };
-
-            Console.WriteLine("Before publish RabbitMQ");
-            _messagePublisher.Publish("enrollment-created-queue", message);
-            Console.WriteLine("After publish RabbitMQ");
-
             return true;
         }
 
         public async Task<bool> UpdateAsync(Enrollment enrollment)
         {
-            var existingEnrollment = await _enrollmentRepository.GetByIdAsync(enrollment.Id);
-            if (existingEnrollment == null)
+            var existing = await _enrollmentRepository.GetByIdAsync(enrollment.Id);
+            if (existing == null)
             {
                 return false;
             }
 
-            existingEnrollment.Status = enrollment.Status;
+            existing.StudentId = enrollment.StudentId;
+            existing.ClassRoomId = enrollment.ClassRoomId;
+            existing.Status = enrollment.Status;
 
-            _enrollmentRepository.Update(existingEnrollment);
-            await _enrollmentRepository.SaveChangesAsync();
+            await _enrollmentRepository.UpdateAsync(existing);
             return true;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var existingEnrollment = await _enrollmentRepository.GetByIdAsync(id);
-            if (existingEnrollment == null)
+            var enrollment = await _enrollmentRepository.GetByIdAsync(id);
+            if (enrollment == null)
             {
                 return false;
             }
 
-            _enrollmentRepository.Delete(existingEnrollment);
-            await _enrollmentRepository.SaveChangesAsync();
+            await _enrollmentRepository.DeleteAsync(enrollment);
+            return true;
+        }
+
+        public async Task<bool> ChangeStatusAsync(int enrollmentId, EnrollmentStatus newStatus)
+        {
+            var enrollment = await _enrollmentRepository.GetByIdWithDetailsAsync(enrollmentId);
+            if (enrollment == null)
+            {
+                return false;
+            }
+
+            if (enrollment.Status == newStatus)
+            {
+                return true;
+            }
+
+            if (newStatus == EnrollmentStatus.Confirmed)
+            {
+                var allEnrollments = await _enrollmentRepository.GetAllAsync();
+
+                var confirmedCount = allEnrollments.Count(e =>
+                    e.ClassRoomId == enrollment.ClassRoomId &&
+                    e.Status == EnrollmentStatus.Confirmed &&
+                    e.Id != enrollment.Id);
+
+                if (enrollment.ClassRoom == null)
+                {
+                    return false;
+                }
+
+                if (confirmedCount >= enrollment.ClassRoom.MaxStudents)
+                {
+                    return false;
+                }
+            }
+
+            enrollment.Status = newStatus;
+            await _enrollmentRepository.UpdateAsync(enrollment);
+
+            if (newStatus == EnrollmentStatus.Confirmed)
+            {
+                var message = new EnrollmentCreatedMessage
+                {
+                    EnrollmentId = enrollment.Id,
+                    StudentId = enrollment.StudentId,
+                    ClassRoomId = enrollment.ClassRoomId,
+                    EnrolledAt = enrollment.EnrolledAt,
+                    Status = enrollment.Status.ToString()
+                };
+
+                _messagePublisher.Publish("enrollment.created", message);
+            }
+
             return true;
         }
     }

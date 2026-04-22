@@ -2,11 +2,6 @@
 
 @{
     ViewData["Title"] = "Thêm ghi danh";
-    var modelErrors = ViewData.ModelState.Values
-        .SelectMany(v => v.Errors)
-        .Select(e => e.ErrorMessage)
-        .Where(e => !string.IsNullOrWhiteSpace(e))
-        .ToList();
 }
 
 @section Styles {
@@ -17,37 +12,14 @@
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">Thêm ghi danh</h1>
-            <p class="cp-subtitle">Ghi danh học viên vào lớp học và thiết lập trạng thái ban đầu.</p>
+            <p class="cp-subtitle">Ghi danh học viên vào lớp học. Trạng thái ban đầu luôn là chờ xác nhận.</p>
         </div>
 
-        <a asp-area="HocVu"
-           asp-controller="Enrollment"
-           asp-action="Index"
-           class="cp-btn cp-btn--ghost js-click-sound">
-            Quay lại
-        </a>
+        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <form asp-area="HocVu"
-          asp-controller="Enrollment"
-          asp-action="Create"
-          method="post"
-          id="enrollmentForm"
-          data-admin-form
-          data-loading-text="Đang lưu..."
-          class="cp-form-card">
-
-        @if (modelErrors.Any())
-        {
-            <div class="cp-validation-summary">
-                <ul class="mb-0">
-                    @foreach (var error in modelErrors)
-                    {
-                        <li>@error</li>
-                    }
-                </ul>
-            </div>
-        }
+    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Create" method="post" id="enrollmentForm" class="cp-form-card">
+        <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
         <div class="cp-form-group-label">Thông tin ghi danh</div>
         <div class="cp-form-row">
@@ -72,22 +44,14 @@
         <div class="cp-form-row">
             <div class="cp-field">
                 <label class="cp-label">Trạng thái ghi danh</label>
-                <input type="text" class="cp-input" value="Chờ duyệt" readonly />
-                <small class="text-muted">Khi tạo mới, hệ thống tự đặt trạng thái là chờ duyệt.</small>
+                <input class="cp-input" value="Pending" readonly />
+                <input type="hidden" asp-for="Status" value="@QLKH.Domain.Enums.EnrollmentStatus.Pending" />
             </div>
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary js-click-sound">
-                Lưu ghi danh
-            </button>
-
-            <a asp-area="HocVu"
-               asp-controller="Enrollment"
-               asp-action="Index"
-               class="cp-btn cp-btn--ghost js-click-sound">
-                Quay lại
-            </a>
+            <button type="submit" class="cp-btn cp-btn--primary">Lưu ghi danh</button>
+            <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
         </div>
     </form>
 </div>

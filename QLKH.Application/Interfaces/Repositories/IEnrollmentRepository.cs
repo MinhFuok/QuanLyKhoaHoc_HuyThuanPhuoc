@@ -11,14 +11,12 @@ namespace QLKH.Application.Interfaces.Repositories
     {
         Task<IEnumerable<Enrollment>> GetAllAsync();
         Task<Enrollment?> GetByIdAsync(int id);
-        Task<IEnumerable<Enrollment>> GetByStudentIdAsync(int studentId);
         Task<Enrollment?> GetByIdWithDetailsAsync(int id);
-        Task<bool> ExistsAsync(int id);
-        Task<bool> IsStudentEnrolledInClassAsync(int studentId, int classRoomId);
+        Task<IEnumerable<Enrollment>> GetByStudentIdAsync(int studentId);
         Task AddAsync(Enrollment enrollment);
-        void Update(Enrollment enrollment);
-        void Delete(Enrollment enrollment);
-        Task<int> CountByClassRoomIdAsync(int classRoomId);
-        Task SaveChangesAsync();
+
+        Task UpdateAsync(Enrollment enrollment);
+        Task DeleteAsync(Enrollment enrollment);
+
     }
 }

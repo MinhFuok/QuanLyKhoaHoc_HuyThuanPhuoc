@@ -1,27 +1,26 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.Enrollment>
+@using QLKH.Domain.Enums
 
-@if (Model != null && Model.Any())
-{
-    <div class="cp-table-wrap">
-        <table class="cp-table">
-            <thead>
-                <tr>
-                    <th>Học viên</th>
-                    <th>Lớp học</th>
-                    <th>Khóa học</th>
-                    <th>Giảng viên</th>
-                    <th>Ngày ghi danh</th>
-                    <th>Trạng thái</th>
-                    <th class="cp-col-action">Chức năng</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<div class="cp-table-wrap">
+    <table class="cp-table">
+        <thead>
+            <tr>
+                <th>Học viên</th>
+                <th>Lớp học</th>
+                <th>Khóa học</th>
+                <th>Giảng viên</th>
+                <th>Ngày ghi danh</th>
+                <th>Trạng thái</th>
+                <th class="cp-col-action">Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
                 {
                     <tr class="cp-row">
-                        <td>
-                            <div class="cp-name">@item.Student?.FullName</div>
-                        </td>
+                        <td><div class="cp-name">@item.Student?.FullName</div></td>
                         <td>@item.ClassRoom?.ClassName</td>
                         <td>@item.ClassRoom?.Course?.CourseName</td>
                         <td>@item.ClassRoom?.Teacher?.FullName</td>
@@ -33,46 +32,59 @@
                         </td>
                         <td>
                             <div class="cp-actions">
-                                <a asp-area="HocVu"
-                                   asp-controller="Enrollment"
-                                   asp-action="Details"
-                                   asp-route-id="@item.Id"
-                                   class="cp-btn cp-btn--info cp-btn--sm">
+                                <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">
                                     Chi tiết
                                 </a>
 
-                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">
+                                    Sửa
+                                </a>
+
+                                @if (item.Status == EnrollmentStatus.Pending)
                                 {
-                                    <a asp-area="HocVu"
-                                       asp-controller="Enrollment"
-                                       asp-action="Edit"
-                                       asp-route-id="@item.Id"
-                                       class="cp-btn cp-btn--warning cp-btn--sm">
-                                        Sửa
-                                    </a>
+                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Confirm" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="cp-btn cp-btn--primary cp-btn--sm">Xác nhận</button>
+                                    </form>
+
+                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Cancel" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="cp-btn cp-btn--danger cp-btn--sm">Hủy</button>
+                                    </form>
+                                }
+                                else if (item.Status == EnrollmentStatus.Confirmed)
+                                {
+                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Cancel" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="cp-btn cp-btn--danger cp-btn--sm">Hủy ghi danh</button>
+                                    </form>
+                                }
+                                else if (item.Status == EnrollmentStatus.Cancelled)
+                                {
+                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Confirm" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="cp-btn cp-btn--primary cp-btn--sm">Xác nhận lại</button>
+                                    </form>
                                 }
 
-                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                                {
-                                    <a asp-area="HocVu"
-                                       asp-controller="Enrollment"
-                                       asp-action="Delete"
-                                       asp-route-id="@item.Id"
-                                       class="cp-btn cp-btn--danger cp-btn--sm">
-                                        Xóa
-                                    </a>
-                                }
+                                <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">
+                                    Xóa
+                                </a>
                             </div>
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
-    </div>
-}
-else
-{
-    <div class="enrollment-empty-box">
-        Không có ghi danh nào trong nhóm trạng thái này.
-    </div>
-}
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="cp-empty">Không có dữ liệu trong tab này.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
