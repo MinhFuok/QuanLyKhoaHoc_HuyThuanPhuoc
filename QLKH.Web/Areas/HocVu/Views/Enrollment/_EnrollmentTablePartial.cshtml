@@ -26,9 +26,11 @@
                         <td>@item.ClassRoom?.Teacher?.FullName</td>
                         <td>@item.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>
-                            <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
-                                @item.Status
-                            </span>
+                            <div class="cp-status-surface cp-status-surface--@item.Status.ToString().ToLower()">
+                                <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
+                                    @item.Status
+                                </span>
+                            </div>
                         </td>
                         <td>
                             <div class="cp-actions">
@@ -78,6 +80,7 @@
                         </td>
                     </tr>
                 }
+<<<<<<< HEAD
             }
             else
             {
@@ -88,3 +91,15 @@
         </tbody>
     </table>
 </div>
+=======
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="enrollment-empty-box">
+        Không có ghi danh nào trong nhóm trạng thái này.
+    </div>
+}
+>>>>>>> d3c96fce0fae5c6e7b6e5abc26d280dd90c660b3

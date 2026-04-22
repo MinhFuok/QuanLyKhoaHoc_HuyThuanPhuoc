@@ -25,6 +25,7 @@
         <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
     </div>
 
+<<<<<<< HEAD
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success mb-3">@TempData["SuccessMessage"]</div>
@@ -39,6 +40,38 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-pane" type="button" role="tab">
                 Pending (@pendingList.Count)
+=======
+    <div class="enrollment-tabs-wrap" data-enrollment-tabs>
+        <div class="enrollment-tabs" role="tablist" aria-label="Trạng thái ghi danh">
+            <button type="button"
+                    class="enrollment-tab-btn active"
+                    data-tab="pendingTab"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="pendingTab">
+                Chờ duyệt
+                <span class="enrollment-count">@pendingList.Count</span>
+            </button>
+
+            <button type="button"
+                    class="enrollment-tab-btn"
+                    data-tab="confirmedTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="confirmedTab">
+                Đã xác nhận
+                <span class="enrollment-count">@confirmedList.Count</span>
+            </button>
+
+            <button type="button"
+                    class="enrollment-tab-btn"
+                    data-tab="cancelledTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="cancelledTab">
+                Đã hủy
+                <span class="enrollment-count">@cancelledList.Count</span>
+>>>>>>> d3c96fce0fae5c6e7b6e5abc26d280dd90c660b3
             </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -53,6 +86,7 @@
         </li>
     </ul>
 
+<<<<<<< HEAD
     <div class="tab-content">
         <div class="tab-pane fade show active" id="pending-pane" role="tabpanel">
             @await Html.PartialAsync("_EnrollmentTablePartial", pendingList)
@@ -63,6 +97,17 @@
         </div>
 
         <div class="tab-pane fade" id="cancelled-pane" role="tabpanel">
+=======
+        <div id="pendingTab" class="enrollment-tab-pane active" role="tabpanel">
+            @await Html.PartialAsync("_EnrollmentTablePartial", pendingList)
+        </div>
+
+        <div id="confirmedTab" class="enrollment-tab-pane" role="tabpanel" hidden>
+            @await Html.PartialAsync("_EnrollmentTablePartial", confirmedList)
+        </div>
+
+        <div id="cancelledTab" class="enrollment-tab-pane" role="tabpanel" hidden>
+>>>>>>> d3c96fce0fae5c6e7b6e5abc26d280dd90c660b3
             @await Html.PartialAsync("_EnrollmentTablePartial", cancelledList)
         </div>
     </div>
@@ -70,4 +115,8 @@
 
 @section Scripts {
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d3c96fce0fae5c6e7b6e5abc26d280dd90c660b3

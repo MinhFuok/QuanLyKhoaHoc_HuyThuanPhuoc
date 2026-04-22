@@ -1,95 +1,137 @@
-﻿@model QLKH.Web.Areas.HocVu.Models.StudentCertificateViewModel
+@model QLKH.Web.Areas.HocVu.Models.StudentCertificateViewModel
 
 @{
     ViewData["Title"] = "Sửa chứng chỉ học viên";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Sửa chứng chỉ học viên</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <form asp-area="HocVu"
-              asp-controller="StudentCertificate"
-              asp-action="Edit"
-              method="post"
-              enctype="multipart/form-data">
+<div class="course-page admin-profession-page student-certificate-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Sửa chứng chỉ học viên</h1>
+            <p class="cp-subtitle">Cập nhật thông tin chứng chỉ, file minh chứng và trạng thái xác nhận.</p>
+        </div>
 
-            <input asp-for="Id" type="hidden" />
-            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <a asp-area="HocVu"
+           asp-controller="StudentCertificate"
+           asp-action="Index"
+           class="cp-btn cp-btn--ghost">
+            Quay lại
+        </a>
+    </div>
 
-            <div class="mb-3">
-                <label asp-for="StudentId" class="form-label"></label>
-                <select asp-for="StudentId" asp-items="Model.StudentOptions" class="form-select">
+    <form asp-area="HocVu"
+          asp-controller="StudentCertificate"
+          asp-action="Edit"
+          method="post"
+          enctype="multipart/form-data"
+          id="studentCertificateForm"
+          data-admin-form
+          data-loading-text="Đang cập nhật..."
+          class="cp-form-card">
+
+        <input asp-for="Id" type="hidden" />
+        <div asp-validation-summary="All" class="cp-validation-summary"></div>
+
+        <div class="cp-form-group-label">Thông tin chính</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="StudentId" class="cp-label"></label>
+                <select asp-for="StudentId" asp-items="Model.StudentOptions" class="cp-input cp-select">
                     <option value="">-- Chọn học viên --</option>
                 </select>
-                <span asp-validation-for="StudentId" class="text-danger"></span>
+                <span asp-validation-for="StudentId" class="cp-field-error"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="CertificateName" class="form-label"></label>
-                <input asp-for="CertificateName" class="form-control" />
-                <span asp-validation-for="CertificateName" class="text-danger"></span>
+            <div class="cp-field">
+                <label asp-for="CertificateName" class="cp-label"></label>
+                <input asp-for="CertificateName" class="cp-input" placeholder="VD: Chứng chỉ Tin học văn phòng" />
+                <span asp-validation-for="CertificateName" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="CertificateCode" class="cp-label"></label>
+                <input asp-for="CertificateCode" class="cp-input" placeholder="Nhập mã hoặc số chứng chỉ" />
+                <span asp-validation-for="CertificateCode" class="cp-field-error"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="CertificateCode" class="form-label"></label>
-                <input asp-for="CertificateCode" class="form-control" />
-                <span asp-validation-for="CertificateCode" class="text-danger"></span>
+            <div class="cp-field">
+                <label asp-for="IssuedDate" class="cp-label"></label>
+                <input asp-for="IssuedDate" type="date" class="cp-input" />
+                <span asp-validation-for="IssuedDate" class="cp-field-error"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="IssuedDate" class="form-label"></label>
-                <input asp-for="IssuedDate" class="form-control" />
-                <span asp-validation-for="IssuedDate" class="text-danger"></span>
+            <div class="cp-field">
+                <label asp-for="IssuedBy" class="cp-label"></label>
+                <input asp-for="IssuedBy" class="cp-input" placeholder="VD: Trung tâm khảo thí ABC" />
+                <span asp-validation-for="IssuedBy" class="cp-field-error"></span>
             </div>
+        </div>
 
-            <div class="mb-3">
-                <label asp-for="IssuedBy" class="form-label"></label>
-                <input asp-for="IssuedBy" class="form-control" />
-                <span asp-validation-for="IssuedBy" class="text-danger"></span>
+        <div class="cp-form-group-label">Minh chứng</div>
+        <div class="cp-field cp-field--full">
+            <label asp-for="EvidenceFile" class="cp-label"></label>
+            <div class="cp-file-picker">
+                <input asp-for="EvidenceFile"
+                       type="file"
+                       accept=".jpg,.jpeg,.png,.pdf"
+                       class="cp-file-input"
+                       data-cp-file-input
+                       data-cp-file-target="studentCertificateFileName" />
+                <label asp-for="EvidenceFile" class="cp-btn cp-btn--ghost">Chọn file mới</label>
+                <span id="studentCertificateFileName" class="cp-file-name">Giữ file hiện tại nếu không chọn file mới</span>
             </div>
+            <span class="cp-form-hint">Chấp nhận file `.jpg`, `.jpeg`, `.png`, `.pdf`.</span>
+            <span asp-validation-for="EvidenceFile" class="cp-field-error"></span>
+        </div>
 
-            <div class="mb-3">
-                <label asp-for="Note" class="form-label"></label>
-                <textarea asp-for="Note" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Note" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="EvidenceFile" class="form-label"></label>
-                <input asp-for="EvidenceFile" type="file" class="form-control" />
-                <span asp-validation-for="EvidenceFile" class="text-danger"></span>
-            </div>
-
-            @if (!string.IsNullOrWhiteSpace(Model.ExistingEvidenceFilePath))
-            {
-                <div class="mb-3">
-                    <label class="form-label">File hiện tại</label><br />
-                    <a href="@Model.ExistingEvidenceFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
-                        Xem file hiện tại
-                    </a>
-                </div>
-            }
-
-            <div class="form-check mb-3">
-                <input asp-for="IsApproved" class="form-check-input" />
-                <label asp-for="IsApproved" class="form-check-label"></label>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <a asp-area="HocVu"
-                   asp-controller="StudentCertificate"
-                   asp-action="Index"
-                   class="btn btn-secondary">
-                    Quay lại
+        @if (!string.IsNullOrWhiteSpace(Model.ExistingEvidenceFilePath))
+        {
+            <div class="cp-current-file">
+                <span class="cp-current-file-label">File hiện tại</span>
+                <a href="@Model.ExistingEvidenceFilePath" target="_blank" rel="noopener noreferrer" class="cp-file-link">
+                    Xem file hiện tại
                 </a>
             </div>
-        </form>
-    </div>
+        }
+
+        <div class="cp-field cp-field--full">
+            <label asp-for="Note" class="cp-label"></label>
+            <textarea asp-for="Note" class="cp-input cp-textarea" rows="4" placeholder="Ghi chú thêm về chứng chỉ, kết quả hoặc tình trạng xác minh"></textarea>
+            <span asp-validation-for="Note" class="cp-field-error"></span>
+        </div>
+
+        <div class="cp-form-group-label">Xác nhận</div>
+        <div class="cp-switch-card">
+            <label class="cp-switch">
+                <input asp-for="IsApproved" class="cp-switch-input" />
+                <span class="cp-switch-slider"></span>
+                <span class="cp-switch-content">
+                    <span class="cp-switch-title">Đã xác nhận</span>
+                    <span class="cp-switch-subtitle">Tắt nếu chứng chỉ vẫn đang chờ kiểm tra.</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật chứng chỉ</button>
+            <a asp-area="HocVu"
+               asp-controller="StudentCertificate"
+               asp-action="Index"
+               class="cp-btn cp-btn--ghost">
+                Quay lại
+            </a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
 }

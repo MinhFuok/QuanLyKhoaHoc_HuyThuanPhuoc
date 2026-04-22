@@ -1,4 +1,4 @@
-﻿@model QLKH.Web.Models.HomePageViewModel
+@model QLKH.Web.Models.HomePageViewModel
 
 @{
     ViewData["Title"] = "Trang chủ";
@@ -12,113 +12,228 @@
     var contactAddress = Model.SystemSetting?.ContactAddress ?? "Bình Dương";
     var slides = Model.BannerSlides?.Where(x => x.IsActive).OrderBy(x => x.DisplayOrder).ToList()
                  ?? new List<QLKH.Domain.Entities.HomeBannerSlide>();
+
+    string vaoHeThongUrl;
+
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Admin"))
+        {
+            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "Admin" })!;
+        }
+        else if (User.IsInRole("HocVu"))
+        {
+            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "HocVu" })!;
+        }
+        else if (User.IsInRole("GiaoVien"))
+        {
+            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "GiaoVien" })!;
+        }
+        else if (User.IsInRole("HocVien"))
+        {
+            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "HocVien" })!;
+        }
+        else
+        {
+            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "" })!;
+        }
+    }
+    else
+    {
+        vaoHeThongUrl = Url.Action("Login", "Account", new { area = "" })!;
+    }
 }
 
-<section class="container py-5">
-    <div class="row align-items-center g-4">
-        <div class="col-lg-6">
-            <h1 class="display-5 fw-bold mb-3">
-                @bannerTitle
-            </h1>
-            <p class="lead text-muted mb-4">
-                @bannerSubtitle
-            </p>
-            <div class="d-flex flex-wrap gap-2">
-                @{
-                    string vaoHeThongUrl;
+<div class="home-index">
+    <div class="home-stars" aria-hidden="true">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+    </div>
 
-                    if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        if (User.IsInRole("Admin"))
-                        {
-                            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "Admin" })!;
-                        }
-                        else if (User.IsInRole("HocVu"))
-                        {
-                            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "HocVu" })!;
-                        }
-                        else if (User.IsInRole("GiaoVien"))
-                        {
-                            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "GiaoVien" })!;
-                        }
-                        else if (User.IsInRole("HocVien"))
-                        {
-                            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "HocVien" })!;
-                        }
-                        else
-                        {
-                            vaoHeThongUrl = Url.Action("Index", "Home", new { area = "" })!;
-                        }
-                    }
-                    else
-                    {
-                        vaoHeThongUrl = Url.Action("Login", "Account", new { area = "" })!;
-                    }
-                }
+    <section class="home-shell home-hero">
+        <div class="home-hero__content home-reveal">
+            <span class="home-kicker">@siteName</span>
+            <h1>@bannerTitle</h1>
+            <p>@bannerSubtitle</p>
 
-                <a href="@vaoHeThongUrl" class="btn btn-primary btn-lg">
-                    Vào hệ thống
+            <div class="home-actions">
+                <a href="@vaoHeThongUrl" class="home-btn home-btn--primary home-btn--enter">
+                    <span class="home-btn-enter__bg" aria-hidden="true"></span>
+                    <svg viewBox="0 0 342 208" fill="none" class="home-btn-enter__splash" aria-hidden="true">
+                        <path d="M54.1054 99.7837C54.1054 99.7837 40.0984 90.7874 26.6893 97.6362C13.2802 104.485 1.5 97.6362 1.5 97.6362" />
+                        <path d="M285.273 99.7841C285.273 99.7841 299.28 90.7879 312.689 97.6367C326.098 104.486 340.105 95.4893 340.105 95.4893" />
+                        <path d="M281.133 64.9917C281.133 64.9917 287.96 49.8089 302.934 48.2295C317.908 46.6501 319.712 36.5272 319.712 36.5272" opacity="0.35" />
+                        <path d="M281.133 138.984C281.133 138.984 287.96 154.167 302.934 155.746C317.908 157.326 319.712 167.449 319.712 167.449" opacity="0.35" />
+                        <path d="M230.578 57.4476C230.578 57.4476 225.785 41.5051 236.061 30.4998C246.337 19.4945 244.686 12.9998 244.686 12.9998" />
+                        <path d="M230.578 150.528C230.578 150.528 225.785 166.471 236.061 177.476C246.337 188.481 244.686 194.976 244.686 194.976" />
+                        <path d="M170.392 57.0278C170.392 57.0278 173.89 42.1322 169.571 29.54C165.252 16.9478 168.751 2.05227 168.751 2.05227" opacity="0.35" />
+                        <path d="M170.392 150.948C170.392 150.948 173.89 165.844 169.571 178.436C165.252 191.028 168.751 205.924 168.751 205.924" opacity="0.35" />
+                        <path d="M112.609 57.4476C112.609 57.4476 117.401 41.5051 107.125 30.4998C96.8492 19.4945 98.5 12.9998 98.5 12.9998" />
+                        <path d="M112.609 150.528C112.609 150.528 117.401 166.471 107.125 177.476C96.8492 188.481 98.5 194.976 98.5 194.976" />
+                        <path d="M62.2941 64.9917C62.2941 64.9917 55.4671 49.8089 40.4932 48.2295C25.5194 46.6501 23.7159 36.5272 23.7159 36.5272" opacity="0.35" />
+                        <path d="M62.2941 145.984C62.2941 145.984 55.4671 161.167 40.4932 162.746C25.5194 164.326 23.7159 174.449 23.7159 174.449" opacity="0.35" />
+                    </svg>
+
+                    <span class="home-btn-enter__wrap">
+                        <svg viewBox="0 0 221 42" fill="none" class="home-btn-enter__path" aria-hidden="true">
+                            <path d="M182.674 2H203C211.837 2 219 9.16344 219 18V24C219 32.8366 211.837 40 203 40H18C9.16345 40 2 32.8366 2 24V18C2 9.16344 9.16344 2 18 2H47.8855" />
+                        </svg>
+
+                        <span class="home-btn-enter__outline" aria-hidden="true"></span>
+                        <span class="home-btn-enter__content">
+                            <span class="visually-hidden">Vào hệ thống</span>
+
+                            <span class="home-btn-enter__label home-btn-enter__label--base" aria-hidden="true">
+                                <span data-label="V" style="--i: 1">V</span>
+                                <span data-label="à" style="--i: 2">à</span>
+                                <span data-label="o" style="--i: 3">o</span>
+                                <span class="home-btn-enter__space" style="--i: 4">&nbsp;</span>
+                                <span data-label="h" style="--i: 5">h</span>
+                                <span data-label="ệ" style="--i: 6">ệ</span>
+                                <span class="home-btn-enter__space" style="--i: 7">&nbsp;</span>
+                                <span data-label="t" style="--i: 8">t</span>
+                                <span data-label="h" style="--i: 9">h</span>
+                                <span data-label="ố" style="--i: 10">ố</span>
+                                <span data-label="n" style="--i: 11">n</span>
+                                <span data-label="g" style="--i: 12">g</span>
+                            </span>
+
+                            <span class="home-btn-enter__icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="home-btn__icon">
+                                    <path d="M5 12h14" />
+                                    <path d="m13 6 6 6-6 6" />
+                                </svg>
+                            </span>
+
+                            <span class="home-btn-enter__label home-btn-enter__label--alt" aria-hidden="true">
+                                <span data-label="V" style="--i: 1">V</span>
+                                <span data-label="à" style="--i: 2">à</span>
+                                <span data-label="o" style="--i: 3">o</span>
+                                <span class="home-btn-enter__space" style="--i: 4">&nbsp;</span>
+                                <span data-label="n" style="--i: 5">n</span>
+                                <span data-label="g" style="--i: 6">g</span>
+                                <span data-label="a" style="--i: 7">a</span>
+                                <span data-label="y" style="--i: 8">y</span>
+                            </span>
+                        </span>
+                    </span>
                 </a>
 
-                <a href="#lien-he" class="btn btn-outline-secondary btn-lg">
-                    Liên hệ tư vấn
+                <a href="#lien-he" class="home-btn home-btn--ghost home-btn--consult" data-home-scroll>
+                    <span class="home-btn-consult__stars" aria-hidden="true"></span>
+                    <span class="home-btn-consult__glow" aria-hidden="true">
+                        <span class="home-btn-consult__circle"></span>
+                        <span class="home-btn-consult__circle"></span>
+                    </span>
+
+                    <span class="home-btn-consult__content">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="home-btn__icon" aria-hidden="true">
+                            <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+                        </svg>
+                        <span>Liên hệ tư vấn</span>
+                    </span>
                 </a>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="card-body p-4">
-                    <div class="row g-3 text-center">
-                        <div class="col-6">
-                            <div class="p-3 rounded-4 bg-light h-100">
-                                <h3 class="fw-bold mb-1">Quản lý tập trung</h3>
-                                <p class="text-muted mb-0 small">
-                                    Quản lý khóa học, lớp học, học viên và giảng viên trên cùng một hệ thống.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="p-3 rounded-4 bg-light h-100">
-                                <h3 class="fw-bold mb-1">Dễ vận hành</h3>
-                                <p class="text-muted mb-0 small">
-                                    Học vụ và quản trị viên dễ dàng cấu hình và theo dõi dữ liệu.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="p-3 rounded-4 bg-light h-100">
-                                <h3 class="fw-bold mb-1">Học online</h3>
-                                <p class="text-muted mb-0 small">
-                                    Phù hợp cho mô hình đào tạo trực tuyến, linh hoạt và thuận tiện.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="p-3 rounded-4 bg-light h-100">
-                                <h3 class="fw-bold mb-1">Mở rộng dễ dàng</h3>
-                                <p class="text-muted mb-0 small">
-                                    Có thể phát triển thêm khóa học, báo cáo và các nghiệp vụ sau này.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="home-hero__visual home-reveal">
+            <div class="e-card playing home-main-card">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+                        <path d="M3 12l9 5 9-5" />
+                        <path d="M3 16l9 5 9-5" />
+                    </svg>
+                    <br />
+                    Quản lý khóa học
+                    <div class="name">@siteName.ToLower()</div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
 
-@if (slides.Any())
-{
-    <section class="container pb-5">
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-            <div class="card-body p-0">
-                <div id="homeBannerCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
+            <div class="home-orbit-card">
+                <span>Online</span>
+                <strong>Course Manager</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-shell home-section">
+        <div class="home-section__head home-reveal">
+            <span class="home-kicker">Tính năng chính</span>
+            <h2>Không gian quản lý gọn, rõ và sẵn sàng vận hành</h2>
+        </div>
+
+        <div class="home-card-grid">
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #8b5cf6; --card-mid: #4f46e5; --card-end: #22d3ee;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">01</span>
+                    Quản lý tập trung
+                    <div class="name">khóa học • lớp học • học viên</div>
+                </div>
+            </article>
+
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #14b8a6; --card-mid: #0f766e; --card-end: #67e8f9;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">02</span>
+                    Dễ vận hành
+                    <div class="name">học vụ • quản trị • cấu hình</div>
+                </div>
+            </article>
+
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #f59e0b; --card-mid: #ea580c; --card-end: #fde68a;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">03</span>
+                    Học online
+                    <div class="name">tài liệu • bài tập • tiến độ</div>
+                </div>
+            </article>
+
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #fb7185; --card-mid: #e11d48; --card-end: #f9a8d4;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">04</span>
+                    Mở rộng dễ dàng
+                    <div class="name">báo cáo • nghiệp vụ • dữ liệu</div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    @if (slides.Any())
+    {
+        <section class="home-shell home-section home-section--slides">
+            <div class="home-section__head home-reveal">
+                <span class="home-kicker">Banner</span>
+                <h2>Nội dung nổi bật từ hệ thống</h2>
+            </div>
+
+            <div class="home-carousel-wrap home-reveal">
+                <div id="homeBannerCarousel" class="carousel slide home-carousel" data-bs-ride="carousel">
+                    <div class="carousel-indicators home-carousel__indicators">
                         @for (int i = 0; i < slides.Count; i++)
                         {
                             <button type="button"
@@ -138,129 +253,176 @@
 
                             <div class="carousel-item @(i == 0 ? "active" : "")">
                                 <img src="@slide.ImageUrl"
-                                     class="d-block w-100"
-                                     alt="@slide.AltText"
-                                     style="height: 420px; object-fit: cover;" />
+                                     class="d-block w-100 home-carousel__image"
+                                     alt="@slide.AltText" />
 
                                 @if (!string.IsNullOrWhiteSpace(slide.Title))
                                 {
-                                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 px-3 py-2">
-                                        <h5 class="mb-0">@slide.Title</h5>
+                                    <div class="carousel-caption home-carousel__caption">
+                                        <h3>@slide.Title</h3>
                                     </div>
                                 }
                             </div>
                         }
                     </div>
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
+                    <button class="carousel-control-prev home-carousel__control" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Trước</span>
                     </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="next">
+                    <button class="carousel-control-next home-carousel__control" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Sau</span>
                     </button>
                 </div>
             </div>
+        </section>
+    }
+
+    <section class="home-shell home-section">
+        <div class="home-section__head home-reveal">
+            <span class="home-kicker">Vai trò sử dụng</span>
+            <h2>Mỗi nhóm người dùng có đúng không gian làm việc của mình</h2>
+        </div>
+
+        <div class="home-role-grid">
+            <article class="home-role home-role--admin home-reveal">
+                <div class="home-role__card">
+                    <div class="home-role__content">
+                        <span class="home-role__label">Điều phối hệ thống</span>
+                        <h3>Quản trị viên</h3>
+                        <p>Quản lý tài khoản nội bộ, phân quyền, cấu hình website và banner trang chủ.</p>
+                        <span class="home-role__action">Phân quyền tổng</span>
+                    </div>
+
+                    <div class="home-role__stamp" aria-hidden="true">
+                        <span class="home-role__stamp-text">ROLE</span>
+                        <span class="home-role__stamp-code">AD</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="home-role home-role--hocvu home-reveal">
+                <div class="home-role__card">
+                    <div class="home-role__content">
+                        <span class="home-role__label">Điều hành đào tạo</span>
+                        <h3>Học vụ</h3>
+                        <p>Tổ chức khóa học, mở lớp, quản lý ghi danh và theo dõi tình trạng học viên.</p>
+                        <span class="home-role__action">Vận hành lớp học</span>
+                    </div>
+
+                    <div class="home-role__stamp" aria-hidden="true">
+                        <span class="home-role__stamp-text">ROLE</span>
+                        <span class="home-role__stamp-code">HV</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="home-role home-role--giaovien home-reveal">
+                <div class="home-role__card">
+                    <div class="home-role__content">
+                        <span class="home-role__label">Triển khai giảng dạy</span>
+                        <h3>Giảng viên</h3>
+                        <p>Quản lý lớp học, tài liệu, bài tập, nộp bài và kết quả học tập.</p>
+                        <span class="home-role__action">Theo dõi tiến độ</span>
+                    </div>
+
+                    <div class="home-role__stamp" aria-hidden="true">
+                        <span class="home-role__stamp-text">ROLE</span>
+                        <span class="home-role__stamp-code">GV</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="home-role home-role--hocvien home-reveal">
+                <div class="home-role__card">
+                    <div class="home-role__content">
+                        <span class="home-role__label">Không gian học tập</span>
+                        <h3>Học viên</h3>
+                        <p>Theo dõi lịch học, tài liệu, bài tập, điểm số và tiến độ học tập cá nhân.</p>
+                        <span class="home-role__action">Học và nộp bài</span>
+                    </div>
+
+                    <div class="home-role__stamp" aria-hidden="true">
+                        <span class="home-role__stamp-text">ROLE</span>
+                        <span class="home-role__stamp-code">HS</span>
+                    </div>
+                </div>
+            </article>
         </div>
     </section>
+
+    <section id="lien-he" class="home-shell home-section home-contact">
+        <div class="home-contact__panel-wrap home-reveal">
+            <div class="home-contact__panel home-contact__panel--cyber" data-home-cyber-card>
+                <div class="home-contact__fx" aria-hidden="true">
+                    <div class="home-contact__glare"></div>
+
+                    <div class="home-contact__cyber-lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="home-contact__glows">
+                        <span class="home-contact__glow home-contact__glow--1"></span>
+                        <span class="home-contact__glow home-contact__glow--2"></span>
+                        <span class="home-contact__glow home-contact__glow--3"></span>
+                    </div>
+
+                    <div class="home-contact__particles">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="home-contact__corners">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="home-contact__scan-line"></div>
+                </div>
+
+                <div class="home-contact__body">
+                    <div>
+                        <span class="home-kicker">Liên hệ</span>
+                        <h2>Bắt đầu vận hành hệ thống với @siteName</h2>
+                        <p>Nếu bạn cần tư vấn triển khai hoặc hỗ trợ sử dụng hệ thống, hãy liên hệ theo thông tin bên dưới.</p>
+                    </div>
+
+                    <div class="home-contact__list">
+                        <a class="home-contact__item" href="tel:@contactPhone">
+                            <span>Điện thoại</span>
+                            <strong>@contactPhone</strong>
+                        </a>
+                        <a class="home-contact__item" href="mailto:@contactEmail">
+                            <span>Email</span>
+                            <strong>@contactEmail</strong>
+                        </a>
+                        <div class="home-contact__item">
+                            <span>Địa chỉ</span>
+                            <strong>@contactAddress</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
 }
 
-<section class="container pb-5">
-    <div class="row g-4">
-        <div class="col-lg-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <h3 class="h4 fw-bold mb-3">Dành cho Quản trị viên</h3>
-                    <p class="text-muted mb-0">
-                        Quản lý tài khoản nội bộ, phân quyền, cấu hình website, banner trang chủ
-                        và các thông tin vận hành chung của hệ thống.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <h3 class="h4 fw-bold mb-3">Dành cho Học vụ</h3>
-                    <p class="text-muted mb-0">
-                        Tổ chức khóa học, mở lớp học, quản lý ghi danh, theo dõi tình trạng học viên
-                        và vận hành đào tạo hằng ngày.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <h3 class="h4 fw-bold mb-3">Dành cho Giảng viên và Học viên</h3>
-                    <p class="text-muted mb-0">
-                        Theo dõi lớp học, tài liệu, bài tập, tiến độ học tập và các tương tác cần thiết
-                        trong môi trường học online.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="lien-he" class="container pb-5">
-    <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-4 p-lg-5">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-7">
-                    <span class="badge bg-success-subtle text-success px-3 py-2 mb-3">
-                        Thông tin liên hệ
-                    </span>
-
-                    <h2 class="fw-bold mb-3">
-                        Bắt đầu vận hành hệ thống với @siteName
-                    </h2>
-
-                    <p class="text-muted mb-4">
-                        Nếu bạn cần tư vấn triển khai, hỗ trợ sử dụng hệ thống hoặc muốn tìm hiểu thêm
-                        về mô hình quản lý khóa học online, hãy liên hệ theo thông tin bên dưới.
-                    </p>
-
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded-4 h-100">
-                                <div class="fw-semibold mb-1">Điện thoại</div>
-                                <div class="text-muted">@contactPhone</div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded-4 h-100">
-                                <div class="fw-semibold mb-1">Email</div>
-                                <div class="text-muted">@contactEmail</div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded-4 h-100">
-                                <div class="fw-semibold mb-1">Địa chỉ</div>
-                                <div class="text-muted">@contactAddress</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-5">
-                    <div class="p-4 bg-light rounded-4">
-                        <h3 class="h5 fw-bold mb-3">Tại sao bố cục này phù hợp?</h3>
-                        <ul class="text-muted mb-0 ps-3">
-                            <li class="mb-2">Những phần admin đang cấu hình được sẽ hiển thị rõ trên trang chủ.</li>
-                            <li class="mb-2">Banner slide được dùng đúng mục đích, không bị thừa.</li>
-                            <li class="mb-2">Thông tin liên hệ lấy trực tiếp từ cài đặt hệ thống.</li>
-                            <li class="mb-2">Bỏ bớt nội dung cứng chưa gắn với dữ liệu thật.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@section Scripts {
+    <script src="~/js/index.js" asp-append-version="true"></script>
+}
