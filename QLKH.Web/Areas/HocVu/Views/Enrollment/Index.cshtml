@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.Enrollment>
-@using QLKH.Domain.Enums
 
 @{
     ViewData["Title"] = "Danh sách ghi danh";
 
-    var enrollments = Model ?? Enumerable.Empty<QLKH.Domain.Entities.Enrollment>();
+    var pendingList = Model?.Where(x => x.Status == QLKH.Domain.Enums.EnrollmentStatus.Pending).ToList()
+                      ?? new List<QLKH.Domain.Entities.Enrollment>();
 
-    var pendingList = enrollments.Where(x => x.Status == EnrollmentStatus.Pending).ToList();
-    var confirmedList = enrollments.Where(x => x.Status == EnrollmentStatus.Confirmed).ToList();
-    var cancelledList = enrollments.Where(x => x.Status == EnrollmentStatus.Cancelled).ToList();
+    var confirmedList = Model?.Where(x => x.Status == QLKH.Domain.Enums.EnrollmentStatus.Confirmed).ToList()
+                        ?? new List<QLKH.Domain.Entities.Enrollment>();
+
+    var cancelledList = Model?.Where(x => x.Status == QLKH.Domain.Enums.EnrollmentStatus.Cancelled).ToList()
+                        ?? new List<QLKH.Domain.Entities.Enrollment>();
 }
 
 @section Styles {
@@ -19,7 +21,7 @@
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">Danh sách ghi danh</h1>
-            <p class="cp-subtitle">Quản lý ghi danh theo trạng thái.</p>
+            <p class="cp-subtitle">Quản lý ghi danh theo từng trạng thái để Học vụ dễ theo dõi và xử lý.</p>
         </div>
 
         <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Create" class="cp-btn cp-btn--primary">
@@ -27,53 +29,53 @@
         </a>
     </div>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success mb-3">@TempData["SuccessMessage"]</div>
-    }
-
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger mb-3">@TempData["ErrorMessage"]</div>
-    }
-
-    <!-- Bootstrap Tabs -->
-    <ul class="nav nav-tabs mb-4" id="enrollmentTabs" role="tablist">
-        <li class="nav-item">
-            <button class="nav-link active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#pending-pane">
-                Pending (@pendingList.Count)
+    <div class="enrollment-tabs-wrap" data-enrollment-tabs>
+        <div class="enrollment-tabs" role="tablist" aria-label="Trạng thái ghi danh">
+            <button type="button"
+                    class="enrollment-tab-btn active"
+                    data-tab="pendingTab"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="pendingTab">
+                Chờ duyệt
+                <span class="enrollment-count">@pendingList.Count</span>
             </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#confirmed-pane">
-                Confirmed (@confirmedList.Count)
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#cancelled-pane">
-                Cancelled (@cancelledList.Count)
-            </button>
-        </li>
-    </ul>
 
-    <!-- Tab content -->
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="pending-pane">
+            <button type="button"
+                    class="enrollment-tab-btn"
+                    data-tab="confirmedTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="confirmedTab">
+                Đã xác nhận
+                <span class="enrollment-count">@confirmedList.Count</span>
+            </button>
+
+            <button type="button"
+                    class="enrollment-tab-btn"
+                    data-tab="cancelledTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="cancelledTab">
+                Đã hủy
+                <span class="enrollment-count">@cancelledList.Count</span>
+            </button>
+        </div>
+
+        <div id="pendingTab" class="enrollment-tab-pane active" role="tabpanel">
             @await Html.PartialAsync("_EnrollmentTablePartial", pendingList)
         </div>
 
-        <div class="tab-pane fade" id="confirmed-pane">
+        <div id="confirmedTab" class="enrollment-tab-pane" role="tabpanel" hidden>
             @await Html.PartialAsync("_EnrollmentTablePartial", confirmedList)
         </div>
 
-        <div class="tab-pane fade" id="cancelled-pane">
+        <div id="cancelledTab" class="enrollment-tab-pane" role="tabpanel" hidden>
             @await Html.PartialAsync("_EnrollmentTablePartial", cancelledList)
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}
