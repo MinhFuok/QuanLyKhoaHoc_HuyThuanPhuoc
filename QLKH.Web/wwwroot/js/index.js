@@ -53,6 +53,75 @@
         });
     });
 
+    const cyberCards = root.querySelectorAll('[data-home-cyber-card]');
+    if (!prefersReduced && cyberCards.length) {
+        cyberCards.forEach((card) => {
+            let frameId = 0;
+
+            const applyState = (pointerX, pointerY) => {
+                const rect = card.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+
+                const ratioX = (pointerX - rect.left) / rect.width;
+                const ratioY = (pointerY - rect.top) / rect.height;
+                const rotateY = (ratioX - 0.5) * 16;
+                const rotateX = (0.5 - ratioY) * 14;
+                const shiftX = (ratioX - 0.5) * 18;
+                const shiftY = (ratioY - 0.5) * 16;
+
+                card.style.setProperty('--contact-rotate-x', `${rotateX.toFixed(2)}deg`);
+                card.style.setProperty('--contact-rotate-y', `${rotateY.toFixed(2)}deg`);
+                card.style.setProperty('--contact-shift-x', `${shiftX.toFixed(2)}px`);
+                card.style.setProperty('--contact-shift-y', `${shiftY.toFixed(2)}px`);
+                card.style.setProperty('--contact-glare-x', `${(ratioX * 100).toFixed(2)}%`);
+                card.style.setProperty('--contact-glare-y', `${(ratioY * 100).toFixed(2)}%`);
+                card.style.setProperty('--contact-hover', '1');
+            };
+
+            const resetState = () => {
+                card.classList.remove('is-hovered');
+                card.style.setProperty('--contact-rotate-x', '0deg');
+                card.style.setProperty('--contact-rotate-y', '0deg');
+                card.style.setProperty('--contact-shift-x', '0px');
+                card.style.setProperty('--contact-shift-y', '0px');
+                card.style.setProperty('--contact-glare-x', '50%');
+                card.style.setProperty('--contact-glare-y', '50%');
+                card.style.setProperty('--contact-hover', '0');
+            };
+
+            card.addEventListener('pointerenter', () => {
+                card.classList.add('is-hovered');
+                card.style.setProperty('--contact-hover', '1');
+            });
+
+            card.addEventListener('pointermove', (event) => {
+                if (event.pointerType === 'touch') return;
+                if (frameId) cancelAnimationFrame(frameId);
+                frameId = requestAnimationFrame(() => {
+                    applyState(event.clientX, event.clientY);
+                });
+            });
+
+            card.addEventListener('pointerleave', () => {
+                if (frameId) cancelAnimationFrame(frameId);
+                resetState();
+            });
+
+            card.addEventListener('pointercancel', resetState);
+            card.addEventListener('focusin', () => {
+                card.classList.add('is-hovered');
+                card.style.setProperty('--contact-hover', '1');
+            });
+            card.addEventListener('focusout', () => {
+                if (!card.contains(document.activeElement)) {
+                    resetState();
+                }
+            });
+
+            resetState();
+        });
+    }
+
     const revealItems = root.querySelectorAll('.home-reveal');
     if (!revealItems.length) return;
 
