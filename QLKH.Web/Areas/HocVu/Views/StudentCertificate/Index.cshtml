@@ -1,31 +1,43 @@
-﻿@model IEnumerable<QLKH.Domain.Entities.StudentCertificate>
+@model IEnumerable<QLKH.Domain.Entities.StudentCertificate>
 
 @{
     ViewData["Title"] = "Chứng chỉ học viên";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Quản lý chứng chỉ học viên</h2>
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
 }
 
-<div class="mb-3">
-    <a asp-area="HocVu"
-       asp-controller="StudentCertificate"
-       asp-action="Create"
-       class="btn btn-primary">
-        + Thêm chứng chỉ
-    </a>
-</div>
+<div class="course-page admin-profession-page student-certificate-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Quản lý chứng chỉ học viên</h1>
+            <p class="cp-subtitle">Theo dõi chứng chỉ, file minh chứng và trạng thái xác nhận của từng học viên.</p>
+        </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <table class="table table-bordered table-striped">
+        <a asp-area="HocVu"
+           asp-controller="StudentCertificate"
+           asp-action="Create"
+           class="cp-btn cp-btn--primary">
+            + Thêm chứng chỉ
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="cp-inline-alert cp-inline-alert--success" data-cp-alert>
+            <div class="cp-inline-alert-icon">✓</div>
+            <div class="cp-inline-alert-content">
+                <strong>Thao tác thành công</strong>
+                <span>@TempData["SuccessMessage"]</span>
+            </div>
+            <button type="button" class="cp-inline-alert-close" data-cp-alert-close aria-label="Đóng thông báo">×</button>
+        </div>
+    }
+
+    <div class="cp-table-wrap">
+        <table class="cp-table">
             <thead>
                 <tr>
                     <th>Học viên</th>
@@ -35,60 +47,81 @@
                     <th>Đơn vị cấp</th>
                     <th>Trạng thái</th>
                     <th>Minh chứng</th>
-                    <th>Thao tác</th>
+                    <th class="cp-col-action">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @if (Model?.Any() == true)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="cp-row">
+                            <td><div class="cp-name">@item.Student?.FullName</div></td>
+                            <td><div class="cp-certificate-title">@item.CertificateName</div></td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.CertificateCode))
+                                {
+                                    <span class="cp-code">@item.CertificateCode</span>
+                                }
+                                else
+                                {
+                                    <span class="cp-muted">Chưa có</span>
+                                }
+                            </td>
+                            <td>@(item.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                            <td>@(!string.IsNullOrWhiteSpace(item.IssuedBy) ? item.IssuedBy : "Chưa có")</td>
+                            <td>
+                                <div class="cp-status-surface cp-status-surface--@(item.IsApproved ? "confirmed" : "pending")">
+                                    <span class="cp-badge cp-badge--@(item.IsApproved ? "confirmed" : "pending")">
+                                        @(item.IsApproved ? "Đã xác nhận" : "Chờ xác nhận")
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.EvidenceFilePath))
+                                {
+                                    <a href="@item.EvidenceFilePath" target="_blank" rel="noopener noreferrer" class="cp-file-link">
+                                        Xem file
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="cp-muted">Không có</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="cp-actions">
+                                    <a asp-area="HocVu"
+                                       asp-controller="StudentCertificate"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--warning cp-btn--sm">
+                                        Sửa
+                                    </a>
+
+                                    <a asp-area="HocVu"
+                                       asp-controller="StudentCertificate"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--danger cp-btn--sm">
+                                        Xóa
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@item.Student?.FullName</td>
-                        <td>@item.CertificateName</td>
-                        <td>@item.CertificateCode</td>
-                        <td>@(item.IssuedDate?.ToString("dd/MM/yyyy"))</td>
-                        <td>@item.IssuedBy</td>
-                        <td>
-                            @if (item.IsApproved)
-                            {
-                                <span class="badge bg-success">Đã xác nhận</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark">Chờ xác nhận</span>
-                            }
-                        </td>
-                        <td>
-                            @if (!string.IsNullOrWhiteSpace(item.EvidenceFilePath))
-                            {
-                                <a href="@item.EvidenceFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
-                                    Xem file
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="text-muted">Không có</span>
-                            }
-                        </td>
-                        <td>
-                            <a asp-area="HocVu"
-                               asp-controller="StudentCertificate"
-                               asp-action="Edit"
-                               asp-route-id="@item.Id"
-                               class="btn btn-sm btn-warning">
-                                Sửa
-                            </a>
-
-                            <a asp-area="HocVu"
-                               asp-controller="StudentCertificate"
-                               asp-action="Delete"
-                               asp-route-id="@item.Id"
-                               class="btn btn-sm btn-danger">
-                                Xóa
-                            </a>
-                        </td>
+                        <td colspan="8" class="cp-empty">Chưa có chứng chỉ nào trong hệ thống.</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

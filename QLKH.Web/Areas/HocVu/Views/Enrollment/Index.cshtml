@@ -15,66 +15,6 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
-
-    <style>
-        .enrollment-tabs-wrap {
-            margin-top: 20px;
-        }
-
-        .enrollment-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .enrollment-tab-btn {
-            border: none;
-            outline: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            background: #eef2ff;
-            color: #1e3a8a;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .enrollment-tab-btn:hover {
-            background: #dbeafe;
-        }
-
-        .enrollment-tab-btn.active {
-            background: #2563eb;
-            color: #fff;
-        }
-
-        .enrollment-tab-pane {
-            display: none;
-        }
-
-        .enrollment-tab-pane.active {
-            display: block;
-        }
-
-        .enrollment-count {
-            display: inline-block;
-            margin-left: 8px;
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-size: 12px;
-            background: rgba(255,255,255,0.25);
-        }
-
-        .enrollment-empty-box {
-            padding: 24px;
-            text-align: center;
-            border: 1px dashed #d1d5db;
-            border-radius: 12px;
-            background: #f9fafb;
-            color: #6b7280;
-        }
-    </style>
 }
 
 <div class="course-page admin-profession-page enrollment-page">
@@ -89,33 +29,48 @@
         </a>
     </div>
 
-    <div class="enrollment-tabs-wrap">
-        <div class="enrollment-tabs">
-            <button type="button" class="enrollment-tab-btn active" data-tab="pendingTab">
+    <div class="enrollment-tabs-wrap" data-enrollment-tabs>
+        <div class="enrollment-tabs" role="tablist" aria-label="Trạng thái ghi danh">
+            <button type="button"
+                    class="enrollment-tab-btn active"
+                    data-tab="pendingTab"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="pendingTab">
                 Chờ duyệt
                 <span class="enrollment-count">@pendingList.Count</span>
             </button>
 
-            <button type="button" class="enrollment-tab-btn" data-tab="confirmedTab">
+            <button type="button"
+                    class="enrollment-tab-btn"
+                    data-tab="confirmedTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="confirmedTab">
                 Đã xác nhận
                 <span class="enrollment-count">@confirmedList.Count</span>
             </button>
 
-            <button type="button" class="enrollment-tab-btn" data-tab="cancelledTab">
+            <button type="button"
+                    class="enrollment-tab-btn"
+                    data-tab="cancelledTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="cancelledTab">
                 Đã hủy
                 <span class="enrollment-count">@cancelledList.Count</span>
             </button>
         </div>
 
-        <div id="pendingTab" class="enrollment-tab-pane active">
+        <div id="pendingTab" class="enrollment-tab-pane active" role="tabpanel">
             @await Html.PartialAsync("_EnrollmentTablePartial", pendingList)
         </div>
 
-        <div id="confirmedTab" class="enrollment-tab-pane">
+        <div id="confirmedTab" class="enrollment-tab-pane" role="tabpanel" hidden>
             @await Html.PartialAsync("_EnrollmentTablePartial", confirmedList)
         </div>
 
-        <div id="cancelledTab" class="enrollment-tab-pane">
+        <div id="cancelledTab" class="enrollment-tab-pane" role="tabpanel" hidden>
             @await Html.PartialAsync("_EnrollmentTablePartial", cancelledList)
         </div>
     </div>
@@ -123,23 +78,4 @@
 
 @section Scripts {
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const buttons = document.querySelectorAll(".enrollment-tab-btn");
-            const panes = document.querySelectorAll(".enrollment-tab-pane");
-
-            buttons.forEach(button => {
-                button.addEventListener("click", function () {
-                    const target = this.getAttribute("data-tab");
-
-                    buttons.forEach(b => b.classList.remove("active"));
-                    panes.forEach(p => p.classList.remove("active"));
-
-                    this.classList.add("active");
-                    document.getElementById(target).classList.add("active");
-                });
-            });
-        });
-    </script>
 }

@@ -27,9 +27,11 @@
                         <td>@item.ClassRoom?.Teacher?.FullName</td>
                         <td>@item.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>
-                            <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
-                                @item.Status
-                            </span>
+                            <div class="cp-status-surface cp-status-surface--@item.Status.ToString().ToLower()">
+                                <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
+                                    @item.Status
+                                </span>
+                            </div>
                         </td>
                         <td>
                             <div class="cp-actions">
