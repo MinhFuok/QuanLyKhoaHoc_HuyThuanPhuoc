@@ -49,10 +49,11 @@ namespace QLKH.Application.Services
             var enrollments = await _enrollmentRepository.GetByStudentIdAsync(student.Id);
 
             return enrollments
-                .Select(x => x.ClassRoom)
-                .GroupBy(x => x.Id)
-                .Select(g => g.First())
-                .ToList();
+            .Where(x => x.ClassRoom != null)
+            .Select(x => x.ClassRoom!)
+            .GroupBy(x => x.Id)
+            .Select(g => g.First())
+            .ToList();
         }
 
         public async Task<bool> CreateAsync(Student student)

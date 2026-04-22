@@ -2,22 +2,22 @@
 @using QLKH.Domain.Enums
 
 <div class="cp-table-wrap">
-    <table class="cp-table">
-        <thead>
-            <tr>
-                <th>Học viên</th>
-                <th>Lớp học</th>
-                <th>Khóa học</th>
-                <th>Giảng viên</th>
-                <th>Ngày ghi danh</th>
-                <th>Trạng thái</th>
-                <th class="cp-col-action">Chức năng</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
+    @if (Model != null && Model.Any())
+    {
+        <table class="cp-table">
+            <thead>
+                <tr>
+                    <th>Học viên</th>
+                    <th>Lớp học</th>
+                    <th>Khóa học</th>
+                    <th>Giảng viên</th>
+                    <th>Ngày ghi danh</th>
+                    <th>Trạng thái</th>
+                    <th class="cp-col-action">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
                 {
                     <tr class="cp-row">
                         <td><div class="cp-name">@item.Student?.FullName</div></td>
@@ -44,13 +44,13 @@
 
                                 @if (item.Status == EnrollmentStatus.Pending)
                                 {
-                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Confirm" method="post" style="display:inline;">
+                                    <form asp-action="Confirm" method="post" style="display:inline;">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="@item.Id" />
                                         <button type="submit" class="cp-btn cp-btn--primary cp-btn--sm">Xác nhận</button>
                                     </form>
 
-                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Cancel" method="post" style="display:inline;">
+                                    <form asp-action="Cancel" method="post" style="display:inline;">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="@item.Id" />
                                         <button type="submit" class="cp-btn cp-btn--danger cp-btn--sm">Hủy</button>
@@ -58,7 +58,7 @@
                                 }
                                 else if (item.Status == EnrollmentStatus.Confirmed)
                                 {
-                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Cancel" method="post" style="display:inline;">
+                                    <form asp-action="Cancel" method="post" style="display:inline;">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="@item.Id" />
                                         <button type="submit" class="cp-btn cp-btn--danger cp-btn--sm">Hủy ghi danh</button>
@@ -66,40 +66,27 @@
                                 }
                                 else if (item.Status == EnrollmentStatus.Cancelled)
                                 {
-                                    <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Confirm" method="post" style="display:inline;">
+                                    <form asp-action="Confirm" method="post" style="display:inline;">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="@item.Id" />
                                         <button type="submit" class="cp-btn cp-btn--primary cp-btn--sm">Xác nhận lại</button>
                                     </form>
                                 }
 
-                                <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">
                                     Xóa
                                 </a>
                             </div>
                         </td>
                     </tr>
                 }
-<<<<<<< HEAD
-            }
-            else
-            {
-                <tr>
-                    <td colspan="7" class="cp-empty">Không có dữ liệu trong tab này.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-=======
             </tbody>
         </table>
-    </div>
-}
-else
-{
-    <div class="enrollment-empty-box">
-        Không có ghi danh nào trong nhóm trạng thái này.
-    </div>
-}
->>>>>>> d3c96fce0fae5c6e7b6e5abc26d280dd90c660b3
+    }
+    else
+    {
+        <div class="cp-empty">
+            Không có dữ liệu.
+        </div>
+    }
+</div>
