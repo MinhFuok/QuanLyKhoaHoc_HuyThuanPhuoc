@@ -143,7 +143,7 @@ namespace QLKH.Application.Services
                     Status = enrollment.Status.ToString()
                 };
 
-                _messagePublisher.Publish("enrollment.created", message);
+                _messagePublisher.Publish("enrollment-created-queue", message);
             }
 
             return true;

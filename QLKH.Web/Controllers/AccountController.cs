@@ -157,7 +157,7 @@ namespace QLKH.Web.Controllers
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user) || true))
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
             {
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
@@ -250,7 +250,7 @@ namespace QLKH.Web.Controllers
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {
-            return View();
+            return View("AccesDenied");
         }
     }
 }

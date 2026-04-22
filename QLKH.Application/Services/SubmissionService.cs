@@ -127,7 +127,7 @@ namespace QLKH.Application.Services
 
         public async Task<TeacherGradeOverviewViewModel?> GetTeacherGradeOverviewByClassAsync(int classRoomId)
         {
-            var classRoom = await _classRoomRepository.GetByIdAsync(classRoomId);
+            var classRoom = await _classRoomRepository.GetByIdWithDetailsAsync(classRoomId);
             if (classRoom == null)
             {
                 return null;
@@ -229,7 +229,7 @@ namespace QLKH.Application.Services
             else
             {
                 existingSubmission.SubmissionText = submissionText;
-                existingSubmission.FilePath = filePath;
+                existingSubmission.FilePath = filePath ?? existingSubmission.FilePath;
                 existingSubmission.SubmittedAt = DateTime.Now;
 
                 _submissionRepository.Update(existingSubmission);

@@ -26,7 +26,7 @@ namespace QLKH.Web.Areas.HocVien.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int classRoomId)
         {
-            var classRoom = await _classRoomService.GetByIdAsync(classRoomId);
+            var classRoom = await _classRoomService.GetByIdWithDetailsAsync(classRoomId);
             if (classRoom == null)
             {
                 return NotFound();
@@ -64,7 +64,7 @@ namespace QLKH.Web.Areas.HocVien.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int classRoomId, int rating, string? comment)
         {
-            var classRoom = await _classRoomService.GetByIdAsync(classRoomId);
+            var classRoom = await _classRoomService.GetByIdWithDetailsAsync(classRoomId);
             if (classRoom == null)
             {
                 return NotFound();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace QLKH.Web.Areas.HocVu.Controllers
 {
-    [Area("HocVU")]
+    [Area("HocVu")]
     [Authorize(Roles = "Admin,HocVu")]
     public class ClassRoomController : Controller
     {
