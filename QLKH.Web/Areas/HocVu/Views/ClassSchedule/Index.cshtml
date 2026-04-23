@@ -141,24 +141,34 @@
     }
 
     <form method="get"
-          asp-area="HocVu"
-          asp-controller="ClassSchedule"
-          asp-action="Index"
-          class="cp-form-card"
-          style="margin-bottom: 20px;">
-        <div class="cp-form-row">
-            <div class="cp-field">
-                <label class="cp-label">Lọc theo lớp học</label>
-                <select name="classRoomId" asp-items="ViewBag.ClassRoomId" class="cp-input cp-select">
-                    <option value="">-- Tất cả lớp học --</option>
-                </select>
-            </div>
+      asp-area="HocVu"
+      asp-controller="ClassSchedule"
+      asp-action="Index"
+      class="cp-form-card"
+      style="margin-bottom: 20px;">
+    <div class="cp-form-row">
+        <div class="cp-field">
+            <label class="cp-label">Lọc theo lớp học</label>
+            <select name="classRoomId" asp-items="ViewBag.ClassRoomId" class="cp-input cp-select">
+                <option value="">-- Tất cả lớp học --</option>
+            </select>
         </div>
-        <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lọc dữ liệu</button>
-            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Bỏ lọc</a>
+
+        <div class="cp-field">
+            <label class="cp-label">Lọc theo buổi</label>
+            <select name="session" class="cp-input cp-select">
+                <option value="">-- Tất cả buổi --</option>
+                <option value="Morning" selected="@(ViewBag.SelectedSession == "Morning")">Sáng</option>
+                <option value="Afternoon" selected="@(ViewBag.SelectedSession == "Afternoon")">Chiều</option>
+            </select>
         </div>
-    </form>
+    </div>
+
+    <div class="cp-form-actions">
+        <button type="submit" class="cp-btn cp-btn--primary">Lọc dữ liệu</button>
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Bỏ lọc</a>
+    </div>
+</form>
 
     <div class="cp-table-wrap">
         <table class="cp-table">

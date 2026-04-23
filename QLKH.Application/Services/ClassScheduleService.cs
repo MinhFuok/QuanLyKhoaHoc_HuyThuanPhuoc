@@ -235,6 +235,63 @@ namespace QLKH.Application.Services
                 _ => throw new InvalidOperationException("Buổi học không hợp lệ.")
             };
         }
+        public async Task<int> UpdateGroupedSessionsAsync(int anchorId, string session, string? teamCode, string? note)
+        {
+            var anchor = await _classScheduleRepository.GetByIdAsync(anchorId);
+            if (anchor == null)
+            {
+                return 0;
+            }
+
+            var schedules = await _classScheduleRepository.GetByClassRoomIdAsync(anchor.ClassRoomId);
+
+            var groupSchedules = schedules
+                .Where(x =>
+                    x.ClassRoomId == anchor.ClassRoomId &&
+                    x.StartTime == anchor.StartTime &&
+                    x.EndTime == anchor.EndTime &&
+                    string.Equals(x.RoomName ?? "", anchor.RoomName ?? "", StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(x.Note ?? "", anchor.Note ?? "", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.StudyDate)
+                .ToList();
+
+            if (!groupSchedules.Any())
+            {
+                return 0;
+            }
+
+            var (newStartTime, newEndTime, sessionText) = GetSessionTime(session);
+
+            // Kiểm tra conflict cho từng buổi nếu đổi sang buổi khác
+            foreach (var item in groupSchedules)
+            {
+                var hasConflict = await _classScheduleRepository.ExistsConflictAsync(
+                    item.StudyDate.Date,
+                    newStartTime,
+                    newEndTime,
+                    item.Id);
+
+                if (hasConflict)
+                {
+                    throw new InvalidOperationException(
+                        $"Không thể cập nhật chuỗi lịch vì ngày {item.StudyDate:dd/MM/yyyy} bị trùng với lịch khác.");
+                }
+            }
+
+            int index = 1;
+            foreach (var item in groupSchedules)
+            {
+                item.StartTime = newStartTime;
+                item.EndTime = newEndTime;
+                item.RoomName = teamCode;
+                item.Note = note;
+                item.LessonTitle = $"{anchor.ClassRoom?.ClassCode} - {item.StudyDate:dd/MM/yyyy} - Buổi {sessionText}";
+                index++;
+            }
+
+            await _classScheduleRepository.SaveChangesAsync();
+            return groupSchedules.Count;
+        }
         public async Task<int> DeleteGroupedSessionsAsync(int anchorId)
         {
             var anchor = await _classScheduleRepository.GetByIdAsync(anchorId);

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QLKH.Application.Interfaces.Services;
 using QLKH.Domain.Entities;
 using QLKH.Domain.Enums;
-using Microsoft.AspNetCore.Authorization;
 
 namespace QLKH.Web.Areas.HocVu.Controllers
 {
@@ -80,28 +80,35 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        [Authorize(Roles = "Admin,HocVu")]
+
         public async Task<IActionResult> Delete(int id)
         {
-            var course = await _courseService.GetByIdAsync(id);
-            if (course == null)
+            var model = await _courseService.GetDeleteImpactAsync(id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(model);
         }
-        [Authorize(Roles = "Admin,HocVu")]
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int courseId, bool confirmCascadeDelete)
         {
-            var result = await _courseService.DeleteAsync(id);
+            if (!confirmCascadeDelete)
+            {
+                TempData["ErrorMessage"] = "Bạn cần xác nhận đã hiểu các dữ liệu liên quan sẽ bị xóa.";
+                return RedirectToAction(nameof(Delete), new { id = courseId });
+            }
+
+            var result = await _courseService.DeleteCascadeAsync(courseId);
             if (!result)
             {
                 return NotFound();
             }
 
+            TempData["SuccessMessage"] = "Xóa khóa học và toàn bộ dữ liệu liên quan thành công.";
             return RedirectToAction(nameof(Index));
         }
 

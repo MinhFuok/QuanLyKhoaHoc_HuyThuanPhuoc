@@ -14,6 +14,8 @@ namespace QLKH.Application.ViewModels
         [Display(Name = "Chọn buổi")]
         public int SelectedScheduleId { get; set; }
 
+        public bool EditAllSessions { get; set; }
+
         public bool DeleteAllSessions { get; set; }
 
         public string ClassCode { get; set; } = string.Empty;

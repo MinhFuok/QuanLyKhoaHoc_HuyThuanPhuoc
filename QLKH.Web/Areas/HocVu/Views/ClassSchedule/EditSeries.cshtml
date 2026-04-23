@@ -1,0 +1,92 @@
+﻿@model QLKH.Application.ViewModels.ClassScheduleEditSeriesViewModel
+
+@{
+    ViewData["Title"] = "Sửa cả chuỗi lịch";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Sửa cả chuỗi lịch</h1>
+            <p class="cp-subtitle">Cập nhật toàn bộ các buổi thuộc cùng một nhóm lịch học.</p>
+        </div>
+
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+    </div>
+
+    <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="EditSeries" method="post" class="cp-form-card">
+        <input type="hidden" asp-for="AnchorId" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="cp-form-group-label">Thông tin chuỗi lịch</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label class="cp-label">Lớp học</label>
+                <input class="cp-input" value="@Model.ClassName (@Model.ClassCode)" readonly />
+            </div>
+
+            <div class="cp-field">
+                <label class="cp-label">Khóa học</label>
+                <input class="cp-input" value="@Model.CourseName" readonly />
+            </div>
+        </div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label class="cp-label">Tổng số buổi trong chuỗi</label>
+                <input class="cp-input" value="@Model.TotalSessions" readonly />
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Thông tin sẽ áp dụng cho toàn bộ chuỗi</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="Session" class="cp-label"></label>
+                <select asp-for="Session" class="cp-input cp-select">
+                    <option value="Morning">Sáng (07:00 - 11:30)</option>
+                    <option value="Afternoon">Chiều (13:00 - 17:00)</option>
+                </select>
+                <span asp-validation-for="Session" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="TeamCode" class="cp-label"></label>
+                <input asp-for="TeamCode" class="cp-input" placeholder="VD: TEAM-ABC-01" />
+                <span asp-validation-for="TeamCode" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-row">
+            <div class="cp-field" style="flex: 0 0 100%; max-width: 100%;">
+                <label asp-for="Note" class="cp-label"></label>
+                <input asp-for="Note" class="cp-input" placeholder="Ghi chú sẽ áp dụng cho toàn bộ chuỗi" />
+                <span asp-validation-for="Note" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit"
+                    class="cp-btn cp-btn--primary"
+                    onclick="return confirm('Bạn có chắc chắn muốn cập nhật toàn bộ chuỗi lịch này không?');">
+                Lưu cả chuỗi
+            </button>
+
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">
+                Quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+}

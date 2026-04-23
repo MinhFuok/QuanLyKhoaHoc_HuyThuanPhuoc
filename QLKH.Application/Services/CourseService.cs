@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QLKH.Application.Interfaces.Repositories;
 using QLKH.Application.Interfaces.Services;
+using QLKH.Application.ViewModels;
 using QLKH.Domain.Entities;
 
 namespace QLKH.Application.Services
@@ -60,16 +61,20 @@ namespace QLKH.Application.Services
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<CourseDeleteImpactViewModel?> GetDeleteImpactAsync(int id)
         {
-            var existingCourse = await _courseRepository.GetByIdAsync(id);
-            if (existingCourse == null)
+            return await _courseRepository.GetDeleteImpactAsync(id);
+        }
+
+        public async Task<bool> DeleteCascadeAsync(int id)
+        {
+            var impact = await _courseRepository.GetDeleteImpactAsync(id);
+            if (impact == null)
             {
                 return false;
             }
 
-            _courseRepository.Delete(existingCourse);
-            await _courseRepository.SaveChangesAsync();
+            await _courseRepository.DeleteCascadeAsync(id);
             return true;
         }
     }

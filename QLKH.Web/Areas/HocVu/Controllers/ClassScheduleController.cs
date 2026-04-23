@@ -28,15 +28,27 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             _classRoomService = classRoomService;
         }
 
-        public async Task<IActionResult> Index(int? classRoomId)
+        public async Task<IActionResult> Index(int? classRoomId, string? session)
         {
             await LoadClassRoomDropdownAsync(classRoomId);
 
-            IEnumerable<ClassSchedule> schedules = classRoomId.HasValue
+            var schedules = classRoomId.HasValue
                 ? await _classScheduleService.GetByClassRoomIdAsync(classRoomId.Value)
                 : await _classScheduleService.GetAllAsync();
 
+            if (!string.IsNullOrWhiteSpace(session))
+            {
+                schedules = session switch
+                {
+                    "Morning" => schedules.Where(x => x.StartTime == new TimeSpan(7, 0, 0) && x.EndTime == new TimeSpan(11, 30, 0)),
+                    "Afternoon" => schedules.Where(x => x.StartTime == new TimeSpan(13, 0, 0) && x.EndTime == new TimeSpan(17, 0, 0)),
+                    _ => schedules
+                };
+            }
+
             ViewBag.SelectedClassRoomId = classRoomId;
+            ViewBag.SelectedSession = session;
+
             return View(schedules);
         }
 
@@ -120,7 +132,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditSelect(ClassSchedulePickSessionViewModel model)
         {
-            if (model.SelectedScheduleId <= 0)
+            if (!model.EditAllSessions && model.SelectedScheduleId <= 0)
             {
                 ModelState.AddModelError(nameof(model.SelectedScheduleId), "Vui lòng chọn buổi cần sửa.");
             }
@@ -133,10 +145,86 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                     return NotFound();
                 }
 
+                rebuilt.EditAllSessions = model.EditAllSessions;
                 return View(rebuilt);
             }
 
+            if (model.EditAllSessions)
+            {
+                return RedirectToAction(nameof(EditSeries), new { id = model.AnchorId });
+            }
+
             return RedirectToAction(nameof(Edit), new { id = model.SelectedScheduleId });
+        }
+        public async Task<IActionResult> EditSeries(int id)
+        {
+            var anchor = await _classScheduleService.GetByIdAsync(id);
+            if (anchor == null)
+            {
+                return NotFound();
+            }
+
+            var schedules = await _classScheduleService.GetByClassRoomIdAsync(anchor.ClassRoomId);
+
+            var groupSchedules = schedules
+                .Where(x =>
+                    x.ClassRoomId == anchor.ClassRoomId &&
+                    x.StartTime == anchor.StartTime &&
+                    x.EndTime == anchor.EndTime &&
+                    string.Equals(x.RoomName ?? "", anchor.RoomName ?? "", StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(x.Note ?? "", anchor.Note ?? "", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.StudyDate)
+                .ToList();
+
+            var model = new ClassScheduleEditSeriesViewModel
+            {
+                AnchorId = anchor.Id,
+                ClassCode = anchor.ClassRoom?.ClassCode ?? "",
+                ClassName = anchor.ClassRoom?.ClassName ?? "",
+                CourseName = anchor.ClassRoom?.Course?.CourseName,
+                TotalSessions = groupSchedules.Count,
+                Session = DetectSession(anchor.StartTime, anchor.EndTime),
+                TeamCode = anchor.RoomName,
+                Note = anchor.Note
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSeries(ClassScheduleEditSeriesViewModel model)
+        {
+            if (model.Session != "Morning" && model.Session != "Afternoon")
+            {
+                ModelState.AddModelError(nameof(model.Session), "Buổi học không hợp lệ.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var updatedCount = await _classScheduleService.UpdateGroupedSessionsAsync(
+                    model.AnchorId,
+                    model.Session,
+                    model.TeamCode,
+                    model.Note);
+
+                if (updatedCount <= 0)
+                {
+                    return NotFound();
+                }
+
+                TempData["SuccessMessage"] = $"Đã cập nhật {updatedCount} buổi trong chuỗi lịch.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(model);
+            }
         }
 
         public async Task<IActionResult> Edit(int id)

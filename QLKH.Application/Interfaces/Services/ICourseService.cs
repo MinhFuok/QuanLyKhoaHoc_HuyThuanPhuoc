@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QLKH.Application.ViewModels;
 using QLKH.Domain.Entities;
 
 namespace QLKH.Application.Interfaces.Services
@@ -13,6 +14,8 @@ namespace QLKH.Application.Interfaces.Services
         Task<Course?> GetByIdAsync(int id);
         Task<bool> CreateAsync(Course course);
         Task<bool> UpdateAsync(Course course);
-        Task<bool> DeleteAsync(int id);
+
+        Task<CourseDeleteImpactViewModel?> GetDeleteImpactAsync(int id);
+        Task<bool> DeleteCascadeAsync(int id);
     }
 }

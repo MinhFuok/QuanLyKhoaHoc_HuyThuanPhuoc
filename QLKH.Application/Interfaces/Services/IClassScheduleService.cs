@@ -26,6 +26,7 @@ namespace QLKH.Application.Interfaces.Services
             string session,
             string? teamCode,
             string? note);
+        Task<int> UpdateGroupedSessionsAsync(int anchorId, string session, string? teamCode, string? note);
         Task<int> DeleteGroupedSessionsAsync(int anchorId);
     }
 }
