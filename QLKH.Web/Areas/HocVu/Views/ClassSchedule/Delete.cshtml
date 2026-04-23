@@ -1,0 +1,116 @@
+﻿@model QLKH.Application.ViewModels.ClassSchedulePickSessionViewModel
+
+@{
+    ViewData["Title"] = "Xóa buổi học";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Xóa lịch học</h1>
+            <p class="cp-subtitle">Bạn có thể xóa một buổi cụ thể hoặc xóa toàn bộ chuỗi lịch.</p>
+        </div>
+
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+    </div>
+
+    <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Delete" method="post" class="cp-form-card">
+        <input type="hidden" asp-for="AnchorId" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="cp-form-group-label">Thông tin nhóm lịch học</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label class="cp-label">Lớp học</label>
+                <input class="cp-input" value="@Model.ClassName (@Model.ClassCode)" readonly />
+            </div>
+            <div class="cp-field">
+                <label class="cp-label">Khóa học</label>
+                <input class="cp-input" value="@Model.CourseName" readonly />
+            </div>
+        </div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label class="cp-label">Buổi học</label>
+                <input class="cp-input" value="@Model.SessionText (@Model.TimeRangeText)" readonly />
+            </div>
+            <div class="cp-field">
+                <label class="cp-label">Tổng số buổi</label>
+                <input class="cp-input" value="@Model.TotalSessions" readonly />
+            </div>
+        </div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label class="cp-label">TeamCode</label>
+                <input class="cp-input" value="@Model.TeamCode" readonly />
+            </div>
+            <div class="cp-field">
+                <label class="cp-label">Ghi chú</label>
+                <input class="cp-input" value="@Model.Note" readonly />
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Chọn kiểu xóa</div>
+        <div class="cp-form-row">
+            <div class="cp-field" style="flex: 0 0 100%; max-width: 100%;">
+                <label style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+                    <input asp-for="DeleteAllSessions" id="deleteAllSessionsCheckbox" />
+                    <span>Xóa toàn bộ các buổi trong nhóm lịch này</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Chọn buổi cần xóa</div>
+        <div class="cp-form-row" id="singleDeleteSection">
+            <div class="cp-field" style="flex: 0 0 100%; max-width: 100%;">
+                <label asp-for="SelectedScheduleId" class="cp-label"></label>
+                <select asp-for="SelectedScheduleId" class="cp-input cp-select">
+                    <option value="">-- Chọn buổi --</option>
+                    @foreach (var item in Model.SessionOptions)
+                    {
+                        <option value="@item.Id">@item.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="SelectedScheduleId" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit"
+                    class="cp-btn cp-btn--danger"
+                    onclick="return confirm(document.getElementById('deleteAllSessionsCheckbox').checked
+                        ? 'Bạn có chắc chắn muốn xóa toàn bộ các buổi trong nhóm lịch này không?'
+                        : 'Bạn có chắc chắn muốn xóa buổi học đã chọn không?');">
+                Xóa
+            </button>
+
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">
+                Quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+    <script>
+        const deleteAllCheckbox = document.getElementById('deleteAllSessionsCheckbox');
+        const singleDeleteSection = document.getElementById('singleDeleteSection');
+
+        function toggleDeleteMode() {
+            singleDeleteSection.style.display = deleteAllCheckbox.checked ? 'none' : 'flex';
+        }
+
+        deleteAllCheckbox.addEventListener('change', toggleDeleteMode);
+        toggleDeleteMode();
+    </script>
+}

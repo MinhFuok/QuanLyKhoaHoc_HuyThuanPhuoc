@@ -15,6 +15,13 @@ namespace QLKH.Application.Interfaces.Repositories
         Task AddAsync(ClassSchedule classSchedule);
         void Update(ClassSchedule classSchedule);
         void Delete(ClassSchedule classSchedule);
+
+        Task<bool> ExistsConflictAsync(
+            DateTime studyDate,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int? excludeId = null);
+
         Task SaveChangesAsync();
     }
 }

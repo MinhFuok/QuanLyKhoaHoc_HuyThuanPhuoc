@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QLKH.Application.Interfaces.Repositories;
 using QLKH.Application.Interfaces.Services;
+using QLKH.Application.ViewModels;
 using QLKH.Domain.Entities;
 
 namespace QLKH.Application.Services
@@ -16,6 +17,11 @@ namespace QLKH.Application.Services
         private readonly IStudentRepository _studentRepository;
         private readonly IClassRoomRepository _classRoomRepository;
         private readonly IEnrollmentRepository _enrollmentRepository;
+
+        private static readonly TimeSpan MorningStart = new(7, 0, 0);
+        private static readonly TimeSpan MorningEnd = new(11, 30, 0);
+        private static readonly TimeSpan AfternoonStart = new(13, 0, 0);
+        private static readonly TimeSpan AfternoonEnd = new(17, 0, 0);
 
         public ClassScheduleService(
             IClassScheduleRepository classScheduleRepository,
@@ -56,7 +62,6 @@ namespace QLKH.Application.Services
             }
 
             var classRooms = await _classRoomRepository.GetByTeacherIdAsync(teacher.Id);
-
             var result = new List<ClassSchedule>();
 
             foreach (var classRoom in classRooms)
@@ -109,7 +114,20 @@ namespace QLKH.Application.Services
 
         public async Task UpdateAsync(ClassSchedule classSchedule)
         {
-            _classScheduleRepository.Update(classSchedule);
+            var existing = await _classScheduleRepository.GetByIdAsync(classSchedule.Id);
+            if (existing == null)
+            {
+                throw new KeyNotFoundException("Không tìm thấy lịch học cần cập nhật.");
+            }
+
+            existing.ClassRoomId = classSchedule.ClassRoomId;
+            existing.LessonTitle = classSchedule.LessonTitle;
+            existing.StudyDate = classSchedule.StudyDate;
+            existing.StartTime = classSchedule.StartTime;
+            existing.EndTime = classSchedule.EndTime;
+            existing.RoomName = classSchedule.RoomName;
+            existing.Note = classSchedule.Note;
+
             await _classScheduleRepository.SaveChangesAsync();
         }
 
@@ -124,6 +142,125 @@ namespace QLKH.Application.Services
             _classScheduleRepository.Delete(existing);
             await _classScheduleRepository.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<ClassScheduleRecurringCreateResult> CreateRecurringAsync(
+            int classRoomId,
+            List<int> selectedDays,
+            string session,
+            string? teamCode,
+            string? note)
+        {
+            var result = new ClassScheduleRecurringCreateResult();
+
+            var classRoom = await _classRoomRepository.GetByIdAsync(classRoomId);
+            if (classRoom == null)
+            {
+                result.Success = false;
+                result.ErrorMessage = "Lớp học không tồn tại.";
+                return result;
+            }
+
+            if (selectedDays == null || !selectedDays.Any())
+            {
+                result.Success = false;
+                result.ErrorMessage = "Vui lòng chọn ít nhất 1 ngày trong tuần.";
+                return result;
+            }
+
+            var (startTime, endTime, sessionText) = GetSessionTime(session);
+
+            var conflictDates = new List<DateTime>();
+            var datesToCreate = new List<DateTime>();
+
+            for (var date = classRoom.StartDate.Date; date <= classRoom.EndDate.Date; date = date.AddDays(1))
+            {
+                var dayNumber = (int)date.DayOfWeek; // Chủ nhật = 0, Thứ hai = 1, ...
+                if (!selectedDays.Contains(dayNumber))
+                {
+                    continue;
+                }
+
+                var hasConflict = await _classScheduleRepository.ExistsConflictAsync(date, startTime, endTime);
+                if (hasConflict)
+                {
+                    conflictDates.Add(date);
+                }
+                else
+                {
+                    datesToCreate.Add(date);
+                }
+            }
+
+            if (conflictDates.Any())
+            {
+                result.Success = false;
+                result.ConflictDates = conflictDates
+                    .OrderBy(x => x)
+                    .ToList();
+
+                result.ErrorMessage = "Có lịch bị trùng với lớp khác.";
+                return result;
+            }
+
+            foreach (var date in datesToCreate)
+            {
+                var classSchedule = new ClassSchedule
+                {
+                    ClassRoomId = classRoomId,
+                    StudyDate = date,
+                    StartTime = startTime,
+                    EndTime = endTime,
+                    LessonTitle = $"{classRoom.ClassCode} - {date:dd/MM/yyyy} - Buổi {sessionText}",
+                    RoomName = teamCode,
+                    Note = note
+                };
+
+                await _classScheduleRepository.AddAsync(classSchedule);
+            }
+
+            await _classScheduleRepository.SaveChangesAsync();
+
+            result.Success = true;
+            result.CreatedCount = datesToCreate.Count;
+            return result;
+        }
+
+        private static (TimeSpan StartTime, TimeSpan EndTime, string SessionText) GetSessionTime(string session)
+        {
+            return session switch
+            {
+                "Morning" => (MorningStart, MorningEnd, "Sáng"),
+                "Afternoon" => (AfternoonStart, AfternoonEnd, "Chiều"),
+                _ => throw new InvalidOperationException("Buổi học không hợp lệ.")
+            };
+        }
+        public async Task<int> DeleteGroupedSessionsAsync(int anchorId)
+        {
+            var anchor = await _classScheduleRepository.GetByIdAsync(anchorId);
+            if (anchor == null)
+            {
+                return 0;
+            }
+
+            var schedules = await _classScheduleRepository.GetByClassRoomIdAsync(anchor.ClassRoomId);
+
+            var groupSchedules = schedules
+                .Where(x =>
+                    x.ClassRoomId == anchor.ClassRoomId &&
+                    x.StartTime == anchor.StartTime &&
+                    x.EndTime == anchor.EndTime &&
+                    string.Equals(x.RoomName ?? "", anchor.RoomName ?? "", StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(x.Note ?? "", anchor.Note ?? "", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            foreach (var item in groupSchedules)
+            {
+                _classScheduleRepository.Delete(item);
+            }
+
+            await _classScheduleRepository.SaveChangesAsync();
+            return groupSchedules.Count;
         }
     }
 }

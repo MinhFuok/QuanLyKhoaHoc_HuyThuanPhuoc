@@ -64,6 +64,21 @@ namespace QLKH.Infrastructure.Repositories
             _context.ClassSchedules.Remove(classSchedule);
         }
 
+        public async Task<bool> ExistsConflictAsync(
+            DateTime studyDate,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int? excludeId = null)
+        {
+            var date = studyDate.Date;
+
+            return await _context.ClassSchedules.AnyAsync(x =>
+                x.StudyDate.Date == date &&
+                x.StartTime < endTime &&
+                startTime < x.EndTime &&
+                (!excludeId.HasValue || x.Id != excludeId.Value));
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

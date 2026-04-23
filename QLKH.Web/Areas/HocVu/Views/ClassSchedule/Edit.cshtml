@@ -1,0 +1,133 @@
+﻿@model QLKH.Application.ViewModels.ClassScheduleFormViewModel
+
+@{
+    ViewData["Title"] = "Cập nhật lịch học";
+    var classRoomMetaJson = ViewBag.ClassRoomMetaJson as string ?? "[]";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+}
+<p class="cp-subtitle">Bạn đang chỉnh sửa một buổi học cụ thể đã được chọn từ nhóm lịch học.</p>
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Cập nhật lịch học</h1>
+            <p class="cp-subtitle">Chỉnh sửa một buổi học cụ thể với giao diện đồng bộ cùng form tạo lịch.</p>
+        </div>
+
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+    </div>
+
+    <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Edit" method="post" class="cp-form-card">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="cp-form-group-label">Thông tin lịch học</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="ClassRoomId" class="cp-label"></label>
+                <select asp-for="ClassRoomId" asp-items="ViewBag.ClassRoomId" class="cp-input cp-select" id="classRoomSelect">
+                    <option value="">-- Chọn lớp học --</option>
+                </select>
+                <span asp-validation-for="ClassRoomId" class="cp-field-error"></span>
+                <small id="classDateRangeText" class="text-muted"></small>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="StudyDate" class="cp-label"></label>
+                <input asp-for="StudyDate" type="date" class="cp-input" id="studyDateInput" />
+                <span asp-validation-for="StudyDate" class="cp-field-error"></span>
+                <small id="weekDayText" class="text-muted"></small>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Buổi học</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="Session" class="cp-label"></label>
+                <select asp-for="Session" class="cp-input cp-select">
+                    <option value="Morning">Sáng (07:00 - 11:30)</option>
+                    <option value="Afternoon">Chiều (13:00 - 17:00)</option>
+                </select>
+                <span asp-validation-for="Session" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="TeamCode" class="cp-label"></label>
+                <input asp-for="TeamCode" class="cp-input" placeholder="VD: TEAM-ABC-01" />
+                <span asp-validation-for="TeamCode" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Ghi chú</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field" style="width:100%;">
+                <label asp-for="Note" class="cp-label"></label>
+                <input asp-for="Note" class="cp-input" placeholder="Ghi chú thêm nếu có" />
+                <span asp-validation-for="Note" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--primary">Lưu thay đổi</button>
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+
+    <script>
+        const classRoomMeta = @Html.Raw(classRoomMetaJson);
+        const classRoomSelect = document.getElementById('classRoomSelect');
+        const studyDateInput = document.getElementById('studyDateInput');
+        const classDateRangeText = document.getElementById('classDateRangeText');
+        const weekDayText = document.getElementById('weekDayText');
+
+        function updateClassRange() {
+            const selectedId = parseInt(classRoomSelect.value);
+            const item = classRoomMeta.find(x => x.id === selectedId);
+
+            if (!item) {
+                classDateRangeText.textContent = '';
+                studyDateInput.min = '';
+                studyDateInput.max = '';
+                return;
+            }
+
+            classDateRangeText.textContent = `Thời gian lớp: ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`;
+            studyDateInput.min = item.startDate;
+            studyDateInput.max = item.endDate;
+        }
+
+        function updateWeekDay() {
+            if (!studyDateInput.value) {
+                weekDayText.textContent = '';
+                return;
+            }
+
+            const date = new Date(studyDateInput.value + 'T00:00:00');
+            const weekdays = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+            weekDayText.textContent = `Thứ trong tuần: ${weekdays[date.getDay()]}`;
+        }
+
+        function formatDate(yyyyMMdd) {
+            const [y, m, d] = yyyyMMdd.split('-');
+            return `${d}/${m}/${y}`;
+        }
+
+        classRoomSelect.addEventListener('change', updateClassRange);
+        studyDateInput.addEventListener('change', updateWeekDay);
+
+        updateClassRange();
+        updateWeekDay();
+    </script>
+}

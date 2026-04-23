@@ -1,0 +1,266 @@
+﻿@model QLKH.Application.ViewModels.ClassScheduleRecurringCreateViewModel
+
+@{
+    ViewData["Title"] = "Thêm lịch học";
+    var classRoomMetaJson = ViewBag.ClassRoomMetaJson as string ?? "[]";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+    <style>
+        .weekday-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .weekday-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 10px;
+            background: rgba(255,255,255,.02);
+        }
+
+        .preview-row-full {
+            display: block !important;
+            width: 100% !important;
+        }
+
+        .preview-wrapper-full {
+            display: block !important;
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+
+        .schedule-preview {
+            display: block !important;
+            width: 100% !important;
+            min-width: 100% !important;
+            box-sizing: border-box;
+            margin-top: 14px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.08);
+            min-height: 260px;
+            max-height: 420px;
+            overflow: auto;
+        }
+
+        .schedule-preview-header {
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .preview-date {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255,255,255,.08);
+            color: #d8d9ff;
+        }
+
+            .preview-date:last-child {
+                border-bottom: none;
+            }
+    </style>
+}
+
+<div class="course-page admin-profession-page classroom-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Thêm lịch học</h1>
+            <p class="cp-subtitle">Chọn lớp, tích các ngày trong tuần và hệ thống sẽ tự tạo lịch đến hết thời gian lớp.</p>
+        </div>
+
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+    </div>
+
+    <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Create" method="post" class="cp-form-card">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="cp-form-group-label">Thông tin lịch học</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="ClassRoomId" class="cp-label"></label>
+                <select asp-for="ClassRoomId" asp-items="ViewBag.ClassRoomId" class="cp-input cp-select" id="classRoomSelect">
+                    <option value="">-- Chọn lớp học --</option>
+                </select>
+                <span asp-validation-for="ClassRoomId" class="cp-field-error"></span>
+                <small id="classDateRangeText" class="text-muted"></small>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="Session" class="cp-label"></label>
+                <select asp-for="Session" class="cp-input cp-select" id="sessionSelect">
+                    <option value="Morning">Sáng (07:00 - 11:30)</option>
+                    <option value="Afternoon">Chiều (13:00 - 17:00)</option>
+                </select>
+                <span asp-validation-for="Session" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Chọn ngày trong tuần</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field" style="width:100%;">
+                <div class="weekday-grid">
+                    @{
+                        var items = new[]
+                        {
+                                        new { Value = 1, Text = "Thứ hai" },
+                                        new { Value = 2, Text = "Thứ ba" },
+                                        new { Value = 3, Text = "Thứ tư" },
+                                        new { Value = 4, Text = "Thứ năm" },
+                                        new { Value = 5, Text = "Thứ sáu" },
+                                        new { Value = 6, Text = "Thứ bảy" },
+                                        new { Value = 0, Text = "Chủ nhật" }
+                                        };
+                    }
+
+                    @foreach (var item in items)
+                    {
+                        var isChecked = Model.SelectedDays.Contains(item.Value);
+
+                        <label class="weekday-item">
+                            <input type="checkbox"
+                                   name="SelectedDays"
+                                   value="@item.Value"
+                                   class="weekday-checkbox"
+                                   @(isChecked ? "checked" : null) />
+                            <span>@item.Text</span>
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="SelectedDays" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">TeamCode và ghi chú</div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="TeamCode" class="cp-label"></label>
+                <input asp-for="TeamCode" class="cp-input" placeholder="VD: TEAM-ABC-01" />
+                <span asp-validation-for="TeamCode" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="Note" class="cp-label"></label>
+                <input asp-for="Note" class="cp-input" placeholder="Ghi chú thêm nếu có" />
+                <span asp-validation-for="Note" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Xem trước lịch sẽ tạo</div>
+        <div class="cp-form-row preview-row-full">
+            <div class="cp-field preview-wrapper-full" style="display:block !important; flex:0 0 100% !important; width:100% !important; max-width:100% !important; min-width:100% !important;">
+                <div id="schedulePreview" class="schedule-preview text-muted">
+                    Chọn lớp và các ngày trong tuần để xem trước lịch sẽ tạo.
+                </div>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--primary">Lưu lịch học</button>
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+
+    <script>
+        const classRoomMeta = @Html.Raw(classRoomMetaJson);
+        const classRoomSelect = document.getElementById('classRoomSelect');
+        const sessionSelect = document.getElementById('sessionSelect');
+        const classDateRangeText = document.getElementById('classDateRangeText');
+        const schedulePreview = document.getElementById('schedulePreview');
+
+        function getSelectedDays() {
+            return Array.from(document.querySelectorAll('.weekday-checkbox:checked'))
+                .map(x => parseInt(x.value));
+        }
+
+        function formatDate(date) {
+            const d = String(date.getDate()).padStart(2, '0');
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const y = date.getFullYear();
+            return `${d}/${m}/${y}`;
+        }
+
+        function getWeekDayText(day) {
+            const names = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+            return names[day];
+        }
+
+        function getSessionText() {
+            return sessionSelect.value === 'Morning'
+                ? 'Sáng (07:00 - 11:30)'
+                : 'Chiều (13:00 - 17:00)';
+        }
+
+        function updatePreview() {
+            const selectedId = parseInt(classRoomSelect.value);
+            const item = classRoomMeta.find(x => x.id === selectedId);
+            const selectedDays = getSelectedDays();
+
+            if (!item) {
+                classDateRangeText.textContent = '';
+                schedulePreview.innerHTML = 'Chọn lớp và các ngày trong tuần để xem trước lịch sẽ tạo.';
+                return;
+            }
+
+            classDateRangeText.textContent = `Thời gian lớp: ${formatDate(new Date(item.startDate))} - ${formatDate(new Date(item.endDate))}`;
+
+            if (selectedDays.length === 0) {
+                schedulePreview.innerHTML = 'Hãy chọn ít nhất 1 ngày trong tuần.';
+                return;
+            }
+
+            const startDate = new Date(item.startDate + 'T00:00:00');
+            const endDate = new Date(item.endDate + 'T00:00:00');
+
+            const generated = [];
+            for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+                if (selectedDays.includes(date.getDay())) {
+                    generated.push(new Date(date));
+                }
+            }
+
+            if (generated.length === 0) {
+                schedulePreview.innerHTML = 'Không có ngày nào phù hợp trong khoảng thời gian lớp.';
+                return;
+            }
+
+            const html = `
+                <div class="schedule-preview-header">
+                    Tổng số buổi sẽ tạo: ${generated.length}
+                </div>
+                ${generated.map((date, index) => {
+                    return `<div class="preview-date">
+                                <strong>Buổi ${index + 1}:</strong>
+                                ${formatDate(date)} - ${getWeekDayText(date.getDay())} - ${getSessionText()}
+                            </div>`;
+                }).join('')}
+            `;
+
+            schedulePreview.innerHTML = html;
+        }
+
+        classRoomSelect.addEventListener('change', updatePreview);
+        sessionSelect.addEventListener('change', updatePreview);
+        document.querySelectorAll('.weekday-checkbox').forEach(cb => cb.addEventListener('change', updatePreview));
+
+        updatePreview();
+    </script>
+}
