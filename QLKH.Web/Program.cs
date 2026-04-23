@@ -11,7 +11,7 @@ using QLKH.Infrastructure.Repositories;
 using QLKH.Infrastructure.Seed;
 using QLKH.Web.Models;
 using QLKH.Web.Services;
-
+using QLKH.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,7 +99,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseMiddleware<WebsiteStatusMiddleware>();
+
+app.UseRouting();
 app.UseRouting();
 
 app.UseAuthentication();

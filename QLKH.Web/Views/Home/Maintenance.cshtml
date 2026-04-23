@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Bảo trì hệ thống";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bảo trì hệ thống</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0b1020, #160a3a);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .maintenance-box {
+            width: min(680px, 92%);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            text-align: center;
+        }
+
+            .maintenance-box h1 {
+                margin: 0 0 16px;
+                font-size: 38px;
+            }
+
+            .maintenance-box p {
+                margin: 0;
+                font-size: 18px;
+                line-height: 1.7;
+                color: #e7e7f7;
+            }
+    </style>
+</head>
+<body>
+    <div class="maintenance-box">
+        <h1>Website đang bảo trì</h1>
+        <p style="white-space: pre-line;">@ViewBag.MaintenanceMessage</p>
+    </div>
+</body>
+</html>

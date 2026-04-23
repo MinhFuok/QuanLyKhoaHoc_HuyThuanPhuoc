@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using QLKH.Application.Interfaces.Services;
 using QLKH.Web.Models;
@@ -43,7 +43,22 @@ namespace QLKH.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
+        }
+
+        public async Task<IActionResult> Maintenance()
+        {
+            var setting = await _systemSettingService.GetAsync();
+
+            ViewBag.MaintenanceMessage =
+                !string.IsNullOrWhiteSpace(setting?.MaintenanceMessage)
+                    ? setting!.MaintenanceMessage
+                    : "Hệ thống đang bảo trì. Vui lòng quay lại sau.";
+
+            return View();
         }
     }
 }
