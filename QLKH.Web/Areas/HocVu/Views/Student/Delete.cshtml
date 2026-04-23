@@ -1,4 +1,4 @@
-﻿@model QLKH.Domain.Entities.Student
+﻿@model QLKH.Application.ViewModels.StudentFormViewModel
 
 @{
     ViewData["Title"] = "Xóa học viên";
@@ -21,7 +21,7 @@
             <div class="cp-delete-warning-icon">!</div>
             <div>
                 <strong>Bạn có chắc muốn xóa học viên này không?</strong>
-                <p>Hành động này có thể ảnh hưởng đến dữ liệu đăng ký lớp và các nghiệp vụ liên quan.</p>
+                <p>Hồ sơ học viên sẽ bị xóa và tài khoản liên kết sẽ bị vô hiệu hóa.</p>
             </div>
         </div>
 
@@ -37,30 +37,44 @@
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Email</div>
+                <div class="cp-detail-label">Email hồ sơ học viên</div>
                 <div class="cp-detail-value">@Model.Email</div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Số điện thoại</div>
-                <div class="cp-detail-value">@Model.PhoneNumber</div>
+                <div class="cp-detail-label">Tài khoản liên kết</div>
+                <div class="cp-detail-value">
+                    @(string.IsNullOrWhiteSpace(Model.LinkedAccountEmail) ? "Chưa liên kết" : Model.LinkedAccountEmail)
+                </div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Ngày sinh</div>
-                <div class="cp-detail-value">@Model.DateOfBirth.ToString("dd/MM/yyyy")</div>
-            </div>
-
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Địa chỉ</div>
-                <div class="cp-detail-value">@Model.Address</div>
+                <div class="cp-detail-label">Trạng thái tài khoản</div>
+                <div class="cp-detail-value">
+                    @if (string.IsNullOrWhiteSpace(Model.LinkedAccountEmail))
+                    {
+                        <span>Không có tài khoản liên kết</span>
+                    }
+                    else if (Model.LinkedAccountLocked)
+                    {
+                        <span class="text-danger">Đã vô hiệu hóa</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">Đang hoạt động</span>
+                    }
+                </div>
             </div>
         </div>
 
-        <form asp-area="HocVu" asp-controller="Student" asp-action="Delete" method="post" id="deleteForm" data-delete-label="học viên">
-            <input type="hidden" asp-for="Id" />
+        <form asp-area="HocVu" asp-controller="Student" asp-action="Delete" method="post" id="deleteForm">
+            <input type="hidden" name="id" value="@Model.Id" />
             <div class="cp-delete-actions">
-                <button type="submit" class="cp-btn cp-btn--danger">Xóa học viên</button>
+                <button type="submit"
+                        class="cp-btn cp-btn--danger"
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa học viên này và vô hiệu hóa tài khoản liên kết không?');">
+                    Xóa học viên
+                </button>
                 <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>
         </form>

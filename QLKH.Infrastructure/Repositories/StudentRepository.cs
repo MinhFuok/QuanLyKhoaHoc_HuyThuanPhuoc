@@ -44,7 +44,12 @@ namespace QLKH.Infrastructure.Repositories
         {
             return await _context.Students.AnyAsync(x => x.StudentCode == studentCode);
         }
-
+        public async Task<bool> ExistsByApplicationUserIdAsync(string applicationUserId, int? excludeStudentId = null)
+        {
+            return await _context.Students.AnyAsync(x =>
+                x.ApplicationUserId == applicationUserId &&
+                (!excludeStudentId.HasValue || x.Id != excludeStudentId.Value));
+        }
         public async Task AddAsync(Student student)
         {
             await _context.Students.AddAsync(student);

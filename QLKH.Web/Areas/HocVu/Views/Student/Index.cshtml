@@ -7,7 +7,15 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
 }
+@if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"]?.ToString()))
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 
+@if (!string.IsNullOrWhiteSpace(TempData["ErrorMessage"]?.ToString()))
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 <div class="course-page admin-profession-page student-page">
     <div class="cp-header">
         <div class="cp-header-left">

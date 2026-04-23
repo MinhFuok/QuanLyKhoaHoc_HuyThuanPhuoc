@@ -89,15 +89,8 @@ using (var scope = app.Services.CreateScope())
 
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-
-    // Giữ seed role + tài khoản đăng nhập mẫu
     await IdentitySeedData.SeedAsync(roleManager, userManager, context);
-
-    // Tắt seed dữ liệu nghiệp vụ để tránh dữ liệu bị tạo lại sau mỗi lần chạy app
-    // await SeedData.InitializeAsync(context);
 }
-
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

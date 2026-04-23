@@ -55,7 +55,10 @@ namespace QLKH.Application.Services
             .Select(g => g.First())
             .ToList();
         }
-
+        public async Task<bool> ExistsByApplicationUserIdAsync(string applicationUserId, int? excludeStudentId = null)
+        {
+            return await _studentRepository.ExistsByApplicationUserIdAsync(applicationUserId, excludeStudentId);
+        }
         public async Task<bool> CreateAsync(Student student)
         {
             if (await _studentRepository.ExistsByCodeAsync(student.StudentCode))
