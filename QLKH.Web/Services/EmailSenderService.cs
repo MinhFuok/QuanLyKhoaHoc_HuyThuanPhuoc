@@ -16,6 +16,17 @@ namespace QLKH.Web.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string htmlMessage)
         {
+            if (string.IsNullOrWhiteSpace(toEmail))
+                throw new InvalidOperationException("Email người nhận đang rỗng.");
+
+            if (string.IsNullOrWhiteSpace(_emailSettings.SenderEmail))
+                throw new InvalidOperationException("SenderEmail trong EmailSettings đang rỗng.");
+
+            if (string.IsNullOrWhiteSpace(_emailSettings.Username))
+                throw new InvalidOperationException("Username trong EmailSettings đang rỗng.");
+
+            if (string.IsNullOrWhiteSpace(_emailSettings.Password))
+                throw new InvalidOperationException("Password trong EmailSettings đang rỗng.");
             using var client = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port)
             {
                 Credentials = new NetworkCredential(_emailSettings.Username, _emailSettings.Password),

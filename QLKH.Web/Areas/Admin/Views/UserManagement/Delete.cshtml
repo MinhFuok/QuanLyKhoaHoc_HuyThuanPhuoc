@@ -1,0 +1,95 @@
+﻿@model QLKH.Web.Areas.Admin.Models.DeleteUserViewModel
+
+@{
+    ViewData["Title"] = "Xóa tài khoản";
+}
+
+<div class="course-page admin-profession-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Xóa tài khoản</h1>
+            <p class="cp-subtitle">Kiểm tra kỹ trước khi xóa tài khoản.</p>
+        </div>
+    </div>
+
+    <div class="cp-delete-card">
+        <div class="cp-delete-warning">
+            <div class="cp-delete-warning-icon">!</div>
+            <div>
+                <strong>Bạn có chắc muốn xóa tài khoản này không?</strong>
+                <p>Nếu tài khoản đang liên kết hồ sơ Student hoặc Teacher thì hệ thống sẽ không cho xóa.</p>
+            </div>
+        </div>
+
+        <div class="cp-detail-body">
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Họ tên</div>
+                <div class="cp-detail-value"><strong>@Model.FullName</strong></div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Email</div>
+                <div class="cp-detail-value">@Model.Email</div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Vai trò</div>
+                <div class="cp-detail-value">@Model.Role</div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Liên kết Student</div>
+                <div class="cp-detail-value">
+                    @if (Model.IsLinkedStudent)
+                    {
+                        <span class="text-danger">Có - @Model.LinkedStudentCode</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">Không</span>
+                    }
+                </div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Liên kết Teacher</div>
+                <div class="cp-detail-value">
+                    @if (Model.IsLinkedTeacher)
+                    {
+                        <span class="text-danger">Có - @Model.LinkedTeacherCode</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">Không</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (!Model.CanDelete)
+        {
+            <div class="alert alert-danger" style="margin-top:16px;">
+                Không thể xóa tài khoản này vì đang liên kết với hồ sơ nghiệp vụ.
+            </div>
+        }
+
+        <form asp-area="Admin" asp-controller="UserManagement" asp-action="Delete" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div class="cp-delete-actions">
+                @if (Model.CanDelete)
+                {
+                    <button type="submit"
+                            class="cp-btn cp-btn--danger"
+                            onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này không?');">
+                        Xóa tài khoản
+                    </button>
+                }
+
+                <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="cp-btn cp-btn--ghost">
+                    Quay lại
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

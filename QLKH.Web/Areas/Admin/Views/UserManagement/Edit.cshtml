@@ -1,0 +1,58 @@
+﻿@model QLKH.Web.Areas.Admin.Models.EditUserViewModel
+
+@{
+    ViewData["Title"] = "Sửa tài khoản";
+}
+
+<div class="course-page admin-profession-page">
+    <div class="cp-header">
+        <div class="cp-header-left">
+            <h1 class="cp-title">Sửa tài khoản</h1>
+            <p class="cp-subtitle">Cập nhật thông tin và vai trò của tài khoản.</p>
+        </div>
+
+        <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+    </div>
+
+    <form asp-area="Admin" asp-controller="UserManagement" asp-action="Edit" method="post" class="cp-form-card">
+        <input type="hidden" asp-for="Id" />
+
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+        {
+            <div asp-validation-summary="All" class="cp-validation-summary"></div>
+        }
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="FullName" class="cp-label"></label>
+                <input asp-for="FullName" class="cp-input" />
+                <span asp-validation-for="FullName" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="Email" class="cp-label"></label>
+                <input asp-for="Email" class="cp-input" />
+                <span asp-validation-for="Email" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="Role" class="cp-label"></label>
+                <select asp-for="Role" asp-items="ViewBag.RoleList" class="cp-input cp-select"></select>
+                <span asp-validation-for="Role" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-actions">
+            <button type="submit" class="cp-btn cp-btn--primary">Lưu thay đổi</button>
+            <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
