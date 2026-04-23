@@ -48,7 +48,28 @@ namespace QLKH.Application.Services
 
             return await _classRoomRepository.GetByTeacherIdAsync(teacher.Id);
         }
+        public async Task<bool> ExistsByApplicationUserIdAsync(string applicationUserId, int? excludeTeacherId = null)
+        {
+            return await _teacherRepository.ExistsByApplicationUserIdAsync(applicationUserId, excludeTeacherId);
+        }
+        public async Task<string> GenerateNextTeacherCodeAsync()
+        {
+            var latestCode = await _teacherRepository.GetLatestTeacherCodeAsync();
 
+            if (string.IsNullOrWhiteSpace(latestCode))
+            {
+                return "GV001";
+            }
+
+            var numberPart = new string(latestCode.SkipWhile(c => !char.IsDigit(c)).ToArray());
+
+            if (!int.TryParse(numberPart, out int currentNumber))
+            {
+                return "GV001";
+            }
+
+            return $"GV{(currentNumber + 1):D3}";
+        }
         public async Task<bool> CreateAsync(Teacher teacher)
         {
             if (await _teacherRepository.ExistsByCodeAsync(teacher.TeacherCode))

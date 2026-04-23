@@ -14,6 +14,8 @@ namespace QLKH.Application.Interfaces.Repositories
         Task<Teacher?> GetByApplicationUserIdAsync(string applicationUserId);
         Task<bool> ExistsAsync(int id);
         Task<bool> ExistsByCodeAsync(string teacherCode);
+        Task<bool> ExistsByApplicationUserIdAsync(string applicationUserId, int? excludeTeacherId = null);
+        Task<string?> GetLatestTeacherCodeAsync();
         Task AddAsync(Teacher teacher);
         void Update(Teacher teacher);
         void Delete(Teacher teacher);

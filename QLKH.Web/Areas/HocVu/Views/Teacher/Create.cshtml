@@ -1,7 +1,9 @@
-﻿@model QLKH.Domain.Entities.Teacher
+﻿@model QLKH.Application.ViewModels.TeacherFormViewModel
+@using System.Text.Json
 
 @{
-    ViewData["Title"] = "Thêm giảng viên";
+    ViewData["Title"] = "Thêm giáo viên";
+    var teacherAccountMetaJson = JsonSerializer.Serialize(ViewBag.TeacherAccountMeta ?? new List<object>());
 }
 
 @section Styles {
@@ -11,63 +13,117 @@
 <div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm giảng viên</h1>
-            <p class="cp-subtitle">Tạo hồ sơ giảng viên mới và thông tin chuyên môn.</p>
+            <h1 class="cp-title">Thêm giáo viên</h1>
+            <p class="cp-subtitle">Tạo hồ sơ giáo viên và liên kết với tài khoản do Admin đã tạo trước đó.</p>
         </div>
 
         <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
     </div>
 
-    <form asp-area="HocVu" asp-controller="Teacher" asp-action="Create" method="post" id="teacherForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
-        <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
+    <form asp-area="HocVu" asp-controller="Teacher" asp-action="Create" method="post" class="cp-form-card">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+        {
+            <div asp-validation-summary="All" class="cp-validation-summary"></div>
+        }
 
-        <div class="cp-form-group-label">Thông tin giảng viên</div>
+        <div class="cp-form-group-label">Tài khoản liên kết</div>
+        <div class="cp-form-row">
+            <div class="cp-field" style="flex:0 0 100%; max-width:100%;">
+                <label asp-for="ApplicationUserId" class="cp-label"></label>
+                <select asp-for="ApplicationUserId" asp-items="ViewBag.ApplicationUserId" class="cp-input cp-select" id="applicationUserSelect">
+                    <option value="">-- Chọn tài khoản giáo viên --</option>
+                </select>
+                <span asp-validation-for="ApplicationUserId" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Thông tin lấy từ tài khoản</div>
         <div class="cp-form-row">
             <div class="cp-field">
-                <label asp-for="TeacherCode" class="cp-label">Mã giảng viên</label>
-                <input asp-for="TeacherCode" class="cp-input" placeholder="VD: GV001" />
+                <label asp-for="FullName" class="cp-label"></label>
+                <input asp-for="FullName" class="cp-input" id="fullNameInput" readonly />
+                <span asp-validation-for="FullName" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="Email" class="cp-label"></label>
+                <input asp-for="Email" class="cp-input" id="emailInput" readonly />
+                <span asp-validation-for="Email" class="cp-field-error"></span>
+            </div>
+        </div>
+
+        <div class="cp-form-group-label">Thông tin giáo viên</div>
+        <div class="cp-form-row">
+            <div class="cp-field">
+                <label asp-for="TeacherCode" class="cp-label"></label>
+                <input asp-for="TeacherCode" class="cp-input" readonly />
+                <small class="text-muted">Mã giáo viên được hệ thống tự tạo.</small>
                 <span asp-validation-for="TeacherCode" class="cp-field-error"></span>
             </div>
 
             <div class="cp-field">
-                <label asp-for="FullName" class="cp-label">Họ tên</label>
-                <input asp-for="FullName" class="cp-input" placeholder="Nhập họ tên giảng viên" />
-                <span asp-validation-for="FullName" class="cp-field-error"></span>
-            </div>
-        </div>
-
-        <div class="cp-form-group-label">Thông tin liên hệ</div>
-        <div class="cp-form-row">
-            <div class="cp-field">
-                <label asp-for="Email" class="cp-label">Email</label>
-                <input asp-for="Email" class="cp-input" placeholder="giaovien@example.com" />
-                <span asp-validation-for="Email" class="cp-field-error"></span>
-            </div>
-
-            <div class="cp-field">
-                <label asp-for="PhoneNumber" class="cp-label">Số điện thoại</label>
-                <input asp-for="PhoneNumber" class="cp-input" placeholder="VD: 0900000000" />
+                <label asp-for="PhoneNumber" class="cp-label"></label>
+                <input asp-for="PhoneNumber"
+                       class="cp-input"
+                       placeholder="VD: 0900000000"
+                       maxlength="10"
+                       inputmode="numeric"
+                       pattern="\d{10}"
+                       oninput="this.value = this.value.replace(/\D/g, '').slice(0,10);" />
                 <span asp-validation-for="PhoneNumber" class="cp-field-error"></span>
             </div>
         </div>
 
         <div class="cp-form-group-label">Chuyên môn</div>
-        <div class="cp-field">
-            <label asp-for="Specialization" class="cp-label">Chuyên môn</label>
-            <input asp-for="Specialization" class="cp-input" placeholder="VD: ASP.NET Core MVC" />
-            <span asp-validation-for="Specialization" class="cp-field-error"></span>
+        <div class="cp-form-row">
+            <div class="cp-field" style="flex:0 0 100%; max-width:100%;">
+                <label asp-for="Specialization" class="cp-label"></label>
+                <input asp-for="Specialization" class="cp-input" placeholder="VD: Lập trình Web, TOEIC, IELTS..." />
+                <span asp-validation-for="Specialization" class="cp-field-error"></span>
+            </div>
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu giảng viên</button>
+            <button type="submit" class="cp-btn cp-btn--primary">Lưu giáo viên</button>
             <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
         </div>
     </form>
 </div>
+
+<script id="teacher-account-meta" type="application/json">
+    @Html.Raw(teacherAccountMetaJson)
+</script>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+    <script>
+        const metaElement = document.getElementById('teacher-account-meta');
+        const accountMeta = metaElement ? JSON.parse(metaElement.textContent) : [];
+
+        const applicationUserSelect = document.getElementById('applicationUserSelect');
+        const fullNameInput = document.getElementById('fullNameInput');
+        const emailInput = document.getElementById('emailInput');
+
+        function updateLinkedAccountInfo() {
+            const selectedId = applicationUserSelect.value;
+            const selected = accountMeta.find(x => x.id === selectedId);
+
+            if (!selected) {
+                fullNameInput.value = '';
+                emailInput.value = '';
+                return;
+            }
+
+            fullNameInput.value = selected.fullName || '';
+            emailInput.value = selected.email || '';
+        }
+
+        if (applicationUserSelect) {
+            applicationUserSelect.addEventListener('change', updateLinkedAccountInfo);
+            updateLinkedAccountInfo();
+        }
+    </script>
 }

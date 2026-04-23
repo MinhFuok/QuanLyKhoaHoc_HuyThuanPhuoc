@@ -55,7 +55,8 @@
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="StudentCode" class="cp-label"></label>
-                <input asp-for="StudentCode" class="cp-input" placeholder="VD: HV001" />
+                <input asp-for="StudentCode" class="cp-input" readonly />
+                <small class="text-muted">Mã học viên được hệ thống tự tạo.</small>
                 <span asp-validation-for="StudentCode" class="cp-field-error"></span>
             </div>
 

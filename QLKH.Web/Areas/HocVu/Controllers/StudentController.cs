@@ -34,9 +34,11 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadAvailableStudentAccountsAsync();
+
             return View(new StudentFormViewModel
             {
-                DateOfBirth = new DateTime(2005, 1, 1)
+                DateOfBirth = new DateTime(2005, 1, 1),
+                StudentCode = await _studentService.GenerateNextStudentCodeAsync()
             });
         }
 
@@ -58,6 +60,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 model.Email = linkedUser.Email ?? string.Empty;
             }
             model.PhoneNumber = (model.PhoneNumber ?? string.Empty).Trim();
+            model.StudentCode = await _studentService.GenerateNextStudentCodeAsync();
             if (!ModelState.IsValid)
             {
                 await LoadAvailableStudentAccountsAsync(model.ApplicationUserId);

@@ -50,6 +50,13 @@ namespace QLKH.Infrastructure.Repositories
                 x.ApplicationUserId == applicationUserId &&
                 (!excludeStudentId.HasValue || x.Id != excludeStudentId.Value));
         }
+        public async Task<string?> GetLatestStudentCodeAsync()
+        {
+            return await _context.Students
+                .OrderByDescending(x => x.Id)
+                .Select(x => x.StudentCode)
+                .FirstOrDefaultAsync();
+        }
         public async Task AddAsync(Student student)
         {
             await _context.Students.AddAsync(student);

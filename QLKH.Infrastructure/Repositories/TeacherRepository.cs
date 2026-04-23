@@ -44,7 +44,19 @@ namespace QLKH.Infrastructure.Repositories
         {
             return await _context.Teachers.AnyAsync(x => x.TeacherCode == teacherCode);
         }
-
+        public async Task<bool> ExistsByApplicationUserIdAsync(string applicationUserId, int? excludeTeacherId = null)
+        {
+            return await _context.Teachers.AnyAsync(x =>
+                x.ApplicationUserId == applicationUserId &&
+                (!excludeTeacherId.HasValue || x.Id != excludeTeacherId.Value));
+        }
+        public async Task<string?> GetLatestTeacherCodeAsync()
+        {
+            return await _context.Teachers
+                .OrderByDescending(x => x.Id)
+                .Select(x => x.TeacherCode)
+                .FirstOrDefaultAsync();
+        }
         public async Task AddAsync(Teacher teacher)
         {
             await _context.Teachers.AddAsync(teacher);

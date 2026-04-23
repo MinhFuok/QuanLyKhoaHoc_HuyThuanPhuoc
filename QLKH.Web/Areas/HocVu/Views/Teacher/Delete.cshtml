@@ -1,7 +1,7 @@
-﻿@model QLKH.Domain.Entities.Teacher
+﻿@model QLKH.Application.ViewModels.TeacherFormViewModel
 
 @{
-    ViewData["Title"] = "Xóa giảng viên";
+    ViewData["Title"] = "Xóa giáo viên";
 }
 
 @section Styles {
@@ -11,7 +11,7 @@
 <div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa giảng viên</h1>
+            <h1 class="cp-title">Xóa giáo viên</h1>
             <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
         </div>
     </div>
@@ -20,14 +20,14 @@
         <div class="cp-delete-warning">
             <div class="cp-delete-warning-icon">!</div>
             <div>
-                <strong>Bạn có chắc muốn xóa giảng viên này không?</strong>
-                <p>Hành động này có thể ảnh hưởng đến lớp học, lịch dạy và các nghiệp vụ liên quan.</p>
+                <strong>Bạn có chắc muốn xóa giáo viên này không?</strong>
+                <p>Hồ sơ giáo viên sẽ bị xóa và tài khoản liên kết sẽ bị vô hiệu hóa.</p>
             </div>
         </div>
 
         <div class="cp-detail-body">
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Mã giảng viên</div>
+                <div class="cp-detail-label">Mã giáo viên</div>
                 <div class="cp-detail-value"><span class="cp-code">@Model.TeacherCode</span></div>
             </div>
 
@@ -37,25 +37,49 @@
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Email</div>
+                <div class="cp-detail-label">Email hồ sơ giáo viên</div>
                 <div class="cp-detail-value">@Model.Email</div>
-            </div>
-
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Số điện thoại</div>
-                <div class="cp-detail-value">@Model.PhoneNumber</div>
             </div>
 
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Chuyên môn</div>
                 <div class="cp-detail-value">@Model.Specialization</div>
             </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Tài khoản liên kết</div>
+                <div class="cp-detail-value">
+                    @(string.IsNullOrWhiteSpace(Model.LinkedAccountEmail) ? "Chưa liên kết" : Model.LinkedAccountEmail)
+                </div>
+            </div>
+
+            <div class="cp-detail-row">
+                <div class="cp-detail-label">Trạng thái tài khoản</div>
+                <div class="cp-detail-value">
+                    @if (string.IsNullOrWhiteSpace(Model.LinkedAccountEmail))
+                    {
+                        <span>Không có tài khoản liên kết</span>
+                    }
+                    else if (Model.LinkedAccountLocked)
+                    {
+                        <span class="text-danger">Đã vô hiệu hóa</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">Đang hoạt động</span>
+                    }
+                </div>
+            </div>
         </div>
 
-        <form asp-area="HocVu" asp-controller="Teacher" asp-action="Delete" method="post" id="deleteForm" data-delete-label="giảng viên">
-            <input type="hidden" asp-for="Id" />
+        <form asp-area="HocVu" asp-controller="Teacher" asp-action="Delete" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
             <div class="cp-delete-actions">
-                <button type="submit" class="cp-btn cp-btn--danger">Xóa giảng viên</button>
+                <button type="submit"
+                        class="cp-btn cp-btn--danger"
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa giáo viên này và vô hiệu hóa tài khoản liên kết không?');">
+                    Xóa giáo viên
+                </button>
                 <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>
         </form>

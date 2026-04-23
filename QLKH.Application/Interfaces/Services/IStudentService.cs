@@ -17,5 +17,6 @@ namespace QLKH.Application.Interfaces.Services
         Task<bool> UpdateAsync(Student student);
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsByApplicationUserIdAsync(string applicationUserId, int? excludeStudentId = null);
+        Task<string> GenerateNextStudentCodeAsync();
     }
 }

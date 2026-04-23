@@ -103,5 +103,23 @@ namespace QLKH.Application.Services
             await _studentRepository.SaveChangesAsync();
             return true;
         }
+        public async Task<string> GenerateNextStudentCodeAsync()
+        {
+            var latestCode = await _studentRepository.GetLatestStudentCodeAsync();
+
+            if (string.IsNullOrWhiteSpace(latestCode))
+            {
+                return "HV001";
+            }
+
+            var numberPart = new string(latestCode.SkipWhile(c => !char.IsDigit(c)).ToArray());
+
+            if (!int.TryParse(numberPart, out int currentNumber))
+            {
+                return "HV001";
+            }
+
+            return $"HV{(currentNumber + 1):D3}";
+        }
     }
 }
