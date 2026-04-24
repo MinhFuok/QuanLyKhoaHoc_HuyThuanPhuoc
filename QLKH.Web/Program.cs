@@ -45,7 +45,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Account/Logout";
     options.Cookie.Name = "QLKH.Auth";
 });
-
+// Repositories 
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
@@ -60,7 +60,9 @@ builder.Services.AddScoped<ISystemSettingRepository, SystemSettingRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IHomeBannerSlideRepository, HomeBannerSlideRepository>();
 builder.Services.AddScoped<IStudentCertificateRepository, StudentCertificateRepository>();
+builder.Services.AddScoped<IAdminAuditLogRepository, AdminAuditLogRepository>();
 
+// Services
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
@@ -75,6 +77,8 @@ builder.Services.AddScoped<ISystemSettingService, SystemSettingService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IHomeBannerSlideService, HomeBannerSlideService>();
 builder.Services.AddScoped<IStudentCertificateService, StudentCertificateService>();
+builder.Services.AddScoped<IAdminAuditLogService, AdminAuditLogService>();
+builder.Services.AddScoped<IBulkNotificationService, BulkNotificationService>();
 
 builder.Services.AddScoped<IMessagePublisher, RabbitMqPublisher>();
 

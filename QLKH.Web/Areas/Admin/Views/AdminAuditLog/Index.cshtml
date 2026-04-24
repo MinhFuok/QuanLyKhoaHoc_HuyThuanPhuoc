@@ -1,0 +1,105 @@
+﻿@model IEnumerable<QLKH.Domain.Entities.AdminAuditLog>
+
+@{
+    ViewData["Title"] = "Nhật ký thao tác Admin";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Nhật ký thao tác Admin</h2>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index" method="get">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Admin</label>
+                    <input type="text"
+                           name="adminEmail"
+                           value="@ViewBag.AdminEmail"
+                           class="form-control"
+                           placeholder="Nhập email admin..." />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Hành động</label>
+                    <select name="actionName" class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.ActionList)
+                        {
+                            <option value="@item.Value" selected="@(ViewBag.ActionName == item.Value)">
+                                @item.Text
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Từ ngày</label>
+                    <input type="date" name="fromDate" value="@ViewBag.FromDate" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Đến ngày</label>
+                    <input type="date" name="toDate" value="@ViewBag.ToDate" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Từ khóa</label>
+                    <input type="text"
+                           name="keyword"
+                           value="@ViewBag.Keyword"
+                           class="form-control"
+                           placeholder="Thông tin / ghi chú / đối tượng..." />
+                </div>
+
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <a asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index" class="btn btn-secondary">Bỏ lọc</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Admin</th>
+                        <th>Hành động</th>
+                        <th>Đối tượng</th>
+                        <th>Thông tin</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var log in Model)
+                        {
+                            <tr>
+                                <td>@log.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>@log.ActorEmail</td>
+                                <td><strong>@log.ActionName</strong></td>
+                                <td>@log.TargetType</td>
+                                <td>@log.TargetDisplay</td>
+                                <td>@log.Note</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                Không có nhật ký thao tác nào phù hợp.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

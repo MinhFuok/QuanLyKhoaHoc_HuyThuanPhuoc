@@ -1,0 +1,80 @@
+﻿@model QLKH.Web.Areas.Admin.Models.BulkNotificationViewModel
+
+@{
+    ViewData["Title"] = "Gửi thông báo hàng loạt";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Gửi thông báo hàng loạt</h2>
+
+@if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"]?.ToString()))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(TempData["ErrorMessage"]?.ToString()))
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-area="Admin"
+              asp-controller="BulkNotification"
+              asp-action="Index"
+              method="post"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+            {
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            }
+
+            <div class="mb-3">
+                <label asp-for="Subject" class="form-label"></label>
+                <input asp-for="Subject" class="form-control" placeholder="Nhập tiêu đề thông báo" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Message" class="form-label"></label>
+                <textarea asp-for="Message" class="form-control" rows="8" placeholder="Nhập nội dung thông báo"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label d-block">Đối tượng nhận</label>
+
+                <div class="form-check">
+                    <input asp-for="SendToStudents" class="form-check-input" />
+                    <label asp-for="SendToStudents" class="form-check-label">Gửi cho học viên</label>
+                </div>
+
+                <div class="form-check">
+                    <input asp-for="SendToTeachers" class="form-check-input" />
+                    <label asp-for="SendToTeachers" class="form-check-label">Gửi cho giáo viên</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AttachmentFile" class="form-label"></label>
+                <input asp-for="AttachmentFile" type="file" class="form-control" />
+                <span asp-validation-for="AttachmentFile" class="text-danger"></span>
+                <small class="text-muted">Cho phép đính kèm 1 file, tối đa 10MB.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Gửi thông báo
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

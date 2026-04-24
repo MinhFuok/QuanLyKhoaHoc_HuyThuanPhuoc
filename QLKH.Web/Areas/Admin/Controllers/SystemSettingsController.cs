@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QLKH.Application.Interfaces.Services;
 using QLKH.Domain.Entities;
+using QLKH.Infrastructure.Identity;
 using QLKH.Web.Areas.Admin.Models;
 
 namespace QLKH.Web.Areas.Admin.Controllers
@@ -13,15 +15,21 @@ namespace QLKH.Web.Areas.Admin.Controllers
         private readonly ISystemSettingService _systemSettingService;
         private readonly IHomeBannerSlideService _homeBannerSlideService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IAdminAuditLogService _adminAuditLogService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public SystemSettingsController(
             ISystemSettingService systemSettingService,
             IHomeBannerSlideService homeBannerSlideService,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IAdminAuditLogService adminAuditLogService,
+            UserManager<ApplicationUser> userManager)
         {
             _systemSettingService = systemSettingService;
             _homeBannerSlideService = homeBannerSlideService;
             _webHostEnvironment = webHostEnvironment;
+            _adminAuditLogService = adminAuditLogService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -144,8 +152,20 @@ namespace QLKH.Web.Areas.Admin.Controllers
 
             await _systemSettingService.UpdateAsync(setting);
 
+            await _adminAuditLogService.WriteAsync(
+                CurrentAdminId,
+                CurrentAdminEmail,
+                "UPDATE_SYSTEM_SETTINGS",
+                "SystemSetting",
+                setting.Id.ToString(),
+                "Cấu hình hệ thống",
+                "Cập nhật cấu hình website/email/liên hệ");
+
             TempData["SuccessMessage"] = "Cập nhật cấu hình hệ thống thành công.";
             return RedirectToAction(nameof(Index));
         }
+
+        private string CurrentAdminEmail => User.Identity?.Name ?? "Unknown Admin";
+        private string? CurrentAdminId => _userManager.GetUserId(User);
     }
 }

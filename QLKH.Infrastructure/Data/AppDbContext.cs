@@ -25,6 +25,7 @@ namespace QLKH.Infrastructure.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<HomeBannerSlide> HomeBannerSlides { get; set; }
         public DbSet<StudentCertificate> StudentCertificates { get; set; }
+        public DbSet<AdminAuditLog> AdminAuditLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

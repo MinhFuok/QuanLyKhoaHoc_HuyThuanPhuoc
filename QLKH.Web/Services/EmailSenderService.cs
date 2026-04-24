@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
+using QLKH.Application.DTOs;
 using QLKH.Application.Interfaces.Services;
 using QLKH.Web.Models;
 
@@ -19,7 +20,11 @@ namespace QLKH.Web.Services
             _systemSettingService = systemSettingService;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string htmlMessage)
+        public async Task SendEmailAsync(
+            string toEmail,
+            string subject,
+            string htmlMessage,
+            List<EmailAttachmentDto>? attachments = null)
         {
             if (string.IsNullOrWhiteSpace(toEmail))
                 throw new InvalidOperationException("Email người nhận đang rỗng.");
@@ -27,7 +32,6 @@ namespace QLKH.Web.Services
             var systemSetting = await _systemSettingService.GetAsync();
 
             var enableEmail = systemSetting?.EnableEmail ?? true;
-
             if (!enableEmail)
                 throw new InvalidOperationException("Chức năng gửi email hiện đang bị tắt trong cấu hình hệ thống.");
 
@@ -82,6 +86,16 @@ namespace QLKH.Web.Services
             };
 
             message.To.Add(toEmail);
+
+            if (attachments != null && attachments.Any())
+            {
+                foreach (var file in attachments)
+                {
+                    var stream = new MemoryStream(file.Content);
+                    var attachment = new Attachment(stream, file.FileName, file.ContentType);
+                    message.Attachments.Add(attachment);
+                }
+            }
 
             await client.SendMailAsync(message);
         }

@@ -54,19 +54,25 @@
                     </div>
 
                     <div class="db-nav-group">
-                        <span class="db-nav-group-label">Quản lý</span>
+                        <span class="db-nav-group-label">Quản Lý</span>
                         <a class="db-nav-link" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
                             <span class="db-nav-icon">👥</span> Tài khoản
                         </a>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="SystemSettings" asp-action="Index">
-                            <span class="db-nav-icon">⚙️</span> Cấu hình hệ thống
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="Department" asp-action="Index">
+                            <span class="db-nav-icon">🏫</span> Khoa/Ngành đào tạo
+                        </a>
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="BulkNotification" asp-action="Index">
+                            <span class="db-nav-icon">📢</span> Gửi thông báo
                         </a>
                     </div>
 
                     <div class="db-nav-group">
-                        <span class="db-nav-group-label">Danh mục</span>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="Department" asp-action="Index">
-                            <span class="db-nav-icon">🏫</span> Khoa/Ngành đào tạo
+                        <span class="db-nav-group-label">Hệ Thống</span>
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="SystemSettings" asp-action="Index">
+                            <span class="db-nav-icon">⚙️</span> Cấu hình hệ thống website
+                        </a>
+                        <a class="db-nav-link" asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index">
+                            <span class="db-nav-icon">📝</span> Nhật ký quản trị
                         </a>
                     </div>
                 }
