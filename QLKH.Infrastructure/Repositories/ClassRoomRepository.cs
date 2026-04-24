@@ -46,6 +46,7 @@ namespace QLKH.Infrastructure.Repositories
                 .Include(x => x.Course)
                 .Include(x => x.Teacher)
                 .Include(x => x.Enrollments)
+                    .ThenInclude(x => x.Student)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

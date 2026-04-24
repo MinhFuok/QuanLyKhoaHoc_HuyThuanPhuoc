@@ -1,0 +1,88 @@
+﻿@model QLKH.Web.Areas.HocVu.Models.ClassStudentListViewModel
+
+@{
+    ViewData["Title"] = "Danh sách học viên lớp";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2 class="mb-4">Danh sách học viên theo lớp</h2>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3"><strong>Mã lớp:</strong> @Model.ClassCode</div>
+            <div class="col-md-3"><strong>Tên lớp:</strong> @Model.ClassName</div>
+            <div class="col-md-3"><strong>Khóa học:</strong> @Model.CourseName</div>
+            <div class="col-md-3"><strong>Giảng viên:</strong> @Model.TeacherName</div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3 d-flex gap-2">
+    <a asp-area="HocVu"
+       asp-controller="ClassRoom"
+       asp-action="Index"
+       class="btn btn-secondary">
+        Quay lại danh sách lớp
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã học viên</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Ngày ghi danh</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Students != null && Model.Students.Any())
+                    {
+                        var stt = 1;
+                        foreach (var item in Model.Students)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@item.StudentCode</td>
+                                <td>@item.FullName</td>
+                                <td>@item.Email</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @if (item.StatusText == "Đã duyệt")
+                                    {
+                                        <span class="badge bg-success">@item.StatusText</span>
+                                    }
+                                    else if (item.StatusText == "Chờ duyệt")
+                                    {
+                                        <span class="badge bg-warning text-dark">@item.StatusText</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@item.StatusText</span>
+                                    }
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                Lớp này hiện chưa có học viên nào.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

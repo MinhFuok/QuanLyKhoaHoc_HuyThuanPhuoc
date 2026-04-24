@@ -54,6 +54,13 @@
                                 <div class="cp-actions">
                                     <a asp-area="HocVu"
                                        asp-controller="ClassRoom"
+                                       asp-action="Students"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--info cp-btn--sm">
+                                        Danh sách
+                                    </a>
+                                    <a asp-area="HocVu"
+                                       asp-controller="ClassRoom"
                                        asp-action="Details"
                                        asp-route-id="@item.Id"
                                        class="cp-btn cp-btn--info cp-btn--sm">
