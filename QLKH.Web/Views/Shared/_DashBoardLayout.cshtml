@@ -13,6 +13,25 @@
     else if (User.IsInRole("HocVu")) userRole = "Học vụ";
     else if (User.IsInRole("GiaoVien")) userRole = "Giáo viên";
     else if (User.IsInRole("HocVien")) userRole = "Học viên";
+
+    var currentArea = ViewContext.RouteData.Values["area"]?.ToString() ?? "";
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    string IsActive(string area, string controller, string? action = null)
+    {
+        if (!string.Equals(currentArea, area, StringComparison.OrdinalIgnoreCase))
+            return "";
+
+        if (!string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase))
+            return "";
+
+        if (!string.IsNullOrWhiteSpace(action) &&
+            !string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase))
+            return "";
+
+        return "active";
+    }
 }
 
 <!DOCTYPE html>
@@ -48,30 +67,30 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <div class="db-nav-group">
-                        <a class="db-nav-link" href="/Admin/Home">
+                        <a class="db-nav-link @IsActive("Admin", "Home", "Index")" asp-area="Admin" asp-controller="Home" asp-action="Index">
                             <span class="db-nav-icon">⊞</span> Dashboard Admin
                         </a>
                     </div>
 
                     <div class="db-nav-group">
                         <span class="db-nav-group-label">Quản Lý</span>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
+                        <a class="db-nav-link @IsActive("Admin", "UserManagement")" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
                             <span class="db-nav-icon">👥</span> Tài khoản
                         </a>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="Department" asp-action="Index">
+                        <a class="db-nav-link @IsActive("Admin", "Department")" asp-area="Admin" asp-controller="Department" asp-action="Index">
                             <span class="db-nav-icon">🏫</span> Khoa/Ngành đào tạo
                         </a>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="BulkNotification" asp-action="Index">
+                        <a class="db-nav-link @IsActive("Admin", "BulkNotification")" asp-area="Admin" asp-controller="BulkNotification" asp-action="Index">
                             <span class="db-nav-icon">📢</span> Thông báo
                         </a>
                     </div>
 
                     <div class="db-nav-group">
                         <span class="db-nav-group-label">Hệ Thống</span>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="SystemSettings" asp-action="Index">
+                        <a class="db-nav-link @IsActive("Admin", "SystemSettings")" asp-area="Admin" asp-controller="SystemSettings" asp-action="Index">
                             <span class="db-nav-icon">⚙️</span> Cấu hình hệ thống website
                         </a>
-                        <a class="db-nav-link" asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index">
+                        <a class="db-nav-link @IsActive("Admin", "AdminAuditLog")" asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index">
                             <span class="db-nav-icon">📝</span> Nhật ký hoạt động
                         </a>
                     </div>
@@ -80,35 +99,37 @@
                 @if (User.IsInRole("HocVu"))
                 {
                     <div class="db-nav-group">
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Home" asp-action="Index">
+                        <a class="db-nav-link @IsActive("HocVu", "Home", "Index")" asp-area="HocVu" asp-controller="Home" asp-action="Index">
                             <span class="db-nav-icon">⊞</span> Dashboard HV
                         </a>
                     </div>
 
                     <div class="db-nav-group">
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Course" asp-action="Index">
+                        <a class="db-nav-link @IsActive("HocVu", "Course")" asp-area="HocVu" asp-controller="Course" asp-action="Index">
                             <span class="db-nav-icon">📘</span> Khóa học
                         </a>
 
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index">
+                        <a class="db-nav-link @IsActive("HocVu", "ClassRoom")" asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index">
                             <span class="db-nav-icon">🏫</span> Lớp học
                         </a>
 
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Enrollment" asp-action="Index">
+                        <a class="db-nav-link @IsActive("HocVu", "Enrollment")" asp-area="HocVu" asp-controller="Enrollment" asp-action="Index">
                             <span class="db-nav-icon">📝</span> Ghi danh
                         </a>
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index">
+
+                        <a class="db-nav-link @IsActive("HocVu", "ClassSchedule")" asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index">
                             <span class="db-nav-icon">🗓️</span> Lịch học
                         </a>
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Student" asp-action="Index">
+
+                        <a class="db-nav-link @IsActive("HocVu", "Student")" asp-area="HocVu" asp-controller="Student" asp-action="Index">
                             <span class="db-nav-icon">🎓</span> Học viên
                         </a>
 
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="Teacher" asp-action="Index">
+                        <a class="db-nav-link @IsActive("HocVu", "Teacher")" asp-area="HocVu" asp-controller="Teacher" asp-action="Index">
                             <span class="db-nav-icon">👨‍🏫</span> Giảng viên
                         </a>
 
-                        <a class="db-nav-link" asp-area="HocVu" asp-controller="StudentCertificate" asp-action="Index">
+                        <a class="db-nav-link @IsActive("HocVu", "StudentCertificate")" asp-area="HocVu" asp-controller="StudentCertificate" asp-action="Index">
                             <span class="db-nav-icon">🏅</span> Chứng chỉ học viên
                         </a>
                     </div>
@@ -117,32 +138,32 @@
                 @if (User.IsInRole("GiaoVien"))
                 {
                     <div class="db-nav-group">
-                        <a class="db-nav-link" href="/GiaoVien/Home">
+                        <a class="db-nav-link @IsActive("GiaoVien", "Home", "Index")" asp-area="GiaoVien" asp-controller="Home" asp-action="Index">
                             <span class="db-nav-icon">⊞</span> Dashboard GV
                         </a>
                     </div>
 
                     <div class="db-nav-group">
                         <span class="db-nav-group-label">Giảng dạy</span>
-                        <a class="db-nav-link" href="/GiaoVien/MyClasses">
+                        <a class="db-nav-link @IsActive("GiaoVien", "MyClasses")" asp-area="GiaoVien" asp-controller="MyClasses" asp-action="Index">
                             <span class="db-nav-icon">🏷️</span> Lớp tôi dạy
                         </a>
-                        <a class="db-nav-link" href="/GiaoVien/MySchedule">
+                        <a class="db-nav-link @IsActive("GiaoVien", "MySchedule")" asp-area="GiaoVien" asp-controller="MySchedule" asp-action="Index">
                             <span class="db-nav-icon">📅</span> Lịch dạy
                         </a>
-                        <a class="db-nav-link" href="/GiaoVien/MyMaterials">
+                        <a class="db-nav-link @IsActive("GiaoVien", "MyMaterials")" asp-area="GiaoVien" asp-controller="MyMaterials" asp-action="Index">
                             <span class="db-nav-icon">📁</span> Tài liệu
                         </a>
-                        <a class="db-nav-link" href="/GiaoVien/ClassMaterials/Create">
+                        <a class="db-nav-link @IsActive("GiaoVien", "ClassMaterials", "Create")" asp-area="GiaoVien" asp-controller="ClassMaterials" asp-action="Create">
                             <span class="db-nav-icon">➕</span> Tạo tài liệu
                         </a>
-                        <a class="db-nav-link" href="/GiaoVien/MyAssignments">
+                        <a class="db-nav-link @IsActive("GiaoVien", "MyAssignments")" asp-area="GiaoVien" asp-controller="MyAssignments" asp-action="Index">
                             <span class="db-nav-icon">📝</span> Bài tập
                         </a>
-                        <a class="db-nav-link" href="/GiaoVien/Assignments/Create">
+                        <a class="db-nav-link @IsActive("GiaoVien", "Assignments", "Create")" asp-area="GiaoVien" asp-controller="Assignments" asp-action="Create">
                             <span class="db-nav-icon">➕</span> Tạo bài tập
                         </a>
-                        <a class="db-nav-link" href="/GiaoVien/ClassGrades/Classes">
+                        <a class="db-nav-link @IsActive("GiaoVien", "ClassGrades")" asp-area="GiaoVien" asp-controller="ClassGrades" asp-action="Classes">
                             <span class="db-nav-icon">📊</span> Bảng điểm lớp
                         </a>
                     </div>
@@ -151,29 +172,29 @@
                 @if (User.IsInRole("HocVien"))
                 {
                     <div class="db-nav-group">
-                        <a class="db-nav-link" href="/HocVien/Home">
+                        <a class="db-nav-link @IsActive("HocVien", "Home", "Index")" asp-area="HocVien" asp-controller="Home" asp-action="Index">
                             <span class="db-nav-icon">⊞</span> Dashboard HV
                         </a>
                     </div>
 
                     <div class="db-nav-group">
                         <span class="db-nav-group-label">Học tập</span>
-                        <a class="db-nav-link" href="/HocVien/MyClasses">
+                        <a class="db-nav-link @IsActive("HocVien", "MyClasses")" asp-area="HocVien" asp-controller="MyClasses" asp-action="Index">
                             <span class="db-nav-icon">🏷️</span> Lớp tôi học
                         </a>
-                        <a class="db-nav-link" href="/HocVien/MySchedule">
+                        <a class="db-nav-link @IsActive("HocVien", "MySchedule")" asp-area="HocVien" asp-controller="MySchedule" asp-action="Index">
                             <span class="db-nav-icon">📅</span> Lịch học
                         </a>
-                        <a class="db-nav-link" href="/HocVien/MyMaterials">
+                        <a class="db-nav-link @IsActive("HocVien", "MyMaterials")" asp-area="HocVien" asp-controller="MyMaterials" asp-action="Index">
                             <span class="db-nav-icon">📁</span> Tài liệu
                         </a>
-                        <a class="db-nav-link" href="/HocVien/MyAssignments">
+                        <a class="db-nav-link @IsActive("HocVien", "MyAssignments")" asp-area="HocVien" asp-controller="MyAssignments" asp-action="Index">
                             <span class="db-nav-icon">📝</span> Bài tập
                         </a>
-                        <a class="db-nav-link" href="/HocVien/MyGrades">
+                        <a class="db-nav-link @IsActive("HocVien", "MyGrades")" asp-area="HocVien" asp-controller="MyGrades" asp-action="Index">
                             <span class="db-nav-icon">📊</span> Bảng điểm
                         </a>
-                        <a class="db-nav-link" href="/HocVien/MyLearningProgress">
+                        <a class="db-nav-link @IsActive("HocVien", "MyLearningProgress")" asp-area="HocVien" asp-controller="MyLearningProgress" asp-action="Index">
                             <span class="db-nav-icon">📈</span> Tiến độ học tập
                         </a>
                     </div>
@@ -181,7 +202,10 @@
 
                 <div class="db-nav-group">
                     <span class="db-nav-group-label">Tài khoản</span>
-                    <a class="db-nav-link" href="/Account/ChangePassword">
+                    <a class="db-nav-link @(currentArea == "" && currentController == "Account" && currentAction == "ChangePassword" ? "active" : "")"
+                       asp-area=""
+                       asp-controller="Account"
+                       asp-action="ChangePassword">
                         <span class="db-nav-icon">🔑</span> Đổi mật khẩu
                     </a>
                 </div>
@@ -227,7 +251,7 @@
         <main class="db-content">
 
             <div id="dbAlertZone">
-                @if (TempData["SuccessMessage"] != null)
+                @if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"]?.ToString()))
                 {
                     <div class="db-alert db-alert-success">
                         <span class="db-alert-icon">✓</span>
@@ -236,7 +260,7 @@
                     </div>
                 }
 
-                @if (TempData["ErrorMessage"] != null)
+                @if (!string.IsNullOrWhiteSpace(TempData["ErrorMessage"]?.ToString()))
                 {
                     <div class="db-alert db-alert-danger">
                         <span class="db-alert-icon">!</span>

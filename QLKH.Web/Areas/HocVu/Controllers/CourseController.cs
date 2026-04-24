@@ -16,17 +16,44 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         {
             _courseService = courseService;
         }
+        private async Task<string> GenerateNextCourseCodeAsync()
+        {
+            var courses = await _courseService.GetAllAsync();
 
+            var lastCode = courses
+                .Where(x => !string.IsNullOrWhiteSpace(x.CourseCode) && x.CourseCode.StartsWith("KH"))
+                .OrderByDescending(x => x.CourseCode)
+                .Select(x => x.CourseCode)
+                .FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(lastCode))
+            {
+                return "KH001";
+            }
+
+            var numberPart = lastCode.Substring(2);
+
+            if (!int.TryParse(numberPart, out int number))
+            {
+                return "KH001";
+            }
+
+            return $"KH{(number + 1):D3}";
+        }
         public async Task<IActionResult> Index()
         {
             var courses = await _courseService.GetAllAsync();
             return View(courses);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.StatusList = Enum.GetValues(typeof(CourseStatus));
-            return View();
+            var model = new Course
+            {
+                CourseCode = await GenerateNextCourseCodeAsync()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -38,7 +65,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 ViewBag.StatusList = Enum.GetValues(typeof(CourseStatus));
                 return View(course);
             }
-
+            course.CourseCode = await GenerateNextCourseCodeAsync();
             var result = await _courseService.CreateAsync(course);
             if (!result)
             {

@@ -34,7 +34,10 @@
           data-loading-text="Đang lưu chứng chỉ..."
           class="cp-form-card">
 
-        <div asp-validation-summary="All" class="cp-validation-summary"></div>
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+        {
+            <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
+        }
 
         <div class="cp-form-group-label">Thông tin chính</div>
         <div class="cp-form-row">
@@ -48,7 +51,7 @@
 
             <div class="cp-field">
                 <label asp-for="CertificateName" class="cp-label"></label>
-                <input asp-for="CertificateName" class="cp-input" placeholder="VD: Chứng chỉ Tin học văn phòng" />
+                <input asp-for="CertificateName" class="cp-input" />
                 <span asp-validation-for="CertificateName" class="cp-field-error"></span>
             </div>
         </div>
@@ -56,7 +59,7 @@
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="CertificateCode" class="cp-label"></label>
-                <input asp-for="CertificateCode" class="cp-input" placeholder="Nhập mã hoặc số chứng chỉ" />
+                <input asp-for="CertificateCode" class="cp-input" />
                 <span asp-validation-for="CertificateCode" class="cp-field-error"></span>
             </div>
 
@@ -68,7 +71,7 @@
 
             <div class="cp-field">
                 <label asp-for="IssuedBy" class="cp-label"></label>
-                <input asp-for="IssuedBy" class="cp-input" placeholder="VD: Trung tâm khảo thí ABC" />
+                <input asp-for="IssuedBy" class="cp-input" />
                 <span asp-validation-for="IssuedBy" class="cp-field-error"></span>
             </div>
         </div>

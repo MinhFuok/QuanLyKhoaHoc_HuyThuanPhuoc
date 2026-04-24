@@ -25,13 +25,13 @@
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="ClassCode" class="cp-label">Mã lớp</label>
-                <input asp-for="ClassCode" class="cp-input" placeholder="VD: CL001" />
-                <span asp-validation-for="ClassCode" class="cp-field-error"></span>
+                <input asp-for="ClassCode" class="cp-input" readonly />
+                <span asp-validation-for="ClassCode" class="text-danger"></span>
             </div>
 
             <div class="cp-field">
                 <label asp-for="ClassName" class="cp-label">Tên lớp</label>
-                <input asp-for="ClassName" class="cp-input" placeholder="VD: Lớp C# K1" />
+                <input asp-for="ClassName" class="cp-input" />
                 <span asp-validation-for="ClassName" class="cp-field-error"></span>
             </div>
         </div>

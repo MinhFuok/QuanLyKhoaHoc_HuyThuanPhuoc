@@ -25,7 +25,30 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             _courseService = courseService;
             _teacherService = teacherService;
         }
+        private async Task<string> GenerateNextClassCodeAsync()
+        {
+            var classRooms = await _classRoomService.GetAllAsync();
 
+            var lastCode = classRooms
+                .Where(x => !string.IsNullOrWhiteSpace(x.ClassCode) && x.ClassCode.StartsWith("LH"))
+                .OrderByDescending(x => x.ClassCode)
+                .Select(x => x.ClassCode)
+                .FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(lastCode))
+            {
+                return "LH001";
+            }
+
+            var numberPart = lastCode.Substring(2);
+
+            if (!int.TryParse(numberPart, out int number))
+            {
+                return "LH001";
+            }
+
+            return $"LH{(number + 1):D3}";
+        }
         public async Task<IActionResult> Index()
         {
             var classRooms = await _classRoomService.GetAllAsync();
@@ -74,7 +97,13 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadDropdownDataAsync();
-            return View();
+
+            var model = new ClassRoom
+            {
+                ClassCode = await GenerateNextClassCodeAsync()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -86,7 +115,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 await LoadDropdownDataAsync(classRoom.CourseId, classRoom.TeacherId);
                 return View(classRoom);
             }
-
+            classRoom.ClassCode = await GenerateNextClassCodeAsync();
             var result = await _classRoomService.CreateAsync(classRoom);
             if (!result)
             {

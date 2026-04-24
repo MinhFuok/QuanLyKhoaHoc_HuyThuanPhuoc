@@ -55,16 +55,23 @@
 
     /* ------------------------------------------------
        Active nav link theo URL
+       Fix: không dùng startsWith để tránh StudentCertificate
+       bị active luôn Student
     ------------------------------------------------ */
     var path = window.location.pathname.replace(/\/+$/, '') || '/';
 
     navLinks.forEach(function (link) {
+        link.classList.remove('active');
+
         var href = link.getAttribute('href');
         if (!href || href === '#' || href.startsWith('javascript')) return;
+
         var normalized = href.replace(/\/+$/, '') || '/';
-        var isActive = normalized === path ||
-            (normalized !== '/' && path.toLowerCase().startsWith(normalized.toLowerCase()));
-        if (isActive) link.classList.add('active');
+        var isActive = normalized.toLowerCase() === path.toLowerCase();
+
+        if (isActive) {
+            link.classList.add('active');
+        }
     });
 
     /* ------------------------------------------------
@@ -80,10 +87,13 @@
     }
 
     document.querySelectorAll('#dbAlertZone .db-alert').forEach(function (alert) {
-        /* Close button */
         var btn = alert.querySelector('.db-alert-close');
-        if (btn) btn.addEventListener('click', function () { dismissAlert(alert); });
-        /* Auto */
+        if (btn) {
+            btn.addEventListener('click', function () {
+                dismissAlert(alert);
+            });
+        }
+
         setTimeout(function () {
             if (alert.parentNode) dismissAlert(alert);
         }, AUTO_DISMISS_MS);

@@ -47,6 +47,8 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             if (!ModelState.IsValid)
             {
+                TempData.Remove("ErrorMessage");
+                TempData.Remove("SuccessMessage");
                 return View(model);
             }
 
@@ -60,6 +62,8 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 if (!allowedExtensions.Contains(extension))
                 {
                     ModelState.AddModelError("EvidenceFile", "Chỉ chấp nhận file .jpg, .jpeg, .png, .pdf");
+                    TempData.Remove("ErrorMessage");
+                    TempData.Remove("SuccessMessage");
                     return View(model);
                 }
 
@@ -94,10 +98,18 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 CreatedAt = DateTime.Now
             };
 
-            await _studentCertificateService.CreateAsync(entity);
-
-            TempData["SuccessMessage"] = "Thêm chứng chỉ cho học viên thành công.";
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _studentCertificateService.CreateAsync(entity);
+                TempData["SuccessMessage"] = "Thêm chứng chỉ cho học viên thành công.";
+                TempData.Remove("ErrorMessage");
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Thêm chứng chỉ thất bại. Vui lòng kiểm tra lại thông tin nhập.";
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -134,6 +146,8 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             if (!ModelState.IsValid)
             {
+                TempData.Remove("ErrorMessage");
+                TempData.Remove("SuccessMessage");
                 return View(model);
             }
 
@@ -159,6 +173,8 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 if (!allowedExtensions.Contains(extension))
                 {
                     ModelState.AddModelError("EvidenceFile", "Chỉ chấp nhận file .jpg, .jpeg, .png, .pdf");
+                    TempData.Remove("ErrorMessage");
+                    TempData.Remove("SuccessMessage");
                     return View(model);
                 }
 
@@ -180,10 +196,18 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 entity.EvidenceFilePath = $"/uploads/student-certificates/{fileName}";
             }
 
-            await _studentCertificateService.UpdateAsync(entity);
-
-            TempData["SuccessMessage"] = "Cập nhật chứng chỉ thành công.";
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _studentCertificateService.UpdateAsync(entity);
+                TempData["SuccessMessage"] = "Cập nhật chứng chỉ thành công.";
+                TempData.Remove("ErrorMessage");
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Cập nhật chứng chỉ thất bại. Vui lòng thử lại.";
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -202,8 +226,17 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _studentCertificateService.DeleteAsync(id);
-            TempData["SuccessMessage"] = "Xóa chứng chỉ thành công.";
+            try
+            {
+                await _studentCertificateService.DeleteAsync(id);
+                TempData["SuccessMessage"] = "Xóa chứng chỉ thành công.";
+                TempData.Remove("ErrorMessage");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Xóa chứng chỉ thất bại.";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
