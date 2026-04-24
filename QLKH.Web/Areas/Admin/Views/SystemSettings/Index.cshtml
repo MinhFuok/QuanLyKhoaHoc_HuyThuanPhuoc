@@ -35,7 +35,7 @@
                         data-bs-target="#banner-pane"
                         type="button"
                         role="tab">
-                    Slide banner trang chủ
+                    Banner
                 </button>
             </li>
 
@@ -105,6 +105,93 @@
                         <label asp-for="SystemSetting.FooterText" class="form-label"></label>
                         <input asp-for="SystemSetting.FooterText" class="form-control" />
                         <span asp-validation-for="SystemSetting.FooterText" class="text-danger"></span>
+                    </div>
+
+                    <hr class="my-4" />
+                    <h5 class="mb-3">4 thẻ giới thiệu trang chủ</h5>
+
+                    <div class="border rounded p-3 mb-4">
+                        <h6 class="fw-bold mb-3">Thẻ 1</h6>
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <label asp-for="SystemSetting.FeatureCard1Number" class="form-label">Số</label>
+                                <input asp-for="SystemSetting.FeatureCard1Number" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard1Number" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SystemSetting.FeatureCard1Title" class="form-label">Tiêu đề</label>
+                                <input asp-for="SystemSetting.FeatureCard1Title" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard1Title" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SystemSetting.FeatureCard1Description" class="form-label">Mô tả</label>
+                                <input asp-for="SystemSetting.FeatureCard1Description" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard1Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-4">
+                        <h6 class="fw-bold mb-3">Thẻ 2</h6>
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <label asp-for="SystemSetting.FeatureCard2Number" class="form-label">Số</label>
+                                <input asp-for="SystemSetting.FeatureCard2Number" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard2Number" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SystemSetting.FeatureCard2Title" class="form-label">Tiêu đề</label>
+                                <input asp-for="SystemSetting.FeatureCard2Title" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard2Title" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SystemSetting.FeatureCard2Description" class="form-label">Mô tả</label>
+                                <input asp-for="SystemSetting.FeatureCard2Description" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard2Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-4">
+                        <h6 class="fw-bold mb-3">Thẻ 3</h6>
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <label asp-for="SystemSetting.FeatureCard3Number" class="form-label">Số</label>
+                                <input asp-for="SystemSetting.FeatureCard3Number" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard3Number" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SystemSetting.FeatureCard3Title" class="form-label">Tiêu đề</label>
+                                <input asp-for="SystemSetting.FeatureCard3Title" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard3Title" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SystemSetting.FeatureCard3Description" class="form-label">Mô tả</label>
+                                <input asp-for="SystemSetting.FeatureCard3Description" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard3Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-4">
+                        <h6 class="fw-bold mb-3">Thẻ 4</h6>
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <label asp-for="SystemSetting.FeatureCard4Number" class="form-label">Số</label>
+                                <input asp-for="SystemSetting.FeatureCard4Number" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard4Number" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SystemSetting.FeatureCard4Title" class="form-label">Tiêu đề</label>
+                                <input asp-for="SystemSetting.FeatureCard4Title" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard4Title" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SystemSetting.FeatureCard4Description" class="form-label">Mô tả</label>
+                                <input asp-for="SystemSetting.FeatureCard4Description" class="form-control" />
+                                <span asp-validation-for="SystemSetting.FeatureCard4Description" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- giữ dữ liệu các tab khác -->
@@ -245,6 +332,20 @@
                     <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
                     <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
                     <input asp-for="SystemSetting.FooterText" type="hidden" />
+
+                    <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
+
                     <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
                     <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
                     <input asp-for="SystemSetting.EnableEmail" type="hidden" />
@@ -313,6 +414,20 @@
                     <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
                     <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
                     <input asp-for="SystemSetting.FooterText" type="hidden" />
+
+                    <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
+
                     <input asp-for="SystemSetting.ContactEmail" type="hidden" />
                     <input asp-for="SystemSetting.ContactPhone" type="hidden" />
                     <input asp-for="SystemSetting.ContactAddress" type="hidden" />
@@ -320,6 +435,7 @@
                     <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
                     <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
                     <input asp-for="SystemSetting.XUrl" type="hidden" />
+
                     <input asp-for="SystemSetting.EnableEmail" type="hidden" />
                     <input asp-for="SystemSetting.SmtpServer" type="hidden" />
                     <input asp-for="SystemSetting.SmtpPort" type="hidden" />
@@ -355,6 +471,20 @@
                     <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
                     <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
                     <input asp-for="SystemSetting.FooterText" type="hidden" />
+
+                    <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
+                    <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
+
                     <input asp-for="SystemSetting.ContactEmail" type="hidden" />
                     <input asp-for="SystemSetting.ContactPhone" type="hidden" />
                     <input asp-for="SystemSetting.ContactAddress" type="hidden" />
@@ -362,6 +492,7 @@
                     <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
                     <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
                     <input asp-for="SystemSetting.XUrl" type="hidden" />
+
                     <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
                     <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
 
@@ -418,4 +549,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}
+}   

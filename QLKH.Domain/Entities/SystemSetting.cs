@@ -28,5 +28,26 @@
         public string? SenderEmail { get; set; }
         public string? SmtpUsername { get; set; }
         public string? SmtpPassword { get; set; }
+
+        // 4 card 
+        public string? FeatureCard1Number { get; set; }
+        public string? FeatureCard1Title { get; set; }
+        public string? FeatureCard1Description { get; set; }
+
+
+        public string? FeatureCard2Number { get; set; }
+        public string? FeatureCard2Title { get; set; }
+        public string? FeatureCard2Description { get; set; }
+
+
+        public string? FeatureCard3Number { get; set; }
+        public string? FeatureCard3Title { get; set; }
+        public string? FeatureCard3Description { get; set; }
+
+
+        public string? FeatureCard4Number { get; set; }
+        public string? FeatureCard4Title { get; set; }
+        public string? FeatureCard4Description { get; set; }
+
     }
 }

@@ -13,6 +13,22 @@
     var slides = Model.BannerSlides?.Where(x => x.IsActive).OrderBy(x => x.DisplayOrder).ToList()
                  ?? new List<QLKH.Domain.Entities.HomeBannerSlide>();
 
+    var featureCard1Number = Model.SystemSetting?.FeatureCard1Number ?? "01";
+    var featureCard1Title = Model.SystemSetting?.FeatureCard1Title ?? "Quản lý tập trung";
+    var featureCard1Description = Model.SystemSetting?.FeatureCard1Description ?? "khóa học • lớp học • học viên";
+
+    var featureCard2Number = Model.SystemSetting?.FeatureCard2Number ?? "02";
+    var featureCard2Title = Model.SystemSetting?.FeatureCard2Title ?? "Dễ vận hành";
+    var featureCard2Description = Model.SystemSetting?.FeatureCard2Description ?? "học vụ • quản trị • cấu hình";
+
+    var featureCard3Number = Model.SystemSetting?.FeatureCard3Number ?? "03";
+    var featureCard3Title = Model.SystemSetting?.FeatureCard3Title ?? "Học online";
+    var featureCard3Description = Model.SystemSetting?.FeatureCard3Description ?? "tài liệu • bài tập • tiến độ";
+
+    var featureCard4Number = Model.SystemSetting?.FeatureCard4Number ?? "04";
+    var featureCard4Title = Model.SystemSetting?.FeatureCard4Title ?? "Mở rộng dễ dàng";
+    var featureCard4Description = Model.SystemSetting?.FeatureCard4Description ?? "báo cáo • nghiệp vụ • dữ liệu";
+
     string vaoHeThongUrl;
 
     if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -160,73 +176,11 @@
             </div>
         </div>
     </section>
-
-    <section class="home-shell home-section">
-        <div class="home-section__head home-reveal">
-
-            <h2>Không gian quản lý gọn, rõ và sẵn sàng vận hành</h2>
-        </div>
-
-        <div class="home-card-grid">
-            <article class="e-card playing home-feature-card home-reveal"
-                     style="--card-start: #8b5cf6; --card-mid: #4f46e5; --card-end: #22d3ee;">
-                <div class="image"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="infotop">
-                    <span class="home-card-icon">01</span>
-                    Quản lý tập trung
-                    <div class="name">khóa học • lớp học • học viên</div>
-                </div>
-            </article>
-
-            <article class="e-card playing home-feature-card home-reveal"
-                     style="--card-start: #14b8a6; --card-mid: #0f766e; --card-end: #67e8f9;">
-                <div class="image"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="infotop">
-                    <span class="home-card-icon">02</span>
-                    Dễ vận hành
-                    <div class="name">học vụ • quản trị • cấu hình</div>
-                </div>
-            </article>
-
-            <article class="e-card playing home-feature-card home-reveal"
-                     style="--card-start: #f59e0b; --card-mid: #ea580c; --card-end: #fde68a;">
-                <div class="image"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="infotop">
-                    <span class="home-card-icon">03</span>
-                    Học online
-                    <div class="name">tài liệu • bài tập • tiến độ</div>
-                </div>
-            </article>
-
-            <article class="e-card playing home-feature-card home-reveal"
-                     style="--card-start: #fb7185; --card-mid: #e11d48; --card-end: #f9a8d4;">
-                <div class="image"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="infotop">
-                    <span class="home-card-icon">04</span>
-                    Mở rộng dễ dàng
-                    <div class="name">báo cáo • nghiệp vụ • dữ liệu</div>
-                </div>
-            </article>
-        </div>
-    </section>
-
     @if (slides.Any())
     {
         <section class="home-shell home-section home-section--slides">
             <div class="home-section__head home-reveal">
-                <h2>Nội dung nổi bật từ hệ thống</h2>
+                <h2>Điểm nổi bật của nền tảng</h2>
             </div>
 
             <div class="home-carousel-wrap home-reveal">
@@ -277,10 +231,71 @@
             </div>
         </section>
     }
+    <section class="home-shell home-section">
+        <div class="home-section__head home-reveal">
+            <h2>Nền tảng quản lý hiện đại, rõ ràng và sẵn sàng vận hành</h2>
+        </div>
+
+        <div class="home-card-grid">
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #8b5cf6; --card-mid: #4f46e5; --card-end: #22d3ee;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">@featureCard1Number</span>
+                    @featureCard1Title
+                    <div class="name">@featureCard1Description</div>
+                </div>
+            </article>
+
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #14b8a6; --card-mid: #0f766e; --card-end: #67e8f9;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">@featureCard2Number</span>
+                    @featureCard2Title
+                    <div class="name">@featureCard2Description</div>
+                </div>
+            </article>
+
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #f59e0b; --card-mid: #ea580c; --card-end: #fde68a;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">@featureCard3Number</span>
+                    @featureCard3Title
+                    <div class="name">@featureCard3Description</div>
+                </div>
+            </article>
+
+            <article class="e-card playing home-feature-card home-reveal"
+                     style="--card-start: #fb7185; --card-mid: #e11d48; --card-end: #f9a8d4;">
+                <div class="image"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="infotop">
+                    <span class="home-card-icon">@featureCard4Number</span>
+                    @featureCard4Title
+                    <div class="name">@featureCard4Description</div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+   
 
     <section class="home-shell home-section">
         <div class="home-section__head home-reveal">
-            <h2>Mỗi nhóm người dùng có đúng không gian làm việc của mình</h2>
+            <h2>Tối ưu trải nghiệm sử dụng cho từng vai trò trong hệ thống</h2>
         </div>
 
         <div class="home-role-grid">
@@ -388,7 +403,7 @@
                     <div class="home-contact__scan-line"></div>
                 </div>
 
-                <div class="home-contact__body">
+                <div class="home-contact__body" id="lien-he">
                     <div>
                         <span class="home-kicker">Liên hệ</span>
                         <h2>Bắt đầu vận hành hệ thống với @siteName</h2>

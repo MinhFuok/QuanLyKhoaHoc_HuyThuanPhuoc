@@ -67,6 +67,40 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 vm.SenderEmail = setting.SenderEmail ?? string.Empty;
                 vm.SmtpUsername = setting.SmtpUsername ?? string.Empty;
                 vm.SmtpPassword = setting.SmtpPassword ?? string.Empty;
+
+                vm.FeatureCard1Number = setting.FeatureCard1Number ?? "01";
+                vm.FeatureCard1Title = setting.FeatureCard1Title ?? "Quản lý tập trung";
+                vm.FeatureCard1Description = setting.FeatureCard1Description ?? "khóa học • lớp học • học viên";
+
+                vm.FeatureCard2Number = setting.FeatureCard2Number ?? "02";
+                vm.FeatureCard2Title = setting.FeatureCard2Title ?? "Dễ vận hành";
+                vm.FeatureCard2Description = setting.FeatureCard2Description ?? "học vụ • quản trị • cấu hình";
+
+                vm.FeatureCard3Number = setting.FeatureCard3Number ?? "03";
+                vm.FeatureCard3Title = setting.FeatureCard3Title ?? "Học online";
+                vm.FeatureCard3Description = setting.FeatureCard3Description ?? "tài liệu • bài tập • tiến độ";
+
+                vm.FeatureCard4Number = setting.FeatureCard4Number ?? "04";
+                vm.FeatureCard4Title = setting.FeatureCard4Title ?? "Mở rộng dễ dàng";
+                vm.FeatureCard4Description = setting.FeatureCard4Description ?? "báo cáo • nghiệp vụ • dữ liệu";
+            }
+            else
+            {
+                vm.FeatureCard1Number = "01";
+                vm.FeatureCard1Title = "Quản lý tập trung";
+                vm.FeatureCard1Description = "khóa học • lớp học • học viên";
+
+                vm.FeatureCard2Number = "02";
+                vm.FeatureCard2Title = "Dễ vận hành";
+                vm.FeatureCard2Description = "học vụ • quản trị • cấu hình";
+
+                vm.FeatureCard3Number = "03";
+                vm.FeatureCard3Title = "Học online";
+                vm.FeatureCard3Description = "tài liệu • bài tập • tiến độ";
+
+                vm.FeatureCard4Number = "04";
+                vm.FeatureCard4Title = "Mở rộng dễ dàng";
+                vm.FeatureCard4Description = "báo cáo • nghiệp vụ • dữ liệu";
             }
 
             var pageVm = new SystemSettingsPageViewModel
@@ -120,35 +154,21 @@ namespace QLKH.Web.Areas.Admin.Controllers
             setting.SmtpUsername = model.SmtpUsername;
             setting.SmtpPassword = model.SmtpPassword;
 
-            if (model.BannerImageFile != null && model.BannerImageFile.Length > 0)
-            {
-                var extension = Path.GetExtension(model.BannerImageFile.FileName).ToLowerInvariant();
-                string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".webp" };
+            setting.FeatureCard1Number = model.FeatureCard1Number;
+            setting.FeatureCard1Title = model.FeatureCard1Title;
+            setting.FeatureCard1Description = model.FeatureCard1Description;
 
-                if (!allowedExtensions.Contains(extension))
-                {
-                    ModelState.AddModelError("SystemSetting.BannerImageFile", "Chỉ chấp nhận file ảnh .jpg, .jpeg, .png, .webp");
-                    pageVm.BannerSlides = (await _homeBannerSlideService.GetAllAsync()).ToList();
-                    return View(pageVm);
-                }
+            setting.FeatureCard2Number = model.FeatureCard2Number;
+            setting.FeatureCard2Title = model.FeatureCard2Title;
+            setting.FeatureCard2Description = model.FeatureCard2Description;
 
-                var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "banners");
+            setting.FeatureCard3Number = model.FeatureCard3Number;
+            setting.FeatureCard3Title = model.FeatureCard3Title;
+            setting.FeatureCard3Description = model.FeatureCard3Description;
 
-                if (!Directory.Exists(uploadFolder))
-                {
-                    Directory.CreateDirectory(uploadFolder);
-                }
-
-                var fileName = $"banner_{Guid.NewGuid():N}{extension}";
-                var filePath = Path.Combine(uploadFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.BannerImageFile.CopyToAsync(stream);
-                }
-
-                setting.HomeBannerImageUrl = $"/uploads/banners/{fileName}";
-            }
+            setting.FeatureCard4Number = model.FeatureCard4Number;
+            setting.FeatureCard4Title = model.FeatureCard4Title;
+            setting.FeatureCard4Description = model.FeatureCard4Description;
 
             await _systemSettingService.UpdateAsync(setting);
 
@@ -159,7 +179,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 "SystemSetting",
                 setting.Id.ToString(),
                 "Cấu hình hệ thống",
-                "Cập nhật cấu hình website/email/liên hệ");
+                "Cập nhật giao diện website / liên hệ / email / 4 thẻ trang chủ");
 
             TempData["SuccessMessage"] = "Cập nhật cấu hình hệ thống thành công.";
             return RedirectToAction(nameof(Index));

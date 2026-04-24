@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 
 namespace QLKH.Web.Areas.Admin.Models
 {
@@ -21,6 +20,45 @@ namespace QLKH.Web.Areas.Admin.Models
 
         [Display(Name = "Footer text")]
         public string FooterText { get; set; } = string.Empty;
+
+        // =========================
+        // TAB: 4 CARD NỔI BẬT
+        // =========================
+        [Display(Name = "Số thẻ 1")]
+        public string? FeatureCard1Number { get; set; }
+
+        [Display(Name = "Tiêu đề thẻ 1")]
+        public string? FeatureCard1Title { get; set; }
+
+        [Display(Name = "Mô tả thẻ 1")]
+        public string? FeatureCard1Description { get; set; }
+
+        [Display(Name = "Số thẻ 2")]
+        public string? FeatureCard2Number { get; set; }
+
+        [Display(Name = "Tiêu đề thẻ 2")]
+        public string? FeatureCard2Title { get; set; }
+
+        [Display(Name = "Mô tả thẻ 2")]
+        public string? FeatureCard2Description { get; set; }
+
+        [Display(Name = "Số thẻ 3")]
+        public string? FeatureCard3Number { get; set; }
+
+        [Display(Name = "Tiêu đề thẻ 3")]
+        public string? FeatureCard3Title { get; set; }
+
+        [Display(Name = "Mô tả thẻ 3")]
+        public string? FeatureCard3Description { get; set; }
+
+        [Display(Name = "Số thẻ 4")]
+        public string? FeatureCard4Number { get; set; }
+
+        [Display(Name = "Tiêu đề thẻ 4")]
+        public string? FeatureCard4Title { get; set; }
+
+        [Display(Name = "Mô tả thẻ 4")]
+        public string? FeatureCard4Description { get; set; }
 
         // =========================
         // TAB: LIÊN HỆ
@@ -81,12 +119,6 @@ namespace QLKH.Web.Areas.Admin.Models
 
         [Display(Name = "SMTP Password")]
         public string SmtpPassword { get; set; } = string.Empty;
-
-        // =========================
-        // TAB: BANNER / ẢNH
-        // =========================
-        [Display(Name = "Ảnh banner")]
-        public IFormFile? BannerImageFile { get; set; }
 
         public string HomeBannerImageUrl { get; set; } = string.Empty;
     }
