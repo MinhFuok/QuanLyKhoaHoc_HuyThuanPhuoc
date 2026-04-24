@@ -7,11 +7,11 @@ namespace QLKH.Web.Areas.Admin.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập mã")]
-        [Display(Name = "Mã khoa/ngành")]
+        [Display(Name = "Mã khoa/môn")]
         public string DepartmentCode { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập tên")]
-        [Display(Name = "Tên khoa/ngành")]
+        [Display(Name = "Tên khoa/môn")]
         public string DepartmentName { get; set; } = string.Empty;
 
         [Display(Name = "Mô tả")]

@@ -1,11 +1,11 @@
 ﻿@model QLKH.Web.Areas.Admin.Models.DepartmentCreateViewModel
 
 @{
-    ViewData["Title"] = "Thêm khoa/ngành";
+    ViewData["Title"] = "Thêm khoa/môn";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Thêm khoa/ngành đào tạo</h2>
+<h2 class="mb-4">Thêm khoa/môn đào tạo</h2>
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -14,7 +14,7 @@
 
             <div class="mb-3">
                 <label asp-for="DepartmentCode" class="form-label"></label>
-                <input asp-for="DepartmentCode" class="form-control" />
+                <input asp-for="DepartmentCode" class="form-control" readonly />
                 <span asp-validation-for="DepartmentCode" class="text-danger"></span>
             </div>
 

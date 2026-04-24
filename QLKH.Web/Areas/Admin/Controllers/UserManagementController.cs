@@ -33,8 +33,29 @@ namespace QLKH.Web.Areas.Admin.Controllers
             _emailSenderService = emailSenderService;
             _adminAuditLogService = adminAuditLogService;
         }
+        private async Task<string> GenerateNextUserCodeAsync()
+        {
+            var lastCode = await _userManager.Users
+                .Where(x => !string.IsNullOrEmpty(x.UserCode) && x.UserCode.StartsWith("TK"))
+                .OrderByDescending(x => x.UserCode)
+                .Select(x => x.UserCode)
+                .FirstOrDefaultAsync();
 
-        public async Task<IActionResult> Index(string? keyword, string? role, string? status, string? linkStatus)
+            if (string.IsNullOrWhiteSpace(lastCode))
+            {
+                return "TK001";
+            }
+
+            var numberPart = lastCode.Substring(2);
+
+            if (!int.TryParse(numberPart, out int number))
+            {
+                return "TK001";
+            }
+
+            return $"TK{(number + 1):D3}";
+        }
+        public async Task<IActionResult> Index(string? keyword, string? role, string? tab, string? linkStatus)
         {
             var users = await _userManager.Users
                 .OrderBy(u => u.Email)
@@ -63,6 +84,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 model.Add(new UserListItemViewModel
                 {
                     Id = user.Id,
+                    UserCode = user.UserCode ?? "",
                     FullName = user.FullName ?? string.Empty,
                     Email = user.Email ?? string.Empty,
                     UserName = user.UserName ?? string.Empty,
@@ -92,9 +114,9 @@ namespace QLKH.Web.Areas.Admin.Controllers
                     .ToList();
             }
 
-            if (!string.IsNullOrWhiteSpace(status))
+            if (!string.IsNullOrWhiteSpace(tab))
             {
-                model = status switch
+                model = tab switch
                 {
                     "active" => model.Where(x => !x.IsLocked).ToList(),
                     "locked" => model.Where(x => x.IsLocked).ToList(),
@@ -114,7 +136,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
 
             ViewBag.Keyword = keyword;
             ViewBag.Role = role;
-            ViewBag.Status = status;
+            ViewBag.Tab = tab;
             ViewBag.LinkStatus = linkStatus;
 
             ViewBag.RoleList = new List<SelectListItem>
@@ -130,10 +152,16 @@ namespace QLKH.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             LoadRoles();
-            return View(new CreateUserViewModel());
+
+            var model = new CreateUserViewModel
+            {
+                UserCode = await GenerateNextUserCodeAsync()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -154,9 +182,10 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 ModelState.AddModelError(nameof(model.Email), "Email này đã tồn tại.");
                 return View(model);
             }
-
+            var nextUserCode = await GenerateNextUserCodeAsync();
             var user = new ApplicationUser
             {
+                UserCode = nextUserCode,
                 FullName = model.FullName.Trim(),
                 Email = normalizedEmail,
                 UserName = normalizedEmail,
@@ -254,17 +283,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var normalizedEmail = model.Email.Trim();
-            var duplicatedEmailUser = await _userManager.FindByEmailAsync(normalizedEmail);
-            if (duplicatedEmailUser != null && duplicatedEmailUser.Id != model.Id)
-            {
-                ModelState.AddModelError(nameof(model.Email), "Email này đã tồn tại.");
-                return View(model);
-            }
-
             user.FullName = model.FullName.Trim();
-            user.Email = normalizedEmail;
-            user.UserName = normalizedEmail;
 
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)

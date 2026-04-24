@@ -28,9 +28,38 @@ namespace QLKH.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadParentDepartmentsAsync();
-            return View(new DepartmentCreateViewModel());
-        }
 
+            var model = new DepartmentCreateViewModel
+            {
+                DepartmentCode = await GenerateNextDepartmentCodeAsync()
+            };
+
+            return View(model);
+        }
+        private async Task<string> GenerateNextDepartmentCodeAsync()
+        {
+            var departments = await _departmentService.GetAllAsync();
+
+            var lastCode = departments
+                .Where(x => !string.IsNullOrWhiteSpace(x.DepartmentCode) && x.DepartmentCode.StartsWith("KM"))
+                .OrderByDescending(x => x.DepartmentCode)
+                .Select(x => x.DepartmentCode)
+                .FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(lastCode))
+            {
+                return "KM001";
+            }
+
+            var numberPart = lastCode.Substring(2);
+
+            if (!int.TryParse(numberPart, out int number))
+            {
+                return "KM001";
+            }
+
+            return $"KM{(number + 1):D3}";
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DepartmentCreateViewModel model)
@@ -44,7 +73,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
 
             var department = new Department
             {
-                DepartmentCode = model.DepartmentCode.Trim(),
+                DepartmentCode = await GenerateNextDepartmentCodeAsync(),
                 DepartmentName = model.DepartmentName.Trim(),
                 Description = model.Description,
                 ParentDepartmentId = model.ParentDepartmentId,
@@ -53,7 +82,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
 
             await _departmentService.AddAsync(department);
 
-            TempData["SuccessMessage"] = "Thêm khoa/ngành thành công.";
+            TempData["SuccessMessage"] = "Thêm khoa/môn thành công.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -105,7 +134,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
 
             await _departmentService.UpdateAsync(department);
 
-            TempData["SuccessMessage"] = "Cập nhật khoa/ngành thành công.";
+            TempData["SuccessMessage"] = "Cập nhật khoa/môn thành công.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -142,7 +171,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
             }
 
             await _departmentService.DeleteAsync(id);
-            TempData["SuccessMessage"] = "Xóa khoa/ngành thành công.";
+            TempData["SuccessMessage"] = "Xóa khoa/môn thành công.";
 
             return RedirectToAction(nameof(Index));
         }

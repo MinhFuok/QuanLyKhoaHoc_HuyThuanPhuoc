@@ -29,10 +29,10 @@
                 <span asp-validation-for="FullName" class="cp-field-error"></span>
             </div>
 
-            <div class="cp-field">
-                <label asp-for="Email" class="cp-label"></label>
-                <input asp-for="Email" class="cp-input" />
-                <span asp-validation-for="Email" class="cp-field-error"></span>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" readonly />
+                <input asp-for="Email" type="hidden" />
             </div>
         </div>
 

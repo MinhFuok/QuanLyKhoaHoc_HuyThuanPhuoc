@@ -4,6 +4,8 @@ namespace QLKH.Web.Areas.Admin.Models
 {
     public class CreateUserViewModel
     {
+        [Display(Name = "Mã tài khoản")]
+        public string UserCode { get; set; } = string.Empty;
         [Required(ErrorMessage = "Vui lòng nhập họ tên.")]
         [Display(Name = "Họ tên")]
         public string FullName { get; set; } = string.Empty;

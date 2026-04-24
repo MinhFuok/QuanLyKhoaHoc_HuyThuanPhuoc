@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.Department>
 
 @{
-    ViewData["Title"] = "Khoa/ngành đào tạo";
+    ViewData["Title"] = "Khoa/môn đào tạo";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 
     var parentDepartments = Model?
@@ -16,11 +16,11 @@
         .ToList() ?? new List<QLKH.Domain.Entities.Department>();
 }
 
-<h2 class="mb-4">Khoa/ngành đào tạo</h2>
+<h2 class="mb-4">Khoa/môn đào tạo</h2>
 
 <div class="mb-3">
     <a asp-area="Admin" asp-controller="Department" asp-action="Create" class="btn btn-primary">
-        + Thêm khoa/ngành
+        + Thêm khoa/môn
     </a>
 </div>
 
@@ -30,7 +30,7 @@
             <thead>
                 <tr>
                     <th style="width: 90px;">Mã</th>
-                    <th>Tên khoa/ngành</th>
+                    <th>Tên khoa/môn</th>
                     <th>Mô tả</th>
                     <th style="width: 100px;">Cấp</th>
                     <th style="width: 180px;">Thuộc khoa</th>
@@ -101,7 +101,7 @@
                                     <td class="ps-5">↳ @child.DepartmentName</td>
                                     <td>@child.Description</td>
                                     <td>
-                                        <span class="badge bg-info text-dark">Ngành</span>
+                                        <span class="badge bg-info text-dark">Môn</span>
                                     </td>
                                     <td>@parent.DepartmentName</td>
                                     <td>
@@ -137,7 +137,7 @@
                         {
                             <tr class="@groupId child-row">
                                 <td colspan="7" class="text-center text-muted">
-                                    Khoa này chưa có ngành con.
+                                    Khoa này chưa có môn.
                                 </td>
                             </tr>
                         }
@@ -146,7 +146,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="7" class="text-center">Chưa có dữ liệu khoa/ngành.</td>
+                        <td colspan="7" class="text-center">Chưa có dữ liệu khoa/môn.</td>
                     </tr>
                 }
             </tbody>
