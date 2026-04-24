@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using QLKH.Application.Interfaces.Services;
 using QLKH.Infrastructure.Identity;
 using QLKH.Web.Models.Account;
 using QLKH.Web.Services;
 using System.Text;
 using System.Text.Encodings.Web;
+
 namespace QLKH.Web.Controllers
 {
     public class AccountController : Controller
@@ -15,14 +16,18 @@ namespace QLKH.Web.Controllers
         private readonly IEmailSenderService _emailSenderService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAdminAuditLogService _adminAuditLogService;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager,
-                                 UserManager<ApplicationUser> userManager,
-                                 IEmailSenderService emailSenderService)
+        public AccountController(
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IEmailSenderService emailSenderService,
+            IAdminAuditLogService adminAuditLogService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _emailSenderService = emailSenderService;
+            _adminAuditLogService = adminAuditLogService;
         }
 
         [AllowAnonymous]
@@ -66,6 +71,15 @@ namespace QLKH.Web.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
 
+            await _adminAuditLogService.WriteAsync(
+                user.Id,
+                user.Email ?? model.Email,
+                "LOGIN_SUCCESS",
+                "Account",
+                user.Id,
+                user.Email ?? model.Email,
+                $"Vai trò: {string.Join(", ", roles)}");
+
             if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
             {
                 return Redirect(model.ReturnUrl);
@@ -85,7 +99,7 @@ namespace QLKH.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        // Change Password
+
         [Authorize]
         [HttpGet]
         public IActionResult ChangePassword()
@@ -134,6 +148,19 @@ namespace QLKH.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user != null)
+            {
+                await _adminAuditLogService.WriteAsync(
+                    user.Id,
+                    user.Email ?? User.Identity?.Name ?? "Unknown",
+                    "LOGOUT",
+                    "Account",
+                    user.Id,
+                    user.Email ?? User.Identity?.Name ?? "Unknown");
+            }
+
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
@@ -185,12 +212,14 @@ namespace QLKH.Web.Controllers
 
             return RedirectToAction(nameof(ForgotPasswordConfirmation));
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult ResetPassword(string? code = null, string? email = null)
@@ -241,12 +270,14 @@ namespace QLKH.Web.Controllers
 
             return RedirectToAction(nameof(ResetPasswordConfirmation));
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
         }
+
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {

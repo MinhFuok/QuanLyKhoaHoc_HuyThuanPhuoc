@@ -88,12 +88,39 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<AppDbContext>();
-
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-    await IdentitySeedData.SeedAsync(roleManager, userManager, context);
+
+    string[] roles = { "Admin", "HocVu", "GiaoVien", "HocVien" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    var adminEmail = "nsmp2022@gmail.com";
+    var adminPassword = "P@ssw0rd";
+
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new ApplicationUser
+        {
+            FullName = "Ngô Sỷ Minh Phước",
+            Email = adminEmail,
+            UserName = adminEmail,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(adminUser, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+    }
 }
 if (!app.Environment.IsDevelopment())
 {

@@ -11,5 +11,7 @@ namespace QLKH.Application.Interfaces.Repositories
     {
         Task AddAsync(AdminAuditLog log);
         Task<List<AdminAuditLog>> GetAllAsync();
+        Task<List<string>> GetDistinctActorEmailsAsync();
+        Task DeleteOlderThanAsync(DateTime cutoffUtc);
     }
 }

@@ -1,11 +1,26 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.AdminAuditLog>
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
-    ViewData["Title"] = "Nhật ký thao tác Admin";
+    ViewData["Title"] = "Nhật ký hoạt động";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Nhật ký thao tác Admin</h2>
+<h2 class="mb-4">Nhật ký hoạt động</h2>
+
+@if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"]?.ToString()))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(TempData["ErrorMessage"]?.ToString()))
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="card shadow-sm mb-3">
     <div class="card-body">
@@ -13,11 +28,15 @@
             <div class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label">Admin</label>
-                    <input type="text"
-                           name="adminEmail"
-                           value="@ViewBag.AdminEmail"
-                           class="form-control"
-                           placeholder="Nhập email admin..." />
+                    <select name="adminEmail" class="form-select">
+                        <option value="">-- Tất cả admin --</option>
+                        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.AdminEmailList)
+                        {
+                            <option value="@item.Value" selected="@(ViewBag.AdminEmail == item.Value)">
+                                @item.Text
+                            </option>
+                        }
+                    </select>
                 </div>
 
                 <div class="col-md-2">
@@ -49,12 +68,18 @@
                            name="keyword"
                            value="@ViewBag.Keyword"
                            class="form-control"
-                           placeholder="Thông tin / ghi chú / đối tượng..." />
+                           placeholder="Thông tin ..." />
                 </div>
 
-                <div class="col-12 d-flex gap-2">
+                <div class="col-12 d-flex gap-2 flex-wrap">
                     <button type="submit" class="btn btn-primary">Lọc</button>
-                    <a asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index" class="btn btn-secondary">Bỏ lọc</a>
+
+                    <a asp-area="Admin"
+                       asp-controller="AdminAuditLog"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                        Bỏ lọc
+                    </a>
                 </div>
             </div>
         </form>
@@ -100,6 +125,9 @@
                     }
                 </tbody>
             </table>
+        </div>
+        <div class="mt-3 text-muted small" style="text-align:center !important;">
+            Nhật ký sẽ tự động xóa sau 30 ngày.
         </div>
     </div>
 </div>

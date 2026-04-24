@@ -1,7 +1,522 @@
-﻿@{
+﻿@model QLKH.Web.Areas.Admin.Models.AdminDashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard Admin";
-    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2>Dashboard Admin</h2>
-<p>Chào mừng Admin vào hệ thống QLKH.</p>
+<div class="admin-dashboard-page">
+    <div class="dashboard-header card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="dashboard-title mb-2">DASHBOARD ADMIN</h2>
+                    <p class="text-muted mb-0">
+                        Tổng quan nhanh hệ thống quản lý khóa học và tình trạng vận hành hiện tại.
+                    </p>
+                </div>
+
+                <div class="admin-identity-box">
+                    <div class="admin-avatar">
+                        @(string.IsNullOrWhiteSpace(Model.AdminFullName) ? "A" : Model.AdminFullName.Trim()[0].ToString().ToUpper())
+                    </div>
+                    <div>
+                        <div class="fw-bold">@Model.AdminFullName</div>
+                        <div class="text-muted small">@Model.AdminEmail</div>
+                        <span class="badge bg-primary mt-1">@Model.AdminRole</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-primary shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Tổng tài khoản</div>
+                    <div class="stat-value">@Model.TotalUsers</div>
+                    <div class="stat-meta">
+                        Hoạt động: <strong>@Model.ActiveUsers</strong> | Khóa: <strong>@Model.LockedUsers</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-success shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Học viên</div>
+                    <div class="stat-value">@Model.TotalStudents</div>
+                    <div class="stat-meta">
+                        Đã liên kết: <strong>@Model.LinkedStudents</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-warning shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Giáo viên</div>
+                    <div class="stat-value">@Model.TotalTeachers</div>
+                    <div class="stat-meta">
+                        Đã liên kết: <strong>@Model.LinkedTeachers</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-info shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Khóa học / Lớp học</div>
+                    <div class="stat-value">@Model.TotalClassRooms</div>
+                    <div class="stat-meta">
+                        Khóa học: <strong>@Model.TotalCourses</strong> | Khoa/Ngành: <strong>@Model.TotalDepartments</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info + System -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="mb-0">Thông tin admin</h5>
+                </div>
+                <div class="card-body">
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="info-label">Họ tên</span>
+                            <span class="info-value">@Model.AdminFullName</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email</span>
+                            <span class="info-value">@Model.AdminEmail</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Vai trò</span>
+                            <span class="info-value"><span class="badge bg-primary">@Model.AdminRole</span></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Website</span>
+                            <span class="info-value">
+                                @if (Model.IsWebsiteEnabled)
+                                {
+                                    <span class="badge bg-success">Đang hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Bảo trì</span>
+                                }
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email hệ thống</span>
+                            <span class="info-value">
+                                @if (Model.EnableEmail)
+                                {
+                                    <span class="badge bg-success">Đã bật</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Đang tắt</span>
+                                }
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Banner hoạt động</span>
+                            <span class="info-value">@Model.ActiveBannerCount</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="mb-0">Tác vụ nhanh</h5>
+                </div>
+                <div class="card-body">
+                    <div class="quick-actions-grid">
+                        <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="quick-action-item">
+                            <div class="quick-action-title">Quản lý tài khoản</div>
+                            <div class="quick-action-desc">Tạo, sửa, khóa tài khoản nội bộ</div>
+                        </a>
+
+                        <a asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" class="quick-action-item">
+                            <div class="quick-action-title">Cấu hình hệ thống</div>
+                            <div class="quick-action-desc">Website, email, liên hệ, banner</div>
+                        </a>
+
+                        <a asp-area="Admin" asp-controller="BulkNotification" asp-action="Index" class="quick-action-item">
+                            <div class="quick-action-title">Gửi thông báo</div>
+                            <div class="quick-action-desc">Gửi email hàng loạt tới HV/GV</div>
+                        </a>
+
+                        <a asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index" class="quick-action-item">
+                            <div class="quick-action-title">Nhật ký hoạt động</div>
+                            <div class="quick-action-desc">Theo dõi thao tác và truy cập gần đây</div>
+                        </a>
+                    </div>
+
+                    @if (!Model.IsWebsiteEnabled && !string.IsNullOrWhiteSpace(Model.MaintenanceMessage))
+                    {
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <strong>Thông báo bảo trì:</strong> @Model.MaintenanceMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-xl-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Tổng quan dữ liệu đào tạo</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="overviewBarChart" height="130"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Trạng thái tài khoản</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="userStatusChart" height="130"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Tình trạng liên kết tài khoản</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="linkStatusChart" height="90"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent activity -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Hoạt động gần đây</h5>
+            <a asp-area="Admin" asp-controller="AdminAuditLog" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                Xem tất cả
+            </a>
+        </div>
+        <div class="card-body">
+            @if (Model.RecentActivities != null && Model.RecentActivities.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Người thao tác</th>
+                                <th>Hành động</th>
+                                <th>Đối tượng</th>
+                                <th>Thông tin</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RecentActivities)
+                            {
+                                <tr>
+                                    <td>@item.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>@item.ActorEmail</td>
+                                    <td><strong>@item.ActionName</strong></td>
+                                    <td>@item.TargetType</td>
+                                    <td>@item.TargetDisplay</td>
+                                    <td>@item.Note</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-muted">Chưa có dữ liệu hoạt động gần đây.</div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .admin-dashboard-page .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1d2b53;
+        }
+
+        .admin-identity-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: #f8f9ff;
+            border-radius: 16px;
+            border: 1px solid #e9ecf5;
+        }
+
+        .admin-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f8cff, #6a5cff);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-stat-card {
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+            .dashboard-stat-card .card-body {
+                padding: 1.25rem;
+            }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            color: #1f2d3d;
+        }
+
+        .stat-meta {
+            color: #6c757d;
+            font-size: 0.92rem;
+        }
+
+        .stat-primary {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #0d6efd;
+        }
+
+        .stat-success {
+            background: linear-gradient(135deg, #eefbf3 0%, #ffffff 100%);
+            border-left: 5px solid #198754;
+        }
+
+        .stat-warning {
+            background: linear-gradient(135deg, #fff8eb 0%, #ffffff 100%);
+            border-left: 5px solid #ffc107;
+        }
+
+        .stat-info {
+            background: linear-gradient(135deg, #eef8ff 0%, #ffffff 100%);
+            border-left: 5px solid #0dcaf0;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+
+            .info-item:last-child {
+                border-bottom: none;
+            }
+
+        .info-label {
+            min-width: 130px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .info-value {
+            text-align: right;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .quick-action-item {
+            display: block;
+            text-decoration: none;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: #f8f9fc;
+            border: 1px solid #e9ecf5;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .quick-action-item:hover {
+                background: #eef4ff;
+                border-color: #cfe0ff;
+                transform: translateY(-1px);
+            }
+
+        .quick-action-title {
+            font-weight: 700;
+            color: #1d2b53;
+            margin-bottom: 4px;
+        }
+
+        .quick-action-desc {
+            color: #6c757d;
+            font-size: 0.92rem;
+        }
+
+        @@media (max-width: 991.98px) {
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .info-value {
+                text-align: left;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const overviewBarChart = document.getElementById('overviewBarChart');
+        if (overviewBarChart) {
+            new Chart(overviewBarChart, {
+                type: 'bar',
+                data: {
+                    labels: ['Học viên', 'Giáo viên', 'Khóa học', 'Lớp học', 'Khoa/Ngành'],
+                    datasets: [{
+                        label: 'Số lượng',
+                        data: [
+                            @Model.TotalStudents,
+                            @Model.TotalTeachers,
+                            @Model.TotalCourses,
+                            @Model.TotalClassRooms,
+                            @Model.TotalDepartments
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+        }
+
+        const userStatusChart = document.getElementById('userStatusChart');
+        if (userStatusChart) {
+            new Chart(userStatusChart, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Đang hoạt động', 'Đã khóa'],
+                    datasets: [{
+                        data: [@Model.ActiveUsers, @Model.LockedUsers],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        const linkStatusChart = document.getElementById('linkStatusChart');
+        if (linkStatusChart) {
+            new Chart(linkStatusChart, {
+                type: 'bar',
+                data: {
+                    labels: ['Học viên', 'Giáo viên'],
+                    datasets: [
+                        {
+                            label: 'Đã liên kết',
+                            data: [@Model.LinkedStudents, @Model.LinkedTeachers],
+                            borderWidth: 1,
+                            borderRadius: 8
+                        },
+                        {
+                            label: 'Chưa liên kết',
+                            data: [@Model.UnlinkedStudents, @Model.UnlinkedTeachers],
+                            borderWidth: 1,
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

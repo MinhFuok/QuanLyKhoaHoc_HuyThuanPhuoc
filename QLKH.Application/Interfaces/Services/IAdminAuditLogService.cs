@@ -19,5 +19,7 @@ namespace QLKH.Application.Interfaces.Services
             string? note = null);
 
         Task<List<AdminAuditLog>> GetAllAsync();
+        Task<List<string>> GetDistinctActorEmailsAsync();
+        Task CleanupOldLogsAsync();
     }
 }

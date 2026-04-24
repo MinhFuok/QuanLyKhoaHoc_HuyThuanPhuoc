@@ -16,6 +16,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
             _adminAuditLogService = adminAuditLogService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(
             string? adminEmail,
             string? actionName,
@@ -29,7 +30,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
             {
                 logs = logs
                     .Where(x => !string.IsNullOrWhiteSpace(x.ActorEmail) &&
-                                x.ActorEmail.Contains(adminEmail, StringComparison.OrdinalIgnoreCase))
+                                x.ActorEmail.Equals(adminEmail, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
 
@@ -67,6 +68,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
             }
 
             var allLogs = await _adminAuditLogService.GetAllAsync();
+            var actorEmails = await _adminAuditLogService.GetDistinctActorEmailsAsync();
 
             ViewBag.AdminEmail = adminEmail;
             ViewBag.ActionName = actionName;
@@ -79,6 +81,14 @@ namespace QLKH.Web.Areas.Admin.Controllers
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct()
                 .OrderBy(x => x)
+                .Select(x => new SelectListItem
+                {
+                    Value = x,
+                    Text = x
+                })
+                .ToList();
+
+            ViewBag.AdminEmailList = actorEmails
                 .Select(x => new SelectListItem
                 {
                     Value = x,

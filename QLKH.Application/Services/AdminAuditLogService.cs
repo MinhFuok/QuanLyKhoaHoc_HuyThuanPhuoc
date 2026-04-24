@@ -27,6 +27,8 @@ namespace QLKH.Application.Services
             string targetDisplay,
             string? note = null)
         {
+            await CleanupOldLogsAsync();
+
             var log = new AdminAuditLog
             {
                 ActorUserId = actorUserId,
@@ -44,7 +46,20 @@ namespace QLKH.Application.Services
 
         public async Task<List<AdminAuditLog>> GetAllAsync()
         {
+            await CleanupOldLogsAsync();
             return await _repository.GetAllAsync();
+        }
+
+        public async Task<List<string>> GetDistinctActorEmailsAsync()
+        {
+            await CleanupOldLogsAsync();
+            return await _repository.GetDistinctActorEmailsAsync();
+        }
+
+        public async Task CleanupOldLogsAsync()
+        {
+            var cutoffUtc = DateTime.UtcNow.AddDays(-30);
+            await _repository.DeleteOlderThanAsync(cutoffUtc);
         }
     }
 }

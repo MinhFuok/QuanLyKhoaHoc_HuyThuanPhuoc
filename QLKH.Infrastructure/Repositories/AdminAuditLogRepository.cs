@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using QLKH.Application.Interfaces.Repositories;
 using QLKH.Domain.Entities;
 using QLKH.Infrastructure.Data;
@@ -30,6 +25,29 @@ namespace QLKH.Infrastructure.Repositories
             return await _context.AdminAuditLogs
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task<List<string>> GetDistinctActorEmailsAsync()
+        {
+            return await _context.AdminAuditLogs
+                .Where(x => !string.IsNullOrWhiteSpace(x.ActorEmail))
+                .Select(x => x.ActorEmail)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToListAsync();
+        }
+
+        public async Task DeleteOlderThanAsync(DateTime cutoffUtc)
+        {
+            var oldLogs = await _context.AdminAuditLogs
+                .Where(x => x.CreatedAt < cutoffUtc)
+                .ToListAsync();
+
+            if (oldLogs.Any())
+            {
+                _context.AdminAuditLogs.RemoveRange(oldLogs);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
