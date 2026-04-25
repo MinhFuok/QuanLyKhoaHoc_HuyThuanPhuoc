@@ -8,21 +8,28 @@
 
     /* ── Palette (mirrors CSS vars) ────────────────────────────── */
     var C = {
-        blue: '#1a56db',
-        blueMid: '#2563eb',
-        blueLight: '#3b82f6',
-        bluePale: 'rgba(26,86,219,.12)',
-        cyan: '#06b6d4',
+        blue: '#60a5fa',
+        blueMid: '#3b82f6',
+        blueLight: '#7dd3fc',
+        bluePale: 'rgba(96,165,250,.18)',
+        cyan: '#67e8f9',
         cyanLight: '#22d3ee',
-        cyanPale: 'rgba(6,182,212,.12)',
-        navy: '#12275a',
-        navyPale: 'rgba(18,39,90,.10)',
-        slate: '#334155',
-        slatePale: 'rgba(51,65,85,.10)',
+        cyanPale: 'rgba(103,232,249,.18)',
+        navy: '#c084fc',
+        navyPale: 'rgba(192,132,252,.16)',
+        slate: '#94a3b8',
+        slatePale: 'rgba(148,163,184,.16)',
+        pink: '#f472b6',
+        pinkSoft: 'rgba(244,114,182,.18)',
+        violet: '#a78bfa',
+        teal: '#5eead4',
+        amber: '#fbbf24',
+        panel: '#1b1f3f',
         success: '#10b981',
-        danger: '#ef4444',
-        muted: '#94a3b8',
-        grid: 'rgba(0,0,0,.05)',
+        danger: '#fb7185',
+        muted: 'rgba(191,219,254,.68)',
+        grid: 'rgba(255,255,255,.08)',
+        gridSoft: 'rgba(255,255,255,.04)',
         white: '#ffffff',
     };
 
@@ -50,6 +57,18 @@
         }
 
         return points.join(', ');
+    }
+
+    function createVerticalGradient(chart, stops) {
+        var ctx = chart.ctx;
+        var area = chart.chartArea;
+        if (!area) return stops[0][1];
+
+        var gradient = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+        stops.forEach(function (stop) {
+            gradient.addColorStop(stop[0], stop[1]);
+        });
+        return gradient;
     }
 
     /* ── 0. Space background ───────────────────────────────────── */
@@ -163,17 +182,68 @@
         if (typeof Chart === 'undefined') return;
         Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
         Chart.defaults.font.size = 12;
-        Chart.defaults.color = '#64748b';
+        Chart.defaults.color = C.muted;
+        Chart.defaults.borderColor = C.gridSoft;
+
+        if (!Chart._daPluginsRegistered) {
+            Chart.register({
+                id: 'daNeonLineGlow',
+                beforeDatasetDraw: function (chart, args) {
+                    if (chart.config.type !== 'line') return;
+                    var dataset = chart.data.datasets[args.index];
+                    if (!dataset || dataset.hidden) return;
+
+                    var ctx = chart.ctx;
+                    ctx.save();
+                    ctx.shadowBlur = dataset.shadowBlur || 18;
+                    ctx.shadowColor = dataset.shadowColor || dataset.borderColor || 'rgba(255,255,255,.24)';
+                    ctx.lineJoin = 'round';
+                    ctx.lineCap = 'round';
+                },
+                afterDatasetDraw: function (chart) {
+                    if (chart.config.type !== 'line') return;
+                    chart.ctx.restore();
+                }
+            }, {
+                id: 'daCenterText',
+                afterDraw: function (chart, args, pluginOptions) {
+                    if (chart.config.type !== 'doughnut' || !pluginOptions || !pluginOptions.lines || !pluginOptions.lines.length) return;
+                    var meta = chart.getDatasetMeta(0);
+                    if (!meta || !meta.data || !meta.data.length) return;
+
+                    var ctx = chart.ctx;
+                    var centerX = meta.data[0].x;
+                    var centerY = meta.data[0].y;
+                    var lineHeight = pluginOptions.lineHeight || 18;
+                    var totalHeight = pluginOptions.lines.length * lineHeight;
+                    var startY = centerY - totalHeight / 2 + lineHeight / 2;
+
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+
+                    pluginOptions.lines.forEach(function (line, index) {
+                        ctx.font = line.font || "700 24px 'Segoe UI', system-ui, sans-serif";
+                        ctx.fillStyle = line.color || '#ffffff';
+                        ctx.fillText(line.text, centerX, startY + index * lineHeight);
+                    });
+
+                    ctx.restore();
+                }
+            });
+
+            Chart._daPluginsRegistered = true;
+        }
     }
 
     function darkTooltip(extra) {
         return Object.assign({
-            backgroundColor: '#0d1b3e',
-            padding: 10,
-            cornerRadius: 8,
+            backgroundColor: 'rgba(10,13,29,.94)',
+            padding: 12,
+            cornerRadius: 12,
             titleColor: '#ffffff',
-            bodyColor: 'rgba(255,255,255,.82)',
-            borderColor: 'rgba(255,255,255,.08)',
+            bodyColor: 'rgba(226,232,240,.92)',
+            borderColor: 'rgba(167,139,250,.22)',
             borderWidth: 1,
             displayColors: true,
             boxPadding: 4,
@@ -185,11 +255,8 @@
         var el = document.getElementById('overviewBarChart');
         if (!el || typeof Chart === 'undefined') return;
 
-        var colors = [C.blue, C.cyan, C.success, C.blueLight, C.navy];
-        var bgs = colors.map(function (c) { return c + 'cc'; });
-
         new Chart(el, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: ['Học viên', 'Giáo viên', 'Khóa học', 'Lớp học', 'Khoa/Ngành'],
                 datasets: [{
@@ -201,17 +268,30 @@
                         data.TotalClassRooms || 0,
                         data.TotalDepartments || 0,
                     ],
-                    backgroundColor: bgs,
-                    borderColor: colors,
-                    borderWidth: 2,
-                    borderRadius: 10,
-                    borderSkipped: false,
+                    borderColor: C.pink,
+                    backgroundColor: function (context) {
+                        return createVerticalGradient(context.chart, [
+                            [0, 'rgba(244,114,182,.56)'],
+                            [0.45, 'rgba(192,132,252,.22)'],
+                            [1, 'rgba(15,23,42,0)']
+                        ]);
+                    },
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.42,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBorderWidth: 0,
+                    pointBackgroundColor: '#fbcfe8',
+                    pointHoverBackgroundColor: '#ffffff',
+                    shadowBlur: 24,
+                    shadowColor: 'rgba(244,114,182,.42)',
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
-                animation: { duration: 900, easing: 'easeOutQuart' },
+                maintainAspectRatio: false,
+                animation: { duration: 1100, easing: 'easeOutQuart' },
                 plugins: {
                     legend: { display: false },
                     tooltip: Object.assign(darkTooltip(), {
@@ -226,13 +306,19 @@
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { font: { weight: '600' } }
+                        ticks: {
+                            color: 'rgba(191,219,254,.74)',
+                            font: { weight: '600' }
+                        },
+                        border: { display: false }
                     },
                     y: {
                         beginAtZero: true,
                         grid: { color: C.grid, drawBorder: false },
+                        border: { display: false },
                         ticks: {
                             precision: 0,
+                            color: 'rgba(191,219,254,.58)',
                             callback: function (v) { return v.toLocaleString('vi-VN'); }
                         }
                     }
@@ -252,25 +338,34 @@
                 labels: ['Đang hoạt động', 'Đã khóa'],
                 datasets: [{
                     data: [data.ActiveUsers || 0, data.LockedUsers || 0],
-                    backgroundColor: [C.success + 'dd', C.danger + 'dd'],
-                    borderColor: [C.success, C.danger],
-                    borderWidth: 2,
-                    hoverOffset: 8,
+                    backgroundColor: [C.blue, C.pink],
+                    borderColor: ['rgba(12,16,34,.94)', 'rgba(12,16,34,.94)'],
+                    borderWidth: 4,
+                    spacing: 2,
+                    hoverOffset: 6,
                 }]
             },
             options: {
                 responsive: true,
-                cutout: '70%',
+                maintainAspectRatio: false,
+                cutout: '66%',
                 animation: { duration: 950, easing: 'easeOutQuart' },
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 18,
-                            usePointStyle: true,
-                            pointStyleWidth: 10,
-                            font: { weight: '600', size: 12 }
-                        }
+                    legend: { display: false },
+                    daCenterText: {
+                        lineHeight: 20,
+                        lines: [
+                            {
+                                text: (data.ActiveUsers || 0).toLocaleString('vi-VN'),
+                                font: "800 28px 'Segoe UI', system-ui, sans-serif",
+                                color: '#f8fafc'
+                            },
+                            {
+                                text: 'hoạt động',
+                                font: "600 12px 'Segoe UI', system-ui, sans-serif",
+                                color: 'rgba(191,219,254,.68)'
+                            }
+                        ]
                     },
                     tooltip: Object.assign(darkTooltip(), {
                         callbacks: {
@@ -294,39 +389,62 @@
         if (!el || typeof Chart === 'undefined') return;
 
         new Chart(el, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: ['Học viên', 'Giáo viên'],
                 datasets: [
                     {
                         label: 'Đã liên kết',
                         data: [data.LinkedStudents || 0, data.LinkedTeachers || 0],
-                        backgroundColor: C.blue + 'cc',
-                        borderColor: C.blue,
-                        borderWidth: 2,
-                        borderRadius: 8,
-                        borderSkipped: false,
+                        borderColor: C.cyan,
+                        backgroundColor: function (context) {
+                            return createVerticalGradient(context.chart, [
+                                [0, 'rgba(103,232,249,.34)'],
+                                [1, 'rgba(103,232,249,0)']
+                            ]);
+                        },
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.45,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBorderWidth: 0,
+                        pointBackgroundColor: '#a5f3fc',
+                        shadowBlur: 22,
+                        shadowColor: 'rgba(103,232,249,.36)',
                     },
                     {
                         label: 'Chưa liên kết',
                         data: [data.UnlinkedStudents || 0, data.UnlinkedTeachers || 0],
-                        backgroundColor: C.muted + '55',
-                        borderColor: C.muted,
-                        borderWidth: 2,
-                        borderRadius: 8,
-                        borderSkipped: false,
+                        borderColor: C.pink,
+                        backgroundColor: function (context) {
+                            return createVerticalGradient(context.chart, [
+                                [0, 'rgba(244,114,182,.30)'],
+                                [1, 'rgba(244,114,182,0)']
+                            ]);
+                        },
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.45,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBorderWidth: 0,
+                        pointBackgroundColor: '#fbcfe8',
+                        shadowBlur: 20,
+                        shadowColor: 'rgba(244,114,182,.32)',
                     }
                 ]
             },
             options: {
-                indexAxis: 'y',
                 responsive: true,
-                animation: { duration: 900, easing: 'easeOutQuart' },
+                maintainAspectRatio: false,
+                animation: { duration: 950, easing: 'easeOutQuart' },
                 plugins: {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            padding: 18,
+                            color: 'rgba(191,219,254,.76)',
+                            padding: 14,
                             usePointStyle: true,
                             pointStyleWidth: 10,
                             font: { weight: '600', size: 12 }
@@ -343,16 +461,22 @@
                 },
                 scales: {
                     x: {
-                        beginAtZero: true,
-                        grid: { color: C.grid, drawBorder: false },
+                        grid: { display: false },
+                        border: { display: false },
                         ticks: {
-                            precision: 0,
-                            callback: function (v) { return v.toLocaleString('vi-VN'); }
+                            color: 'rgba(191,219,254,.74)',
+                            font: { weight: '600' }
                         }
                     },
                     y: {
-                        grid: { display: false },
-                        ticks: { font: { weight: '600' } }
+                        beginAtZero: true,
+                        grid: { color: C.grid, drawBorder: false },
+                        border: { display: false },
+                        ticks: {
+                            precision: 0,
+                            color: 'rgba(191,219,254,.58)',
+                            callback: function (v) { return v.toLocaleString('vi-VN'); }
+                        }
                     }
                 }
             }

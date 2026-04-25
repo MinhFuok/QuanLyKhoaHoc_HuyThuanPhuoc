@@ -3,6 +3,15 @@
 @{
     ViewData["Title"] = "Dashboard Admin";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    var overviewTotal = Model.TotalStudents + Model.TotalTeachers + Model.TotalCourses + Model.TotalClassRooms + Model.TotalDepartments;
+    var activeRate = Model.TotalUsers > 0
+        ? Math.Round((double)Model.ActiveUsers / Model.TotalUsers * 100, 1)
+        : 0;
+    var totalLinkedAccounts = Model.LinkedStudents + Model.LinkedTeachers;
+    var totalLinkTargets = Model.TotalStudents + Model.TotalTeachers;
+    var linkedRate = totalLinkTargets > 0
+        ? Math.Round((double)totalLinkedAccounts / totalLinkTargets * 100, 1)
+        : 0;
 }
 
 <div class="admin-dashboard-page">
@@ -255,37 +264,61 @@
     <div class="row g-3 mb-4">
 
         <div class="col-12 col-xl-7">
-            <div class="da-card da-card-gradient da-card-gradient-ocean h-100">
-                <div class="da-card-header">
-                    <i class="bi bi-bar-chart-fill da-card-header-icon"></i>
-                    <span>Tổng quan dữ liệu đào tạo</span>
-                </div>
-                <div class="da-card-body da-chart-wrap">
-                    <canvas id="overviewBarChart"></canvas>
+            <div class="da-card da-chart-card da-chart-card-overview h-100">
+                <div class="da-chart-card-body">
+                    <div class="da-chart-card-top">
+                        <div>
+                            <div class="da-chart-card-title">Tổng quan dữ liệu đào tạo</div>
+                            <div class="da-chart-card-value">@overviewTotal.ToString("N0")</div>
+                            <div class="da-chart-card-note">5 nhóm dữ liệu đang theo dõi</div>
+                        </div>
+                        <span class="da-chart-card-pill">Data live</span>
+                    </div>
+                    <div class="da-chart-stage">
+                        <div class="da-chart-wrap">
+                            <canvas id="overviewBarChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-xl-5">
-            <div class="da-card da-card-gradient da-card-gradient-sky h-100">
-                <div class="da-card-header">
-                    <i class="bi bi-pie-chart-fill da-card-header-icon"></i>
-                    <span>Trạng thái tài khoản</span>
-                </div>
-                <div class="da-card-body da-chart-wrap da-chart-donut">
-                    <canvas id="userStatusChart"></canvas>
+            <div class="da-card da-chart-card da-chart-card-status h-100">
+                <div class="da-chart-card-body">
+                    <div class="da-chart-card-top">
+                        <div>
+                            <div class="da-chart-card-title">Trạng thái tài khoản</div>
+                            <div class="da-chart-card-value">@activeRate.ToString("0.#")%</div>
+                            <div class="da-chart-card-note">@Model.ActiveUsers / @Model.TotalUsers tài khoản đang hoạt động</div>
+                        </div>
+                        <span class="da-chart-card-pill">Account</span>
+                    </div>
+                    <div class="da-chart-stage da-chart-stage-donut">
+                        <div class="da-chart-wrap da-chart-donut">
+                            <canvas id="userStatusChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-12">
-            <div class="da-card da-card-gradient da-card-gradient-slate">
-                <div class="da-card-header">
-                    <i class="bi bi-diagram-2-fill da-card-header-icon"></i>
-                    <span>Tình trạng liên kết tài khoản</span>
-                </div>
-                <div class="da-card-body da-chart-wrap">
-                    <canvas id="linkStatusChart"></canvas>
+            <div class="da-card da-chart-card da-chart-card-link">
+                <div class="da-chart-card-body">
+                    <div class="da-chart-card-top">
+                        <div>
+                            <div class="da-chart-card-title">Tình trạng liên kết tài khoản</div>
+                            <div class="da-chart-card-value">@linkedRate.ToString("0.#")%</div>
+                            <div class="da-chart-card-note">@totalLinkedAccounts / @totalLinkTargets tài khoản học viên và giáo viên đã liên kết</div>
+                        </div>
+                        <span class="da-chart-card-pill">Link sync</span>
+                    </div>
+                    <div class="da-chart-stage">
+                        <div class="da-chart-wrap">
+                            <canvas id="linkStatusChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
