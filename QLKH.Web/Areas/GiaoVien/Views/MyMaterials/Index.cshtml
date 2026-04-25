@@ -1,47 +1,701 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.ClassMaterial>
 
 @{
-    ViewData["Title"] = "Tài liệu lớp tôi dạy";
+    ViewData["Title"] = "Tài liệu";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var today = DateTime.Today;
+    var materials = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassMaterial>();
+
+    var totalMaterials = materials.Count;
+    var totalClassesWithMaterials = materials
+        .Where(x => x.ClassRoomId > 0)
+        .Select(x => x.ClassRoomId)
+        .Distinct()
+        .Count();
+
+    var materialsThisMonth = materials.Count(x =>
+        x.CreatedAt.Month == today.Month &&
+        x.CreatedAt.Year == today.Year);
+
+    var recentMaterials = materials.Count(x =>
+        x.CreatedAt.Date >= today.AddDays(-7));
+
+    string GetFileExtension(string? filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            return "FILE";
+        }
+
+        var extension = System.IO.Path.GetExtension(filePath);
+
+        if (string.IsNullOrWhiteSpace(extension))
+        {
+            return "FILE";
+        }
+
+        return extension.Replace(".", "").ToUpper();
+    }
+
+    string GetFileBadgeClass(string? filePath)
+    {
+        var extension = GetFileExtension(filePath);
+
+        return extension switch
+        {
+            "PDF" => "file-pdf",
+            "DOC" or "DOCX" => "file-word",
+            "PPT" or "PPTX" => "file-powerpoint",
+            "XLS" or "XLSX" => "file-excel",
+            "PNG" or "JPG" or "JPEG" or "WEBP" => "file-image",
+            _ => "file-other"
+        };
+    }
+
+    string GetFileIcon(string? filePath)
+    {
+        var extension = GetFileExtension(filePath);
+
+        return extension switch
+        {
+            "PDF" => "📕",
+            "DOC" or "DOCX" => "📘",
+            "PPT" or "PPTX" => "📙",
+            "XLS" or "XLSX" => "📗",
+            "PNG" or "JPG" or "JPEG" or "WEBP" => "🖼️",
+            _ => "📄"
+        };
+    }
 }
 
-<h2>Tài liệu lớp tôi dạy</h2>
+<div class="teacher-materials-page">
 
-@if (!Model.Any())
-{
-    <div class="alert alert-warning">
-        Hiện tại chưa có tài liệu nào cho các lớp bạn đang dạy.
+    <!-- Header -->
+    <div class="materials-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">TÀI LIỆU</h2>
+                    <div class="page-eyebrow">GIẢNG DẠY</div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
+                    <a asp-area="GiaoVien"
+                       asp-controller="ClassMaterials"
+                       asp-action="Create"
+                       class="btn btn-primary hero-action-btn">
+                        + Tạo tài liệu
+                    </a>
+
+                    <div class="hero-badge">
+                        <div class="hero-badge-icon">📁</div>
+                        <div>
+                            <div class="hero-badge-label">Tổng tài liệu</div>
+                            <div class="hero-badge-value">@totalMaterials</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Lớp</th>
-                <th>Khóa học</th>
-                <th>Tiêu đề</th>
-                <th>Mô tả</th>
-                <th>Tài liệu</th>
-                <th>Ngày tạo</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-total card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <div class="stat-label">Tổng tài liệu</div>
+                        <div class="stat-value">@totalMaterials</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-class card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">🎓</div>
+                    <div>
+                        <div class="stat-label">Lớp có tài liệu</div>
+                        <div class="stat-value">@totalClassesWithMaterials</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-month card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">🗓️</div>
+                    <div>
+                        <div class="stat-label">Trong tháng này</div>
+                        <div class="stat-value">@materialsThisMonth</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-recent card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⚡</div>
+                    <div>
+                        <div class="stat-label">7 ngày gần đây</div>
+                        <div class="stat-value">@recentMaterials</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="section-title mb-1">Danh sách tài liệu đã đăng</h5>
+                </div>
+
+                <div class="material-filter-note">
+                    <span class="file-dot pdf"></span> PDF
+                    <span class="file-dot word ms-3"></span> Word
+                    <span class="file-dot powerpoint ms-3"></span> PowerPoint
+                    <span class="file-dot excel ms-3"></span> Excel
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!materials.Any())
             {
-                <tr>
-                    <td>@item.ClassRoom?.ClassName</td>
-                    <td>@item.ClassRoom?.Course?.CourseName</td>
-                    <td>@item.Title</td>
-                    <td>@item.Description</td>
-                    <td>
-                        @if (!string.IsNullOrWhiteSpace(item.FilePath))
-                        {
-                            <a href="@item.FilePath" target="_blank">Mở tài liệu</a>
-                        }
-                    </td>
-                    <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                </tr>
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Chưa có tài liệu nào</h5>
+                    <p>
+                        Hiện tại chưa có tài liệu nào cho các lớp bạn đang dạy.
+                        Bạn có thể tạo tài liệu mới để học viên dễ dàng theo dõi và tải về.
+                    </p>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="ClassMaterials"
+                       asp-action="Create"
+                       class="btn btn-primary mt-3">
+                        + Tạo tài liệu đầu tiên
+                    </a>
+                </div>
             }
-        </tbody>
-    </table>
+            else
+            {
+                <div class="table-responsive material-table-wrap">
+                    <table class="table material-table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Tài liệu</th>
+                                <th>Lớp</th>
+                                <th>Khóa học</th>
+                                <th>Loại file</th>
+                                <th>Ngày tạo</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in materials.OrderByDescending(x => x.CreatedAt))
+                            {
+                                var fileExtension = GetFileExtension(item.FilePath);
+                                var fileBadgeClass = GetFileBadgeClass(item.FilePath);
+                                var fileIcon = GetFileIcon(item.FilePath);
+
+                                <tr>
+                                    <td>
+                                        <div class="material-main">
+                                            <div class="material-icon">@fileIcon</div>
+                                            <div>
+                                                <div class="material-title">@item.Title</div>
+                                                <div class="material-desc">
+                                                    @(string.IsNullOrWhiteSpace(item.Description)
+                                                                                                ? "Không có mô tả"
+                                                                                                : item.Description)
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                                    <td>
+                                        <div class="class-name">
+                                            @(item.ClassRoom?.ClassName ?? "Chưa cập nhật")
+                                        </div>
+                                        <div class="class-small">
+                                            Mã lớp: @(item.ClassRoom?.ClassCode ?? "N/A")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="course-name">
+                                            @(item.ClassRoom?.Course?.CourseName ?? "Chưa có khóa học")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="file-badge @fileBadgeClass">@fileExtension</span>
+                                    </td>
+
+                                    <td>
+                                        <div class="created-date">
+                                            <span>@item.CreatedAt.ToString("dd/MM/yyyy")</span>
+                                            <small>@item.CreatedAt.ToString("HH:mm")</small>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <div class="action-group">
+                                    @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                                            {
+                                                <a href="@item.FilePath"
+                                                   target="_blank"
+                                                   class="btn btn-sm btn-primary">
+                                                    Mở tài liệu
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary"
+                                                        disabled>
+                                                    Chưa có file
+                                                </button>
+                                            }
+
+                                            <form asp-area="GiaoVien"
+                                                  asp-controller="ClassMaterials"
+                                                  asp-action="Delete"
+                                                  asp-route-id="@item.Id"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa tài liệu này không? Hành động này không thể hoàn tác.');">
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    Xóa
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .teacher-materials-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .materials-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+        }
+
+        .hero-badge {
+            min-width: 210px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .hero-badge-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            font-size: 1.4rem;
+        }
+
+        .hero-badge-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hero-badge-value {
+            color: #172554;
+            font-size: 1.7rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .material-stat-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+            .material-stat-card .card-body {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 20px;
+            }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .stat-total {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-total .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-class {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-class .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-month {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-month .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-recent {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-left: 5px solid #64748b !important;
+        }
+
+            .stat-recent .stat-icon {
+                background: #e2e8f0;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .material-filter-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .file-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+            .file-dot.pdf {
+                background: #dc2626;
+            }
+
+            .file-dot.word {
+                background: #2563eb;
+            }
+
+            .file-dot.powerpoint {
+                background: #ea580c;
+            }
+
+            .file-dot.excel {
+                background: #16a34a;
+            }
+
+        .material-table-wrap {
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .material-table {
+            background: #ffffff;
+        }
+
+            .material-table thead th {
+                background: #f8fafc;
+                color: #475569;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            .material-table tbody td {
+                padding: 16px;
+                border-bottom: 1px solid #eef2f7;
+                vertical-align: middle;
+            }
+
+            .material-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .material-table tbody tr {
+                transition: all 0.18s ease-in-out;
+            }
+
+                .material-table tbody tr:hover {
+                    background: #f8fbff;
+                }
+
+        .material-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            min-width: 280px;
+        }
+
+        .material-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .material-title {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .material-desc {
+            color: #64748b;
+            font-size: 0.88rem;
+            max-width: 360px;
+            line-height: 1.45;
+        }
+
+        .class-name {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+            white-space: nowrap;
+        }
+
+        .class-small {
+            color: #64748b;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        .course-name {
+            color: #334155;
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .file-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 62px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .file-pdf {
+            color: #991b1b;
+            background: #fee2e2;
+        }
+
+        .file-word {
+            color: #1d4ed8;
+            background: #dbeafe;
+        }
+
+        .file-powerpoint {
+            color: #9a3412;
+            background: #ffedd5;
+        }
+
+        .file-excel {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .file-image {
+            color: #6d28d9;
+            background: #ede9fe;
+        }
+
+        .file-other {
+            color: #475569;
+            background: #e2e8f0;
+        }
+
+        .created-date {
+            color: #334155;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+            .created-date small {
+                display: block;
+                color: #64748b;
+                font-weight: 600;
+                margin-top: 2px;
+            }
+
+        .action-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+            .action-group .btn {
+                border-radius: 10px;
+                font-weight: 700;
+                padding: 7px 11px;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .material-filter-note {
+                white-space: normal;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-badge {
+                width: 100%;
+            }
+
+            .hero-action-btn {
+                width: 100%;
+            }
+
+            .material-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .action-group {
+                justify-content: flex-start;
+            }
+        }
+    </style>
 }

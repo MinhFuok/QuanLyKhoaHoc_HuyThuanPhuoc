@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<QLKH.Web.Areas.Admin.Models.UserListItemViewModel>
 
 @{
-    ViewData["Title"] = "Quản lý tài khoản nội bộ";
+    ViewData["Title"] = "Quản lý tài khoản";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     var currentTab = ViewBag.Tab as string ?? "";
 }
 
-<h2 class="mb-4">Quản lý tài khoản nội bộ</h2>
+<h2 class="mb-4">QUẢN LÝ TÀI KHOẢN</h2>
 
 @if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"]?.ToString()))
 {
@@ -80,8 +80,7 @@
                     <input type="text"
                            name="keyword"
                            value="@ViewBag.Keyword"
-                           class="form-control"
-                           placeholder="Nhập họ tên hoặc username..." />
+                           class="form-control"/>
                 </div>
 
                 <div class="col-md-3">
@@ -118,13 +117,13 @@
             <table class="table table-bordered table-striped align-middle">
                 <thead>
                     <tr>
-                        <th>Mã TK</th>
-                        <th>Họ tên</th>
-                        <th>UserName</th>
-                        <th>Vai trò</th>
-                        <th>Liên kết</th>
-                        <th>Trạng thái</th>
-                        <th style="width: 240px;">Thao tác</th>
+                        <th class="text-center">Mã TK</th>
+                        <th class="text-center">Họ tên</th>
+                        <th class="text-center">UserName</th>
+                        <th class="text-center">Vai trò</th>
+                        <th class="text-center">Liên kết</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-center" style="width: 190px;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>

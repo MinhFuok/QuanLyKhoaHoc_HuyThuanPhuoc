@@ -102,5 +102,46 @@ namespace QLKH.Web.Areas.GiaoVien.Controllers
             TempData["SuccessMessage"] = "Tạo tài liệu thành công.";
             return RedirectToAction("Create");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(applicationUserId))
+            {
+                return Challenge();
+            }
+
+            var material = await _classMaterialService.GetByIdAsync(id);
+            if (material == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy tài liệu cần xóa.";
+                return RedirectToAction("Index", "MyMaterials", new { area = "GiaoVien" });
+            }
+
+            var myClasses = await _teacherService.GetMyTeachingClassesAsync(applicationUserId);
+            var isMyClassMaterial = myClasses.Any(x => x.Id == material.ClassRoomId);
+
+            if (!isMyClassMaterial)
+            {
+                return Forbid();
+            }
+
+            if (!string.IsNullOrWhiteSpace(material.FilePath))
+            {
+                var relativePath = material.FilePath.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString());
+                var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath);
+
+                if (System.IO.File.Exists(physicalPath))
+                {
+                    System.IO.File.Delete(physicalPath);
+                }
+            }
+
+            await _classMaterialService.DeleteAsync(id);
+
+            TempData["SuccessMessage"] = "Xóa tài liệu thành công.";
+            return RedirectToAction("Index", "MyMaterials", new { area = "GiaoVien" });
+        }
     }
 }

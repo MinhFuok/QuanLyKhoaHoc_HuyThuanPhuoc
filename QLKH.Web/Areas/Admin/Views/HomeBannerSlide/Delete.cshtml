@@ -1,14 +1,14 @@
 ﻿@model QLKH.Web.Areas.Admin.Models.HomeBannerSlideViewModel
 
 @{
-    ViewData["Title"] = "Xóa slide banner";
+    ViewData["Title"] = "Xóa banner";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Xóa slide banner</h2>
+<h2 class="mb-4">XÓA BANNER</h2>
 
 <div class="alert alert-warning">
-    Bạn có chắc chắn muốn xóa slide này không?
+    Bạn có chắc chắn muốn xóa BANNER này không?
 </div>
 
 <div class="card shadow-sm">
@@ -39,10 +39,10 @@
 
         <form asp-area="Admin" asp-controller="HomeBannerSlide" asp-action="Delete" method="post">
             <input asp-for="Id" type="hidden" />
-            <button type="submit" class="btn btn-danger">Xóa</button>
+            <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
             <a asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" class="btn btn-secondary">
-                Quay lại
-            </a><a asp-area="Admin" asp-controller="HomeBannerSlide" asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                Hủy
+            </a>
         </form>
     </div>
 </div>

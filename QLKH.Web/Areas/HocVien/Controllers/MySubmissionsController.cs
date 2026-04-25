@@ -49,13 +49,23 @@ namespace QLKH.Web.Areas.HocVien.Controllers
                 return Forbid();
             }
 
+            var mySubmissions = await _submissionService.GetMySubmissionsAsync(applicationUserId);
+
+            var existingSubmission = mySubmissions
+                .FirstOrDefault(x => x.AssignmentId == assignmentId);
+
             ViewBag.Assignment = assignment;
+            ViewBag.ExistingSubmission = existingSubmission;
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(int assignmentId, string? submissionText, IFormFile? submissionFile)
+        public async Task<IActionResult> Submit(
+            int assignmentId,
+            string? submissionText,
+            IFormFile? submissionFile)
         {
             var assignment = await _assignmentService.GetByIdAsync(assignmentId);
             if (assignment == null)
@@ -77,7 +87,12 @@ namespace QLKH.Web.Areas.HocVien.Controllers
                 return Forbid();
             }
 
-            string? filePath = null;
+            var mySubmissions = await _submissionService.GetMySubmissionsAsync(applicationUserId);
+
+            var existingSubmission = mySubmissions
+                .FirstOrDefault(x => x.AssignmentId == assignmentId);
+
+            string? filePath = existingSubmission?.FilePath;
 
             if (submissionFile != null && submissionFile.Length > 0)
             {
@@ -105,11 +120,15 @@ namespace QLKH.Web.Areas.HocVien.Controllers
             if (!result)
             {
                 ViewBag.Assignment = assignment;
+                ViewBag.ExistingSubmission = existingSubmission;
                 ViewBag.ErrorMessage = "Nộp bài thất bại. Vui lòng nhập nội dung bài nộp hoặc chọn file.";
                 return View();
             }
 
-            TempData["SuccessMessage"] = "Nộp bài thành công.";
+            TempData["SuccessMessage"] = existingSubmission == null
+                ? "Nộp bài thành công."
+                : "Cập nhật bài nộp thành công.";
+
             return RedirectToAction("Submit", new { assignmentId });
         }
     }

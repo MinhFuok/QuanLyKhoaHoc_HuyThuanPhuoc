@@ -3,47 +3,620 @@
 
 @{
     ViewData["Title"] = "Bảng điểm của tôi";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var items = Model?.Items?.ToList() ?? new List<QLKH.Application.ViewModels.StudentGradeItemViewModel>();
+
+    var totalItems = items.Count;
+    var submittedItems = items.Count(x => x.IsSubmitted);
+    var unsubmittedItems = totalItems - submittedItems;
+    var gradedItems = items.Count(x => x.Score.HasValue);
+
+    var averageScore = items.Any(x => x.Score.HasValue)
+        ? Math.Round(items.Where(x => x.Score.HasValue).Average(x => x.Score!.Value), 2)
+        : 0;
 }
 
-<h2>Bảng điểm của tôi</h2>
+<div class="student-grades-page">
 
-<div class="mb-3">
-    <p><strong>Học viên:</strong> @Model.StudentName</p>
+    <!-- Header -->
+    <div class="grades-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">BẢNG ĐIỂM</h2>
+                    <div class="page-eyebrow">HỌC TẬP</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grade-stat-card stat-total card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📝</div>
+                    <div>
+                        <div class="stat-label">Tổng bài tập</div>
+                        <div class="stat-value">@totalItems</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grade-stat-card stat-submitted card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">✅</div>
+                    <div>
+                        <div class="stat-label">Đã nộp</div>
+                        <div class="stat-value">@submittedItems</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grade-stat-card stat-unsubmitted card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⏳</div>
+                    <div>
+                        <div class="stat-label">Chưa nộp</div>
+                        <div class="stat-value">@unsubmittedItems</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grade-stat-card stat-score card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⭐</div>
+                    <div>
+                        <div class="stat-label">Điểm trung bình</div>
+                        <div class="stat-value">@(gradedItems > 0 ? averageScore.ToString("0.##") : "--")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="section-title mb-1">Danh sách điểm bài tập</h5>
+                </div>
+
+                <div class="grade-filter-note">
+                    <span class="status-dot submitted"></span> Đã nộp
+                    <span class="status-dot unsubmitted ms-3"></span> Chưa nộp
+                    <span class="status-dot graded ms-3"></span> Đã chấm
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!items.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Chưa có dữ liệu điểm số</h5>
+                    <p>
+                        Hiện tại chưa có dữ liệu bài tập hoặc điểm số.
+                        Khi giáo viên giao bài và chấm điểm, kết quả sẽ hiển thị tại đây.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive grade-table-wrap">
+                    <table class="table grade-table align-middle mb-0">
+                        <colgroup>
+                            <col style="width: 16%;" />
+                            <col style="width: 23%;" />
+                            <col style="width: 13%;" />
+                            <col style="width: 12%;" />
+                            <col style="width: 14%;" />
+                            <col style="width: 9%;" />
+                            <col style="width: 13%;" />
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th>Lớp</th>
+                                <th>Bài tập</th>
+                                <th>Hạn nộp</th>
+                                <th class="text-center">Nộp bài</th>
+                                <th>Thời gian nộp</th>
+                                <th class="text-center">Điểm</th>
+                                <th>Nhận xét</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in items.OrderBy(x => x.DueDate))
+                            {
+                                var submitStatusText = item.IsSubmitted ? "Đã nộp" : "Chưa nộp";
+                                var submitStatusClass = item.IsSubmitted ? "badge-submitted" : "badge-unsubmitted";
+
+                                var scoreText = item.Score.HasValue ? item.Score.Value.ToString("0.##") : "Chưa chấm";
+                                var scoreClass = "score-empty";
+
+                                if (item.Score.HasValue)
+                                {
+                                    if (item.Score.Value >= 8)
+                                    {
+                                        scoreClass = "score-good";
+                                    }
+                                    else if (item.Score.Value >= 5)
+                                    {
+                                        scoreClass = "score-average";
+                                    }
+                                    else
+                                    {
+                                        scoreClass = "score-low";
+                                    }
+                                }
+
+                                <tr>
+                                    <td>
+                                        <div class="class-name">@item.ClassName</div>
+                                    </td>
+
+                                    <td>
+                                        <div class="assignment-title">
+                                            @item.AssignmentTitle
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="date-block">
+                                            <span>@item.DueDate.ToString("dd/MM/yyyy")</span>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="submit-status @submitStatusClass">
+                                            @submitStatusText
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @if (item.SubmittedAt.HasValue)
+                                        {
+                                            <div class="submitted-date">
+                                                <span>@item.SubmittedAt.Value.ToString("dd/MM/yyyy")</span>
+                                                <small>@item.SubmittedAt.Value.ToString("HH:mm")</small>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="empty-text">--</span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="score-pill @scoreClass">
+                                            @scoreText
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="feedback-text">
+                                            @(string.IsNullOrWhiteSpace(item.Feedback)
+                                                ? "Chưa có nhận xét"
+                                                : item.Feedback)
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="grade-summary mt-3">
+                    <span>Tổng bài tập: <strong>@totalItems</strong></span>
+                    <span>Đã nộp: <strong>@submittedItems</strong></span>
+                    <span>Chưa nộp: <strong>@unsubmittedItems</strong></span>
+                    <span>Đã chấm: <strong>@gradedItems</strong></span>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
-@if (!Model.Items.Any())
-{
-    <div class="alert alert-warning">
-        Hiện tại chưa có dữ liệu bài tập hoặc điểm số.
-    </div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Lớp</th>
-                <th>Bài tập</th>
-                <th>Hạn nộp</th>
-                <th>Trạng thái nộp</th>
-                <th>Thời gian nộp</th>
-                <th>Điểm</th>
-                <th>Nhận xét</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
-                <tr>
-                    <td>@item.ClassName</td>
-                    <td>@item.AssignmentTitle</td>
-                    <td>@item.DueDate.ToString("dd/MM/yyyy")</td>
-                    <td>@(item.IsSubmitted ? "Đã nộp" : "Chưa nộp")</td>
-                    <td>@(item.SubmittedAt.HasValue? item.SubmittedAt.Value.ToString("dd/MM/yyyy HH:mm") : "")</td>
-                    <td>@(item.Score.HasValue? item.Score.Value.ToString("0.##") : "Chưa chấm")</td>
-                    <td>@(string.IsNullOrWhiteSpace(item.Feedback) ? "" : item.Feedback)</td>
-                </tr>
+@section Styles {
+    <style>
+        .student-grades-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
             }
-        </tbody>
-    </table>
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .grades-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .student-info-card,
+        .grade-stat-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .grade-stat-card .card-body {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .stat-total {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-total .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-submitted {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-submitted .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-unsubmitted {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-unsubmitted .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-score {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-left: 5px solid #64748b !important;
+        }
+
+            .stat-score .stat-icon {
+                background: #e2e8f0;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .grade-filter-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+            .status-dot.submitted {
+                background: #16a34a;
+            }
+
+            .status-dot.unsubmitted {
+                background: #f59e0b;
+            }
+
+            .status-dot.graded {
+                background: #64748b;
+            }
+
+        .grade-table-wrap {
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .grade-table {
+            background: #ffffff;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .grade-table thead th {
+                background: #f8fafc;
+                color: #475569;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            .grade-table tbody td {
+                padding: 16px;
+                border-bottom: 1px solid #eef2f7;
+                vertical-align: middle;
+            }
+
+            .grade-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .grade-table tbody tr {
+                transition: all 0.18s ease-in-out;
+            }
+
+                .grade-table tbody tr:hover {
+                    background: #f8fbff;
+                }
+
+        .class-name {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        
+        .assignment-title {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .date-block {
+            color: #334155;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .submitted-date {
+            color: #334155;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+            .submitted-date small {
+                display: block;
+                color: #64748b;
+                font-weight: 600;
+                margin-top: 2px;
+            }
+
+        .submit-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-submitted {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-unsubmitted {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 54px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .score-good {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .score-average {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .score-low {
+            color: #be123c;
+            background: #ffe4e6;
+        }
+
+        .score-empty {
+            color: #475569;
+            background: #e2e8f0;
+        }
+
+        .feedback-text {
+            color: #475569;
+            font-weight: 500;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .empty-text {
+            color: #94a3b8;
+            font-weight: 800;
+        }
+
+        .grade-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .grade-summary strong {
+                color: #172554;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .student-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .grade-filter-note {
+                white-space: normal;
+            }
+
+            .grade-table {
+                min-width: 1050px;
+            }
+
+            .grade-table-wrap {
+                overflow-x: auto;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .student-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .grade-summary {
+                justify-content: flex-start;
+            }
+        }
+    </style>
 }

@@ -1,23 +1,23 @@
-﻿@using QLKH.Domain.Entities
+﻿@model QLKH.Domain.Entities.Assignment
+@using QLKH.Domain.Entities
 @using System.Linq
 
 @{
-    ViewData["Title"] = "Tạo bài tập";
+    ViewData["Title"] = "Sửa bài tập";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var myClasses = ViewBag.MyClasses as IEnumerable<ClassRoom> ?? Enumerable.Empty<ClassRoom>();
     var classList = myClasses.ToList();
-    var selectedClassRoomId = ViewBag.SelectedClassRoomId as int?;
 }
 
-<div class="teacher-assignment-create-page">
+<div class="teacher-assignment-edit-page">
 
     <!-- Header -->
-    <div class="assignments-create-hero card border-0 shadow-sm mb-4">
+    <div class="assignments-edit-hero card border-0 shadow-sm mb-4">
         <div class="card-body p-4">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h2 class="page-title mb-2">TẠO BÀI TẬP</h2>
+                    <h2 class="page-title mb-2">SỬA BÀI TẬP</h2>
                     <div class="page-eyebrow">GIẢNG DẠY</div>
                 </div>
 
@@ -30,10 +30,10 @@
                     </a>
 
                     <div class="hero-badge">
-                        <div class="hero-badge-icon">🎓</div>
+                        <div class="hero-badge-icon">📝</div>
                         <div>
-                            <div class="hero-badge-label">Lớp có thể giao</div>
-                            <div class="hero-badge-value">@classList.Count</div>
+                            <div class="hero-badge-label">Mã bài tập</div>
+                            <div class="hero-badge-value">#@Model.Id</div>
                         </div>
                     </div>
                 </div>
@@ -42,23 +42,12 @@
     </div>
 
     <!-- Alert -->
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success custom-alert shadow-sm border-0 mb-4">
-            <div class="alert-icon">✅</div>
-            <div>
-                <strong>Thành công!</strong>
-                <div>@TempData["SuccessMessage"]</div>
-            </div>
-        </div>
-    }
-
     @if (ViewBag.ErrorMessage != null)
     {
         <div class="alert alert-danger custom-alert shadow-sm border-0 mb-4">
             <div class="alert-icon">⚠️</div>
             <div>
-                <strong>Không thể tạo bài tập!</strong>
+                <strong>Không thể cập nhật bài tập!</strong>
                 <div>@ViewBag.ErrorMessage</div>
             </div>
         </div>
@@ -70,11 +59,16 @@
             <div class="card border-0 shadow-sm form-card">
                 <div class="card-header bg-white border-0 p-4 pb-2">
                     <h5 class="section-title mb-1">Thông tin bài tập</h5>
+                    <p class="section-subtitle mb-0">
+                        Cập nhật lớp, tiêu đề, mô tả hoặc hạn nộp của bài tập.
+                    </p>
                 </div>
 
                 <div class="card-body p-4">
-                    <form method="post" enctype="multipart/form-data" class="assignment-create-form">
+                    <form method="post" class="assignment-edit-form">
                         @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="id" value="@Model.Id" />
 
                         <div class="mb-4">
                             <label class="form-label custom-label">
@@ -100,7 +94,7 @@
                                         statusText = "Đang học";
                                     }
 
-                                    if (selectedClassRoomId.HasValue && item.Id == selectedClassRoomId.Value)
+                                    if (item.Id == Model.ClassRoomId)
                                     {
                                         <option value="@item.Id" selected>
                                             @item.ClassName (@item.ClassCode) - @statusText
@@ -114,6 +108,10 @@
                                     }
                                 }
                             </select>
+
+                            <div class="form-hint">
+                                Chỉ được chọn các lớp bạn đang được phân công giảng dạy.
+                            </div>
                         </div>
 
                         <div class="mb-4">
@@ -124,8 +122,13 @@
                             <input type="text"
                                    name="title"
                                    class="form-control custom-control"
+                                   value="@Model.Title"
                                    maxlength="200"
                                    required />
+
+                            <div class="form-hint">
+                                Nên đặt tiêu đề ngắn gọn, dễ hiểu cho học viên.
+                            </div>
                         </div>
 
                         <div class="row g-3 mb-4">
@@ -137,32 +140,28 @@
                                 <input type="datetime-local"
                                        name="dueDate"
                                        class="form-control custom-control"
+                                       value="@Model.DueDate.ToString("yyyy-MM-ddTHH:mm")"
                                        required />
                             </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label custom-label">
+                                    Ngày tạo
+                                </label>
+
+                                <input type="text"
+                                       class="form-control custom-control readonly-control"
+                                       value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")"
+                                       readonly />
+                            </div>
                         </div>
+
                         <div class="mb-4">
                             <label class="form-label custom-label">Mô tả bài tập</label>
 
                             <textarea name="description"
                                       class="form-control custom-control"
-                                      rows="6"></textarea>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label custom-label">File đính kèm</label>
-
-                            <div class="upload-box">
-                                <div class="upload-icon">📎</div>
-                                <div class="upload-content">
-                                    <input type="file"
-                                           name="assignmentFile"
-                                           class="form-control custom-control" />
-
-                                    <div class="form-hint mt-2">
-                                        Có thể đính kèm đề bài, file mẫu, rubric chấm điểm hoặc tài liệu hướng dẫn.
-                                    </div>
-                                </div>
-                            </div>
+                                      rows="6">@Model.Description</textarea>
                         </div>
 
                         <div class="form-actions">
@@ -174,7 +173,7 @@
                             </a>
 
                             <button type="submit" class="btn btn-primary submit-btn">
-                                Xác nhận
+                                Lưu thay đổi
                             </button>
                         </div>
                     </form>
@@ -186,7 +185,7 @@
         <div class="col-12 col-xl-4">
             <div class="card border-0 shadow-sm note-card mb-4">
                 <div class="card-header bg-white border-0 p-4 pb-2">
-                    <h5 class="section-title mb-1">Lưu ý khi giao bài tập</h5>
+                    <h5 class="section-title mb-1">Lưu ý khi sửa bài tập</h5>
                 </div>
 
                 <div class="card-body p-4">
@@ -194,9 +193,9 @@
                         <div class="note-item">
                             <div class="note-icon">✅</div>
                             <div>
-                                <div class="note-title">Tên bài tập rõ ràng</div>
+                                <div class="note-title">Kiểm tra đúng lớp</div>
                                 <div class="note-desc">
-                                    Tiêu đề nên thể hiện đúng chương, buổi học hoặc nội dung cần nộp.
+                                    Nếu đổi lớp, bài tập sẽ chuyển sang lớp mới được chọn.
                                 </div>
                             </div>
                         </div>
@@ -204,9 +203,9 @@
                         <div class="note-item">
                             <div class="note-icon">⏰</div>
                             <div>
-                                <div class="note-title">Đặt hạn nộp hợp lý</div>
+                                <div class="note-title">Cẩn thận hạn nộp</div>
                                 <div class="note-desc">
-                                    Nên để thời gian đủ để học viên chuẩn bị và hoàn thành bài.
+                                    Thay đổi hạn nộp có thể ảnh hưởng đến tiến độ nộp bài của học viên.
                                 </div>
                             </div>
                         </div>
@@ -214,19 +213,19 @@
                         <div class="note-item">
                             <div class="note-icon">📌</div>
                             <div>
-                                <div class="note-title">Chọn đúng lớp</div>
+                                <div class="note-title">Không đổi ngày tạo</div>
                                 <div class="note-desc">
-                                    Bài tập sẽ chỉ hiển thị cho lớp được chọn.
+                                    Ngày tạo được giữ nguyên để đảm bảo lịch sử bài tập.
                                 </div>
                             </div>
                         </div>
 
                         <div class="note-item">
-                            <div class="note-icon">📄</div>
+                            <div class="note-icon">📝</div>
                             <div>
-                                <div class="note-title">Đính kèm nếu cần</div>
+                                <div class="note-title">Mô tả rõ ràng</div>
                                 <div class="note-desc">
-                                    Có thể đính kèm file đề, biểu mẫu hoặc hướng dẫn chi tiết để học viên dễ làm bài.
+                                    Mô tả nên ghi rõ yêu cầu, cách nộp và tiêu chí đánh giá.
                                 </div>
                             </div>
                         </div>
@@ -239,7 +238,7 @@
                     <div class="support-icon">💡</div>
                     <h5 class="support-title">Gợi ý</h5>
                     <p class="support-desc mb-0">
-                        Với bài tập có nhiều yêu cầu, bạn nên mô tả ngắn gọn theo từng ý hoặc đính kèm file hướng dẫn để học viên dễ theo dõi hơn.
+                        Nếu bài tập đã có học viên nộp, bạn nên hạn chế đổi nội dung quá nhiều để tránh gây nhầm lẫn cho học viên.
                     </p>
                 </div>
             </div>
@@ -249,7 +248,7 @@
 
 @section Styles {
     <style>
-        .teacher-assignment-create-page {
+        .teacher-assignment-edit-page {
             animation: fadeInPage 0.25s ease-in-out;
         }
 
@@ -265,7 +264,7 @@
             }
         }
 
-        .assignments-create-hero {
+        .assignments-edit-hero {
             border-radius: 22px;
             background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
             overflow: hidden;
@@ -293,56 +292,39 @@
             white-space: nowrap;
         }
 
-        .create-guide-card {
-            border-radius: 20px;
-            overflow: hidden;
+        .hero-badge {
+            min-width: 210px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
         }
 
-            .create-guide-card .card-body {
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                padding: 20px;
-            }
-
-        .guide-icon {
-            width: 52px;
-            height: 52px;
+        .hero-badge-icon {
+            width: 48px;
+            height: 48px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.45rem;
-            flex-shrink: 0;
+            background: #eff6ff;
+            font-size: 1.4rem;
         }
 
-        .guide-warning {
-            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
-            border-left: 5px solid #f59e0b !important;
-        }
-
-            .guide-warning .guide-icon {
-                background: #ffedd5;
-            }
-
-        .guide-label {
+        .hero-badge-label {
             color: #64748b;
-            font-weight: 600;
-            font-size: 0.93rem;
-            margin-bottom: 4px;
+            font-size: 0.9rem;
         }
 
-        .guide-value {
-            color: #0f172a;
-            font-size: 1.8rem;
+        .hero-badge-value {
+            color: #172554;
+            font-size: 1.4rem;
             font-weight: 800;
             line-height: 1;
-            margin-bottom: 6px;
-        }
-
-        .guide-desc {
-            color: #64748b;
-            font-size: 0.88rem;
         }
 
         .form-card,
@@ -355,6 +337,11 @@
         .section-title {
             font-weight: 800;
             color: #172554;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
         }
 
         .custom-label {
@@ -381,6 +368,11 @@
                 box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.12);
             }
 
+        .readonly-control {
+            background: #f8fafc;
+            color: #64748b;
+        }
+
         textarea.custom-control {
             font-weight: 500;
             line-height: 1.5;
@@ -390,33 +382,6 @@
             color: #64748b;
             font-size: 0.88rem;
             margin-top: 7px;
-        }
-
-        .upload-box {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-            padding: 16px;
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 18px;
-        }
-
-        .upload-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            background: #eff6ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.35rem;
-            flex-shrink: 0;
-        }
-
-        .upload-content {
-            flex: 1;
-            min-width: 0;
         }
 
         .form-actions {
@@ -518,40 +483,6 @@
             line-height: 1.55;
         }
 
-        .hero-badge {
-            min-width: 210px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            border-radius: 18px;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
-        }
-
-        .hero-badge-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #eff6ff;
-            font-size: 1.4rem;
-        }
-
-        .hero-badge-label {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .hero-badge-value {
-            color: #172554;
-            font-size: 1.7rem;
-            font-weight: 800;
-            line-height: 1;
-        }
         @@media (max-width: 767.98px) {
             .page-title {
                 font-size: 1.6rem;
@@ -560,18 +491,6 @@
             .hero-action-btn,
             .hero-badge {
                 width: 100%;
-            }
-
-            .create-guide-card .card-body {
-                padding: 16px;
-            }
-
-            .guide-value {
-                font-size: 1.55rem;
-            }
-
-            .upload-box {
-                flex-direction: column;
             }
 
             .form-actions {

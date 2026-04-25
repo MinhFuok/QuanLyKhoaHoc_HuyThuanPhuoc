@@ -3,59 +3,823 @@
 
 @{
     ViewData["Title"] = "Danh sách bài nộp";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
     var assignment = ViewBag.Assignment as Assignment;
+    var submissions = Model?.ToList() ?? new List<QLKH.Domain.Entities.Submission>();
+
+    var totalSubmissions = submissions.Count;
+    var gradedSubmissions = submissions.Count(x => x.Score.HasValue);
+    var ungradedSubmissions = submissions.Count(x => !x.Score.HasValue);
+    var lateSubmissions = assignment == null
+        ? 0
+        : submissions.Count(x => x.SubmittedAt > assignment.DueDate);
 }
 
-<h2>Danh sách bài nộp</h2>
+<div class="teacher-submissions-page">
 
-@if (assignment != null)
-{
-    <div class="mb-3">
-        <p><strong>Lớp:</strong> @assignment.ClassRoom?.ClassName</p>
-        <p><strong>Khóa học:</strong> @assignment.ClassRoom?.Course?.CourseName</p>
-        <p><strong>Bài tập:</strong> @assignment.Title</p>
-        <p><strong>Hạn nộp:</strong> @assignment.DueDate.ToString("dd/MM/yyyy")</p>
+    <!-- Header -->
+    <div class="submissions-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">BÀI NỘP</h2>
+                    <div class="page-eyebrow">GIẢNG DẠY</div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
+                    <a asp-area="GiaoVien"
+                       asp-controller="MyAssignments"
+                       asp-action="Index"
+                       class="btn btn-outline-primary hero-action-btn">
+                        ← Quay lại bài tập
+                    </a>
+
+                    <div class="hero-badge">
+                        <div class="hero-badge-icon">📥</div>
+                        <div>
+                            <div class="hero-badge-label">Tổng bài nộp</div>
+                            <div class="hero-badge-value">@totalSubmissions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
 
-@if (!Model.Any())
-{
-    <div class="alert alert-warning">
-        Chưa có học viên nào nộp bài.
+    <!-- Assignment info -->
+    @if (assignment != null)
+    {
+        <div class="card border-0 shadow-sm assignment-info-card mb-4">
+            <div class="card-header bg-white border-0 p-4 pb-2">
+                <h5 class="section-title mb-1">Thông tin bài tập</h5>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="assignment-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Lớp</div>
+                        <div class="info-value">
+                            @(assignment.ClassRoom?.ClassName ?? "Chưa cập nhật")
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Khóa học</div>
+                        <div class="info-value">
+                            @(assignment.ClassRoom?.Course?.CourseName ?? "Chưa cập nhật")
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Bài tập</div>
+                        <div class="info-value">
+                            @assignment.Title
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Hạn nộp</div>
+                        <div class="info-value">
+                            <span class="deadline-pill">
+                                @assignment.DueDate.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="submission-stat-card stat-total card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📥</div>
+                    <div>
+                        <div class="stat-label">Tổng bài nộp</div>
+                        <div class="stat-value">@totalSubmissions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="submission-stat-card stat-graded card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">✅</div>
+                    <div>
+                        <div class="stat-label">Đã chấm</div>
+                        <div class="stat-value">@gradedSubmissions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="submission-stat-card stat-ungraded card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📝</div>
+                    <div>
+                        <div class="stat-label">Chưa chấm</div>
+                        <div class="stat-value">@ungradedSubmissions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="submission-stat-card stat-late card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⚠️</div>
+                    <div>
+                        <div class="stat-label">Nộp trễ hạn</div>
+                        <div class="stat-value">@lateSubmissions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Học viên</th>
-                <th>Mã học viên</th>
-                <th>Nội dung bài nộp</th>
-                <th>File nộp</th>
-                <th>Thời gian nộp</th>
-                <th>Điểm</th>
-                <th>Nhận xét</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+
+    <!-- Content -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="section-title mb-1">Danh sách học viên đã nộp bài</h5>
+                </div>
+
+                <div class="submission-filter-note">
+                    <span class="status-dot graded"></span> Đã chấm
+                    <span class="status-dot ungraded ms-3"></span> Chưa chấm
+                    <span class="status-dot late ms-3"></span> Nộp trễ
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!submissions.Any())
             {
-                <tr>
-                    <td>@item.Student?.FullName</td>
-                    <td>@item.Student?.StudentCode</td>
-                    <td>@item.SubmissionText</td>
-                    <td>
-                        @if (!string.IsNullOrWhiteSpace(item.FilePath))
-                        {
-                            <a href="@item.FilePath" target="_blank">Mở file</a>
-                        }
-                    </td>
-                    <td>@item.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>@item.Score</td>
-                    <td>@item.Feedback</td>
-                </tr>
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Chưa có học viên nào nộp bài</h5>
+                    <p>
+                        Hiện tại chưa có bài nộp nào cho bài tập này.
+                        Khi học viên nộp bài, danh sách sẽ hiển thị tại đây để giáo viên xem và chấm điểm.
+                    </p>
+                </div>
             }
-        </tbody>
-    </table>
+            else
+            {
+                <div class="table-responsive submission-table-wrap">
+                    <table class="table submission-table align-middle mb-0">
+                        <colgroup>
+                            <col style="width: 18%;" />
+                            <col style="width: 24%;" />
+                            <col style="width: 14%;" />
+                            <col style="width: 12%;" />
+                            <col style="width: 8%;" />
+                            <col style="width: 15%;" />
+                            <col style="width: 9%;" />
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th>Học viên</th>
+                                <th>Nội dung bài nộp</th>
+                                <th>Thời gian nộp</th>
+                                <th>Trạng thái</th>
+                                <th>Điểm</th>
+                                <th>Nhận xét</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in submissions.OrderByDescending(x => x.SubmittedAt))
+                            {
+                                var isGraded = item.Score.HasValue;
+                                var isLate = assignment != null && item.SubmittedAt > assignment.DueDate;
+
+                                var statusText = isGraded ? "Đã chấm" : "Chưa chấm";
+                                var statusClass = isGraded ? "badge-graded" : "badge-ungraded";
+                                var actionText = isGraded ? "Sửa điểm" : "Chấm bài";
+                                var actionClass = isGraded ? "btn-outline-warning" : "btn-primary";
+                                <tr>
+                                    <td>
+                                        <div class="student-main">
+                                            <div class="student-avatar">
+                                                @(string.IsNullOrWhiteSpace(item.Student?.FullName)
+                                                                                        ? "HV"
+                                                                                        : item.Student.FullName.Trim()[0].ToString().ToUpper())
+                                                                                                                                           </div>
+                                                                                                                                           <div>
+                                                                                                                                               <div class="student-name">
+                                                                                                                                                   @(item.Student?.FullName ?? "Chưa cập nhật")
+                                                                                                                                               </div>
+                                                                                                                                               <div class="student-code">
+                                                                                                                                                   @(item.Student?.StudentCode ?? "N/A")
+                                                                                                                                               </div>
+                                                                                                                                           </div>
+                                                                                                                                       </div>
+                                                                                                                                   </td>
+
+                                    <td>
+                                        <div class="submission-text">
+                                            @(string.IsNullOrWhiteSpace(item.SubmissionText)
+                                                                                ? "Không có nội dung"
+                                                                                : item.SubmissionText)
+                                        </div>
+
+                                        @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                                                {
+                                                    <a href="@item.FilePath"
+                                                    target="_blank"
+                                                    class="inline-file-link">
+                                                        📎 Mở file bài nộp
+                                                    </a>
+                                                }
+                                    </td>
+
+                                    <td>
+                                        <div class="submitted-date">
+                                            <span>@item.SubmittedAt.ToString("dd/MM/yyyy")</span>
+                                            <small>@item.SubmittedAt.ToString("HH:mm")</small>
+
+                                            @if (isLate)
+                                            {
+                                                <span class="late-pill mt-1">Nộp trễ</span>
+                                            }
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="submission-status @statusClass">@statusText</span>
+                                    </td>
+
+                                    <td>
+                                        @if (item.Score.HasValue)
+                                        {
+                                            <span class="score-pill">@item.Score</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="score-empty">--</span>
+                                        }
+                                </td>
+
+                                <td>
+                                    <div class="feedback-text">
+                                        @(string.IsNullOrWhiteSpace(item.Feedback)
+                                                                            ? "Chưa có nhận xét"
+                                                                            : item.Feedback)
+                                </div>
+                            </td>
+
+                                    <td class="text-end">
+                                        <div class="action-group">
+                                            <a asp-area="GiaoVien"
+                                               asp-controller="SubmissionGrading"
+                                               asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-sm @actionClass">
+                                                @actionText
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                                }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="submission-summary mt-3">
+                    <span>Tổng bài nộp: <strong>@totalSubmissions</strong></span>
+                    <span>Đã chấm: <strong>@gradedSubmissions</strong></span>
+                    <span>Chưa chấm: <strong>@ungradedSubmissions</strong></span>
+                    <span>Nộp trễ: <strong>@lateSubmissions</strong></span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .teacher-submissions-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submissions-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .hero-badge {
+            min-width: 210px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .hero-badge-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            font-size: 1.4rem;
+        }
+
+        .hero-badge-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hero-badge-value {
+            color: #172554;
+            font-size: 1.7rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .assignment-info-card,
+        .submission-stat-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .assignment-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .deadline-pill {
+            display: inline-flex;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .submission-stat-card .card-body {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .stat-total {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-total .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-graded {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-graded .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-ungraded {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-ungraded .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-late {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%);
+            border-left: 5px solid #e11d48 !important;
+        }
+
+            .stat-late .stat-icon {
+                background: #ffe4e6;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .submission-filter-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+            .status-dot.graded {
+                background: #16a34a;
+            }
+
+            .status-dot.ungraded {
+                background: #f59e0b;
+            }
+
+            .status-dot.late {
+                background: #e11d48;
+            }
+
+        .submission-table-wrap {
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .submission-table {
+            background: #ffffff;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .submission-table thead th {
+                background: #f8fafc;
+                color: #475569;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            .submission-table tbody td {
+                padding: 16px;
+                border-bottom: 1px solid #eef2f7;
+                vertical-align: middle;
+            }
+
+            .submission-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .submission-table tbody tr {
+                transition: all 0.18s ease-in-out;
+            }
+
+                .submission-table tbody tr:hover {
+                    background: #f8fbff;
+                }
+
+        .student-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 190px;
+        }
+
+        .student-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .student-name {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+            white-space: nowrap;
+        }
+
+        .student-code {
+            color: #64748b;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        .submission-text {
+            color: #334155;
+            font-weight: 500;
+            line-height: 1.45;
+            max-width: 100%;
+            min-width: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .inline-file-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 8px;
+            color: #1d4ed8;
+            font-size: 0.86rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+            .inline-file-link:hover {
+                text-decoration: underline;
+            }
+
+        .feedback-text {
+            color: #475569;
+            max-width: 100%;
+            min-width: 0;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .action-group .btn {
+            border-radius: 10px;
+            font-weight: 700;
+            padding: 8px 12px;
+            white-space: nowrap;
+        }
+        .file-btn {
+            border-radius: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .file-empty {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .submitted-date {
+            color: #334155;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+            .submitted-date small {
+                display: block;
+                color: #64748b;
+                font-weight: 600;
+                margin-top: 2px;
+            }
+
+        .late-pill {
+            display: inline-flex;
+            width: fit-content;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ffe4e6;
+            color: #be123c;
+            font-weight: 800;
+            font-size: 0.78rem;
+        }
+
+        .submission-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-graded {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-ungraded {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .score-pill {
+            display: inline-flex;
+            min-width: 44px;
+            justify-content: center;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 900;
+        }
+
+        .score-empty {
+            color: #94a3b8;
+            font-weight: 800;
+        }
+
+        .feedback-text {
+            color: #475569;
+            max-width: 260px;
+            min-width: 180px;
+            line-height: 1.45;
+        }
+
+        .action-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+            .action-group .btn {
+                border-radius: 10px;
+                font-weight: 700;
+                padding: 7px 11px;
+            }
+
+        .submission-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .submission-summary strong {
+                color: #172554;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .assignment-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .submission-filter-note {
+                white-space: normal;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-action-btn,
+            .hero-badge {
+                width: 100%;
+            }
+
+            .assignment-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .submission-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .action-group {
+                justify-content: flex-start;
+            }
+
+            .submission-summary {
+                justify-content: flex-start;
+            }
+        }
+    </style>
 }

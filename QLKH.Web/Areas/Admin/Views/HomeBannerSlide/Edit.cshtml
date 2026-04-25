@@ -1,11 +1,11 @@
 ﻿@model QLKH.Web.Areas.Admin.Models.HomeBannerSlideViewModel
 
 @{
-    ViewData["Title"] = "Sửa slide banner";
+    ViewData["Title"] = "Sửa banner";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Sửa slide banner</h2>
+<h2 class="mb-4">SỬA BANNER</h2>
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -48,14 +48,10 @@
                 <label asp-for="IsActive" class="form-check-label"></label>
             </div>
 
-            <div class="alert alert-info">
-                Thứ tự hiển thị được quản lý bằng nút Lên / Xuống trong danh sách.
-            </div>
-
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="submit" class="btn btn-primary">Xác nhận thay đổi</button>
                 <a asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" class="btn btn-secondary">
-                    Quay lại
+                    Hủy
                 </a>
             </div>
         </form>

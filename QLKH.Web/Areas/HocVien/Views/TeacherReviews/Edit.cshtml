@@ -1,55 +1,617 @@
 ﻿@using QLKH.Domain.Entities
+
 @{
     ViewData["Title"] = "Đánh giá giáo viên";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
     var classRoom = ViewBag.ClassRoom as ClassRoom;
     var existingReview = ViewBag.ExistingReview as TeacherReview;
+
+    var currentRating = existingReview?.Rating ?? 5;
+    var isUpdate = existingReview != null;
 }
 
-<h2>Đánh giá giáo viên</h2>
+<div class="student-review-page">
 
-@if (classRoom != null)
-{
-    <div class="mb-3">
-        <p><strong>Lớp:</strong> @classRoom.ClassName</p>
-        <p><strong>Khóa học:</strong> @classRoom.Course?.CourseName</p>
-        <p><strong>Giáo viên:</strong> @classRoom.Teacher?.FullName</p>
+    <!-- Header -->
+    <div class="review-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">ĐÁNH GIÁ GIÁO VIÊN</h2>
+                    <div class="page-eyebrow">HỌC TẬP</div>
+                </div>
+
+                <div>
+                    <a asp-area="HocVien"
+                       asp-controller="MyClasses"
+                       asp-action="Index"
+                       class="btn btn-outline-primary hero-action-btn">
+                        ← Quay lại
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Alerts -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">✅</div>
+            <div>
+                <strong>Thành công!</strong>
+                <div>@TempData["SuccessMessage"]</div>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">⚠️</div>
+            <div>
+                <strong>Không thể gửi đánh giá!</strong>
+                <div>@ViewBag.ErrorMessage</div>
+            </div>
+        </div>
+    }
+
+    @if (classRoom == null)
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="empty-state">
+                    <div class="empty-icon">⚠️</div>
+                    <h5>Không tìm thấy lớp học</h5>
+                    <p>Lớp học không tồn tại hoặc bạn không có quyền đánh giá.</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Class info -->
+        <div class="card border-0 shadow-sm class-info-card mb-4">
+            <div class="card-header bg-white border-0 p-4 pb-2">
+                <h5 class="section-title mb-1">Thông tin lớp học</h5>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="class-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Lớp</div>
+                        <div class="info-value">@classRoom.ClassName</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Khóa học</div>
+                        <div class="info-value">@(classRoom.Course?.CourseName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Giáo viên</div>
+                        <div class="info-value">@(classRoom.Teacher?.FullName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Trạng thái</div>
+                        <div class="info-value">
+                            <span class="review-status @(isUpdate ? "badge-updated" : "badge-new")">
+                                @(isUpdate ? "Đã đánh giá" : "Chưa đánh giá")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-xl-8">
+                <div class="card border-0 shadow-sm form-card">
+                    <div class="card-header bg-white border-0 p-4 pb-2">
+                        <h5 class="section-title mb-1">Nội dung đánh giá</h5>
+                        <p class="section-subtitle mb-0">
+                            Đánh giá giúp trung tâm cải thiện chất lượng giảng dạy và hỗ trợ học viên tốt hơn.
+                        </p>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <form method="post" class="review-form">
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden" name="classRoomId" value="@classRoom.Id" />
+
+                            <div class="mb-4">
+                                <label class="form-label custom-label">Điểm đánh giá</label>
+
+                                <div class="rating-options">
+                                    @for (var i = 1; i <= 5; i++)
+                                    {
+                                        <label class="rating-option @(currentRating == i ? "active" : "")">
+                                            <input type="radio"
+                                                   name="rating"
+                                                   value="@i"
+                                                   @(currentRating == i ? "checked" : "")
+                                                   @(isUpdate ? "disabled" : "") />
+                                            <span class="rating-star">
+                                                @for (var s = 1; s <= i; s++)
+                                                {
+                                                    <span>★</span>
+                                                }
+                                            </span>
+                                        </label>
+                                    }
+                                </div>
+
+                                <div class="form-hint">
+                                    Chọn mức điểm từ 1 đến 5 sao.
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label custom-label">Nhận xét</label>
+
+                                <textarea name="comment"
+                                      class="form-control custom-control"
+                                      rows="6"
+                                      @(isUpdate ? "readonly" : "")>@existingReview?.Comment</textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <a asp-area="HocVien"
+                                   asp-controller="MyClasses"
+                                   asp-action="Index"
+                                   class="btn btn-outline-secondary">
+                                    Hủy
+                                </a>
+
+                                @if (!isUpdate)
+                                {
+                                    <button type="submit" class="btn btn-primary submit-btn">
+                                        Gửi đánh giá
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-secondary submit-btn" disabled>
+                                        Đã gửi đánh giá
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right note -->
+            <div class="col-12 col-xl-4">
+                <div class="card border-0 shadow-sm note-card mb-4">
+                    <div class="card-header bg-white border-0 p-4 pb-2">
+                        <h5 class="section-title mb-1">Gợi ý đánh giá</h5>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="note-list">
+                            <div class="note-item">
+                                <div class="note-icon">⭐</div>
+                                <div>
+                                    <div class="note-title">Công bằng</div>
+                                    <div class="note-desc">
+                                        Đánh giá dựa trên trải nghiệm học tập thực tế của bạn.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">💬</div>
+                                <div>
+                                    <div class="note-title">Cụ thể</div>
+                                    <div class="note-desc">
+                                        Nên nêu rõ điểm tốt và điểm cần cải thiện nếu có.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">🤝</div>
+                                <div>
+                                    <div class="note-title">Tôn trọng</div>
+                                    <div class="note-desc">
+                                        Sử dụng ngôn từ lịch sự, xây dựng và phù hợp.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">📌</div>
+                                <div>
+                                    <div class="note-title">Có thể cập nhật</div>
+                                    <div class="note-desc">
+                                        Nếu đã đánh giá trước đó, bạn có thể chỉnh sửa và gửi lại.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm support-card">
+                    <div class="card-body p-4">
+                        <div class="support-icon">💡</div>
+                        <h5 class="support-title">Gợi ý nhận xét</h5>
+                        <p class="support-desc mb-0">
+                            Bạn có thể nhận xét về cách truyền đạt, mức độ hỗ trợ, tài liệu học tập và sự phù hợp của nội dung bài học.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .student-review-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .review-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .class-info-card,
+        .form-card,
+        .note-card,
+        .support-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .class-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .review-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-updated {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-new {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .custom-label {
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .custom-control {
+            border-radius: 14px;
+            border: 1px solid #dbe3ef;
+            padding: 12px 14px;
+            color: #0f172a;
+            font-weight: 500;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .custom-control:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.12);
+            }
+
+        .form-hint {
+            color: #64748b;
+            font-size: 0.88rem;
+            margin-top: 8px;
+        }
+
+        .rating-options {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .rating-option {
+            cursor: pointer;
+            border: 1px solid #dbe3ef;
+            border-radius: 16px;
+            padding: 12px;
+            background: #ffffff;
+            transition: all 0.18s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            min-height: 86px;
+        }
+
+            .rating-option input {
+                display: none;
+            }
+
+            .rating-option:hover,
+            .rating-option.active {
+                background: #eff6ff;
+                border-color: #3b82f6;
+                box-shadow: 0 10px 24px rgba(37, 99, 235, 0.10);
+            }
+
+        .rating-star {
+            color: #f59e0b;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            min-height: 20px;
+            text-align: center;
+        }
+
+        .rating-number {
+            color: #172554;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 8px;
+        }
+
+            .form-actions .btn {
+                border-radius: 12px;
+                font-weight: 800;
+                padding: 10px 18px;
+            }
+
+        .submit-btn {
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+        }
+
+        .custom-alert {
+            border-radius: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+        }
+
+        .alert-icon {
+            font-size: 1.35rem;
+            line-height: 1;
+        }
+
+        .note-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+            .note-item:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+        .note-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .note-title {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .note-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+        }
+
+        .support-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+        }
+
+        .support-title {
+            font-weight: 800;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .support-desc {
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .class-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .rating-options {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-action-btn {
+                width: 100%;
+            }
+
+            .class-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rating-options {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+                .form-actions .btn {
+                    width: 100%;
+                }
+        }
+    </style>
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
+@section Scripts {
+    <script>
+        (function () {
+            const options = document.querySelectorAll('.rating-option');
+
+            options.forEach(option => {
+                option.addEventListener('click', function () {
+                    options.forEach(x => x.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const input = this.querySelector('input');
+                    if (input) {
+                        input.checked = true;
+                    }
+                });
+            });
+        })();
+    </script>
 }
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.ErrorMessage
-    </div>
-}
-
-<form method="post">
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" name="classRoomId" value="@classRoom?.Id" />
-
-    <div class="mb-3">
-        <label class="form-label">Điểm đánh giá (1 đến 5)</label>
-        <select name="rating" class="form-control">
-            <option value="1" selected="@(existingReview?.Rating == 1)">1</option>
-            <option value="2" selected="@(existingReview?.Rating == 2)">2</option>
-            <option value="3" selected="@(existingReview?.Rating == 3)">3</option>
-            <option value="4" selected="@(existingReview?.Rating == 4)">4</option>
-            <option value="5" selected="@(existingReview?.Rating == 5)">5</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Nhận xét</label>
-        <textarea name="comment" class="form-control" rows="6">@existingReview?.Comment</textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-</form>

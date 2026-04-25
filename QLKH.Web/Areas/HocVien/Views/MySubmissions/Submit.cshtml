@@ -1,51 +1,635 @@
 ﻿@using QLKH.Domain.Entities
+
 @{
     ViewData["Title"] = "Nộp bài";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
     var assignment = ViewBag.Assignment as Assignment;
+    var existingSubmission = ViewBag.ExistingSubmission as QLKH.Domain.Entities.Submission;
+    var now = DateTime.Now;
+    var isLate = assignment != null && now > assignment.DueDate;
+
+    var dueStatusText = isLate ? "Quá hạn" : "Còn hạn";
+    var dueStatusClass = isLate ? "badge-overdue" : "badge-active";
 }
 
-<h2>Nộp bài</h2>
+<div class="student-submit-page">
 
-@if (assignment != null)
-{
-    <div class="mb-3">
-        <p><strong>Lớp:</strong> @assignment.ClassRoom?.ClassName</p>
-        <p><strong>Khóa học:</strong> @assignment.ClassRoom?.Course?.CourseName</p>
-        <p><strong>Bài tập:</strong> @assignment.Title</p>
-        <p><strong>Mô tả:</strong> @assignment.Description</p>
-        <p><strong>Hạn nộp:</strong> @assignment.DueDate.ToString("dd/MM/yyyy")</p>
+    <!-- Header -->
+    <div class="submit-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">NỘP BÀI</h2>
+                    <div class="page-eyebrow">HỌC TẬP</div>
+                </div>
+
+                <div>
+                    <a asp-area="HocVien"
+                       asp-controller="MyAssignments"
+                       asp-action="Index"
+                       class="btn btn-outline-primary hero-action-btn">
+                        ← Quay lại
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Alerts -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">✅</div>
+            <div>
+                <strong>Thành công!</strong>
+                <div>@TempData["SuccessMessage"]</div>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">⚠️</div>
+            <div>
+                <strong>Không thể nộp bài!</strong>
+                <div>@ViewBag.ErrorMessage</div>
+            </div>
+        </div>
+    }
+
+    @if (assignment == null)
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="empty-state">
+                    <div class="empty-icon">⚠️</div>
+                    <h5>Không tìm thấy bài tập</h5>
+                    <p>Bài tập không tồn tại hoặc đã bị xóa.</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- KPI -->
+        
+
+        <!-- Assignment info -->
+        <div class="card border-0 shadow-sm assignment-info-card mb-4">
+            <div class="card-header bg-white border-0 p-4 pb-2">
+                <h5 class="section-title mb-1">Thông tin bài tập</h5>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="assignment-info-grid">
+                    <div class="info-item info-wide">
+                        <div class="info-label">Bài tập</div>
+                        <div class="info-value">@assignment.Title</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Lớp</div>
+                        <div class="info-value">@(assignment.ClassRoom?.ClassName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Khóa học</div>
+                        <div class="info-value">@(assignment.ClassRoom?.Course?.CourseName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Giáo viên</div>
+                        <div class="info-value">@(assignment.ClassRoom?.Teacher?.FullName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Hạn nộp</div>
+                        <div class="info-value">@assignment.DueDate.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+
+                    <div class="info-item info-wide">
+                        <div class="info-label">Mô tả</div>
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(assignment.Description)
+                                                    ? "Không có mô tả"
+                                                    : assignment.Description)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Submit form -->
+        <div class="row g-4">
+            <div class="col-12 col-xl-8">
+                <div class="card border-0 shadow-sm form-card">
+                    <div class="card-header bg-white border-0 p-4 pb-2">
+                        <h5 class="section-title mb-1">Thông tin bài nộp</h5>
+                        <p class="section-subtitle mb-0">
+                            Bạn có thể nộp nội dung văn bản, file đính kèm hoặc cả hai.
+                        </p>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <form method="post" enctype="multipart/form-data" class="submit-form">
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden" name="assignmentId" value="@assignment.Id" />
+
+                            <div class="mb-4">
+                                <label class="form-label custom-label">
+                                    Nội dung bài nộp
+                                </label>
+
+                                <textarea name="submissionText"
+                                      class="form-control custom-control"
+                                      rows="8">@(existingSubmission?.SubmissionText)</textarea>
+
+                                <div class="form-hint">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label custom-label">
+                                    File bài nộp
+                                </label>
+
+                                <div class="upload-box">
+                                    <div class="upload-icon">📎</div>
+                                    <div class="upload-content">
+                                        <input type="file"
+                                               name="submissionFile"
+                                               class="form-control custom-control" />
+
+                                        <div class="form-hint mt-2">
+                                            Có thể nộp Word, PDF, Excel, ảnh, ZIP hoặc file bài làm theo yêu cầu.
+                                        </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(existingSubmission?.FilePath))
+                                        {
+                                            <div class="current-file-box mt-3">
+                                                <span class="current-file-label">File đã nộp:</span>
+                                                <a href="@existingSubmission.FilePath" target="_blank" class="current-file-link">
+                                                    Mở file hiện tại
+                                                </a>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <a asp-area="HocVien"
+                                   asp-controller="MyAssignments"
+                                   asp-action="Index"
+                                   class="btn btn-outline-secondary">
+                                    Hủy
+                                </a>
+
+                                <button type="submit" class="btn btn-primary submit-btn">
+                                    @(existingSubmission == null ? "Nộp bài" : "Cập nhật bài nộp")
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right notes -->
+            <div class="col-12 col-xl-4">
+                <div class="card border-0 shadow-sm note-card mb-4">
+                    <div class="card-header bg-white border-0 p-4 pb-2">
+                        <h5 class="section-title mb-1">Lưu ý khi nộp bài</h5>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="note-list">
+                            <div class="note-item">
+                                <div class="note-icon">✅</div>
+                                <div>
+                                    <div class="note-title">Kiểm tra trước khi nộp</div>
+                                    <div class="note-desc">
+                                        Đảm bảo đúng file, đúng nội dung và đúng yêu cầu bài tập.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">⏰</div>
+                                <div>
+                                    <div class="note-title">Chú ý hạn nộp</div>
+                                    <div class="note-desc">
+                                        Bài nộp sau hạn có thể được ghi nhận là nộp trễ.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">📎</div>
+                                <div>
+                                    <div class="note-title">File rõ ràng</div>
+                                    <div class="note-desc">
+                                        Nên đặt tên file dễ hiểu, ví dụ: HoTen_MaHV_BaiTap1.pdf.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">💬</div>
+                                <div>
+                                    <div class="note-title">Nội dung bổ sung</div>
+                                    <div class="note-desc">
+                                        Nếu nộp file, bạn có thể ghi chú ngắn để giáo viên dễ theo dõi.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm support-card">
+                    <div class="card-body p-4">
+                        <div class="support-icon">💡</div>
+                        <h5 class="support-title">Gợi ý</h5>
+                        <p class="support-desc mb-0">
+                            Trước khi bấm nộp, hãy mở lại file để chắc chắn file không bị lỗi và đúng phiên bản cuối cùng.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+</div>
+
+@section Styles {
+    <style>
+        .student-submit-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submit-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .assignment-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-wide {
+            grid-column: span 2;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+            line-height: 1.45;
+        }
+
+        .assignment-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-active {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-overdue {
+            color: #be123c;
+            background: #ffe4e6;
+        }
+
+        .custom-label {
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .custom-control {
+            border-radius: 14px;
+            border: 1px solid #dbe3ef;
+            padding: 12px 14px;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .custom-control:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.12);
+            }
+
+        textarea.custom-control {
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .form-hint {
+            color: #64748b;
+            font-size: 0.88rem;
+            margin-top: 7px;
+        }
+
+        .upload-box {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .upload-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .upload-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 8px;
+        }
+
+            .form-actions .btn {
+                border-radius: 12px;
+                font-weight: 800;
+                padding: 10px 18px;
+            }
+
+        .submit-btn {
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+        }
+
+        .custom-alert {
+            border-radius: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+        }
+
+        .alert-icon {
+            font-size: 1.35rem;
+            line-height: 1;
+        }
+
+        .note-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+            .note-item:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+        .note-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .note-title {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .note-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+        }
+
+        .support-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+        }
+
+        .support-title {
+            font-weight: 800;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .support-desc {
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .assignment-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .info-wide {
+                grid-column: span 2;
+            }
+        }
+
+        .current-file-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+        }
+
+        .current-file-label {
+            color: #475569;
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        .current-file-link {
+            color: #1d4ed8;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+            .current-file-link:hover {
+                text-decoration: underline;
+            }
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-action-btn {
+                width: 100%;
+            }
+
+            .submit-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .small-stat {
+                font-size: 0.95rem;
+            }
+
+            .assignment-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-wide {
+                grid-column: span 1;
+            }
+
+            .upload-box {
+                flex-direction: column;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+                .form-actions .btn {
+                    width: 100%;
+                }
+        }
+    </style>
 }
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.ErrorMessage
-    </div>
-}
-
-<form method="post" enctype="multipart/form-data">
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" name="assignmentId" value="@assignment?.Id" />
-
-    <div class="mb-3">
-        <label class="form-label">Nội dung bài nộp</label>
-        <textarea name="submissionText" class="form-control" rows="8"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">File bài nộp</label>
-        <input type="file" name="submissionFile" class="form-control" />
-        <small class="text-muted">Bạn có thể nộp nội dung text, file, hoặc cả hai.</small>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Nộp bài</button>
-</form>

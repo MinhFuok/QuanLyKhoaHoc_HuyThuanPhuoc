@@ -10,10 +10,14 @@ namespace QLKH.Web.Areas.HocVien.Controllers
     public class MyAssignmentsController : Controller
     {
         private readonly IAssignmentService _assignmentService;
+        private readonly ISubmissionService _submissionService;
 
-        public MyAssignmentsController(IAssignmentService assignmentService)
+        public MyAssignmentsController(
+            IAssignmentService assignmentService,
+            ISubmissionService submissionService)
         {
             _assignmentService = assignmentService;
+            _submissionService = submissionService;
         }
 
         public async Task<IActionResult> Index()
@@ -26,6 +30,14 @@ namespace QLKH.Web.Areas.HocVien.Controllers
             }
 
             var assignments = await _assignmentService.GetMyLearningAssignmentsAsync(applicationUserId);
+
+            var submissions = await _submissionService.GetMySubmissionsAsync(applicationUserId);
+
+            ViewBag.SubmittedAssignmentIds = submissions
+                .Select(x => x.AssignmentId)
+                .Distinct()
+                .ToList();
+
             return View(assignments);
         }
     }

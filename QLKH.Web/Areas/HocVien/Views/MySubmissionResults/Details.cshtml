@@ -3,55 +3,450 @@
 
 @{
     ViewData["Title"] = "Kết quả bài nộp";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
     var assignment = ViewBag.Assignment as Assignment;
+
+    var isGraded = Model?.Score.HasValue == true;
+    var hasFile = !string.IsNullOrWhiteSpace(Model?.FilePath);
+    var scoreText = isGraded ? Model!.Score!.Value.ToString("0.##") : "Chưa chấm";
 }
 
-<h2>Kết quả bài nộp</h2>
+<div class="student-submission-result-page">
 
-@if (assignment != null)
-{
-    <div class="mb-3">
-        <p><strong>Lớp:</strong> @assignment.ClassRoom?.ClassName</p>
-        <p><strong>Khóa học:</strong> @assignment.ClassRoom?.Course?.CourseName</p>
-        <p><strong>Bài tập:</strong> @assignment.Title</p>
-        <p><strong>Mô tả:</strong> @assignment.Description</p>
-        <p><strong>Hạn nộp:</strong> @assignment.DueDate.ToString("dd/MM/yyyy")</p>
-    </div>
-}
-
-@if (Model == null)
-{
-    <div class="alert alert-warning">
-        Bạn chưa nộp bài cho assignment này.
-    </div>
-}
-else
-{
-    <div class="card p-3">
-        <p><strong>Thời gian nộp:</strong> @Model.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</p>
-
-        <div class="mb-3">
-            <label class="form-label"><strong>Nội dung bài nộp</strong></label>
-            <div class="form-control" style="min-height: 120px; white-space: pre-wrap;">@Model.SubmissionText</div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label"><strong>File đã nộp</strong></label>
-            @if (!string.IsNullOrWhiteSpace(Model.FilePath))
-            {
+    <!-- Header -->
+    <div class="result-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <a href="@Model.FilePath" target="_blank">Mở file bài nộp</a>
+                    <h2 class="page-title mb-2">KẾT QUẢ BÀI NỘP</h2>
+                    <div class="page-eyebrow">HỌC TẬP</div>
                 </div>
-            }
-            else
-            {
-                <div class="form-control">Không có file đính kèm</div>
-            }
-        </div>
-        <p><strong>Điểm:</strong> @(Model.Score?.ToString("0.##") ?? "Chưa chấm")</p>
 
-        <div class="mb-3">
-            <label class="form-label"><strong>Nhận xét của giáo viên</strong></label>
-            <div class="form-control" style="min-height: 100px; white-space: pre-wrap;">@(string.IsNullOrWhiteSpace(Model.Feedback) ? "Chưa có nhận xét" : Model.Feedback)</div>
+                <div>
+                    <a asp-area="HocVien"
+                       asp-controller="MyAssignments"
+                       asp-action="Index"
+                       class="btn btn-outline-primary hero-action-btn">
+                        ← Quay lại
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
+
+    @if (assignment != null)
+    {
+        <!-- Assignment info -->
+        <div class="card border-0 shadow-sm assignment-info-card mb-4">
+            <div class="card-header bg-white border-0 p-4 pb-2">
+                <h5 class="section-title mb-1">Thông tin bài tập</h5>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="assignment-info-grid">
+                    <div class="info-item info-wide">
+                        <div class="info-label">Bài tập</div>
+                        <div class="info-value">@assignment.Title</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Lớp</div>
+                        <div class="info-value">@(assignment.ClassRoom?.ClassName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Khóa học</div>
+                        <div class="info-value">@(assignment.ClassRoom?.Course?.CourseName ?? "Chưa cập nhật")</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Hạn nộp</div>
+                        <div class="info-value">@assignment.DueDate.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+
+                    <div class="info-item info-wide">
+                        <div class="info-label">Mô tả</div>
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(assignment.Description)
+                                                    ? "Không có mô tả"
+                                                    : assignment.Description)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+
+    @if (Model == null)
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Bạn chưa nộp bài</h5>
+                    <p>
+                        Hiện tại chưa có bài nộp cho bài tập này.
+                        Hãy quay lại danh sách bài tập để thực hiện nộp bài.
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <div class="col-12 col-xl-8">
+                <div class="card border-0 shadow-sm content-card mb-4">
+                    <div class="card-header bg-white border-0 p-4 pb-2">
+                        <h5 class="section-title mb-1">Nội dung bài nộp</h5>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="submission-text-box">
+                            @(string.IsNullOrWhiteSpace(Model.SubmissionText)
+                                                    ? "Không có nội dung văn bản."
+                                                    : Model.SubmissionText)
+                    </div>
+
+                        <div class="file-box mt-4">
+                            <div class="file-icon">📎</div>
+                            <div class="file-content">
+                                <div class="file-title">File đã nộp</div>
+
+                            @if (hasFile)
+                                {
+                                    <a href="@Model.FilePath"
+                                       target="_blank"
+                                       class="btn btn-sm btn-outline-primary mt-2">
+                                        Mở file bài nộp
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div class="file-empty mt-2">
+                                        Không có file đính kèm
+                                    </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm feedback-card">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Nhận xét của giáo viên</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="feedback-box">
+                        @(string.IsNullOrWhiteSpace(Model.Feedback)
+                                                ? "Chưa có nhận xét"
+                                                : Model.Feedback)
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+
+        <div class="col-12 col-xl-4">
+            <div class="card border-0 shadow-sm note-card">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Tổng kết</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="note-list">
+                        <div class="note-item">
+                            <div class="note-icon">⏰</div>
+                            <div>
+                                <div class="note-title">Thời gian nộp</div>
+                                <div class="note-desc">@Model.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">⭐</div>
+                            <div>
+                                <div class="note-title">Điểm số</div>
+                                <div class="note-desc">@scoreText</div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">💬</div>
+                            <div>
+                                <div class="note-title">Nhận xét</div>
+                                <div class="note-desc">
+                                    @(string.IsNullOrWhiteSpace(Model.Feedback)
+                                                                        ? "Giáo viên chưa nhận xét."
+                                                                        : "Đã có nhận xét từ giáo viên.")
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="note-item">
+                                <div class="note-icon">📎</div>
+                                <div>
+                                    <div class="note-title">File</div>
+                                    <div class="note-desc">
+                                        @(hasFile ? "Có file bài nộp." : "Không có file đính kèm.")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+</div>
+
+@section Styles {
+    <style>
+        .student-submission-result-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .assignment-info-card,
+        .content-card,
+        .feedback-card,
+        .note-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .assignment-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-wide {
+            grid-column: span 2;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+            line-height: 1.45;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .submission-text-box,
+        .feedback-box {
+            min-height: 130px;
+            white-space: pre-wrap;
+            padding: 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            color: #334155;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .feedback-box {
+            min-height: 100px;
+        }
+
+        .file-box {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            border-radius: 18px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .file-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .file-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-title {
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .file-empty {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .note-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+            .note-item:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+        .note-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .note-title {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .note-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .assignment-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .info-wide {
+                grid-column: span 2;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-action-btn {
+                width: 100%;
+            }
+
+            .assignment-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-wide {
+                grid-column: span 1;
+            }
+
+            .file-box {
+                flex-direction: column;
+            }
+        }
+    </style>
 }

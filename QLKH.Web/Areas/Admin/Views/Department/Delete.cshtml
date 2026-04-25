@@ -1,11 +1,11 @@
 ﻿@model QLKH.Domain.Entities.Department
 
 @{
-    ViewData["Title"] = "Xóa khoa/ngành";
+    ViewData["Title"] = "Xóa chương trình/khóa";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Xóa khoa/ngành đào tạo</h2>
+<h2 class="mb-4">Xóa chương trình/khóa</h2>
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -45,7 +45,7 @@
                         onclick="return confirm('Bạn có chắc chắn muốn xóa mục này không?');">
                     Xóa
                 </button>
-                <a asp-area="Admin" asp-controller="Department" asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                <a asp-area="Admin" asp-controller="Department" asp-action="Index" class="btn btn-secondary">Hủy</a>
             </div>
         </form>
     </div>

@@ -2,57 +2,57 @@
 
 @{
     ViewData["Title"] = "Sửa tài khoản";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<div class="course-page admin-profession-page">
-    <div class="cp-header">
-        <div class="cp-header-left">
-            <h1 class="cp-title">Sửa tài khoản</h1>
-            <p class="cp-subtitle">Cập nhật thông tin và vai trò của tài khoản.</p>
-        </div>
+<h2 class="mb-4">SỬA TÀI KHOẢN</h2>
 
-        <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
-    </div>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="UserManagement" asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
 
-    <form asp-area="Admin" asp-controller="UserManagement" asp-action="Edit" method="post" class="cp-form-card">
-        <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id" />
 
-        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
-        {
-            <div asp-validation-summary="All" class="cp-validation-summary"></div>
-        }
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-        <div class="cp-form-row">
-            <div class="cp-field">
-                <label asp-for="FullName" class="cp-label"></label>
-                <input asp-for="FullName" class="cp-input" />
-                <span asp-validation-for="FullName" class="cp-field-error"></span>
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="Email" class="form-label"></label>
                 <input asp-for="Email" class="form-control" readonly />
                 <input asp-for="Email" type="hidden" />
+                <small class="text-muted">Email đăng nhập không được chỉnh sửa tại đây.</small>
             </div>
-        </div>
 
-        <div class="cp-form-row">
-            <div class="cp-field">
-                <label asp-for="Role" class="cp-label"></label>
-                <select asp-for="Role" asp-items="ViewBag.RoleList" class="cp-input cp-select"></select>
-                <span asp-validation-for="Role" class="cp-field-error"></span>
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label"></label>
+                <select asp-for="Role" asp-items="ViewBag.RoleList" class="form-select">
+                    <option value="">-- Chọn vai trò --</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
-        </div>
 
-        <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu thay đổi</button>
-            <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
-        </div>
-    </form>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Xác nhận thay đổi
+                </button>
+
+                <a asp-area="Admin"
+                   asp-controller="UserManagement"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Hủy
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

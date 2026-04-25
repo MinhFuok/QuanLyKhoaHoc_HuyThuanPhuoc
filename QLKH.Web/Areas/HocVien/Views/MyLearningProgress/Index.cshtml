@@ -3,121 +3,792 @@
 
 @{
     ViewData["Title"] = "Tiến độ học tập";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var classes = Model.Classes?.ToList() ?? new();
+
+    var completionPercent = Model?.OverallCompletionPercent ?? 0;
+    var averageScoreText = Model?.AverageScore.HasValue == true
+        ? Model.AverageScore.Value.ToString("0.##")
+        : "--";
+
+    string GetProgressClass(decimal percent)
+    {
+        if (percent >= 80)
+        {
+            return "progress-good";
+        }
+
+        if (percent >= 50)
+        {
+            return "progress-medium";
+        }
+
+        return "progress-low";
+    }
+
+    string GetProgressText(decimal percent)
+    {
+        if (percent >= 80)
+        {
+            return "Tốt";
+        }
+
+        if (percent >= 50)
+        {
+            return "Đang tiến triển";
+        }
+
+        return "Cần theo dõi";
+    }
 }
 
-<h2>Tiến độ học tập tổng thể</h2>
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
+<div class="student-progress-page">
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-<div class="mb-3">
-    <p><strong>Học viên:</strong> @Model.StudentName</p>
-</div>
-
-<div class="row g-3 mb-4">
-    <div class="col-md-4 col-lg-2">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="text-muted">Số lớp</div>
-                <h4>@Model.TotalClasses</h4>
+    <!-- Header -->
+    <div class="progress-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">TIẾN ĐỘ HỌC TẬP</h2>
+                    <div class="page-eyebrow">HỌC TẬP</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4 col-lg-2">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="text-muted">Tổng bài tập</div>
-                <h4>@Model.TotalAssignments</h4>
+    <!-- Alerts -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">✅</div>
+            <div>
+                <strong>Thành công!</strong>
+                <div>@TempData["SuccessMessage"]</div>
             </div>
         </div>
-    </div>
+    }
 
-    <div class="col-md-4 col-lg-2">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="text-muted">Đã nộp</div>
-                <h4>@Model.SubmittedAssignments</h4>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">⚠️</div>
+            <div>
+                <strong>Có lỗi xảy ra!</strong>
+                <div>@TempData["ErrorMessage"]</div>
             </div>
         </div>
-    </div>
+    }
 
-    <div class="col-md-4 col-lg-2">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="text-muted">Chưa nộp</div>
-                <h4>@Model.PendingAssignments</h4>
-            </div>
+    <!-- Student overview -->
+    <div class="card border-0 shadow-sm student-info-card mb-4">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <h5 class="section-title mb-1">Tổng quan học viên</h5>
         </div>
-    </div>
 
-    <div class="col-md-4 col-lg-2">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="text-muted">Đã chấm</div>
-                <h4>@Model.GradedAssignments</h4>
-            </div>
-        </div>
-    </div>
+        <div class="card-body p-4">
+            <div class="student-info-grid">
+                <div class="info-item info-wide">
+                    <div class="info-label">Học viên</div>
+                    <div class="info-value">@(Model?.StudentName ?? "Chưa cập nhật")</div>
+                </div>
 
-    <div class="col-md-4 col-lg-2">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="text-muted">Điểm TB</div>
-                <div class="col-md-4 col-lg-2">
-                    <div class="card shadow-sm h-100 border-success">
-                        <div class="card-body">
-                            <div class="text-muted">Hoàn thành</div>
-                            <h4>@Model.OverallCompletionPercent.ToString("0.##")%</h4>
-                        </div>
+                <div class="info-item">
+                    <div class="info-label">Hoàn thành tổng thể</div>
+                    <div class="info-value">@completionPercent.ToString("0.##")%</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Đánh giá</div>
+                    <div class="info-value">
+                        <span class="progress-status @GetProgressClass(completionPercent)">
+                            @GetProgressText(completionPercent)
+                        </span>
                     </div>
                 </div>
-                <h4>@(Model.AverageScore.HasValue? Model.AverageScore.Value.ToString("0.##") : "-")</h4>
             </div>
+        </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="progress-stat-card stat-class card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">🎓</div>
+                    <div>
+                        <div class="stat-label">Số lớp</div>
+                        <div class="stat-value">@(Model?.TotalClasses ?? 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="progress-stat-card stat-total card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📝</div>
+                    <div>
+                        <div class="stat-label">Tổng bài tập</div>
+                        <div class="stat-value">@(Model?.TotalAssignments ?? 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="progress-stat-card stat-submitted card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">✅</div>
+                    <div>
+                        <div class="stat-label">Đã nộp</div>
+                        <div class="stat-value">@(Model?.SubmittedAssignments ?? 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="progress-stat-card stat-pending card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⏳</div>
+                    <div>
+                        <div class="stat-label">Chưa nộp</div>
+                        <div class="stat-value">@(Model?.PendingAssignments ?? 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="progress-stat-card stat-graded card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⭐</div>
+                    <div>
+                        <div class="stat-label">Đã chấm</div>
+                        <div class="stat-value">@(Model?.GradedAssignments ?? 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="progress-stat-card stat-score card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📊</div>
+                    <div>
+                        <div class="stat-label">Điểm TB</div>
+                        <div class="stat-value">@averageScoreText</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overall progress -->
+    <div class="card border-0 shadow-sm overall-progress-card mb-4">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
+                <div>
+                    <h5 class="section-title mb-1">Mức độ hoàn thành tổng thể</h5>
+                    <p class="section-subtitle mb-0">
+                        Tỷ lệ hoàn thành dựa trên số bài tập đã nộp so với tổng bài tập được giao.
+                    </p>
+                </div>
+
+                <div class="overall-percent">
+                    @completionPercent.ToString("0.##")%
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="progress progress-track">
+                <div class="progress-bar custom-progress-bar @GetProgressClass(completionPercent)"
+                     role="progressbar"
+                     style="width: @completionPercent.ToString("0.##")%;"
+                     aria-valuenow="@completionPercent.ToString("0.##")"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                </div>
+            </div>
+
+            <div class="progress-caption mt-3">
+                <span>0%</span>
+                <span>50%</span>
+                <span>100%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class progress -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="section-title mb-1">Tiến độ hoàn thành theo từng lớp</h5>
+                </div>
+
+                <div class="progress-filter-note">
+                    <span class="status-dot good"></span> Tốt
+                    <span class="status-dot medium ms-3"></span> Đang tiến triển
+                    <span class="status-dot low ms-3"></span> Cần theo dõi
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!classes.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Chưa có dữ liệu tiến độ học tập</h5>
+                    <p>
+                        Hiện tại chưa có dữ liệu tiến độ học tập.
+                        Khi có lớp học và bài tập, thông tin tiến độ sẽ hiển thị tại đây.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive progress-table-wrap">
+                    <table class="table progress-table align-middle mb-0">
+                        <colgroup>
+                            <col style="width: 30%;" />
+                            <col style="width: 13%;" />
+                            <col style="width: 13%;" />
+                            <col style="width: 13%;" />
+                            <col style="width: 21%;" />
+                            <col style="width: 10%;" />
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th>Lớp</th>
+                                <th class="text-center">Tổng bài</th>
+                                <th class="text-center">Đã nộp</th>
+                                <th class="text-center">Đã chấm</th>
+                                <th>Tiến độ</th>
+                                <th class="text-center">Đánh giá</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in classes.OrderByDescending(x => x.CompletionPercent))
+                            {
+                                var progressClass = GetProgressClass(item.CompletionPercent);
+                                var progressText = GetProgressText(item.CompletionPercent);
+
+                                <tr>
+                                    <td>
+                                        <div class="class-name">@item.ClassName</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="number-pill">@item.TotalAssignments</span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="number-pill submitted">@item.SubmittedAssignments</span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="number-pill graded">@item.GradedAssignments</span>
+                                    </td>
+
+                                    <td>
+                                        <div class="class-progress-cell">
+                                            <div class="class-progress-top">
+                                                <span>@item.CompletionPercent.ToString("0.##")%</span>
+                                            </div>
+
+                                            <div class="progress class-progress-track">
+                                                <div class="progress-bar custom-progress-bar @progressClass"
+                                                     role="progressbar"
+                                                     style="width: @item.CompletionPercent.ToString("0.##")%;"
+                                                     aria-valuenow="@item.CompletionPercent.ToString("0.##")"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="progress-status @progressClass">
+                                            @progressText
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="progress-summary mt-3">
+                    <span>Số lớp: <strong>@(Model?.TotalClasses ?? 0)</strong></span>
+                    <span>Tổng bài tập: <strong>@(Model?.TotalAssignments ?? 0)</strong></span>
+                    <span>Đã nộp: <strong>@(Model?.SubmittedAssignments ?? 0)</strong></span>
+                    <span>Hoàn thành: <strong>@completionPercent.ToString("0.##")%</strong></span>
+                </div>
+            }
         </div>
     </div>
 </div>
 
-<h4>Tiến độ hoàn thành theo từng lớp</h4>
+@section Styles {
+    <style>
+        .student-progress-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
 
-@if (!Model.Classes.Any())
-{
-    <div class="alert alert-warning">
-        Hiện tại chưa có dữ liệu tiến độ học tập.
-    </div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Lớp</th>
-                <th>Tổng bài tập</th>
-                <th>Đã nộp</th>
-                <th>Đã chấm</th>
-                <th>% hoàn thành</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Classes)
-            {
-                <tr>
-                    <td>@item.ClassName</td>
-                    <td>@item.TotalAssignments</td>
-                    <td>@item.SubmittedAssignments</td>
-                    <td>@item.GradedAssignments</td>
-                    <td>@item.CompletionPercent.ToString("0.##")%</td>
-                </tr>
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
             }
-        </tbody>
-    </table>
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .custom-alert {
+            border-radius: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+        }
+
+        .alert-icon {
+            font-size: 1.35rem;
+            line-height: 1;
+        }
+
+        .student-info-card,
+        .progress-stat-card,
+        .overall-progress-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-wide {
+            grid-column: span 2;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .progress-stat-card .card-body {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .stat-class {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-class .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-total {
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+            border-left: 5px solid #3b82f6 !important;
+        }
+
+            .stat-total .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-submitted {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-submitted .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-pending {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-pending .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-graded {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+            border-left: 5px solid #7c3aed !important;
+        }
+
+            .stat-graded .stat-icon {
+                background: #ede9fe;
+            }
+
+        .stat-score {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-left: 5px solid #64748b !important;
+        }
+
+            .stat-score .stat-icon {
+                background: #e2e8f0;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.86rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 1.65rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .overall-percent {
+            color: #172554;
+            font-size: 2rem;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .progress-track {
+            height: 18px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+
+        .class-progress-track {
+            height: 10px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+
+        .custom-progress-bar {
+            border-radius: 999px;
+        }
+
+        .progress-good {
+            background-color: #16a34a !important;
+            color: #166534;
+        }
+
+        .progress-medium {
+            background-color: #f59e0b !important;
+            color: #92400e;
+        }
+
+        .progress-low {
+            background-color: #e11d48 !important;
+            color: #be123c;
+        }
+
+        .progress-caption {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .progress-filter-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+            .status-dot.good {
+                background: #16a34a;
+            }
+
+            .status-dot.medium {
+                background: #f59e0b;
+            }
+
+            .status-dot.low {
+                background: #e11d48;
+            }
+
+        .progress-table-wrap {
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .progress-table {
+            background: #ffffff;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .progress-table thead th {
+                background: #f8fafc;
+                color: #475569;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            .progress-table tbody td {
+                padding: 16px;
+                border-bottom: 1px solid #eef2f7;
+                vertical-align: middle;
+            }
+
+            .progress-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .progress-table tbody tr {
+                transition: all 0.18s ease-in-out;
+            }
+
+                .progress-table tbody tr:hover {
+                    background: #f8fbff;
+                }
+
+        .class-name {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .number-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 900;
+            font-size: 0.86rem;
+        }
+
+            .number-pill.submitted {
+                color: #166534;
+                background: #dcfce7;
+            }
+
+            .number-pill.graded {
+                color: #1d4ed8;
+                background: #dbeafe;
+            }
+
+        .class-progress-cell {
+            min-width: 0;
+        }
+
+        .class-progress-top {
+            display: flex;
+            justify-content: space-between;
+            color: #334155;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .progress-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            background: #f1f5f9;
+        }
+
+            .progress-status.progress-good {
+                color: #166534;
+                background: #dcfce7 !important;
+            }
+
+            .progress-status.progress-medium {
+                color: #92400e;
+                background: #ffedd5 !important;
+            }
+
+            .progress-status.progress-low {
+                color: #be123c;
+                background: #ffe4e6 !important;
+            }
+
+        .progress-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .progress-summary strong {
+                color: #172554;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .student-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .progress-filter-note {
+                white-space: normal;
+            }
+
+            .progress-table {
+                min-width: 980px;
+            }
+
+            .progress-table-wrap {
+                overflow-x: auto;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .student-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-wide {
+                grid-column: span 1;
+            }
+
+            .progress-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .overall-percent {
+                font-size: 1.6rem;
+            }
+
+            .progress-summary {
+                justify-content: flex-start;
+            }
+        }
+    </style>
 }

@@ -15,19 +15,42 @@ namespace QLKH.Web.Areas.HocVu.Controllers
     public class TeacherController : Controller
     {
         private readonly ITeacherService _teacherService;
+        private readonly ITeacherReviewService _teacherReviewService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public TeacherController(
             ITeacherService teacherService,
+            ITeacherReviewService teacherReviewService,
             UserManager<ApplicationUser> userManager)
         {
             _teacherService = teacherService;
+            _teacherReviewService = teacherReviewService;
             _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
             var teachers = await _teacherService.GetAllAsync();
+            var reviews = await _teacherReviewService.GetAllAsync();
+
+            var reviewList = reviews
+                .Where(x => x.TeacherId > 0)
+                .ToList();
+
+            ViewBag.TeacherAverageRatings = reviewList
+                .GroupBy(x => x.TeacherId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => Math.Round(g.Average(x => x.Rating), 2)
+                );
+
+            ViewBag.TeacherReviewCounts = reviewList
+                .GroupBy(x => x.TeacherId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Count()
+                );
+
             return View(teachers);
         }
 

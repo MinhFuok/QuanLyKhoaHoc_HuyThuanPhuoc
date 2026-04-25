@@ -2,48 +2,571 @@
 
 @{
     ViewData["Title"] = "Tài liệu lớp tôi học";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var materials = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassMaterial>();
+
+    var totalMaterials = materials.Count;
+    var materialsWithFile = materials.Count(x => !string.IsNullOrWhiteSpace(x.FilePath));
+    var materialsWithoutFile = materials.Count(x => string.IsNullOrWhiteSpace(x.FilePath));
+    var createdThisMonth = materials.Count(x =>
+        x.CreatedAt.Month == DateTime.Today.Month &&
+        x.CreatedAt.Year == DateTime.Today.Year);
 }
 
-<h2>Tài liệu lớp tôi học</h2>
+<div class="student-materials-page">
 
-@if (!Model.Any())
-{
-    <div class="alert alert-warning">
-        Hiện tại chưa có tài liệu nào cho các lớp bạn đang học.
+    <!-- Header -->
+    <div class="materials-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">TÀI LIỆU</h2>
+                    <div class="page-eyebrow">HỌC TẬP</div>
+                </div>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Lớp</th>
-                <th>Khóa học</th>
-                <th>Giáo viên</th>
-                <th>Tiêu đề</th>
-                <th>Mô tả</th>
-                <th>Tài liệu</th>
-                <th>Ngày tạo</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-total card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <div class="stat-label">Tổng tài liệu</div>
+                        <div class="stat-value">@totalMaterials</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-file card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📎</div>
+                    <div>
+                        <div class="stat-label">Có file</div>
+                        <div class="stat-value">@materialsWithFile</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-empty card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📝</div>
+                    <div>
+                        <div class="stat-label">Chưa có file</div>
+                        <div class="stat-value">@materialsWithoutFile</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="material-stat-card stat-month card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">🗓️</div>
+                    <div>
+                        <div class="stat-label">Tạo trong tháng</div>
+                        <div class="stat-value">@createdThisMonth</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="section-title mb-1">Danh sách tài liệu</h5>
+                </div>
+
+                <div class="material-filter-note">
+                    <span class="status-dot file"></span> Có file
+                    <span class="status-dot empty ms-3"></span> Chưa có file
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!materials.Any())
             {
-                <tr>
-                    <td>@item.ClassRoom?.ClassName</td>
-                    <td>@item.ClassRoom?.Course?.CourseName</td>
-                    <td>@item.ClassRoom?.Teacher?.FullName</td>
-                    <td>@item.Title</td>
-                    <td>@item.Description</td>
-                    <td>
-                        @if (!string.IsNullOrWhiteSpace(item.FilePath))
-                        {
-                            <a href="@item.FilePath" target="_blank">Mở tài liệu</a>
-                        }
-                    </td>
-                    <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                </tr>
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Chưa có tài liệu nào</h5>
+                    <p>
+                        Hiện tại chưa có tài liệu nào cho các lớp bạn đang học.
+                        Khi giáo viên đăng tài liệu, danh sách sẽ hiển thị tại đây.
+                    </p>
+                </div>
             }
-        </tbody>
-    </table>
+            else
+            {
+                <div class="table-responsive material-table-wrap">
+                    <table class="table material-table align-middle mb-0">
+                        <colgroup>
+                            <col style="width: 28%;" />
+                            <col style="width: 16%;" />
+                            <col style="width: 17%;" />
+                            <col style="width: 17%;" />
+                            <col style="width: 12%;" />
+                            <col style="width: 10%;" />
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th>Tài liệu</th>
+                                <th>Lớp</th>
+                                <th>Khóa học</th>
+                                <th>Giáo viên</th>
+                                <th>Trạng thái</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in materials.OrderByDescending(x => x.CreatedAt))
+                            {
+                                var hasFile = !string.IsNullOrWhiteSpace(item.FilePath);
+                                var fileStatusText = hasFile ? "Có file" : "Chưa có file";
+                                var fileStatusClass = hasFile ? "badge-file" : "badge-empty";
+
+                                <tr>
+                                    <td>
+                                        <div class="material-main">
+                                            <div class="material-icon">📄</div>
+                                            <div class="material-main-content">
+                                                <div class="material-title">@item.Title</div>
+                                                <div class="material-desc">
+                                                    @(string.IsNullOrWhiteSpace(item.Description)
+                                                                                                ? "Không có mô tả"
+                                                                                                : item.Description)
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                                    <td>
+                                        <div class="class-name">
+                                            @(item.ClassRoom?.ClassName ?? "Chưa có lớp")
+                                        </div>
+                                        <div class="class-small">
+                                            Mã lớp: @(item.ClassRoom?.ClassCode ?? "N/A")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="course-name">
+                                            @(item.ClassRoom?.Course?.CourseName ?? "Chưa có khóa học")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="teacher-name">
+                                            @(item.ClassRoom?.Teacher?.FullName ?? "Chưa cập nhật")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="material-status @fileStatusClass">
+                                            @fileStatusText
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="action-group action-group-center">
+                                    @if (hasFile)
+                                            {
+                                                <a href="@item.FilePath"
+                                                   target="_blank"
+                                                   class="btn btn-sm btn-primary">
+                                                    Mở
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary"
+                                                        disabled>
+                                                    Không có
+                                                </button>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="material-summary mt-3">
+                    <span>Tổng tài liệu: <strong>@totalMaterials</strong></span>
+                    <span>Có file: <strong>@materialsWithFile</strong></span>
+                    <span>Chưa có file: <strong>@materialsWithoutFile</strong></span>
+                    <span>Tạo trong tháng: <strong>@createdThisMonth</strong></span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .student-materials-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .materials-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .material-stat-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+            .material-stat-card .card-body {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 20px;
+            }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .stat-total {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-total .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-file {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-file .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-empty {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-empty .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-month {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-left: 5px solid #64748b !important;
+        }
+
+            .stat-month .stat-icon {
+                background: #e2e8f0;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .material-filter-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+            .status-dot.file {
+                background: #16a34a;
+            }
+
+            .status-dot.empty {
+                background: #f59e0b;
+            }
+
+        .material-table-wrap {
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .material-table {
+            background: #ffffff;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .material-table thead th {
+                background: #f8fafc;
+                color: #475569;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            .material-table tbody td {
+                padding: 16px;
+                border-bottom: 1px solid #eef2f7;
+                vertical-align: middle;
+            }
+
+            .material-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .material-table tbody tr {
+                transition: all 0.18s ease-in-out;
+            }
+
+                .material-table tbody tr:hover {
+                    background: #f8fbff;
+                }
+
+        .material-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .material-main-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .material-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .material-title,
+        .class-name {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+            word-break: break-word;
+        }
+
+        .material-desc {
+            color: #64748b;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .material-created {
+            color: #94a3b8;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .class-small {
+            color: #64748b;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        .course-name,
+        .teacher-name {
+            color: #334155;
+            font-weight: 600;
+            min-width: 0;
+            word-break: break-word;
+        }
+
+        .material-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-file {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-empty {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .action-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-group-center {
+            justify-content: center;
+        }
+
+        .action-group .btn {
+            border-radius: 10px;
+            font-weight: 700;
+            padding: 8px 14px;
+            white-space: nowrap;
+        }
+
+        .material-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .material-summary strong {
+                color: #172554;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .material-filter-note {
+                white-space: normal;
+            }
+
+            .material-table {
+                min-width: 980px;
+            }
+
+            .material-table-wrap {
+                overflow-x: auto;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .material-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .material-summary {
+                justify-content: flex-start;
+            }
+        }
+    </style>
 }

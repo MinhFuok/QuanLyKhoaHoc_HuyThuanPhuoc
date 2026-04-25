@@ -90,12 +90,22 @@ namespace QLKH.Web.Areas.HocVien.Controllers
                 return RedirectToAction("Index", "MyLearningProgress", new { area = "HocVien" });
             }
 
+            var existingReview = await _teacherReviewService.GetMyReviewForClassAsync(applicationUserId, classRoomId);
+
+            if (existingReview != null)
+            {
+                ViewBag.ClassRoom = classRoom;
+                ViewBag.ExistingReview = existingReview;
+                ViewBag.ErrorMessage = "Bạn đã đánh giá giáo viên của lớp này. Không thể chỉnh sửa đánh giá sau khi đã gửi.";
+                return View();
+            }
+
             var result = await _teacherReviewService.SubmitReviewAsync(applicationUserId, classRoomId, rating, comment);
 
             if (!result)
             {
                 ViewBag.ClassRoom = classRoom;
-                ViewBag.ExistingReview = await _teacherReviewService.GetMyReviewForClassAsync(applicationUserId, classRoomId);
+                ViewBag.ExistingReview = null;
                 ViewBag.ErrorMessage = "Gửi đánh giá thất bại. Vui lòng kiểm tra lại dữ liệu.";
                 return View();
             }

@@ -1,110 +1,470 @@
-﻿@{
+﻿@model QLKH.Web.Areas.GiaoVien.Models.GiaoVienDashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard Giáo viên";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 }
 
-<div class="container mt-4">
-    <div class="mb-4">
-        <h2 class="mb-2">Dashboard Giáo viên</h2>
-        <p class="text-muted mb-0">
-            Chào mừng giáo viên vào hệ thống QLKH. Chọn nhanh nghiệp vụ bạn muốn thao tác bên dưới.
-        </p>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Lớp học</h5>
-                    <p class="card-text text-muted">
-                        Xem các lớp đang phụ trách.
+<div class="teacher-dashboard-page">
+    <div class="dashboard-header card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="dashboard-title mb-2">DASHBOARD GIÁO VIÊN</h2>
+                    <p class="text-muted mb-0">
+                        Tổng quan nhanh lớp học, lịch dạy, bài tập và tình trạng giảng dạy của giáo viên.
                     </p>
-                    <a href="/GiaoVien/MyClasses" class="btn btn-primary">
-                        Lớp tôi dạy
-                    </a>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Lịch dạy</h5>
-                    <p class="card-text text-muted">
-                        Xem thời khóa biểu các buổi học của lớp mình dạy.
-                    </p>
-                    <a href="/GiaoVien/MySchedule" class="btn btn-primary">
-                        Lịch dạy của tôi
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Tài liệu lớp học</h5>
-                    <p class="card-text text-muted">
-                        Xem danh sách tài liệu của các lớp đang dạy.
-                    </p>
-                    <a href="/GiaoVien/MyMaterials" class="btn btn-primary">
-                        Xem tài liệu
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100 border-success">
-                <div class="card-body">
-                    <h5 class="card-title">Tạo tài liệu</h5>
-                    <p class="card-text text-muted">
-                        Upload tài liệu mới cho lớp mình dạy.
-                    </p>
-                    <a href="/GiaoVien/ClassMaterials/Create" class="btn btn-success">
-                        Tạo tài liệu
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Bài tập</h5>
-                    <p class="card-text text-muted">
-                        Xem danh sách bài tập của các lớp mình dạy.
-                    </p>
-                    <a href="/GiaoVien/MyAssignments" class="btn btn-primary">
-                        Xem bài tập
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100 border-success">
-                <div class="card-body">
-                    <h5 class="card-title">Tạo bài tập</h5>
-                    <p class="card-text text-muted">
-                        Tạo assignment mới cho lớp mình dạy.
-                    </p>
-                    <a href="/GiaoVien/Assignments/Create" class="btn btn-success">
-                        Tạo bài tập
-                    </a>
+                <div class="teacher-identity-box">
+                    <div class="teacher-avatar">
+                        @(string.IsNullOrWhiteSpace(Model.TeacherFullName) ? "G" : Model.TeacherFullName.Trim()[0].ToString().ToUpper())
+                    </div>
+                    <div>
+                        <div class="fw-bold">@Model.TeacherFullName</div>
+                        <div class="text-muted small">@Model.TeacherEmail</div>
+                        <span class="badge bg-primary mt-1">@Model.TeacherRole</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card shadow-sm mt-4">
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-primary shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Lớp đang phụ trách</div>
+                    <div class="stat-value">@Model.TotalClasses</div>
+                    <div class="stat-meta">
+                        Đang học: <strong>@Model.ActiveClasses</strong> | Đã kết thúc: <strong>@Model.EndedClasses</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-success shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Học viên phụ trách</div>
+                    <div class="stat-value">@Model.TotalStudents</div>
+                    <div class="stat-meta">
+                        Ghi danh chờ xử lý: <strong>@Model.PendingEnrollments</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-warning shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Bài tập</div>
+                    <div class="stat-value">@Model.TotalAssignments</div>
+                    <div class="stat-meta">
+                        Bài nộp: <strong>@Model.TotalSubmissions</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card dashboard-stat-card stat-info shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="stat-label">Bài nộp chưa chấm</div>
+                    <div class="stat-value">@Model.UngradedSubmissions</div>
+                    <div class="stat-meta">
+                        Đã chấm: <strong>@Model.GradedSubmissions</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông tin giáo viên + Tổng quan giảng dạy -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="mb-0">Thông tin giáo viên</h5>
+                </div>
+                <div class="card-body">
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="info-label">Mã giáo viên</span>
+                            <span class="info-value">@Model.TeacherCode</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Họ tên</span>
+                            <span class="info-value">@Model.TeacherFullName</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Email</span>
+                            <span class="info-value">@Model.TeacherEmail</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Vai trò</span>
+                            <span class="info-value">
+                                <span class="badge bg-primary">@Model.TeacherRole</span>
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Chuyên môn</span>
+                            <span class="info-value">
+                                @(string.IsNullOrWhiteSpace(Model.Specialization) ? "Chưa cập nhật" : Model.Specialization)
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Lịch hôm nay</span>
+                            <span class="info-value">
+                                <span class="badge bg-info text-dark">@Model.TodaySchedules</span>
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Tài liệu đã đăng</span>
+                            <span class="info-value">
+                                <span class="badge bg-success">@Model.TotalMaterials</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Tổng quan giảng dạy</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="teacherOverviewChart" height="135"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lịch dạy + Bài tập -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-xl-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Lịch dạy sắp tới</h5>
+                    <a asp-area="GiaoVien" asp-controller="MySchedule" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                        Xem tất cả
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.UpcomingSchedules != null && Model.UpcomingSchedules.Any())
+                    {
+                        <div class="mini-list">
+                            @foreach (var item in Model.UpcomingSchedules)
+                            {
+                                <div class="mini-list-item">
+                                    <div>
+                                        <div class="mini-title">@item.LessonTitle</div>
+                                        <div class="mini-meta">
+                                            @item.ClassName
+                                            @if (!string.IsNullOrWhiteSpace(item.RoomName))
+                                            {
+                                                <span> • Phòng @item.RoomName</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="mini-date">
+                                        <strong>@item.StudyDate.ToString("dd/MM")</strong>
+                                        <span>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">Chưa có lịch dạy sắp tới.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Bài tập gần đây</h5>
+                    <a asp-area="GiaoVien" asp-controller="MyAssignments" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                        Xem tất cả
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.LatestAssignments != null && Model.LatestAssignments.Any())
+                    {
+                        <div class="mini-list">
+                            @foreach (var item in Model.LatestAssignments)
+                            {
+                                <div class="mini-list-item">
+                                    <div>
+                                        <div class="mini-title">@item.Title</div>
+                                        <div class="mini-meta">@item.ClassName</div>
+                                    </div>
+                                    <div class="mini-date">
+                                        <strong>Hạn @item.DueDate.ToString("dd/MM")</strong>
+                                        <a asp-area="GiaoVien"
+                                           asp-controller="AssignmentSubmissions"
+                                           asp-action="Index"
+                                           asp-route-assignmentId="@item.AssignmentId"
+                                           class="btn btn-sm btn-light border mt-1">
+                                            Bài nộp
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">Chưa có bài tập gần đây.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-0">
+            <h5 class="mb-0">Gợi ý vận hành</h5>
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Gợi ý thao tác tiếp theo</h5>
-            <ul class="mb-0">
-                <li>Vào <strong>Bài tập</strong> để xác định assignment cần theo dõi.</li>
-                <li>Sau khi học viên nộp bài, dùng link chi tiết/route hiện có để xem bài nộp và chấm điểm.</li>
-                <li>Dùng trang <strong>Bảng điểm lớp</strong> theo đúng <code>classRoomId</code> khi cần xem tổng hợp điểm.</li>
-            </ul>
+            @if (Model.RecentNotes != null && Model.RecentNotes.Any())
+            {
+                <ul class="mb-0">
+                    @foreach (var note in Model.RecentNotes)
+                    {
+                        <li class="mb-2">@note</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <div class="text-muted">Chưa có ghi chú vận hành.</div>
+            }
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .teacher-dashboard-page .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1d2b53;
+        }
+
+        .teacher-identity-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: #f8f9ff;
+            border-radius: 16px;
+            border: 1px solid #e9ecf5;
+        }
+
+        .teacher-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f8cff, #6a5cff);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-stat-card {
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+            .dashboard-stat-card .card-body {
+                padding: 1.25rem;
+            }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            color: #1f2d3d;
+        }
+
+        .stat-meta {
+            color: #6c757d;
+            font-size: 0.92rem;
+        }
+
+        .stat-primary {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #0d6efd;
+        }
+
+        .stat-success {
+            background: linear-gradient(135deg, #eefbf3 0%, #ffffff 100%);
+            border-left: 5px solid #198754;
+        }
+
+        .stat-warning {
+            background: linear-gradient(135deg, #fff8eb 0%, #ffffff 100%);
+            border-left: 5px solid #ffc107;
+        }
+
+        .stat-info {
+            background: linear-gradient(135deg, #eef8ff 0%, #ffffff 100%);
+            border-left: 5px solid #0dcaf0;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+
+            .info-item:last-child {
+                border-bottom: none;
+            }
+
+        .info-label {
+            min-width: 130px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .info-value {
+            text-align: right;
+            color: #212529;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .mini-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mini-list-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: #f8f9fc;
+            border: 1px solid #e9ecf5;
+        }
+
+        .mini-title {
+            font-weight: 700;
+            color: #1d2b53;
+            margin-bottom: 4px;
+        }
+
+        .mini-meta {
+            color: #6c757d;
+            font-size: 0.92rem;
+        }
+
+        .mini-date {
+            text-align: right;
+            color: #212529;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+
+            .mini-date span {
+                display: block;
+                color: #6c757d;
+                margin-top: 2px;
+            }
+
+        @@media (max-width: 767.98px) {
+            .info-item,
+            .mini-list-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .info-value,
+            .mini-date {
+                text-align: left;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const teacherOverviewChart = document.getElementById('teacherOverviewChart');
+
+        if (teacherOverviewChart) {
+            new Chart(teacherOverviewChart, {
+                type: 'bar',
+                data: {
+                    labels: ['Lớp', 'Học viên', 'Lịch dạy', 'Tài liệu', 'Bài tập', 'Bài nộp'],
+                    datasets: [{
+                        label: 'Số lượng',
+                        data: [
+                            @Model.TotalClasses,
+                            @Model.TotalStudents,
+                            @Model.TotalSchedules,
+                            @Model.TotalMaterials,
+                            @Model.TotalAssignments,
+                            @Model.TotalSubmissions
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

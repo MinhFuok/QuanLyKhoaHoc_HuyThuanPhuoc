@@ -1,11 +1,11 @@
 ﻿@model QLKH.Web.Areas.Admin.Models.CreateUserViewModel
 
 @{
-    ViewData["Title"] = "Tạo tài khoản nội bộ";
+    ViewData["Title"] = "Tạo tài khoản ";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Tạo tài khoản nội bộ</h2>
+<h2 class="mb-4">TẠO TÀI KHOẢN</h2>
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -48,7 +48,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
                 <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="btn btn-secondary">Quay lại</a>
             </div>
         </form>

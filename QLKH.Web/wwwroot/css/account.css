@@ -379,3 +379,83 @@ body {
     font-family: monospace;
     font-size: 0.78rem;
 }
+/* ===== FIX FORGOT PASSWORD CONFIRMATION ===== */
+.forgot-confirm-page .login-card .card-header h3 {
+    font-size: 1.35rem !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.04em !important;
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+    .forgot-confirm-page .login-card .card-header h3 span {
+        display: block !important;
+        margin-top: 8px !important;
+        font-size: 0.85rem !important;
+        letter-spacing: 0.12em !important;
+        color: #7dd3fc !important;
+        text-shadow: none !important;
+        font-weight: 800 !important;
+    }
+
+.forgot-confirm-page .card-body {
+    padding: 2rem !important;
+}
+
+.forgot-confirm-page .confirm-icon {
+    width: 72px !important;
+    height: 72px !important;
+    margin: 0 auto 1.2rem !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(14, 165, 233, 0.2) !important;
+    border: 1px solid rgba(125, 211, 252, 0.55) !important;
+    box-shadow: 0 0 24px rgba(14, 165, 233, 0.28) !important;
+    font-size: 2.2rem !important;
+    color: #ffffff !important;
+}
+
+.forgot-confirm-page .confirm-text {
+    color: #ffffff !important;
+    background: rgba(15, 23, 42, 0.86) !important;
+    border: 1px solid rgba(125, 211, 252, 0.4) !important;
+    border-radius: 14px !important;
+    padding: 1rem 1.1rem !important;
+    margin: 0 0 0.9rem !important;
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif !important;
+    font-size: 0.96rem !important;
+    font-weight: 700 !important;
+    line-height: 1.7 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+}
+
+.forgot-confirm-page .confirm-sub {
+    color: #dbeafe !important;
+    background: rgba(125, 211, 252, 0.12) !important;
+    border: 1px solid rgba(125, 211, 252, 0.2) !important;
+    border-radius: 999px !important;
+    padding: 0.7rem 0.95rem !important;
+    margin: 0 0 1.35rem !important;
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+}
+
+.forgot-confirm-page .forgot-link {
+    margin-bottom: 0 !important;
+}
+
+    .forgot-confirm-page .forgot-link a {
+        color: #7dd3fc !important;
+        font-weight: 900 !important;
+        text-decoration: none !important;
+    }
+
+        .forgot-confirm-page .forgot-link a:hover {
+            color: #ffffff !important;
+        }

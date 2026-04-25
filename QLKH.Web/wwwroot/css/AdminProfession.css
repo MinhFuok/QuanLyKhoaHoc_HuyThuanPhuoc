@@ -181,7 +181,10 @@
     --cp-shadow-glow: 0 0 0 1px rgba(140,80,255,.12), 0 8px 32px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
     --cp-transition: 0.2s cubic-bezier(.4,0,.2,1);
     --cp-spring: 0.3s cubic-bezier(.34,1.56,.64,1);
-    max-width: 1120px;
+    width: min(100%, 1500px);
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
     font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     color: var(--cp-text);
     position: relative;

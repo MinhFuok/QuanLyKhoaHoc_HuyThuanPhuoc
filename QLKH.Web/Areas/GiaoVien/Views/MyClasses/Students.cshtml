@@ -2,95 +2,664 @@
 
 @{
     ViewData["Title"] = "Danh sách học viên lớp";
-    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var students = Model.Students?.ToList() ?? new List<QLKH.Web.Areas.HocVu.Models.ClassStudentListItemViewModel>();
+
+    var totalStudents = students.Count;
+    var approvedStudents = students.Count(x => x.StatusText == "Đã duyệt");
+    var pendingStudents = students.Count(x => x.StatusText == "Chờ duyệt");
+    var otherStudents = totalStudents - approvedStudents - pendingStudents;
 }
 
-<h2 class="mb-4">Danh sách học viên của lớp</h2>
+<div class="teacher-class-students-page">
 
-<div class="card shadow-sm mb-3">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-3"><strong>Mã lớp:</strong> @Model.ClassCode</div>
-            <div class="col-md-3"><strong>Tên lớp:</strong> @Model.ClassName</div>
-            <div class="col-md-3"><strong>Khóa học:</strong> @Model.CourseName</div>
-            <div class="col-md-3"><strong>Giảng viên:</strong> @Model.TeacherName</div>
+    <!-- Header -->
+    <div class="class-students-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">DANH SÁCH HỌC VIÊN</h2>
+                    <div class="page-eyebrow">GIẢNG DẠY</div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
+                    <a asp-area="GiaoVien"
+                       asp-controller="MyClasses"
+                       asp-action="Index"
+                       class="btn btn-outline-primary hero-action-btn">
+                        ← Quay lại lớp
+                    </a>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="MyClasses"
+                       asp-action="ExportStudentsToExcel"
+                       asp-route-id="@Model.ClassRoomId"
+                       class="btn btn-success hero-action-btn export-btn">
+                        Xuất Excel (.xls)
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="mb-3 d-flex gap-2">
-    <a asp-area="GiaoVien"
-       asp-controller="MyClasses"
-       asp-action="Index"
-       class="btn btn-secondary">
-        Quay lại lớp của tôi
-    </a>
+    <!-- Class info -->
+    <div class="card border-0 shadow-sm class-info-card mb-4">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <h5 class="section-title mb-1">Thông tin lớp</h5>
+        </div>
 
-    <a asp-area="GiaoVien"
-       asp-controller="MyClasses"
-       asp-action="ExportStudentsToExcel"
-       asp-route-id="@Model.ClassRoomId"
-       class="btn btn-success">
-        Xuất danh sách (.xls)
-    </a>
-</div>
+        <div class="card-body p-4">
+            <div class="class-info-grid">
+                <div class="info-item">
+                    <div class="info-label">Mã lớp</div>
+                    <div class="info-value">@Model.ClassCode</div>
+                </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped align-middle">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Mã học viên</th>
-                        <th>Họ tên</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Ngày ghi danh</th>
-                        <th>Trạng thái</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Students != null && Model.Students.Any())
-                    {
-                        var stt = 1;
-                        foreach (var item in Model.Students)
-                        {
+                <div class="info-item">
+                    <div class="info-label">Tên lớp</div>
+                    <div class="info-value">@Model.ClassName</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Khóa học</div>
+                    <div class="info-value">@Model.CourseName</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Giảng viên</div>
+                    <div class="info-value">@Model.TeacherName</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="student-stat-card stat-total card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">👥</div>
+                    <div>
+                        <div class="stat-label">Tổng học viên</div>
+                        <div class="stat-value">@totalStudents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="student-stat-card stat-approved card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">✅</div>
+                    <div>
+                        <div class="stat-label">Đã duyệt</div>
+                        <div class="stat-value">@approvedStudents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="student-stat-card stat-pending card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⏳</div>
+                    <div>
+                        <div class="stat-label">Chờ duyệt</div>
+                        <div class="stat-value">@pendingStudents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="student-stat-card stat-other card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📌</div>
+                    <div>
+                        <div class="stat-label">Trạng thái khác</div>
+                        <div class="stat-value">@otherStudents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="section-title mb-1">Danh sách học viên</h5>
+                </div>
+
+                <div class="student-filter-note">
+                    <span class="status-dot approved"></span> Đã duyệt
+                    <span class="status-dot pending ms-3"></span> Chờ duyệt
+                    <span class="status-dot other ms-3"></span> Khác
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!students.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Lớp này chưa có học viên</h5>
+                    <p>
+                        Hiện tại lớp chưa có học viên nào được ghi danh.
+                        Khi có học viên trong lớp, danh sách sẽ hiển thị tại đây.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive student-table-wrap" style="margin-left: 30px;">
+                    <table class="table student-table align-middle mb-0">
+                        <colgroup>
+                            <col style="width: 7%;" />
+                            <col style="width: 14%;" />
+                            <col style="width: 22%;" />
+                            <col style="width: 23%;" />
+                            <col style="width: 14%;" />
+                            <col style="width: 12%;" />
+                            <col style="width: 8%;" />
+                        </colgroup>
+
+                        <thead>
                             <tr>
-                                <td>@stt</td>
-                                <td>@item.StudentCode</td>
-                                <td>@item.FullName</td>
-                                <td>@item.Email</td>
-                                <td>@item.PhoneNumber</td>
-                                <td>@item.EnrolledAt.ToString("dd/MM/yyyy HH:mm")</td>
-                                <td>
-                                    @if (item.StatusText == "Đã duyệt")
-                                    {
-                                        <span class="badge bg-success">@item.StatusText</span>
-                                    }
-                                    else if (item.StatusText == "Chờ duyệt")
-                                    {
-                                        <span class="badge bg-warning text-dark">@item.StatusText</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">@item.StatusText</span>
-                                    }
-                                </td>
+                                <th class="text-center">STT</th>
+                                <th>Mã học viên</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Ngày ghi danh</th>
+                                <th class="text-center">Trạng thái</th>
                             </tr>
-                            stt++;
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">
-                                Lớp này hiện chưa có học viên nào.
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                var stt = 1;
+                            }
+
+                            @foreach (var item in students)
+                            {
+                                var statusClass = item.StatusText switch
+                                {
+                                    "Đã duyệt" => "badge-approved",
+                                    "Chờ duyệt" => "badge-pending",
+                                    _ => "badge-other"
+                                };
+
+                                <tr>
+                                    <td class="text-center">
+                                        <span class="stt-pill">@stt</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="student-code">@item.StudentCode</span>
+                                    </td>
+
+                                    <td>
+                                        <div class="student-name">
+                                            @item.FullName
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="student-email">
+                                            @(string.IsNullOrWhiteSpace(item.Email) ? "Chưa cập nhật" : item.Email)
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="enroll-date">
+                                            <span>@item.EnrolledAt.ToString("dd/MM/yyyy")</span>
+                                            <small>@item.EnrolledAt.ToString("HH:mm")</small>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="student-status @statusClass">
+                                            @item.StatusText
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                                stt++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="student-summary mt-3">
+                    <span>Tổng học viên: <strong>@totalStudents</strong></span>
+                    <span>Đã duyệt: <strong>@approvedStudents</strong></span>
+                    <span>Chờ duyệt: <strong>@pendingStudents</strong></span>
+                    <span>Khác: <strong>@otherStudents</strong></span>
+                </div>
+            }
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .teacher-class-students-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .class-students-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .export-btn {
+            box-shadow: 0 10px 24px rgba(22, 163, 74, 0.16);
+        }
+
+        .hero-badge {
+            min-width: 210px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .hero-badge-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            font-size: 1.4rem;
+        }
+
+        .hero-badge-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hero-badge-value {
+            color: #172554;
+            font-size: 1.7rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .class-info-card,
+        .student-stat-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .class-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .student-stat-card .card-body {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .stat-total {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-total .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-approved {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-approved .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-pending {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-pending .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-other {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-left: 5px solid #64748b !important;
+        }
+
+            .stat-other .stat-icon {
+                background: #e2e8f0;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .student-filter-note {
+            color: #64748b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+            .status-dot.approved {
+                background: #16a34a;
+            }
+
+            .status-dot.pending {
+                background: #f59e0b;
+            }
+
+            .status-dot.other {
+                background: #64748b;
+            }
+
+        .student-table-wrap {
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .student-table {
+            background: #ffffff;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .student-table thead th {
+                background: #f8fafc;
+                color: #475569;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            .student-table tbody td {
+                padding: 16px;
+                border-bottom: 1px solid #eef2f7;
+                vertical-align: middle;
+            }
+
+            .student-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .student-table tbody tr {
+                transition: all 0.18s ease-in-out;
+            }
+
+                .student-table tbody tr:hover {
+                    background: #f8fbff;
+                }
+
+        .stt-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 900;
+            font-size: 0.85rem;
+        }
+
+        .student-code {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 800;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        .student-name {
+            font-weight: 800;
+            color: #0f172a;
+            word-break: break-word;
+        }
+
+        .student-email,
+        .student-phone {
+            color: #334155;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .enroll-date {
+            color: #334155;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+            .enroll-date small {
+                display: block;
+                color: #64748b;
+                font-weight: 600;
+                margin-top: 2px;
+            }
+
+        .student-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-approved {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-pending {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .badge-other {
+            color: #475569;
+            background: #e2e8f0;
+        }
+
+        .student-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .student-summary strong {
+                color: #172554;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h5 {
+            color: #172554;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .class-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .student-filter-note {
+                white-space: normal;
+            }
+
+            .student-table {
+                min-width: 980px;
+            }
+
+            .student-table-wrap {
+                overflow-x: auto;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-action-btn,
+            .hero-badge {
+                width: 100%;
+            }
+
+            .class-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .student-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .student-summary {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+}

@@ -1,11 +1,11 @@
 ﻿@model QLKH.Web.Areas.Admin.Models.DepartmentCreateViewModel
 
 @{
-    ViewData["Title"] = "Thêm khoa/môn";
+    ViewData["Title"] = "Thêm chương trình/khóa";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Thêm khoa/môn đào tạo</h2>
+<h2 class="mb-4">Thêm chương trình/khóa</h2>
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -33,7 +33,7 @@
             <div class="mb-3">
                 <label asp-for="ParentDepartmentId" class="form-label"></label>
                 <select asp-for="ParentDepartmentId" asp-items="ViewBag.ParentDepartments" class="form-select">
-                    <option value="">-- Không chọn (tạo khoa cha) --</option>
+                    <option value="">-- Không chọn (Tạo chương trình) --</option>
                 </select>
                 <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
             </div>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
                 <a asp-area="Admin" asp-controller="Department" asp-action="Index" class="btn btn-secondary">Quay lại</a>
             </div>
         </form>

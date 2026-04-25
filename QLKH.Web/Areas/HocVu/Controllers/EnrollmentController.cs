@@ -25,42 +25,91 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             _classRoomService = classRoomService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? classRoomId, string? tab)
         {
             var enrollments = await _enrollmentService.GetAllAsync();
+
+            if (classRoomId.HasValue && classRoomId.Value > 0)
+            {
+                enrollments = enrollments
+                    .Where(x => x.ClassRoomId == classRoomId.Value)
+                    .ToList();
+            }
+
+            await LoadIndexFilterDataAsync(classRoomId);
+
+            ViewBag.SelectedClassRoomId = classRoomId;
+            ViewBag.ActiveTab = tab;
+
             return View(enrollments);
         }
 
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public async Task<IActionResult> Create(int? classRoomId)
         {
-            await LoadDropdownDataAsync();
-            return View(new Enrollment
-            {
-                Status = EnrollmentStatus.Pending
-            });
+            await LoadCreateDataAsync(classRoomId);
+
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Enrollment enrollment)
+        public async Task<IActionResult> Create(int classRoomId, int[] studentIds)
         {
-            enrollment.Status = EnrollmentStatus.Pending;
-
-            if (!ModelState.IsValid)
+            if (classRoomId <= 0)
             {
-                await LoadDropdownDataAsync(enrollment.StudentId, enrollment.ClassRoomId);
-                return View(enrollment);
+                ModelState.AddModelError("", "Vui lòng chọn lớp học.");
+                await LoadCreateDataAsync(classRoomId);
+                return View();
             }
 
-            var result = await _enrollmentService.CreateAsync(enrollment);
-            if (!result)
+            if (studentIds == null || studentIds.Length == 0)
             {
-                ModelState.AddModelError("", "Không thể ghi danh. Có thể học viên đã tồn tại trong lớp.");
-                await LoadDropdownDataAsync(enrollment.StudentId, enrollment.ClassRoomId);
-                return View(enrollment);
+                ModelState.AddModelError("", "Vui lòng chọn ít nhất một học viên để ghi danh.");
+                await LoadCreateDataAsync(classRoomId);
+                return View();
             }
 
-            TempData["SuccessMessage"] = "Tạo ghi danh thành công. Ghi danh đang ở trạng thái chờ xác nhận.";
+            var successCount = 0;
+            var failedCount = 0;
+
+            foreach (var studentId in studentIds.Distinct())
+            {
+                var enrollment = new Enrollment
+                {
+                    StudentId = studentId,
+                    ClassRoomId = classRoomId,
+                    Status = EnrollmentStatus.Pending
+                };
+
+                var result = await _enrollmentService.CreateAsync(enrollment);
+
+                if (result)
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failedCount++;
+                }
+            }
+
+            if (successCount == 0)
+            {
+                ModelState.AddModelError("", "Không thể ghi danh. Có thể các học viên đã tồn tại trong lớp hoặc lớp không hợp lệ.");
+                await LoadCreateDataAsync(classRoomId);
+                return View();
+            }
+
+            if (failedCount > 0)
+            {
+                TempData["SuccessMessage"] = $"Đã ghi danh {successCount} học viên. Có {failedCount} học viên không thể ghi danh do đã tồn tại hoặc dữ liệu không hợp lệ.";
+            }
+            else
+            {
+                TempData["SuccessMessage"] = $"Đã ghi danh thành công {successCount} học viên. Ghi danh đang ở trạng thái chờ xác nhận.";
+            }
+
             return RedirectToAction(nameof(Index), new { tab = "pending" });
         }
 
@@ -168,6 +217,16 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             return RedirectToAction(nameof(Index), new { tab = "cancelled" });
         }
 
+        private async Task LoadCreateDataAsync(int? selectedClassRoomId = null)
+        {
+            var students = await _studentService.GetAllAsync();
+            var classRooms = await _classRoomService.GetAllAsync();
+
+            ViewBag.Students = students;
+            ViewBag.ClassRooms = classRooms;
+            ViewBag.SelectedClassRoomId = selectedClassRoomId;
+        }
+
         private async Task LoadDropdownDataAsync(int? selectedStudentId = null, int? selectedClassRoomId = null)
         {
             var students = await _studentService.GetAllAsync();
@@ -175,6 +234,17 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             ViewBag.StudentId = new SelectList(students, "Id", "FullName", selectedStudentId);
             ViewBag.ClassRoomId = new SelectList(classRooms, "Id", "ClassName", selectedClassRoomId);
+        }
+        private async Task LoadIndexFilterDataAsync(int? selectedClassRoomId = null)
+        {
+            var classRooms = await _classRoomService.GetAllAsync();
+
+            ViewBag.ClassRoomFilter = new SelectList(
+                classRooms,
+                "Id",
+                "ClassName",
+                selectedClassRoomId
+            );
         }
     }
 }

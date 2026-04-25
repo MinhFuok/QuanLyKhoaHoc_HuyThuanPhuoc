@@ -131,7 +131,7 @@
                     <div class="stat-value">@Model.TotalClassRooms</div>
                     <div class="stat-meta">
                         <span><i class="bi bi-book-fill"></i> @Model.TotalCourses khóa học</span>
-                        <span><i class="bi bi-diagram-3-fill"></i> @Model.TotalDepartments khoa/ngành</span>
+                        <span><i class="bi bi-diagram-3-fill"></i> @Model.TotalDepartments chương trình/khóa</span>
                     </div>
                 </div>
             </div>
@@ -387,22 +387,51 @@
     <link rel="stylesheet" href="~/css/dashboardAdmin.css" asp-append-version="true" />
 }
 
+<div id="adminDashboardData"
+     data-total-students="@Model.TotalStudents"
+     data-total-teachers="@Model.TotalTeachers"
+     data-total-courses="@Model.TotalCourses"
+     data-total-class-rooms="@Model.TotalClassRooms"
+     data-total-departments="@Model.TotalDepartments"
+     data-active-users="@Model.ActiveUsers"
+     data-locked-users="@Model.LockedUsers"
+     data-linked-students="@Model.LinkedStudents"
+     data-unlinked-students="@Model.UnlinkedStudents"
+     data-linked-teachers="@Model.LinkedTeachers"
+     data-unlinked-teachers="@Model.UnlinkedTeachers"
+     hidden>
+</div>
+
 @section Scripts {
     <script>
-        window.adminDashboardData = {
-            TotalStudents:    @Model.TotalStudents,
-            TotalTeachers:    @Model.TotalTeachers,
-            TotalCourses:     @Model.TotalCourses,
-            TotalClassRooms:  @Model.TotalClassRooms,
-            TotalDepartments: @Model.TotalDepartments,
-            ActiveUsers:      @Model.ActiveUsers,
-            LockedUsers:      @Model.LockedUsers,
-            LinkedStudents:   @Model.LinkedStudents,
-            UnlinkedStudents: @Model.UnlinkedStudents,
-            LinkedTeachers:   @Model.LinkedTeachers,
-            UnlinkedTeachers: @Model.UnlinkedTeachers
-        };
+        (function () {
+            const dataElement = document.getElementById('adminDashboardData');
+
+            if (!dataElement) {
+                window.adminDashboardData = {};
+                return;
+            }
+
+            const getNumber = function (name) {
+                return Number(dataElement.dataset[name] || 0);
+            };
+
+            window.adminDashboardData = {
+                TotalStudents: getNumber('totalStudents'),
+                TotalTeachers: getNumber('totalTeachers'),
+                TotalCourses: getNumber('totalCourses'),
+                TotalClassRooms: getNumber('totalClassRooms'),
+                TotalDepartments: getNumber('totalDepartments'),
+                ActiveUsers: getNumber('activeUsers'),
+                LockedUsers: getNumber('lockedUsers'),
+                LinkedStudents: getNumber('linkedStudents'),
+                UnlinkedStudents: getNumber('unlinkedStudents'),
+                LinkedTeachers: getNumber('linkedTeachers'),
+                UnlinkedTeachers: getNumber('unlinkedTeachers')
+            };
+        })();
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="~/js/dashboardAdmin.js" asp-append-version="true" defer></script>
 }

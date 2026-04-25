@@ -7,6 +7,88 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+
+    <style>
+        .student-certificate-page .cp-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .student-certificate-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .student-certificate-table th,
+            .student-certificate-table td {
+                vertical-align: middle;
+            }
+
+            .student-certificate-table th {
+                white-space: nowrap;
+            }
+
+        .student-cell,
+        .certificate-title-cell,
+        .issuer-cell {
+            min-width: 0;
+            word-break: break-word;
+        }
+
+        .certificate-title-cell,
+        .issuer-cell {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            font-weight: 800;
+            color: rgba(240, 232, 255, 0.88);
+        }
+
+        .certificate-status-cell {
+            display: flex;
+            justify-content: center;
+        }
+
+        .certificate-file-cell {
+            display: flex;
+            justify-content: center;
+        }
+
+        .certificate-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            justify-content: stretch;
+        }
+
+            .certificate-actions .cp-btn {
+                width: 100%;
+                min-width: 0;
+                justify-content: center;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+        .student-certificate-page .cp-file-link {
+            white-space: nowrap;
+        }
+
+        .student-certificate-page .cp-muted {
+            white-space: nowrap;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .student-certificate-table {
+                min-width: 1150px;
+            }
+        }
+    </style>
 }
 
 <div class="course-page admin-profession-page student-certificate-page">
@@ -37,27 +119,47 @@
     }
 
     <div class="cp-table-wrap">
-        <table class="cp-table">
+        <table class="cp-table student-certificate-table">
+            <colgroup>
+                <col style="width: 14%;" />
+                <col style="width: 23%;" />
+                <col style="width: 13%;" />
+                <col style="width: 10%;" />
+                <col style="width: 10%;" />
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+            </colgroup>
+
             <thead>
                 <tr>
-                    <th>Học viên</th>
-                    <th>Tên chứng chỉ</th>
-                    <th>Mã/Số chứng chỉ</th>
-                    <th>Ngày cấp</th>
-                    <th>Đơn vị cấp</th>
-                    <th>Trạng thái</th>
-                    <th>Minh chứng</th>
-                    <th class="cp-col-action">Thao tác</th>
+                    <th class="text-center">Học viên</th>
+                    <th class="text-center">Tên chứng chỉ</th>
+                    <th class="text-center">Mã/Số chứng chỉ</th>
+                    <th class="text-center">Ngày cấp</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center">Minh chứng</th>
+                    <th class="cp-col-action text-center">Thao tác</th>
                 </tr>
             </thead>
+
             <tbody>
                 @if (Model?.Any() == true)
                 {
                     foreach (var item in Model)
                     {
                         <tr class="cp-row">
-                            <td><div class="cp-name">@item.Student?.FullName</div></td>
-                            <td><div class="cp-certificate-title">@item.CertificateName</div></td>
+                            <td>
+                                <div class="cp-name student-cell">
+                                    @(item.Student?.FullName ?? "Chưa có học viên")
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="cp-certificate-title certificate-title-cell">
+                                    @item.CertificateName
+                                </div>
+                            </td>
+
                             <td>
                                 @if (!string.IsNullOrWhiteSpace(item.CertificateCode))
                                 {
@@ -68,29 +170,43 @@
                                     <span class="cp-muted">Chưa có</span>
                                 }
                             </td>
-                            <td>@(item.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
-                            <td>@(!string.IsNullOrWhiteSpace(item.IssuedBy) ? item.IssuedBy : "Chưa có")</td>
+
                             <td>
-                                <div class="cp-status-surface cp-status-surface--@(item.IsApproved ? "confirmed" : "pending")">
-                                    <span class="cp-badge cp-badge--@(item.IsApproved ? "confirmed" : "pending")">
-                                        @(item.IsApproved ? "Đã xác nhận" : "Chờ xác nhận")
-                                    </span>
+                                <span class="date-cell">
+                                    @(item.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="certificate-status-cell">
+                                    <div class="cp-status-surface cp-status-surface--@(item.IsApproved ? "confirmed" : "pending")">
+                                        <span class="cp-badge cp-badge--@(item.IsApproved ? "confirmed" : "pending")">
+                                            @(item.IsApproved ? "Đã xác nhận" : "Chờ xác nhận")
+                                        </span>
+                                    </div>
                                 </div>
                             </td>
+
                             <td>
-                                @if (!string.IsNullOrWhiteSpace(item.EvidenceFilePath))
-                                {
-                                    <a href="@item.EvidenceFilePath" target="_blank" rel="noopener noreferrer" class="cp-file-link">
-                                        Xem file
-                                    </a>
-                                }
-                                else
-                                {
-                                    <span class="cp-muted">Không có</span>
-                                }
+                                <div class="certificate-file-cell">
+                                    @if (!string.IsNullOrWhiteSpace(item.EvidenceFilePath))
+                                    {
+                                        <a href="@item.EvidenceFilePath"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="cp-file-link">
+                                            Xem file
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="cp-muted">Không có</span>
+                                    }
+                                </div>
                             </td>
+
                             <td>
-                                <div class="cp-actions">
+                                <div class="cp-actions certificate-actions">
                                     <a asp-area="HocVu"
                                        asp-controller="StudentCertificate"
                                        asp-action="Edit"

@@ -1,0 +1,130 @@
+﻿@model List<QLKH.Domain.Entities.ClassRoom>
+
+@{
+    var mode = ViewData["Mode"]?.ToString() ?? "all";
+}
+
+<div class="cp-table-wrap">
+    <table class="cp-table classroom-table">
+        <colgroup>
+            <col style="width: 8%;" />
+            <col style="width: 16%;" />
+            <col style="width: 16%;" />
+            <col style="width: 15%;" />
+            <col style="width: 10%;" />
+            <col style="width: 10%;" />
+            <col style="width: 8%;" />
+            <col style="width: 17%;" />
+        </colgroup>
+
+        <thead>
+            <tr>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+                <th>Khóa học</th>
+                <th>Giảng viên</th>
+                <th>Bắt đầu</th>
+                <th>Kết thúc</th>
+                <th>Sĩ số</th>
+                <th class="cp-col-action text-center">Chức năng</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="cp-row">
+                        <td>
+                            <span class="cp-code">@item.ClassCode</span>
+                        </td>
+
+                        <td>
+                            <div class="cp-name class-name-limit">@item.ClassName</div>
+                        </td>
+
+                        <td>
+                            <div class="cell-text">
+                                @(item.Course?.CourseName ?? "Chưa có")
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="cell-text">
+                                @(item.Teacher?.FullName ?? "Chưa phân công")
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="date-text">@item.StartDate.ToString("dd/MM/yyyy")</span>
+                        </td>
+
+                        <td>
+                            <span class="date-text">@item.EndDate.ToString("dd/MM/yyyy")</span>
+                        </td>
+
+                        <td>
+                            <span class="capacity-badge">@item.MaxStudents</span>
+                        </td>
+
+                        <td>
+                            <div class="cp-actions classroom-actions">
+                                <a asp-area="HocVu"
+                                   asp-controller="ClassRoom"
+                                   asp-action="Students"
+                                   asp-route-id="@item.Id"
+                                   class="cp-btn cp-btn--info cp-btn--sm">
+                                    Danh sách
+                                </a>
+
+                                <a asp-area="HocVu"
+                                   asp-controller="ClassRoom"
+                                   asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="cp-btn cp-btn--info cp-btn--sm">
+                                    Chi tiết
+                                </a>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                {
+                                    <a asp-area="HocVu"
+                                       asp-controller="ClassRoom"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--warning cp-btn--sm">
+                                        Sửa
+                                    </a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                {
+                                    <a asp-area="HocVu"
+                                       asp-controller="ClassRoom"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--danger cp-btn--sm">
+                                        Xóa
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                var message = mode switch
+                {
+                    "active" => "Hiện chưa có lớp học nào đang diễn ra.",
+                    "ended" => "Hiện chưa có lớp học nào đã kết thúc.",
+                    _ => "Chưa có lớp học nào trong hệ thống."
+                };
+
+                <tr>
+                    <td colspan="8" class="cp-empty">@message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

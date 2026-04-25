@@ -2,92 +2,91 @@
 
 @{
     ViewData["Title"] = "Xóa tài khoản";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<div class="course-page admin-profession-page">
-    <div class="cp-header">
-        <div class="cp-header-left">
-            <h1 class="cp-title">Xóa tài khoản</h1>
-            <p class="cp-subtitle">Kiểm tra kỹ trước khi xóa tài khoản.</p>
-        </div>
-    </div>
+<h2 class="mb-4">XÓA TÀI KHOẢN</h2>
 
-    <div class="cp-delete-card">
-        <div class="cp-delete-warning">
-            <div class="cp-delete-warning-icon">!</div>
-            <div>
-                <strong>Bạn có chắc muốn xóa tài khoản này không?</strong>
-                <p>Nếu tài khoản đang liên kết hồ sơ Student hoặc Teacher thì hệ thống sẽ không cho xóa.</p>
-            </div>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <strong>Cảnh báo:</strong> Bạn có chắc chắn muốn xóa tài khoản này không?
+            Nếu tài khoản đang liên kết với hồ sơ học viên hoặc giáo viên thì hệ thống sẽ không cho xóa.
         </div>
 
-        <div class="cp-detail-body">
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Họ tên</div>
-                <div class="cp-detail-value"><strong>@Model.FullName</strong></div>
-            </div>
+        <dl class="row mb-4">
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
 
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Email</div>
-                <div class="cp-detail-value">@Model.Email</div>
-            </div>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
 
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Vai trò</div>
-                <div class="cp-detail-value">@Model.Role</div>
-            </div>
+            <dt class="col-sm-3">Vai trò</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-primary">@Model.Role</span>
+            </dd>
 
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Liên kết Student</div>
-                <div class="cp-detail-value">
-                    @if (Model.IsLinkedStudent)
-                    {
-                        <span class="text-danger">Có - @Model.LinkedStudentCode</span>
-                    }
-                    else
-                    {
-                        <span class="text-success">Không</span>
-                    }
-                </div>
-            </div>
+            <dt class="col-sm-3">Liên kết học viên</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsLinkedStudent)
+                {
+                    <span class="badge bg-danger">
+                        Có - @Model.LinkedStudentCode
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-success">
+                        Không
+                    </span>
+                }
+            </dd>
 
-            <div class="cp-detail-row">
-                <div class="cp-detail-label">Liên kết Teacher</div>
-                <div class="cp-detail-value">
-                    @if (Model.IsLinkedTeacher)
-                    {
-                        <span class="text-danger">Có - @Model.LinkedTeacherCode</span>
-                    }
-                    else
-                    {
-                        <span class="text-success">Không</span>
-                    }
-                </div>
-            </div>
-        </div>
+            <dt class="col-sm-3">Liên kết giáo viên</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsLinkedTeacher)
+                {
+                    <span class="badge bg-danger">
+                        Có - @Model.LinkedTeacherCode
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-success">
+                        Không
+                    </span>
+                }
+            </dd>
+        </dl>
 
         @if (!Model.CanDelete)
         {
-            <div class="alert alert-danger" style="margin-top:16px;">
-                Không thể xóa tài khoản này vì đang liên kết với hồ sơ nghiệp vụ.
+            <div class="alert alert-danger">
+                Không thể xóa tài khoản này vì tài khoản đang liên kết với hồ sơ nghiệp vụ.
+                Vui lòng kiểm tra lại hồ sơ học viên hoặc giáo viên trước khi xóa.
             </div>
         }
 
         <form asp-area="Admin" asp-controller="UserManagement" asp-action="Delete" method="post">
+            @Html.AntiForgeryToken()
+
             <input type="hidden" name="id" value="@Model.Id" />
 
-            <div class="cp-delete-actions">
+            <div class="d-flex gap-2">
                 @if (Model.CanDelete)
                 {
                     <button type="submit"
-                            class="cp-btn cp-btn--danger"
+                            class="btn btn-danger"
                             onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này không?');">
-                        Xóa tài khoản
+                        Xác nhận xóa
                     </button>
                 }
 
-                <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="cp-btn cp-btn--ghost">
-                    Quay lại
+                <a asp-area="Admin"
+                   asp-controller="UserManagement"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Hủy
                 </a>
             </div>
         </form>

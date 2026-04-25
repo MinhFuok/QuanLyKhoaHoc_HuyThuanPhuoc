@@ -2,50 +2,200 @@
 
 @{
     ViewData["Title"] = "Danh sách giảng viên";
+
+    var averageRatings = ViewBag.TeacherAverageRatings as Dictionary<int, double>
+        ?? new Dictionary<int, double>();
+
+    var reviewCounts = ViewBag.TeacherReviewCounts as Dictionary<int, int>
+        ?? new Dictionary<int, int>();
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+
+    <style>
+        .teacher-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(245, 158, 11, 0.16);
+            border: 1px solid rgba(245, 158, 11, 0.26);
+            color: #fed7aa;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .teacher-rating-empty {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(100, 116, 139, 0.16);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            color: #cbd5e1;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .teacher-rating-count {
+            color: rgba(203, 213, 225, 0.82);
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .teacher-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .teacher-email,
+        .teacher-phone,
+        .teacher-specialization,
+        .teacher-name-limit {
+            word-break: break-word;
+        }
+
+        .teacher-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+            .teacher-actions .cp-btn {
+                min-width: 72px;
+                justify-content: center;
+            }
+
+        @@media (max-width: 1199.98px) {
+            .teacher-table {
+                min-width: 1080px;
+            }
+
+            .cp-table-wrap {
+                overflow-x: auto;
+            }
+        }
+    </style>
 }
 
 <div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">Danh sách giảng viên</h1>
-            <p class="cp-subtitle">Quản lý hồ sơ giảng viên, chuyên môn và thông tin liên hệ.</p>
+            <p class="cp-subtitle">
+                Quản lý hồ sơ giảng viên, chuyên môn, thông tin liên hệ và đánh giá từ học viên.
+            </p>
         </div>
 
-        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
+        <a asp-area="HocVu"
+           asp-controller="Teacher"
+           asp-action="Create"
+           class="cp-btn cp-btn--primary">
+            + Thêm mới
+        </a>
     </div>
 
     <div class="cp-table-wrap">
-        <table class="cp-table">
+        <table class="cp-table teacher-table">
+            <colgroup>
+                <col style="width: 8%;" />
+                <col style="width: 17%;" />
+                <col style="width: 25%;" />
+                <col style="width: 15%;" />
+                <col style="width: 10%;" />
+                <col style="width: 25%;" />
+            </colgroup>
+
             <thead>
                 <tr>
-                    <th>Mã giảng viên</th>
-                    <th>Họ tên</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Chuyên môn</th>
-                    <th class="cp-col-action">Chức năng</th>
+                    <th class="text-center">Mã GV</th>
+                    <th class="text-center">Họ tên</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Chuyên môn</th>
+                    <th class="text-center">Đánh giá</th>
+                    <th class="cp-col-action text-center">Chức năng</th>
                 </tr>
             </thead>
+
             <tbody>
                 @if (Model?.Any() == true)
                 {
                     foreach (var item in Model)
                     {
+                        var hasRating = averageRatings.ContainsKey(item.Id);
+                        var averageRating = hasRating ? averageRatings[item.Id] : 0;
+                        var reviewCount = reviewCounts.ContainsKey(item.Id) ? reviewCounts[item.Id] : 0;
+
                         <tr class="cp-row">
-                            <td><span class="cp-code">@item.TeacherCode</span></td>
-                            <td><div class="cp-name">@item.FullName</div></td>
-                            <td>@item.Email</td>
-                            <td>@item.PhoneNumber</td>
-                            <td><span class="cp-badge">@item.Specialization</span></td>
                             <td>
-                                <div class="cp-actions">
-                                    <a asp-area="HocVu" asp-controller="Teacher" asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
-                                    <a asp-area="HocVu" asp-controller="Teacher" asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
-                                    <a asp-area="HocVu" asp-controller="Teacher" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
+                                <span class="cp-code">@item.TeacherCode</span>
+                            </td>
+
+                            <td>
+                                <div class="cp-name teacher-name-limit">@item.FullName</div>
+                            </td>
+
+                            <td>
+                                <div class="teacher-email">
+                                    @(string.IsNullOrWhiteSpace(item.Email) ? "Chưa cập nhật" : item.Email)
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="cp-badge teacher-specialization">
+                                    @(string.IsNullOrWhiteSpace(item.Specialization) ? "Chưa cập nhật" : item.Specialization)
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (hasRating)
+                                {
+                                    <div>
+                                        <span class="teacher-rating">
+                                            ⭐ @averageRating.ToString("0.##")/5
+                                        </span>
+                                        <div class="teacher-rating-count">
+                                            @reviewCount đánh giá
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="teacher-rating-empty">
+                                        Chưa có
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <div class="cp-actions teacher-actions">
+                                    <a asp-area="HocVu"
+                                       asp-controller="Teacher"
+                                       asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--info cp-btn--sm">
+                                        Chi tiết
+                                    </a>
+
+                                    <a asp-area="HocVu"
+                                       asp-controller="Teacher"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--warning cp-btn--sm">
+                                        Sửa
+                                    </a>
+
+                                    <a asp-area="HocVu"
+                                       asp-controller="Teacher"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--danger cp-btn--sm">
+                                        Xóa
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -54,7 +204,9 @@
                 else
                 {
                     <tr>
-                        <td colspan="6" class="cp-empty">Chưa có giảng viên nào trong hệ thống.</td>
+                        <td colspan="7" class="cp-empty">
+                            Chưa có giảng viên nào trong hệ thống.
+                        </td>
                     </tr>
                 }
             </tbody>

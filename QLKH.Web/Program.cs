@@ -130,12 +130,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseHttpsRedirection();
-app.UseStaticFiles();
 
 app.UseMiddleware<WebsiteStatusMiddleware>();
 
-app.UseRouting();
 app.UseRouting();
 
 app.UseAuthentication();

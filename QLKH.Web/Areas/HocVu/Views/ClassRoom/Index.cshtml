@@ -2,108 +2,331 @@
 
 @{
     ViewData["Title"] = "Danh sách lớp học";
+
+    var currentDate = DateTime.Today;
+    var classRooms = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassRoom>();
+
+    var activeClassRooms = classRooms
+        .Where(x => x.StartDate.Date <= currentDate && x.EndDate.Date >= currentDate)
+        .OrderBy(x => x.StartDate)
+        .ToList();
+
+    var endedClassRooms = classRooms
+        .Where(x => x.EndDate.Date < currentDate)
+        .OrderByDescending(x => x.EndDate)
+        .ToList();
+
+    var activeCount = activeClassRooms.Count;
+    var endedCount = endedClassRooms.Count;
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+
+    <style>
+        .classroom-tabs-wrap {
+            margin-top: 18px;
+        }
+
+        .classroom-tabs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+            padding: 10px;
+            border-radius: 18px;
+            background: rgba(20, 8, 42, 0.72);
+            border: 1px solid rgba(168, 85, 247, 0.24);
+        }
+
+        .classroom-tab-btn {
+            border: 1px solid rgba(168, 85, 247, 0.24);
+            background: rgba(255, 255, 255, 0.04);
+            color: #c4b5fd;
+            border-radius: 14px;
+            padding: 11px 16px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .classroom-tab-btn:hover {
+                background: rgba(168, 85, 247, 0.14);
+                color: #ffffff;
+            }
+
+            .classroom-tab-btn.active {
+                background: linear-gradient(135deg, #a855f7, #3b82f6);
+                color: #ffffff;
+                border-color: transparent;
+                box-shadow: 0 12px 28px rgba(59, 130, 246, 0.18);
+            }
+
+        .classroom-count {
+            min-width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
+            background: rgba(255, 255, 255, 0.12);
+            color: inherit;
+            font-size: 0.82rem;
+            font-weight: 900;
+        }
+
+        .classroom-tab-pane {
+            display: none;
+        }
+
+            .classroom-tab-pane.active {
+                display: block;
+            }
+
+  
+        .classroom-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            color: rgba(203, 213, 225, 0.82);
+            font-weight: 700;
+        }
+
+            .classroom-summary strong {
+                color: #ffffff;
+            }
+
+        .cp-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .cp-table th,
+            .cp-table td {
+                vertical-align: middle;
+            }
+
+            .cp-table th {
+                white-space: nowrap;
+            }
+
+        .cp-actions {
+            justify-content: flex-end;
+        }
+
+        .cp-col-action {
+            width: 250px;
+        }
+
+        .cp-empty {
+            padding: 42px 18px !important;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .cp-table {
+                min-width: 1180px;
+            }
+
+            .cp-table-wrap {
+                overflow-x: auto;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .classroom-tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .classroom-tab-btn {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .classroom-summary {
+                justify-content: flex-start;
+            }
+        }
+
+        .classroom-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .classroom-table th,
+            .classroom-table td {
+                vertical-align: middle;
+            }
+
+            .classroom-table th {
+                white-space: nowrap;
+            }
+
+            .classroom-table td {
+                word-break: normal;
+            }
+
+        .class-name-limit,
+        .cell-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.35;
+        }
+
+        .date-text {
+            white-space: nowrap;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .capacity-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.20);
+            border: 1px solid rgba(168, 85, 247, 0.32);
+            color: #ddd6fe;
+            font-weight: 900;
+        }
+
+        .classroom-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            justify-content: stretch;
+        }
+
+            .classroom-actions .cp-btn {
+                justify-content: center;
+                width: 100%;
+                min-width: 0;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+        .cp-col-action {
+            width: 17%;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .classroom-table {
+                min-width: 1080px;
+            }
+
+            .cp-table-wrap {
+                overflow-x: auto;
+            }
+        }
+    </style>
 }
 
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">Danh sách lớp học</h1>
-            <p class="cp-subtitle">Quản lý lớp học, khóa học phụ trách, giảng viên và thời gian đào tạo.</p>
+            <p class="cp-subtitle">
+                Quản lý lớp học, khóa học phụ trách, giảng viên và thời gian đào tạo.
+            </p>
         </div>
 
         <a asp-area="HocVu"
            asp-controller="ClassRoom"
            asp-action="Create"
            class="cp-btn cp-btn--primary">
-            + Thêm mới
+            + Thêm lớp học
         </a>
     </div>
 
-    <div class="cp-table-wrap">
-        <table class="cp-table">
-            <thead>
-                <tr>
-                    <th>Mã lớp</th>
-                    <th>Tên lớp</th>
-                    <th>Khóa học</th>
-                    <th>Giảng viên</th>
-                    <th>Ngày bắt đầu</th>
-                    <th>Ngày kết thúc</th>
-                    <th>Sĩ số</th>
-                    <th class="cp-col-action">Chức năng</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model?.Any() == true)
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr class="cp-row">
-                            <td><span class="cp-code">@item.ClassCode</span></td>
-                            <td><div class="cp-name">@item.ClassName</div></td>
-                            <td>@(item.Course?.CourseName ?? "Chưa có")</td>
-                            <td>@(item.Teacher?.FullName ?? "Chưa phân công")</td>
-                            <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
-                            <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                            <td><span class="cp-badge">@item.MaxStudents học viên</span></td>
-                            <td>
-                                <div class="cp-actions">
-                                    <a asp-area="HocVu"
-                                       asp-controller="ClassRoom"
-                                       asp-action="Students"
-                                       asp-route-id="@item.Id"
-                                       class="cp-btn cp-btn--info cp-btn--sm">
-                                        Danh sách
-                                    </a>
-                                    <a asp-area="HocVu"
-                                       asp-controller="ClassRoom"
-                                       asp-action="Details"
-                                       asp-route-id="@item.Id"
-                                       class="cp-btn cp-btn--info cp-btn--sm">
-                                        Chi tiết
-                                    </a>
+    <div class="classroom-tabs-wrap" data-classroom-tabs>
+        <div class="classroom-tabs" role="tablist" aria-label="Trạng thái lớp học">
+            <button type="button"
+                    class="classroom-tab-btn active"
+                    data-tab="activeClassTab"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="activeClassTab">
+                Lớp đang diễn ra
+                <span class="classroom-count">@activeCount</span>
+            </button>
 
-                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                                    {
-                                        <a asp-area="HocVu"
-                                           asp-controller="ClassRoom"
-                                           asp-action="Edit"
-                                           asp-route-id="@item.Id"
-                                           class="cp-btn cp-btn--warning cp-btn--sm">
-                                            Sửa
-                                        </a>
-                                    }
+            <button type="button"
+                    class="classroom-tab-btn"
+                    data-tab="endedClassTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="endedClassTab">
+                Lớp đã kết thúc
+                <span class="classroom-count">@endedCount</span>
+            </button>
+        </div>
 
-                                    @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                                    {
-                                        <a asp-area="HocVu"
-                                           asp-controller="ClassRoom"
-                                           asp-action="Delete"
-                                           asp-route-id="@item.Id"
-                                           class="cp-btn cp-btn--danger cp-btn--sm">
-                                            Xóa
-                                        </a>
-                                    }
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="8" class="cp-empty">Chưa có lớp học nào trong hệ thống.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div id="activeClassTab" class="classroom-tab-pane active" role="tabpanel">
+            @await Html.PartialAsync("_ClassRoomTablePartial", activeClassRooms, new ViewDataDictionary(ViewData)
+            {
+            ["Mode"] = "active"
+                        })
+        </div>
+
+        <div id="endedClassTab" class="classroom-tab-pane" role="tabpanel" hidden>
+            @await Html.PartialAsync("_ClassRoomTablePartial", endedClassRooms, new ViewDataDictionary(ViewData)
+                        {
+                        ["Mode"] = "ended"
+                        })
+        </div>
+    </div>
+
+    <div class="classroom-summary">
+        <span>Đang diễn ra: <strong>@activeCount</strong></span>
+        <span>Đã kết thúc: <strong>@endedCount</strong></span>
     </div>
 </div>
 
 @section Scripts {
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+
+    <script>
+        (function () {
+            const root = document.querySelector('[data-classroom-tabs]');
+            if (!root) return;
+
+            const buttons = Array.from(root.querySelectorAll('.classroom-tab-btn'));
+            const panes = Array.from(root.querySelectorAll('.classroom-tab-pane'));
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const targetId = button.getAttribute('data-tab');
+
+                    buttons.forEach(function (btn) {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+
+                    panes.forEach(function (pane) {
+                        pane.classList.remove('active');
+                        pane.hidden = true;
+                    });
+
+                    button.classList.add('active');
+                    button.setAttribute('aria-selected', 'true');
+
+                    const targetPane = document.getElementById(targetId);
+                    if (targetPane) {
+                        targetPane.hidden = false;
+                        targetPane.classList.add('active');
+                    }
+                });
+            });
+        })();
+    </script>
 }

@@ -2,65 +2,853 @@
 
 @{
     ViewData["Title"] = "Chấm bài nộp";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var assignment = Model.Assignment;
+    var student = Model.Student;
+    var classRoom = assignment?.ClassRoom;
+    var course = classRoom?.Course;
+
+    var isGraded = Model.Score.HasValue;
+    var isLate = assignment != null && Model.SubmittedAt > assignment.DueDate;
+
+    var submitStatusText = isLate ? "Nộp trễ" : "Đúng hạn";
+    var submitStatusClass = isLate ? "badge-late" : "badge-ontime";
+
+    var gradingStatusText = isGraded ? "Đã chấm" : "Chưa chấm";
+    var gradingStatusClass = isGraded ? "badge-graded" : "badge-ungraded";
 }
 
-<h2>Chấm bài nộp</h2>
+<div class="teacher-grading-page">
 
-<div class="mb-3">
-    <p><strong>Học viên:</strong> @Model.Student?.FullName</p>
-    <p><strong>Mã học viên:</strong> @Model.Student?.StudentCode</p>
-    <p><strong>Lớp:</strong> @Model.Assignment?.ClassRoom?.ClassName</p>
-    <p><strong>Khóa học:</strong> @Model.Assignment?.ClassRoom?.Course?.CourseName</p>
-    <p><strong>Bài tập:</strong> @Model.Assignment?.Title</p>
-    <p><strong>Hạn nộp:</strong> @Model.Assignment?.DueDate.ToString("dd/MM/yyyy")</p>
-    <p><strong>Thời gian nộp:</strong> @Model.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</p>
-</div>
+    <!-- Header -->
+    <div class="grading-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">CHẤM BÀI NỘP</h2>
+                    <div class="page-eyebrow">GIẢNG DẠY</div>
+                </div>
 
-<div class="mb-3">
-    <label class="form-label"><strong>Nội dung bài nộp</strong></label>
-    <div class="form-control" style="min-height: 120px; white-space: pre-wrap;">@Model.SubmissionText</div>
-</div>
-<div class="mb-3">
-    <label class="form-label"><strong>File bài nộp</strong></label>
-    @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+                <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
+                    @if (assignment != null)
+                    {
+                        <a asp-area="GiaoVien"
+                           asp-controller="AssignmentSubmissions"
+                           asp-action="Index"
+                           asp-route-assignmentId="@assignment.Id"
+                           class="btn btn-outline-primary hero-action-btn">
+                            ← Quay lại
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="GiaoVien"
+                           asp-controller="MyAssignments"
+                           asp-action="Index"
+                           class="btn btn-outline-primary hero-action-btn">
+                            ← Quay lại bài tập
+                        </a>
+                    }
+
+                    <div class="hero-badge">
+                        <div class="hero-badge-icon">📝</div>
+                        <div>
+                            <div class="hero-badge-label">Trạng thái</div>
+                            <div class="hero-badge-value">@(isGraded ? "Đã chấm" : "Chưa chấm")</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts -->
+    @if (TempData["SuccessMessage"] != null)
     {
-        <div>
-            <a href="@Model.FilePath" target="_blank">Mở file bài nộp</a>
+        <div class="alert alert-success custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">✅</div>
+            <div>
+                <strong>Thành công!</strong>
+                <div>@TempData["SuccessMessage"]</div>
+            </div>
         </div>
     }
-    else
+
+    @if (ViewBag.ErrorMessage != null)
     {
-        <div class="form-control">Không có file đính kèm</div>
+        <div class="alert alert-danger custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">⚠️</div>
+            <div>
+                <strong>Không thể lưu điểm!</strong>
+                <div>@ViewBag.ErrorMessage</div>
+            </div>
+        </div>
     }
+
+    <!-- KPI -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grading-stat-card stat-student card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">👤</div>
+                    <div>
+                        <div class="stat-label">Học viên</div>
+                        <div class="stat-value small-stat">@((student?.FullName) ?? "Chưa cập nhật")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grading-stat-card stat-submit card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📥</div>
+                    <div>
+                        <div class="stat-label">Tình trạng nộp</div>
+                        <div class="stat-value small-stat">@submitStatusText</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grading-stat-card stat-score card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">⭐</div>
+                    <div>
+                        <div class="stat-label">Điểm hiện tại</div>
+                        <div class="stat-value">@(Model.Score.HasValue? Model.Score.Value.ToString("0.##") : "--")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="grading-stat-card stat-file card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-icon">📎</div>
+                    <div>
+                        <div class="stat-label">File đính kèm</div>
+                        <div class="stat-value small-stat">
+                            @(string.IsNullOrWhiteSpace(Model.FilePath) ? "Không có" : "Có file")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission info -->
+    <div class="card border-0 shadow-sm submission-info-card mb-4">
+        <div class="card-header bg-white border-0 p-4 pb-2">
+            <h5 class="section-title mb-1">Thông tin bài nộp</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="submission-info-grid">
+                <div class="info-item">
+                    <div class="info-label">Học viên</div>
+                    <div class="info-value">@((student?.FullName) ?? "Chưa cập nhật")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Mã học viên</div>
+                    <div class="info-value">@((student?.StudentCode) ?? "N/A")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Lớp</div>
+                    <div class="info-value">@((classRoom?.ClassName) ?? "Chưa cập nhật")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Khóa học</div>
+                    <div class="info-value">@((course?.CourseName) ?? "Chưa cập nhật")</div>
+                </div>
+
+                <div class="info-item info-wide">
+                    <div class="info-label">Bài tập</div>
+                    <div class="info-value">@((assignment?.Title) ?? "Chưa cập nhật")</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Hạn nộp</div>
+                    <div class="info-value">
+                        @(assignment == null ? "Chưa cập nhật" : assignment.DueDate.ToString("dd/MM/yyyy HH:mm"))
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Thời gian nộp</div>
+                    <div class="info-value">
+                        @Model.SubmittedAt.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Trạng thái nộp</div>
+                    <div class="info-value">
+                        <span class="status-badge @submitStatusClass">@submitStatusText</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Trạng thái chấm</div>
+                    <div class="info-value">
+                        <span class="status-badge @gradingStatusClass">@gradingStatusText</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="row g-4">
+        <div class="col-12 col-xl-8">
+            <div class="card border-0 shadow-sm content-card mb-4">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Nội dung bài làm</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="submission-text-box">
+                        @(string.IsNullOrWhiteSpace(Model.SubmissionText)
+                                                ? "Học viên không nhập nội dung văn bản."
+                                                : Model.SubmissionText)
+                    </div>
+
+                    <div class="file-box mt-4">
+                        <div class="file-icon">📎</div>
+                        <div class="file-content">
+                            <div class="file-title">File bài nộp</div>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+                            {
+                                <a href="@Model.FilePath"
+                                   target="_blank"
+                                   class="btn btn-sm btn-outline-primary mt-2">
+                                    Mở file bài nộp
+                                </a>
+                            }
+                            else
+                            {
+                                <div class="file-empty mt-2">
+                                    Không có file đính kèm
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm form-card">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Chấm điểm và nhận xét</h5>
+                    <p class="section-subtitle mb-0">
+                        Nhập điểm và phản hồi để học viên theo dõi kết quả học tập.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+                    <form method="post" class="grading-form">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="mb-4">
+                            <label class="form-label custom-label">
+                                Điểm <span class="required">*</span>
+                            </label>
+
+                            <input type="number"
+                                   step="0.01"
+                                   min="0"
+                                   max="10"
+                                   name="score"
+                                   value="@(Model.Score.HasValue? Model.Score.Value.ToString("0.##") : "")"
+                                   class="form-control custom-control"
+                                   placeholder="Nhập điểm từ 0 đến 10" />
+
+                            <div class="form-hint">
+                                Nên nhập điểm trong thang 0 - 10.
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label custom-label">Nhận xét</label>
+
+                            <textarea name="feedback"
+                                      class="form-control custom-control"
+                                      rows="6"
+                                      placeholder="Nhập nhận xét, góp ý hoặc hướng cải thiện cho học viên...">@Model.Feedback</textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            @if (assignment != null)
+                            {
+                                <a asp-area="GiaoVien"
+                                   asp-controller="AssignmentSubmissions"
+                                   asp-action="Index"
+                                   asp-route-assignmentId="@assignment.Id"
+                                   class="btn btn-outline-secondary">
+                                    Hủy
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="GiaoVien"
+                                   asp-controller="MyAssignments"
+                                   asp-action="Index"
+                                   class="btn btn-outline-secondary">
+                                    Hủy
+                                </a>
+                            }
+
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right note -->
+        <div class="col-12 col-xl-4">
+            <div class="card border-0 shadow-sm note-card mb-4">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Lưu ý khi chấm bài</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="note-list">
+                        <div class="note-item">
+                            <div class="note-icon">✅</div>
+                            <div>
+                                <div class="note-title">Kiểm tra nội dung</div>
+                                <div class="note-desc">
+                                    Đọc kỹ nội dung bài nộp và file đính kèm trước khi nhập điểm.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">⭐</div>
+                            <div>
+                                <div class="note-title">Điểm rõ ràng</div>
+                                <div class="note-desc">
+                                    Nên chấm theo thang điểm thống nhất để đảm bảo công bằng.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">💬</div>
+                            <div>
+                                <div class="note-title">Nhận xét hữu ích</div>
+                                <div class="note-desc">
+                                    Nhận xét nên nêu điểm mạnh, điểm cần cải thiện và gợi ý cụ thể.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">⏰</div>
+                            <div>
+                                <div class="note-title">Lưu ý hạn nộp</div>
+                                <div class="note-desc">
+                                    Bài nộp trễ có thể cần được cân nhắc theo quy định của lớp.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm support-card">
+                <div class="card-body p-4">
+                    <div class="support-icon">💡</div>
+                    <h5 class="support-title">Gợi ý</h5>
+                    <p class="support-desc mb-0">
+                        Nếu học viên chưa đạt yêu cầu, bạn có thể nhận xét ngắn gọn theo hướng: vấn đề chính, cách sửa và đề xuất luyện tập thêm.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
+
+@section Styles {
+    <style>
+        .teacher-grading-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .grading-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
+
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .hero-badge {
+            min-width: 210px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .hero-badge-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            font-size: 1.4rem;
+        }
+
+        .hero-badge-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hero-badge-value {
+            color: #172554;
+            font-size: 1.2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .grading-stat-card,
+        .submission-info-card,
+        .content-card,
+        .form-card,
+        .note-card,
+        .support-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+            .grading-stat-card .card-body {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 20px;
+            }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .stat-student {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .stat-student .stat-icon {
+                background: #dbeafe;
+            }
+
+        .stat-submit {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .stat-submit .stat-icon {
+                background: #ffedd5;
+            }
+
+        .stat-score {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .stat-score .stat-icon {
+                background: #dcfce7;
+            }
+
+        .stat-file {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-left: 5px solid #64748b !important;
+        }
+
+            .stat-file .stat-icon {
+                background: #e2e8f0;
+            }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .small-stat {
+            font-size: 1rem;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .submission-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-item {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-wide {
+            grid-column: span 2;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .badge-ontime {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-late {
+            color: #be123c;
+            background: #ffe4e6;
+        }
+
+        .badge-graded {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .badge-ungraded {
+            color: #92400e;
+            background: #ffedd5;
+        }
+
+        .submission-text-box {
+            min-height: 140px;
+            white-space: pre-wrap;
+            padding: 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            color: #334155;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .file-box {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            border-radius: 18px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .file-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .file-title {
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .file-empty {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .custom-label {
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .custom-control {
+            border-radius: 14px;
+            border: 1px solid #dbe3ef;
+            padding: 12px 14px;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .custom-control:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.12);
+            }
+
+        textarea.custom-control {
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .form-hint {
+            color: #64748b;
+            font-size: 0.88rem;
+            margin-top: 7px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 8px;
+        }
+
+            .form-actions .btn {
+                border-radius: 12px;
+                font-weight: 800;
+                padding: 10px 18px;
+            }
+
+        .submit-btn {
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+        }
+
+        .custom-alert {
+            border-radius: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+        }
+
+        .alert-icon {
+            font-size: 1.35rem;
+            line-height: 1;
+        }
+
+        .note-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+            .note-item:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+        .note-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .note-title {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .note-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+        }
+
+        .support-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+        }
+
+        .support-title {
+            font-weight: 800;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .support-desc {
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .submission-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .info-wide {
+                grid-column: span 2;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-action-btn,
+            .hero-badge {
+                width: 100%;
+            }
+
+            .submission-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-wide {
+                grid-column: span 1;
+            }
+
+            .grading-stat-card .card-body {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            .small-stat {
+                font-size: 0.95rem;
+            }
+
+            .file-box {
+                flex-direction: column;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+                .form-actions .btn {
+                    width: 100%;
+                }
+        }
+    </style>
 }
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.ErrorMessage
-    </div>
-}
-
-<form method="post">
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" name="id" value="@Model.Id" />
-
-    <div class="mb-3">
-        <label class="form-label">Điểm</label>
-        <input type="number" step="0.01" name="score" value="@Model.Score" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Nhận xét</label>
-        <textarea name="feedback" class="form-control" rows="6">@Model.Feedback</textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Lưu chấm điểm</button>
-</form>

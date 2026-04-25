@@ -1,55 +1,598 @@
 ﻿@using QLKH.Domain.Entities
 @using System.Linq
+
 @{
     ViewData["Title"] = "Tạo tài liệu";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
     var myClasses = ViewBag.MyClasses as IEnumerable<ClassRoom> ?? Enumerable.Empty<ClassRoom>();
+    var classList = myClasses.ToList();
+
+    var totalClasses = classList.Count;
+    var activeClasses = classList.Count(x => x.StartDate.Date <= DateTime.Today && x.EndDate.Date >= DateTime.Today);
+    var upcomingClasses = classList.Count(x => x.StartDate.Date > DateTime.Today);
 }
 
-<h2>Tạo tài liệu cho lớp mình dạy</h2>
+<div class="teacher-material-create-page">
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
+    <!-- Header -->
+    <div class="materials-create-hero card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h2 class="page-title mb-2">TẠO TÀI LIỆU</h2>
+                    <div class="page-eyebrow">GIẢNG DẠY</div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
+                    <a asp-area="GiaoVien"
+                       asp-controller="MyMaterials"
+                       asp-action="Index"
+                       class="btn btn-outline-primary hero-action-btn">
+                        ← Quay lại
+                    </a>
+                    <div class="create-guide-card guide-success card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="guide-icon">📤</div>
+                            <div>
+                                <div class="guide-label">Upload tài liệu</div>
+                                <div class="guide-value">File</div>
+                                <div class="guide-desc">Hỗ trợ PDF, Word, PowerPoint, Excel, ZIP...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
 
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.ErrorMessage
+    <!-- Alert -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">✅</div>
+            <div>
+                <strong>Thành công!</strong>
+                <div>@TempData["SuccessMessage"]</div>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger custom-alert shadow-sm border-0 mb-4">
+            <div class="alert-icon">⚠️</div>
+            <div>
+                <strong>Không thể tạo tài liệu!</strong>
+                <div>@ViewBag.ErrorMessage</div>
+            </div>
+        </div>
+    }
+
+    <!-- Form -->
+    <div class="row g-4">
+        <div class="col-12 col-xl-8">
+            <div class="card border-0 shadow-sm form-card">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Thông tin tài liệu</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data" class="material-create-form">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-4">
+                            <label class="form-label custom-label">
+                                Chọn lớp <span class="required">*</span>
+                            </label>
+
+                            <select name="classRoomId" class="form-select custom-control" required>
+                                <option value="">-- Chọn lớp muốn đăng tài liệu --</option>
+                                @foreach (var item in classList.OrderBy(x => x.StartDate))
+                                {
+                                    var statusText = "";
+
+                                    if (item.StartDate.Date > DateTime.Today)
+                                    {
+                                        statusText = "Sắp học";
+                                    }
+                                    else if (item.EndDate.Date < DateTime.Today)
+                                    {
+                                        statusText = "Đã kết thúc";
+                                    }
+                                    else
+                                    {
+                                        statusText = "Đang học";
+                                    }
+
+                                    <option value="@item.Id">
+                                        @item.ClassName (@item.ClassCode) - @statusText
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label custom-label">
+                                Tiêu đề tài liệu <span class="required">*</span>
+                            </label>
+
+                            <input type="text"
+                                   name="title"
+                                   class="form-control custom-control"
+                                   maxlength="200"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label custom-label">Mô tả</label>
+
+                            <textarea name="description"
+                                      class="form-control custom-control"
+                                      rows="5"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label custom-label">
+                                File tài liệu <span class="required">*</span>
+                            </label>
+
+                            <div class="upload-box">
+                                <div class="upload-icon">📎</div>
+                                <div class="upload-content">
+                                    <input type="file"
+                                           name="materialFile"
+                                           class="form-control custom-control"
+                                           required />
+
+                                    <div class="form-hint mt-2">
+                                        Hỗ trợ PDF, DOCX, PPTX, XLSX, ZIP, hình ảnh hoặc các file học tập cần quản lý.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a asp-area="GiaoVien"
+                               asp-controller="MyMaterials"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Hủy
+                            </a>
+
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right note -->
+        <div class="col-12 col-xl-4">
+            <div class="card border-0 shadow-sm note-card mb-4">
+                <div class="card-header bg-white border-0 p-4 pb-2">
+                    <h5 class="section-title mb-1">Lưu ý khi đăng tài liệu</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="note-list">
+                        <div class="note-item">
+                            <div class="note-icon">✅</div>
+                            <div>
+                                <div class="note-title">Đặt tên rõ ràng</div>
+                                <div class="note-desc">
+                                    Tiêu đề nên thể hiện đúng nội dung bài học hoặc buổi học.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">📌</div>
+                            <div>
+                                <div class="note-title">Chọn đúng lớp</div>
+                                <div class="note-desc">
+                                    Tài liệu sẽ chỉ hiển thị cho lớp được chọn.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">📄</div>
+                            <div>
+                                <div class="note-title">File dễ mở</div>
+                                <div class="note-desc">
+                                    Nên ưu tiên PDF, Word hoặc PowerPoint để học viên dễ xem.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-icon">🧹</div>
+                            <div>
+                                <div class="note-title">Mô tả ngắn gọn</div>
+                                <div class="note-desc">
+                                    Mô tả giúp học viên hiểu tài liệu dùng cho nội dung nào.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm support-card">
+                <div class="card-body p-4">
+                    <div class="support-icon">💡</div>
+                    <h5 class="support-title">Gợi ý</h5>
+                    <p class="support-desc mb-0">
+                        Với slide bài giảng, bạn nên xuất sang PDF trước khi đăng để hạn chế lỗi font hoặc lệch định dạng khi học viên mở trên thiết bị khác.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-}
+</div>
 
-<form method="post" enctype="multipart/form-data">
-    @Html.AntiForgeryToken()
+@section Styles {
+    <style>
+        .teacher-material-create-page {
+            animation: fadeInPage 0.25s ease-in-out;
+        }
 
-    <div class="mb-3">
-        <label class="form-label">Chọn lớp</label>
-        <select name="classRoomId" class="form-control">
-            <option value="">-- Chọn lớp --</option>
-            @foreach (var item in myClasses)
-            {
-                <option value="@item.Id">@item.ClassName (@item.ClassCode)</option>
+        @@keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
             }
-        </select>
-    </div>
 
-    <div class="mb-3">
-        <label class="form-label">Tiêu đề tài liệu</label>
-        <input type="text" name="title" class="form-control" />
-    </div>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    <div class="mb-3">
-        <label class="form-label">Mô tả</label>
-        <textarea name="description" class="form-control" rows="4"></textarea>
-    </div>
+        .materials-create-hero {
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 60%, #f8fbff 100%);
+            overflow: hidden;
+        }
 
-    <div class="mb-3">
-        <label class="form-label">File tài liệu</label>
-        <input type="file" name="materialFile" class="form-control" />
-        <small class="text-muted">Hỗ trợ PDF, DOCX, PPTX, ZIP... tùy file bạn muốn quản lý.</small>
-    </div>
+        .page-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #3b82f6;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
 
-    <button type="submit" class="btn btn-primary">Tạo tài liệu</button>
-</form>
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .hero-action-btn {
+            border-radius: 14px;
+            font-weight: 800;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .hero-badge {
+            min-width: 210px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .hero-badge-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            font-size: 1.4rem;
+        }
+
+        .hero-badge-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hero-badge-value {
+            color: #172554;
+            font-size: 1.7rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .create-guide-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+            .create-guide-card .card-body {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 20px;
+            }
+
+        .guide-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            flex-shrink: 0;
+        }
+
+        .guide-primary {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            border-left: 5px solid #2563eb !important;
+        }
+
+            .guide-primary .guide-icon {
+                background: #dbeafe;
+            }
+
+        .guide-warning {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border-left: 5px solid #f59e0b !important;
+        }
+
+            .guide-warning .guide-icon {
+                background: #ffedd5;
+            }
+
+        .guide-success {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            border-left: 5px solid #16a34a !important;
+        }
+
+            .guide-success .guide-icon {
+                background: #dcfce7;
+            }
+
+        .guide-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.93rem;
+            margin-bottom: 4px;
+        }
+
+        .guide-value {
+            color: #0f172a;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .guide-desc {
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+
+        .form-card,
+        .note-card,
+        .support-card {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .custom-label {
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .custom-control {
+            border-radius: 14px;
+            border: 1px solid #dbe3ef;
+            padding: 12px 14px;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .custom-control:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.12);
+            }
+
+        textarea.custom-control {
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .form-hint {
+            color: #64748b;
+            font-size: 0.88rem;
+            margin-top: 7px;
+        }
+
+        .upload-box {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .upload-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .upload-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 8px;
+        }
+
+            .form-actions .btn {
+                border-radius: 12px;
+                font-weight: 800;
+                padding: 10px 18px;
+            }
+
+        .submit-btn {
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+        }
+
+        .custom-alert {
+            border-radius: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+        }
+
+        .alert-icon {
+            font-size: 1.35rem;
+            line-height: 1;
+        }
+
+        .note-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+            .note-item:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+        .note-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .note-title {
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .note-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+        }
+
+        .support-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+        }
+
+        .support-title {
+            font-weight: 800;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .support-desc {
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        @@media (max-width: 767.98px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-badge,
+            .hero-action-btn {
+                width: 100%;
+            }
+
+            .create-guide-card .card-body {
+                padding: 16px;
+            }
+
+            .guide-value {
+                font-size: 1.55rem;
+            }
+
+            .upload-box {
+                flex-direction: column;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+                .form-actions .btn {
+                    width: 100%;
+                }
+        }
+    </style>
+}

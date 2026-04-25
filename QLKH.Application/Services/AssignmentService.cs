@@ -100,7 +100,6 @@ namespace QLKH.Application.Services
                 .OrderByDescending(x => x.CreatedAt)
                 .ToList();
         }
-
         public async Task AddAsync(Assignment assignment)
         {
             await _assignmentRepository.AddAsync(assignment);
