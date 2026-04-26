@@ -5,53 +5,229 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">Sửa chương trình/khóa</h2>
+<div class="admin-account-page admin-program-page">
+    <div class="admin-page-header">
+        <div>
+            <h2 class="admin-page-title">SỬA CHƯƠNG TRÌNH/KHÓA</h2>
+        </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
+        <a asp-area="Admin"
+           asp-controller="Department"
+           asp-action="Index"
+           class="btn btn-outline-secondary admin-btn-main">
+            Quay lại
+        </a>
+    </div>
+
+    <div class="admin-form-card">
+        <div class="admin-form-title">
+            <span>Thông tin chương trình/khóa</span>
+        </div>
+
         <form asp-area="Admin" asp-controller="Department" asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
             <input asp-for="Id" type="hidden" />
 
-            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <div asp-validation-summary="All" class="text-danger admin-validation"></div>
 
-            <div class="mb-3">
-                <label asp-for="DepartmentCode" class="form-label"></label>
-                <input asp-for="DepartmentCode" class="form-control" />
-                <span asp-validation-for="DepartmentCode" class="text-danger"></span>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="DepartmentCode" class="form-label admin-label"></label>
+                    <input asp-for="DepartmentCode" class="form-control admin-input" />
+                    <span asp-validation-for="DepartmentCode" class="text-danger admin-field-error"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="ParentDepartmentId" class="form-label admin-label"></label>
+                    <select asp-for="ParentDepartmentId"
+                            asp-items="ViewBag.ParentDepartments"
+                            class="form-select admin-input">
+                        <option value="">-- Không chọn (Tạo chương trình) --</option>
+                    </select>
+                    <span asp-validation-for="ParentDepartmentId" class="text-danger admin-field-error"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="DepartmentName" class="form-label admin-label"></label>
+                    <input asp-for="DepartmentName"
+                           class="form-control admin-input"
+                           placeholder="Nhập tên chương trình hoặc khóa..." />
+                    <span asp-validation-for="DepartmentName" class="text-danger admin-field-error"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label admin-label"></label>
+                    <textarea asp-for="Description"
+                              class="form-control admin-input admin-textarea"
+                              rows="4"
+                              placeholder="Nhập mô tả ngắn cho chương trình hoặc khóa..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger admin-field-error"></span>
+                </div>
+
+                <div class="col-12">
+                    <div class="admin-check-row">
+                        <input asp-for="IsActive" class="form-check-input admin-check-input" />
+                        <label asp-for="IsActive" class="form-check-label admin-check-label"></label>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="DepartmentName" class="form-label"></label>
-                <input asp-for="DepartmentName" class="form-control" />
-                <span asp-validation-for="DepartmentName" class="text-danger"></span>
-            </div>
+            <div class="admin-form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Xác nhận thay đổi
+                </button>
 
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="ParentDepartmentId" class="form-label"></label>
-                <select asp-for="ParentDepartmentId" asp-items="ViewBag.ParentDepartments" class="form-select">
-                    <option value="">-- Không chọn (Tạo chương trình) --</option>
-                </select>
-                <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
-            </div>
-
-            <div class="form-check mb-3">
-                <input asp-for="IsActive" class="form-check-input" />
-                <label asp-for="IsActive" class="form-check-label"></label>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Xác nhận thay đổi</button>
-                <a asp-area="Admin" asp-controller="Department" asp-action="Index" class="btn btn-secondary">Hủy</a>
+                <a asp-area="Admin"
+                   asp-controller="Department"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Hủy
+                </a>
             </div>
         </form>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .admin-account-page {
+            color: #1f2937;
+        }
+
+        .admin-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .admin-page-title {
+            margin: 0;
+            color: #111827;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .admin-btn-main {
+            border-radius: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+            padding: 9px 14px;
+        }
+
+        .admin-form-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .admin-form-title {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111827;
+            font-weight: 800;
+            background: #f9fafb;
+        }
+
+        .admin-form-card form {
+            padding: 16px;
+        }
+
+        .admin-label {
+            color: #374151;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .admin-input {
+            border-radius: 8px;
+            border-color: #d1d5db;
+            min-height: 40px;
+            font-size: 0.94rem;
+        }
+
+            .admin-input:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.12);
+            }
+
+        .admin-textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .admin-validation {
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+
+        .admin-field-error {
+            font-size: 0.84rem;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .admin-check-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+
+        .admin-check-input {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        .admin-check-label {
+            color: #374151;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .admin-form-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+            .admin-form-actions .btn {
+                border-radius: 8px;
+                font-weight: 700;
+                min-width: 120px;
+            }
+
+        @@media (max-width: 767.98px) {
+            .admin-page-header {
+                flex-direction: column;
+            }
+
+            .admin-btn-main,
+            .admin-form-actions .btn {
+                width: 100%;
+            }
+
+            .admin-form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

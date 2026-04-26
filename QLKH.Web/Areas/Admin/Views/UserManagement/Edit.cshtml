@@ -5,39 +5,56 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">SỬA TÀI KHOẢN</h2>
+<div class="admin-account-page">
+    <div class="admin-page-header">
+        <div>
+            <h2 class="admin-page-title">SỬA TÀI KHOẢN</h2>
+        </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
+        <a asp-area="Admin"
+           asp-controller="UserManagement"
+           asp-action="Index"
+           class="btn btn-outline-secondary admin-btn-main">
+            Quay lại
+        </a>
+    </div>
+
+    <div class="admin-form-card">
+        <div class="admin-form-title">
+            <span>Thông tin tài khoản</span>
+        </div>
+
         <form asp-area="Admin" asp-controller="UserManagement" asp-action="Edit" method="post">
             @Html.AntiForgeryToken()
 
             <input type="hidden" asp-for="Id" />
 
-            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <div asp-validation-summary="All" class="text-danger admin-validation"></div>
 
-            <div class="mb-3">
-                <label asp-for="FullName" class="form-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label asp-for="FullName" class="form-label admin-label"></label>
+                    <input asp-for="FullName" class="form-control admin-input" />
+                    <span asp-validation-for="FullName" class="text-danger admin-field-error"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Email" class="form-label admin-label"></label>
+                    <input asp-for="Email" class="form-control admin-input" readonly />
+                    <input asp-for="Email" type="hidden" />
+                    <div class="admin-help-text">Email đăng nhập không được chỉnh sửa tại đây.</div>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Role" class="form-label admin-label"></label>
+                    <select asp-for="Role" asp-items="ViewBag.RoleList" class="form-select admin-input">
+                        <option value="">-- Chọn vai trò --</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger admin-field-error"></span>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" readonly />
-                <input asp-for="Email" type="hidden" />
-                <small class="text-muted">Email đăng nhập không được chỉnh sửa tại đây.</small>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Role" class="form-label"></label>
-                <select asp-for="Role" asp-items="ViewBag.RoleList" class="form-select">
-                    <option value="">-- Chọn vai trò --</option>
-                </select>
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-
-            <div class="d-flex gap-2">
+            <div class="admin-form-actions">
                 <button type="submit" class="btn btn-primary">
                     Xác nhận thay đổi
                 </button>
@@ -45,13 +62,137 @@
                 <a asp-area="Admin"
                    asp-controller="UserManagement"
                    asp-action="Index"
-                   class="btn btn-secondary">
+                   class="btn btn-outline-secondary">
                     Hủy
                 </a>
             </div>
         </form>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .admin-account-page {
+            color: #1f2937;
+        }
+
+        .admin-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .admin-page-title {
+            margin: 0;
+            color: #111827;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .admin-page-subtitle {
+            margin: 6px 0 0;
+            color: #6b7280;
+            font-size: 0.94rem;
+        }
+
+        .admin-btn-main {
+            border-radius: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+            padding: 9px 14px;
+        }
+
+        .admin-form-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .admin-form-title {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111827;
+            font-weight: 800;
+            background: #f9fafb;
+        }
+
+        .admin-form-card form {
+            padding: 16px;
+        }
+
+        .admin-label {
+            color: #374151;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .admin-input {
+            border-radius: 8px;
+            border-color: #d1d5db;
+            min-height: 40px;
+            font-size: 0.94rem;
+        }
+
+            .admin-input:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.12);
+            }
+
+        .admin-help-text {
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 0.84rem;
+        }
+
+        .admin-validation {
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+
+        .admin-field-error {
+            font-size: 0.84rem;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .admin-form-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+            .admin-form-actions .btn {
+                border-radius: 8px;
+                font-weight: 700;
+                min-width: 120px;
+            }
+
+        @@media (max-width: 767.98px) {
+            .admin-page-header {
+                flex-direction: column;
+            }
+
+            .admin-btn-main,
+            .admin-form-actions .btn {
+                width: 100%;
+            }
+
+            .admin-form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

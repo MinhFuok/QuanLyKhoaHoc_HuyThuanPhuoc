@@ -5,548 +5,1049 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h2 class="mb-4">CẤU HÌNH HỆ THỐNG</h2>
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
+<div class="admin-account-page admin-system-page">
+    <div class="admin-page-header">
+        <div>
+            <h2 class="admin-page-title">CẤU HÌNH HỆ THỐNG</h2>
+            <p class="admin-page-subtitle">
+                Quản lý thông tin website, banner, liên hệ, bảo trì và email hệ thống...
+            </p>
+        </div>
     </div>
-}
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <ul class="nav nav-tabs" id="systemSettingTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active"
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success admin-alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="admin-table-card admin-system-card">
+        <div class="admin-table-title">
+            <span>Thiết lập hệ thống</span>
+        </div>
+
+        <div class="admin-system-body">
+            <div class="admin-tabbar admin-system-tabs" id="systemSettingTabs" role="tablist">
+                <button class="nav-link admin-tab active"
                         id="website-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#website-pane"
                         type="button"
-                        role="tab">
+                        role="tab"
+                        aria-controls="website-pane"
+                        aria-selected="true">
                     Trang chủ
                 </button>
-            </li>
 
-            <li class="nav-item" role="presentation">
-                <button class="nav-link"
+                <button class="nav-link admin-tab"
                         id="banner-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#banner-pane"
                         type="button"
-                        role="tab">
+                        role="tab"
+                        aria-controls="banner-pane"
+                        aria-selected="false">
                     Banner
                 </button>
-            </li>
 
-            <li class="nav-item" role="presentation">
-                <button class="nav-link"
+                <button class="nav-link admin-tab"
                         id="contact-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#contact-pane"
                         type="button"
-                        role="tab">
+                        role="tab"
+                        aria-controls="contact-pane"
+                        aria-selected="false">
                     Liên hệ
                 </button>
-            </li>
 
-            <li class="nav-item" role="presentation">
-                <button class="nav-link"
+                <button class="nav-link admin-tab"
                         id="status-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#status-pane"
                         type="button"
-                        role="tab">
+                        role="tab"
+                        aria-controls="status-pane"
+                        aria-selected="false">
                     Bảo trì
                 </button>
-            </li>
 
-            <li class="nav-item" role="presentation">
-                <button class="nav-link"
+                <button class="nav-link admin-tab"
                         id="email-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#email-pane"
                         type="button"
-                        role="tab">
+                        role="tab"
+                        aria-controls="email-pane"
+                        aria-selected="false">
                     Email system
                 </button>
-            </li>
-        </ul>
-
-        <div class="tab-content border border-top-0 p-4" id="systemSettingTabsContent">
-
-            <!-- TAB: GIAO DIỆN WEBSITE -->
-            <div class="tab-pane fade show active" id="website-pane" role="tabpanel" aria-labelledby="website-tab">
-                <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
-                    @Html.AntiForgeryToken()
-                    <input asp-for="SystemSetting.Id" type="hidden" />
-
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SiteName" class="form-label"></label>
-                        <input asp-for="SystemSetting.SiteName" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SiteName" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.HomeBannerTitle" class="form-label"></label>
-                        <input asp-for="SystemSetting.HomeBannerTitle" class="form-control" />
-                        <span asp-validation-for="SystemSetting.HomeBannerTitle" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.HomeBannerSubtitle" class="form-label"></label>
-                        <textarea asp-for="SystemSetting.HomeBannerSubtitle" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="SystemSetting.HomeBannerSubtitle" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.FooterText" class="form-label"></label>
-                        <input asp-for="SystemSetting.FooterText" class="form-control" />
-                        <span asp-validation-for="SystemSetting.FooterText" class="text-danger"></span>
-                    </div>
-
-                    <hr class="my-4" />
-                    <h5 class="mb-3">Thẻ giới thiệu trang chủ</h5>
-
-                    <div class="border rounded p-3 mb-4">
-                        <h6 class="fw-bold mb-3">Thẻ 1</h6>
-                        <div class="row g-3">
-                            <div class="col-md-2">
-                                <label asp-for="SystemSetting.FeatureCard1Number" class="form-label">Số</label>
-                                <input asp-for="SystemSetting.FeatureCard1Number" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard1Number" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="SystemSetting.FeatureCard1Title" class="form-label">Tiêu đề</label>
-                                <input asp-for="SystemSetting.FeatureCard1Title" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard1Title" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="SystemSetting.FeatureCard1Description" class="form-label">Mô tả</label>
-                                <input asp-for="SystemSetting.FeatureCard1Description" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard1Description" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border rounded p-3 mb-4">
-                        <h6 class="fw-bold mb-3">Thẻ 2</h6>
-                        <div class="row g-3">
-                            <div class="col-md-2">
-                                <label asp-for="SystemSetting.FeatureCard2Number" class="form-label">Số</label>
-                                <input asp-for="SystemSetting.FeatureCard2Number" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard2Number" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="SystemSetting.FeatureCard2Title" class="form-label">Tiêu đề</label>
-                                <input asp-for="SystemSetting.FeatureCard2Title" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard2Title" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="SystemSetting.FeatureCard2Description" class="form-label">Mô tả</label>
-                                <input asp-for="SystemSetting.FeatureCard2Description" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard2Description" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border rounded p-3 mb-4">
-                        <h6 class="fw-bold mb-3">Thẻ 3</h6>
-                        <div class="row g-3">
-                            <div class="col-md-2">
-                                <label asp-for="SystemSetting.FeatureCard3Number" class="form-label">Số</label>
-                                <input asp-for="SystemSetting.FeatureCard3Number" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard3Number" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="SystemSetting.FeatureCard3Title" class="form-label">Tiêu đề</label>
-                                <input asp-for="SystemSetting.FeatureCard3Title" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard3Title" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="SystemSetting.FeatureCard3Description" class="form-label">Mô tả</label>
-                                <input asp-for="SystemSetting.FeatureCard3Description" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard3Description" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border rounded p-3 mb-4">
-                        <h6 class="fw-bold mb-3">Thẻ 4</h6>
-                        <div class="row g-3">
-                            <div class="col-md-2">
-                                <label asp-for="SystemSetting.FeatureCard4Number" class="form-label">Số</label>
-                                <input asp-for="SystemSetting.FeatureCard4Number" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard4Number" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="SystemSetting.FeatureCard4Title" class="form-label">Tiêu đề</label>
-                                <input asp-for="SystemSetting.FeatureCard4Title" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard4Title" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="SystemSetting.FeatureCard4Description" class="form-label">Mô tả</label>
-                                <input asp-for="SystemSetting.FeatureCard4Description" class="form-control" />
-                                <span asp-validation-for="SystemSetting.FeatureCard4Description" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- giữ dữ liệu các tab khác -->
-                    <input asp-for="SystemSetting.ContactEmail" type="hidden" />
-                    <input asp-for="SystemSetting.ContactPhone" type="hidden" />
-                    <input asp-for="SystemSetting.ContactAddress" type="hidden" />
-                    <input asp-for="SystemSetting.FacebookUrl" type="hidden" />
-                    <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
-                    <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
-                    <input asp-for="SystemSetting.XUrl" type="hidden" />
-                    <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
-                    <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
-                    <input asp-for="SystemSetting.EnableEmail" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpServer" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpPort" type="hidden" />
-                    <input asp-for="SystemSetting.SenderName" type="hidden" />
-                    <input asp-for="SystemSetting.SenderEmail" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpUsername" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpPassword" type="hidden" />
-
-                    <button type="submit" class="btn btn-primary">Xác nhận lưu hệ thống </button>
-                </form>
             </div>
 
-            <!-- TAB: BANNER -->
-            <div class="tab-pane fade" id="banner-pane" role="tabpanel" aria-labelledby="banner-tab">
-                <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
-                    <h5 class="mb-0">Quản lý banner</h5>
-                    <a asp-area="Admin"
-                       asp-controller="HomeBannerSlide"
-                       asp-action="Create"
-                       class="btn btn-primary btn-sm">
-                        + Thêm banner mới
-                    </a>
+            <div class="tab-content admin-system-tab-content" id="systemSettingTabsContent">
+
+                <!-- TAB: GIAO DIỆN WEBSITE -->
+                <div class="tab-pane fade show active" id="website-pane" role="tabpanel" aria-labelledby="website-tab">
+                    <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="SystemSetting.Id" type="hidden" />
+
+                        <div asp-validation-summary="All" class="text-danger admin-validation"></div>
+
+                        <div class="admin-section-title">Thông tin trang chủ</div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="SystemSetting.SiteName" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SiteName" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SiteName" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="SystemSetting.HomeBannerTitle" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.HomeBannerTitle" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.HomeBannerTitle" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="SystemSetting.HomeBannerSubtitle" class="form-label admin-label"></label>
+                                <textarea asp-for="SystemSetting.HomeBannerSubtitle"
+                                          class="form-control admin-input admin-textarea"
+                                          rows="3"></textarea>
+                                <span asp-validation-for="SystemSetting.HomeBannerSubtitle" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="SystemSetting.FooterText" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.FooterText" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.FooterText" class="text-danger admin-field-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="admin-section-divider"></div>
+
+                        <div class="admin-section-title">Thẻ giới thiệu trang chủ</div>
+
+                        <div class="admin-feature-card">
+                            <div class="admin-feature-title">Thẻ 1</div>
+                            <div class="row g-3">
+                                <div class="col-md-2">
+                                    <label asp-for="SystemSetting.FeatureCard1Number" class="form-label admin-label">Số</label>
+                                    <input asp-for="SystemSetting.FeatureCard1Number" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard1Number" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="SystemSetting.FeatureCard1Title" class="form-label admin-label">Tiêu đề</label>
+                                    <input asp-for="SystemSetting.FeatureCard1Title" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard1Title" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="SystemSetting.FeatureCard1Description" class="form-label admin-label">Mô tả</label>
+                                    <input asp-for="SystemSetting.FeatureCard1Description" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard1Description" class="text-danger admin-field-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-feature-card">
+                            <div class="admin-feature-title">Thẻ 2</div>
+                            <div class="row g-3">
+                                <div class="col-md-2">
+                                    <label asp-for="SystemSetting.FeatureCard2Number" class="form-label admin-label">Số</label>
+                                    <input asp-for="SystemSetting.FeatureCard2Number" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard2Number" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="SystemSetting.FeatureCard2Title" class="form-label admin-label">Tiêu đề</label>
+                                    <input asp-for="SystemSetting.FeatureCard2Title" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard2Title" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="SystemSetting.FeatureCard2Description" class="form-label admin-label">Mô tả</label>
+                                    <input asp-for="SystemSetting.FeatureCard2Description" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard2Description" class="text-danger admin-field-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-feature-card">
+                            <div class="admin-feature-title">Thẻ 3</div>
+                            <div class="row g-3">
+                                <div class="col-md-2">
+                                    <label asp-for="SystemSetting.FeatureCard3Number" class="form-label admin-label">Số</label>
+                                    <input asp-for="SystemSetting.FeatureCard3Number" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard3Number" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="SystemSetting.FeatureCard3Title" class="form-label admin-label">Tiêu đề</label>
+                                    <input asp-for="SystemSetting.FeatureCard3Title" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard3Title" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="SystemSetting.FeatureCard3Description" class="form-label admin-label">Mô tả</label>
+                                    <input asp-for="SystemSetting.FeatureCard3Description" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard3Description" class="text-danger admin-field-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-feature-card">
+                            <div class="admin-feature-title">Thẻ 4</div>
+                            <div class="row g-3">
+                                <div class="col-md-2">
+                                    <label asp-for="SystemSetting.FeatureCard4Number" class="form-label admin-label">Số</label>
+                                    <input asp-for="SystemSetting.FeatureCard4Number" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard4Number" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="SystemSetting.FeatureCard4Title" class="form-label admin-label">Tiêu đề</label>
+                                    <input asp-for="SystemSetting.FeatureCard4Title" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard4Title" class="text-danger admin-field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="SystemSetting.FeatureCard4Description" class="form-label admin-label">Mô tả</label>
+                                    <input asp-for="SystemSetting.FeatureCard4Description" class="form-control admin-input" />
+                                    <span asp-validation-for="SystemSetting.FeatureCard4Description" class="text-danger admin-field-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- giữ dữ liệu các tab khác -->
+                        <input asp-for="SystemSetting.ContactEmail" type="hidden" />
+                        <input asp-for="SystemSetting.ContactPhone" type="hidden" />
+                        <input asp-for="SystemSetting.ContactAddress" type="hidden" />
+                        <input asp-for="SystemSetting.FacebookUrl" type="hidden" />
+                        <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
+                        <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
+                        <input asp-for="SystemSetting.XUrl" type="hidden" />
+                        <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
+                        <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
+                        <input asp-for="SystemSetting.EnableEmail" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpServer" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpPort" type="hidden" />
+                        <input asp-for="SystemSetting.SenderName" type="hidden" />
+                        <input asp-for="SystemSetting.SenderEmail" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpUsername" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpPassword" type="hidden" />
+
+                        <div class="admin-form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                Xác nhận lưu hệ thống
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped align-middle">
-                        <thead>
-                            <tr>
-                                <th style="width:90px;">Thứ tự</th>
-                                <th>Tiêu đề</th>
-                                <th style="width:150px;">Ảnh</th>
-                                <th>Mô tả ảnh</th>
-                                <th style="width:130px;">Trạng thái</th>
-                                <th style="width:240px;">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.BannerSlides != null && Model.BannerSlides.Any())
-                            {
-                                @foreach (var item in Model.BannerSlides.OrderBy(x => x.DisplayOrder))
+                <!-- TAB: BANNER -->
+                <div class="tab-pane fade" id="banner-pane" role="tabpanel" aria-labelledby="banner-tab">
+                    <div class="admin-tab-header">
+                        <h5>Quản lý banner</h5>
+
+                        <a asp-area="Admin"
+                           asp-controller="HomeBannerSlide"
+                           asp-action="Create"
+                           class="btn btn-primary admin-btn-main">
+                            + Thêm banner mới
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table admin-table admin-banner-table align-middle mb-0">
+                            <colgroup>
+                                <col style="width: 8%;" />
+                                <col style="width: 20%;" />
+                                <col style="width: 14%;" />
+                                <col style="width: 20%;" />
+                                <col style="width: 14%;" />
+                                <col style="width: 24%;" />
+                            </colgroup>
+
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Thứ tự</th>
+                                    <th>Tiêu đề</th>
+                                    <th class="text-center">Ảnh</th>
+                                    <th>Mô tả ảnh</th>
+                                    <th class="text-center">Trạng thái</th>
+                                    <th class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model.BannerSlides != null && Model.BannerSlides.Any())
+                                {
+                                    foreach (var item in Model.BannerSlides.OrderBy(x => x.DisplayOrder))
+                                    {
+                                        <tr>
+                                            <td class="text-center">
+                                                <span class="admin-code">@item.DisplayOrder</span>
+                                            </td>
+
+                                            <td>
+                                                <div class="admin-name">@item.Title</div>
+                                            </td>
+
+                                            <td class="text-center">
+                                                @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                                {
+                                                    <img src="@item.ImageUrl"
+                                                         alt="@item.AltText"
+                                                         class="admin-banner-img" />
+                                                }
+                                            </td>
+
+                                            <td>
+                                                <div class="admin-text-limit">@item.AltText</div>
+                                            </td>
+
+                                            <td class="text-center">
+                                                @if (item.IsActive)
+                                                {
+                                                    <span class="admin-badge admin-badge-success">Đang hiển thị</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="admin-badge admin-badge-muted">Đã ẩn</span>
+                                                }
+                                            </td>
+
+                                            <td class="text-center">
+                                                <div class="admin-actions admin-banner-actions">
+                                                    <form asp-area="Admin"
+                                                          asp-controller="HomeBannerSlide"
+                                                          asp-action="MoveUp"
+                                                          method="post">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa lên">↑</button>
+                                                    </form>
+
+                                                    <form asp-area="Admin"
+                                                          asp-controller="HomeBannerSlide"
+                                                          asp-action="MoveDown"
+                                                          method="post">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa xuống">↓</button>
+                                                    </form>
+
+                                                    <a asp-area="Admin"
+                                                       asp-controller="HomeBannerSlide"
+                                                       asp-action="Edit"
+                                                       asp-route-id="@item.Id"
+                                                       class="btn btn-outline-primary btn-sm">
+                                                        Sửa
+                                                    </a>
+
+                                                    <a asp-area="Admin"
+                                                       asp-controller="HomeBannerSlide"
+                                                       asp-action="Delete"
+                                                       asp-route-id="@item.Id"
+                                                       class="btn btn-outline-danger btn-sm">
+                                                        Xóa
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
                                 {
                                     <tr>
-                                        <td>@item.DisplayOrder</td>
-                                        <td>@item.Title</td>
-                                        <td>
-                                            @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
-                                            {
-                                                <img src="@item.ImageUrl"
-                                                     alt="@item.AltText"
-                                                     style="height:70px; max-width:120px; object-fit:cover; border-radius:6px; border:1px solid #ddd;" />
-                                            }
-                                        </td>
-                                        <td>@item.AltText</td>
-                                        <td>
-                                            @if (item.IsActive)
-                                            {
-                                                <span class="badge bg-success">Đang hiển thị</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-secondary">Đã ẩn</span>
-                                            }
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-wrap gap-1">
-                                                <form asp-area="Admin"
-                                                      asp-controller="HomeBannerSlide"
-                                                      asp-action="MoveUp"
-                                                      method="post"
-                                                      class="d-inline">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="id" value="@item.Id" />
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa lên">↑</button>
-                                                </form>
-
-                                                <form asp-area="Admin"
-                                                      asp-controller="HomeBannerSlide"
-                                                      asp-action="MoveDown"
-                                                      method="post"
-                                                      class="d-inline">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="id" value="@item.Id" />
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa xuống">↓</button>
-                                                </form>
-
-                                                <a asp-area="Admin"
-                                                   asp-controller="HomeBannerSlide"
-                                                   asp-action="Edit"
-                                                   asp-route-id="@item.Id"
-                                                   class="btn btn-warning btn-sm">
-                                                    Sửa
-                                                </a>
-
-                                                <a asp-area="Admin"
-                                                   asp-controller="HomeBannerSlide"
-                                                   asp-action="Delete"
-                                                   asp-route-id="@item.Id"
-                                                   class="btn btn-danger btn-sm">
-                                                    Xóa
-                                                </a>
-                                            </div>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            Chưa có slide banner nào.
                                         </td>
                                     </tr>
                                 }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">
-                                        Chưa có slide banner nào.
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- TAB: LIÊN HỆ -->
+                <div class="tab-pane fade" id="contact-pane" role="tabpanel" aria-labelledby="contact-tab">
+                    <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="SystemSetting.Id" type="hidden" />
+
+                        <input asp-for="SystemSetting.SiteName" type="hidden" />
+                        <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
+                        <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
+                        <input asp-for="SystemSetting.FooterText" type="hidden" />
+
+                        <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
+
+                        <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
+                        <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
+                        <input asp-for="SystemSetting.EnableEmail" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpServer" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpPort" type="hidden" />
+                        <input asp-for="SystemSetting.SenderName" type="hidden" />
+                        <input asp-for="SystemSetting.SenderEmail" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpUsername" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpPassword" type="hidden" />
+
+                        <div asp-validation-summary="All" class="text-danger admin-validation"></div>
+
+                        <div class="admin-section-title">Thông tin liên hệ</div>
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.ContactEmail" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.ContactEmail" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.ContactEmail" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.ContactPhone" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.ContactPhone" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.ContactPhone" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="SystemSetting.ContactAddress" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.ContactAddress" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.ContactAddress" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.FacebookUrl" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.FacebookUrl" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.FacebookUrl" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.YoutubeUrl" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.YoutubeUrl" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.YoutubeUrl" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.TiktokUrl" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.TiktokUrl" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.TiktokUrl" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.XUrl" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.XUrl" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.XUrl" class="text-danger admin-field-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                Lưu cấu hình
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TAB: TRẠNG THÁI WEBSITE -->
+                <div class="tab-pane fade" id="status-pane" role="tabpanel" aria-labelledby="status-tab">
+                    <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="SystemSetting.Id" type="hidden" />
+
+                        <input asp-for="SystemSetting.SiteName" type="hidden" />
+                        <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
+                        <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
+                        <input asp-for="SystemSetting.FooterText" type="hidden" />
+
+                        <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
+
+                        <input asp-for="SystemSetting.ContactEmail" type="hidden" />
+                        <input asp-for="SystemSetting.ContactPhone" type="hidden" />
+                        <input asp-for="SystemSetting.ContactAddress" type="hidden" />
+                        <input asp-for="SystemSetting.FacebookUrl" type="hidden" />
+                        <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
+                        <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
+                        <input asp-for="SystemSetting.XUrl" type="hidden" />
+
+                        <input asp-for="SystemSetting.EnableEmail" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpServer" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpPort" type="hidden" />
+                        <input asp-for="SystemSetting.SenderName" type="hidden" />
+                        <input asp-for="SystemSetting.SenderEmail" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpUsername" type="hidden" />
+                        <input asp-for="SystemSetting.SmtpPassword" type="hidden" />
+
+                        <div asp-validation-summary="All" class="text-danger admin-validation"></div>
+
+                        <div class="admin-section-title">Trạng thái website</div>
+
+                        <div class="admin-check-row mb-3">
+                            <input asp-for="SystemSetting.IsWebsiteEnabled" class="form-check-input admin-check-input" />
+                            <label asp-for="SystemSetting.IsWebsiteEnabled" class="form-check-label admin-check-label"></label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SystemSetting.MaintenanceMessage" class="form-label admin-label"></label>
+                            <textarea asp-for="SystemSetting.MaintenanceMessage"
+                                      class="form-control admin-input admin-textarea"
+                                      rows="4"></textarea>
+                            <span asp-validation-for="SystemSetting.MaintenanceMessage" class="text-danger admin-field-error"></span>
+                        </div>
+
+                        <div class="admin-form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                Lưu cấu hình
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TAB: EMAIL HỆ THỐNG -->
+                <div class="tab-pane fade" id="email-pane" role="tabpanel" aria-labelledby="email-tab">
+                    <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="SystemSetting.Id" type="hidden" />
+
+                        <input asp-for="SystemSetting.SiteName" type="hidden" />
+                        <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
+                        <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
+                        <input asp-for="SystemSetting.FooterText" type="hidden" />
+
+                        <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
+                        <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
+
+                        <input asp-for="SystemSetting.ContactEmail" type="hidden" />
+                        <input asp-for="SystemSetting.ContactPhone" type="hidden" />
+                        <input asp-for="SystemSetting.ContactAddress" type="hidden" />
+                        <input asp-for="SystemSetting.FacebookUrl" type="hidden" />
+                        <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
+                        <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
+                        <input asp-for="SystemSetting.XUrl" type="hidden" />
+
+                        <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
+                        <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
+
+                        <div asp-validation-summary="All" class="text-danger admin-validation"></div>
+
+                        <div class="admin-section-title">Email hệ thống</div>
+
+                        <div class="admin-check-row mb-3">
+                            <input asp-for="SystemSetting.EnableEmail" class="form-check-input admin-check-input" />
+                            <label asp-for="SystemSetting.EnableEmail" class="form-check-label admin-check-label"></label>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.SmtpServer" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SmtpServer" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SmtpServer" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.SmtpPort" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SmtpPort" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SmtpPort" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.SenderName" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SenderName" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SenderName" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.SenderEmail" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SenderEmail" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SenderEmail" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.SmtpUsername" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SmtpUsername" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SmtpUsername" class="text-danger admin-field-error"></span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for="SystemSetting.SmtpPassword" class="form-label admin-label"></label>
+                                <input asp-for="SystemSetting.SmtpPassword" class="form-control admin-input" />
+                                <span asp-validation-for="SystemSetting.SmtpPassword" class="text-danger admin-field-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                Lưu cấu hình
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
-
-            <!-- TAB: LIÊN HỆ -->
-            <div class="tab-pane fade" id="contact-pane" role="tabpanel" aria-labelledby="contact-tab">
-                <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
-                    @Html.AntiForgeryToken()
-                    <input asp-for="SystemSetting.Id" type="hidden" />
-
-                    <input asp-for="SystemSetting.SiteName" type="hidden" />
-                    <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
-                    <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
-                    <input asp-for="SystemSetting.FooterText" type="hidden" />
-
-                    <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
-
-                    <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
-                    <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
-                    <input asp-for="SystemSetting.EnableEmail" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpServer" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpPort" type="hidden" />
-                    <input asp-for="SystemSetting.SenderName" type="hidden" />
-                    <input asp-for="SystemSetting.SenderEmail" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpUsername" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpPassword" type="hidden" />
-
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.ContactEmail" class="form-label"></label>
-                        <input asp-for="SystemSetting.ContactEmail" class="form-control" />
-                        <span asp-validation-for="SystemSetting.ContactEmail" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.ContactPhone" class="form-label"></label>
-                        <input asp-for="SystemSetting.ContactPhone" class="form-control" />
-                        <span asp-validation-for="SystemSetting.ContactPhone" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.ContactAddress" class="form-label"></label>
-                        <input asp-for="SystemSetting.ContactAddress" class="form-control" />
-                        <span asp-validation-for="SystemSetting.ContactAddress" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.FacebookUrl" class="form-label"></label>
-                        <input asp-for="SystemSetting.FacebookUrl" class="form-control" />
-                        <span asp-validation-for="SystemSetting.FacebookUrl" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.YoutubeUrl" class="form-label"></label>
-                        <input asp-for="SystemSetting.YoutubeUrl" class="form-control" />
-                        <span asp-validation-for="SystemSetting.YoutubeUrl" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.TiktokUrl" class="form-label"></label>
-                        <input asp-for="SystemSetting.TiktokUrl" class="form-control" />
-                        <span asp-validation-for="SystemSetting.TiktokUrl" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.XUrl" class="form-label"></label>
-                        <input asp-for="SystemSetting.XUrl" class="form-control" />
-                        <span asp-validation-for="SystemSetting.XUrl" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Lưu cấu hình</button>
-                </form>
-            </div>
-
-            <!-- TAB: TRẠNG THÁI WEBSITE -->
-            <div class="tab-pane fade" id="status-pane" role="tabpanel" aria-labelledby="status-tab">
-                <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
-                    @Html.AntiForgeryToken()
-                    <input asp-for="SystemSetting.Id" type="hidden" />
-
-                    <input asp-for="SystemSetting.SiteName" type="hidden" />
-                    <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
-                    <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
-                    <input asp-for="SystemSetting.FooterText" type="hidden" />
-
-                    <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
-
-                    <input asp-for="SystemSetting.ContactEmail" type="hidden" />
-                    <input asp-for="SystemSetting.ContactPhone" type="hidden" />
-                    <input asp-for="SystemSetting.ContactAddress" type="hidden" />
-                    <input asp-for="SystemSetting.FacebookUrl" type="hidden" />
-                    <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
-                    <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
-                    <input asp-for="SystemSetting.XUrl" type="hidden" />
-
-                    <input asp-for="SystemSetting.EnableEmail" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpServer" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpPort" type="hidden" />
-                    <input asp-for="SystemSetting.SenderName" type="hidden" />
-                    <input asp-for="SystemSetting.SenderEmail" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpUsername" type="hidden" />
-                    <input asp-for="SystemSetting.SmtpPassword" type="hidden" />
-
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
-                    <div class="form-check mb-3">
-                        <input asp-for="SystemSetting.IsWebsiteEnabled" class="form-check-input" />
-                        <label asp-for="SystemSetting.IsWebsiteEnabled" class="form-check-label"></label>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.MaintenanceMessage" class="form-label"></label>
-                        <textarea asp-for="SystemSetting.MaintenanceMessage" class="form-control" rows="4"></textarea>
-                        <span asp-validation-for="SystemSetting.MaintenanceMessage" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Lưu cấu hình</button>
-                </form>
-            </div>
-
-            <!-- TAB: EMAIL HỆ THỐNG -->
-            <div class="tab-pane fade" id="email-pane" role="tabpanel" aria-labelledby="email-tab">
-                <form asp-area="Admin" asp-controller="SystemSettings" asp-action="Index" method="post">
-                    @Html.AntiForgeryToken()
-                    <input asp-for="SystemSetting.Id" type="hidden" />
-
-                    <input asp-for="SystemSetting.SiteName" type="hidden" />
-                    <input asp-for="SystemSetting.HomeBannerTitle" type="hidden" />
-                    <input asp-for="SystemSetting.HomeBannerSubtitle" type="hidden" />
-                    <input asp-for="SystemSetting.FooterText" type="hidden" />
-
-                    <input asp-for="SystemSetting.FeatureCard1Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard1Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard1Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard2Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard3Description" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Number" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Title" type="hidden" />
-                    <input asp-for="SystemSetting.FeatureCard4Description" type="hidden" />
-
-                    <input asp-for="SystemSetting.ContactEmail" type="hidden" />
-                    <input asp-for="SystemSetting.ContactPhone" type="hidden" />
-                    <input asp-for="SystemSetting.ContactAddress" type="hidden" />
-                    <input asp-for="SystemSetting.FacebookUrl" type="hidden" />
-                    <input asp-for="SystemSetting.YoutubeUrl" type="hidden" />
-                    <input asp-for="SystemSetting.TiktokUrl" type="hidden" />
-                    <input asp-for="SystemSetting.XUrl" type="hidden" />
-
-                    <input asp-for="SystemSetting.IsWebsiteEnabled" type="hidden" />
-                    <input asp-for="SystemSetting.MaintenanceMessage" type="hidden" />
-
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
-                    <div class="form-check mb-3">
-                        <input asp-for="SystemSetting.EnableEmail" class="form-check-input" />
-                        <label asp-for="SystemSetting.EnableEmail" class="form-check-label"></label>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SmtpServer" class="form-label"></label>
-                        <input asp-for="SystemSetting.SmtpServer" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SmtpServer" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SmtpPort" class="form-label"></label>
-                        <input asp-for="SystemSetting.SmtpPort" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SmtpPort" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SenderName" class="form-label"></label>
-                        <input asp-for="SystemSetting.SenderName" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SenderName" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SenderEmail" class="form-label"></label>
-                        <input asp-for="SystemSetting.SenderEmail" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SenderEmail" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SmtpUsername" class="form-label"></label>
-                        <input asp-for="SystemSetting.SmtpUsername" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SmtpUsername" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="SystemSetting.SmtpPassword" class="form-label"></label>
-                        <input asp-for="SystemSetting.SmtpPassword" class="form-control" />
-                        <span asp-validation-for="SystemSetting.SmtpPassword" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Lưu cấu hình</button>
-                </form>
-            </div>
-
         </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .admin-account-page {
+            color: #1f2937;
+        }
+
+        .admin-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .admin-page-title {
+            margin: 0;
+            color: #111827;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .admin-page-subtitle {
+            margin: 6px 0 0;
+            color: #6b7280;
+            font-size: 0.94rem;
+        }
+
+        .admin-btn-main {
+            border-radius: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+            padding: 9px 14px;
+        }
+
+        .admin-alert {
+            border-radius: 8px;
+            border: 0;
+            margin-bottom: 14px;
+        }
+
+        .admin-table-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .admin-table-title {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111827;
+            font-weight: 800;
+            background: #f9fafb;
+        }
+
+        .admin-system-body {
+            padding: 16px;
+        }
+
+        .admin-tabbar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+            padding: 6px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px 10px 0 0;
+            background: #ffffff;
+            border-bottom: 0;
+        }
+
+        .admin-tab {
+            padding: 8px 13px;
+            border-radius: 8px !important;
+            border: 0 !important;
+            background: transparent !important;
+            color: #4b5563 !important;
+            font-size: 0.92rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            .admin-tab:hover {
+                background: #f3f4f6 !important;
+                color: #111827 !important;
+            }
+
+            .admin-tab.active {
+                background: #111827 !important;
+                color: #ffffff !important;
+            }
+
+        .admin-system-tab-content {
+            border: 1px solid #e5e7eb;
+            border-top: 0;
+            border-radius: 0 0 10px 10px;
+            padding: 18px;
+            background: #ffffff;
+        }
+
+        .admin-section-title {
+            color: #111827;
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .admin-section-divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 22px 0 18px;
+        }
+
+        .admin-label {
+            color: #374151;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .admin-input {
+            border-radius: 8px;
+            border-color: #d1d5db;
+            min-height: 40px;
+            font-size: 0.94rem;
+        }
+
+            .admin-input:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.12);
+            }
+
+        .admin-textarea {
+            resize: vertical;
+        }
+
+        .admin-validation {
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+
+        .admin-field-error {
+            font-size: 0.84rem;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .admin-feature-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #f9fafb;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+
+        .admin-feature-title {
+            color: #374151;
+            font-weight: 800;
+            font-size: 0.92rem;
+            margin-bottom: 12px;
+        }
+
+        .admin-tab-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+            .admin-tab-header h5 {
+                margin: 0;
+                color: #111827;
+                font-size: 1rem;
+                font-weight: 800;
+            }
+
+            .admin-tab-header .admin-btn-main {
+                min-height: 38px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+        .admin-table {
+            width: 100%;
+            table-layout: fixed;
+            margin-bottom: 0;
+        }
+
+            .admin-table thead th {
+                background: #f9fafb;
+                color: #374151;
+                font-size: 0.78rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.035em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 12px;
+                white-space: nowrap;
+                vertical-align: middle;
+            }
+
+            .admin-table tbody td {
+                padding: 14px 12px;
+                border-bottom: 1px solid #edf0f3;
+                vertical-align: middle;
+                font-size: 0.92rem;
+                word-break: break-word;
+            }
+
+            .admin-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+            .admin-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+        .admin-code {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 46px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #111827;
+            font-size: 0.82rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .admin-name {
+            color: #111827;
+            font-weight: 700;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .admin-text-limit {
+            color: #4b5563;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .admin-banner-img {
+            height: 70px;
+            max-width: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            line-height: 1.25;
+            white-space: normal;
+            text-align: center;
+        }
+
+        .admin-badge-success {
+            background: #ecfdf5;
+            color: #166534;
+        }
+
+        .admin-badge-muted {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+            .admin-actions form {
+                margin: 0;
+            }
+
+            .admin-actions .btn {
+                min-width: 46px;
+                border-radius: 7px;
+                font-size: 0.8rem;
+                font-weight: 700;
+                white-space: nowrap;
+                padding: 6px 10px;
+            }
+
+        .admin-check-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+
+        .admin-check-input {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+        }
+
+        .admin-check-label {
+            color: #374151;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .admin-form-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+            .admin-form-actions .btn {
+                border-radius: 8px;
+                font-weight: 700;
+                min-width: 150px;
+            }
+
+        .admin-system-tab-content .tab-pane {
+            display: none;
+        }
+
+            .admin-system-tab-content .tab-pane.active {
+                display: block;
+            }
+        @@media (max-width: 1199.98px) {
+            .admin-banner-table {
+                min-width: 950px;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .admin-page-header {
+                flex-direction: column;
+            }
+
+            .admin-tabbar {
+                flex-direction: column;
+            }
+
+            .admin-tab {
+                width: 100%;
+            }
+
+            .admin-system-tab-content {
+                border-top: 1px solid #e5e7eb;
+                border-radius: 10px;
+            }
+
+            .admin-tab-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+                .admin-tab-header .admin-btn-main {
+                    width: 100%;
+                }
+
+            .admin-form-actions {
+                flex-direction: column;
+            }
+
+                .admin-form-actions .btn {
+                    width: 100%;
+                }
+        }
+    </style>
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}   
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabs = document.querySelectorAll("#systemSettingTabs .admin-tab");
+            const panes = document.querySelectorAll("#systemSettingTabsContent .tab-pane");
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    const targetSelector = tab.getAttribute("data-bs-target");
+                    const targetPane = document.querySelector(targetSelector);
+
+                    if (!targetPane) return;
+
+                    tabs.forEach(function (item) {
+                        item.classList.remove("active");
+                        item.setAttribute("aria-selected", "false");
+                    });
+
+                    panes.forEach(function (pane) {
+                        pane.classList.remove("show", "active");
+                        pane.style.display = "none";
+                    });
+
+                    tab.classList.add("active");
+                    tab.setAttribute("aria-selected", "true");
+
+                    targetPane.classList.add("show", "active");
+                    targetPane.style.display = "block";
+                });
+            });
+
+            panes.forEach(function (pane) {
+                if (!pane.classList.contains("active")) {
+                    pane.style.display = "none";
+                } else {
+                    pane.style.display = "block";
+                }
+            });
+        });
+    </script>
+}

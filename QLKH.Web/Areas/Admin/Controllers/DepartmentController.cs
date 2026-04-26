@@ -18,9 +18,12 @@ namespace QLKH.Web.Areas.Admin.Controllers
             _departmentService = departmentService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword)
         {
             var departments = await _departmentService.GetAllAsync();
+
+            ViewBag.Keyword = keyword;
+
             return View(departments);
         }
 

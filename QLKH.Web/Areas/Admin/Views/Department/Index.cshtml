@@ -4,155 +4,585 @@
     ViewData["Title"] = "Chương trình đào tạo";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 
-    var parentDepartments = Model?
+    var keyword = (ViewBag.Keyword as string ?? "").Trim();
+
+    var allDepartments = Model?.ToList() ?? new List<QLKH.Domain.Entities.Department>();
+
+    var allParents = allDepartments
         .Where(d => d.ParentDepartmentId == null)
         .OrderBy(d => d.DepartmentCode)
-        .ToList() ?? new List<QLKH.Domain.Entities.Department>();
+        .ToList();
 
-    var childDepartments = Model?
+    var allChildren = allDepartments
         .Where(d => d.ParentDepartmentId != null)
         .OrderBy(d => d.ParentDepartmentId)
         .ThenBy(d => d.DepartmentCode)
-        .ToList() ?? new List<QLKH.Domain.Entities.Department>();
+        .ToList();
+
+    var hasKeyword = !string.IsNullOrWhiteSpace(keyword);
+
+    var parentDepartments = allParents;
+    var childDepartments = allChildren;
+
+    if (hasKeyword)
+    {
+        var lowerKeyword = keyword.ToLower();
+
+        var matchedParentIds = allParents
+            .Where(p => (p.DepartmentName ?? "").ToLower().Contains(lowerKeyword))
+            .Select(p => p.Id)
+            .ToHashSet();
+
+        var matchedChildren = allChildren
+            .Where(c => (c.DepartmentName ?? "").ToLower().Contains(lowerKeyword))
+            .ToList();
+
+        var parentIdsFromMatchedChildren = matchedChildren
+            .Where(c => c.ParentDepartmentId.HasValue)
+            .Select(c => c.ParentDepartmentId!.Value)
+            .ToHashSet();
+
+        var finalParentIds = matchedParentIds
+            .Union(parentIdsFromMatchedChildren)
+            .ToHashSet();
+
+        parentDepartments = allParents
+            .Where(p => finalParentIds.Contains(p.Id))
+            .OrderBy(p => p.DepartmentCode)
+            .ToList();
+
+        childDepartments = allChildren
+            .Where(c =>
+                c.ParentDepartmentId.HasValue &&
+                (
+                    matchedParentIds.Contains(c.ParentDepartmentId.Value) ||
+                    (c.DepartmentName ?? "").ToLower().Contains(lowerKeyword)
+                ))
+            .OrderBy(c => c.ParentDepartmentId)
+            .ThenBy(c => c.DepartmentCode)
+            .ToList();
+    }
 }
 
-<h2 class="mb-4">CHƯƠNG TRÌNH ĐÀO TẠO</h2>
+<div class="admin-account-page admin-program-page">
+    <div class="admin-page-header">
+        <div>
+            <h2 class="admin-page-title">CHƯƠNG TRÌNH ĐÀO TẠO</h2>
+            <p class="admin-page-subtitle">
+                Quản lý danh sách chương trình và khóa đào tạo của nền tảng...
+            </p>
+        </div>
 
-<div class="mb-3">
-    <a asp-area="Admin" asp-controller="Department" asp-action="Create" class="btn btn-primary">
-        + Thêm chương trình
-    </a>
-</div>
+        <a asp-area="Admin"
+           asp-controller="Department"
+           asp-action="Create"
+           class="btn btn-primary admin-btn-main">
+            + Thêm chương trình
+        </a>
+    </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <table class="table table-bordered table-striped align-middle">
-            <thead>
-                <tr>
-                    <th style="width: 90px;">Mã</th>
-                    <th>Tên chương trình</th>
-                    <th>Mô tả</th>
-                    <th style="width: 120px;">Loại</th>
-                    <th style="width: 180px;">Thuộc nhóm</th>
-                    <th style="width: 140px;">Trạng thái</th>
-                    <th style="width: 160px;">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (parentDepartments.Any())
-                {
-                    foreach (var parent in parentDepartments)
+    <div class="admin-filter-card">
+        <form asp-area="Admin"
+              asp-controller="Department"
+              asp-action="Index"
+              method="get">
+
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-lg-8">
+                    <label class="form-label admin-label">Tìm theo tên chương trình hoặc khóa</label>
+                    <input type="text"
+                           name="keyword"
+                           value="@keyword"
+                           class="form-control admin-input"
+                           placeholder="Nhập tên chương trình hoặc khóa..." />
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <div class="admin-filter-actions">
+                        <button type="submit" class="btn btn-primary">
+                            Lọc
+                        </button>
+
+                        <a asp-area="Admin"
+                           asp-controller="Department"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Bỏ lọc
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        @if (hasKeyword)
+        {
+            <div class="admin-filter-note">
+                Đang lọc theo từ khóa: <strong>@keyword</strong>
+            </div>
+        }
+    </div>
+
+    <div class="admin-table-card">
+        <div class="admin-table-title">
+            <span>Danh sách chương trình/khóa</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table admin-table department-table align-middle mb-0">
+                <colgroup>
+                    <col style="width: 8%;" />
+                    <col style="width: 22%;" />
+                    <col style="width: 28%;" />
+                    <col style="width: 12%;" />
+                    <col style="width: 12%;" />
+                    <col style="width: 17%;" />
+                </colgroup>
+
+                <thead>
+                    <tr>
+                        <th class="text-center">Mã</th>
+                        <th class="text-center">Tên chương trình</th>
+                        <th class="text-center">Mô tả</th>
+                        <th class="text-center">Loại</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (parentDepartments.Any())
                     {
-                        var children = childDepartments
-                        .Where(c => c.ParentDepartmentId == parent.Id)
-                        .ToList();
-
-                        var groupId = $"group-{parent.Id}";
-
-                        <tr class="table-light fw-bold">
-                            <td>@parent.DepartmentCode</td>
-                            <td>
-                                <span class="toggle-arrow me-2"
-                                      data-target="@groupId"
-                                      style="cursor:pointer; user-select:none; display:inline-block; width:16px; color:#6c757d; font-size:14px;">
-                                    ▼
-                                </span>
-                                @parent.DepartmentName
-                            </td>
-                            <td>@parent.Description</td>
-                            <td>
-                                <span class="badge bg-primary">Chương trình</span>
-                            </td>
-                            <td>-</td>
-                            <td>
-                                @if (parent.IsActive)
-                                {
-                                    <span class="badge bg-success">Đang sử dụng</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Ngưng sử dụng</span>
-                                }
-                            </td>
-                            <td>
-                                <a asp-area="Admin"
-                                   asp-controller="Department"
-                                   asp-action="Edit"
-                                   asp-route-id="@parent.Id"
-                                   class="btn btn-warning btn-sm">
-                                    Sửa
-                                </a>
-                                <a asp-area="Admin"
-                                   asp-controller="Department"
-                                   asp-action="Delete"
-                                   asp-route-id="@parent.Id"
-                                   class="btn btn-danger btn-sm">
-                                    Xóa
-                                </a>
-                            </td>
-                        </tr>
-
-                        if (children.Any())
+                        foreach (var parent in parentDepartments)
                         {
-                            foreach (var child in children)
-                            {
-                                <tr class="@groupId child-row">
-                                    <td>@child.DepartmentCode</td>
-                                    <td class="ps-5">↳ @child.DepartmentName</td>
-                                    <td>@child.Description</td>
-                                    <td>
-                                        <span class="badge bg-info text-dark">Khóa</span>
-                                    </td>
-                                    <td>@parent.DepartmentName</td>
-                                    <td>
-                                        @if (child.IsActive)
-                                        {
-                                            <span class="badge bg-success">Đang sử dụng</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">Ngưng sử dụng</span>
-                                        }
-                                    </td>
-                                    <td>
+                            var children = childDepartments
+                            .Where(c => c.ParentDepartmentId == parent.Id)
+                            .ToList();
+
+                            var groupId = $"group-{parent.Id}";
+
+                            <tr class="program-parent-row">
+                                <td class="text-center">
+                                    <span class="admin-code">@parent.DepartmentCode</span>
+                                </td>
+
+                                <td>
+                                    <div class="program-name-wrap">
+                                        <span class="toggle-arrow"
+                                              data-target="@groupId"
+                                              title="Ẩn/hiện khóa thuộc chương trình">
+                                            ▼
+                                        </span>
+
+                                        <span class="admin-name">@parent.DepartmentName</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="admin-text-limit">
+                                        @(string.IsNullOrWhiteSpace(parent.Description) ? "Chưa có mô tả" : parent.Description)
+                                    </div>
+                                </td>
+
+                                <td class="text-center">
+                                    <span class="admin-badge admin-badge-role">Chương trình</span>
+                                </td>
+
+                                <td class="text-center">
+                                    @if (parent.IsActive)
+                                    {
+                                        <span class="admin-badge admin-badge-success">Đang sử dụng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="admin-badge admin-badge-muted">Ngưng sử dụng</span>
+                                    }
+                                </td>
+
+                                <td class="text-center">
+                                    <div class="admin-actions department-actions">
                                         <a asp-area="Admin"
                                            asp-controller="Department"
                                            asp-action="Edit"
-                                           asp-route-id="@child.Id"
-                                           class="btn btn-warning btn-sm">
+                                           asp-route-id="@parent.Id"
+                                           class="btn btn-outline-primary btn-sm">
                                             Sửa
                                         </a>
+
                                         <a asp-area="Admin"
                                            asp-controller="Department"
                                            asp-action="Delete"
-                                           asp-route-id="@child.Id"
-                                           class="btn btn-danger btn-sm">
+                                           asp-route-id="@parent.Id"
+                                           class="btn btn-outline-danger btn-sm">
                                             Xóa
                                         </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            if (children.Any())
+                            {
+                                foreach (var child in children)
+                                {
+                                    <tr class="@groupId child-row">
+                                        <td class="text-center">
+                                            <span class="admin-code child-code">@child.DepartmentCode</span>
+                                        </td>
+
+                                        <td>
+                                            <div class="program-child-name">
+                                                <span class="child-mark">↳</span>
+                                                <span>@child.DepartmentName</span>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="admin-text-limit">
+                                                @(string.IsNullOrWhiteSpace(child.Description) ? "Chưa có mô tả" : child.Description)
+                                            </div>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="admin-badge admin-badge-linked">Khóa</span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            @if (child.IsActive)
+                                            {
+                                                <span class="admin-badge admin-badge-success">Đang sử dụng</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="admin-badge admin-badge-muted">Ngưng sử dụng</span>
+                                            }
+                                        </td>
+
+                                        <td class="text-center">
+                                            <div class="admin-actions department-actions">
+                                                <a asp-area="Admin"
+                                                   asp-controller="Department"
+                                                   asp-action="Edit"
+                                                   asp-route-id="@child.Id"
+                                                   class="btn btn-outline-primary btn-sm">
+                                                    Sửa
+                                                </a>
+
+                                                <a asp-area="Admin"
+                                                   asp-controller="Department"
+                                                   asp-action="Delete"
+                                                   asp-route-id="@child.Id"
+                                                   class="btn btn-outline-danger btn-sm">
+                                                    Xóa
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr class="@groupId child-row">
+                                    <td colspan="7" class="text-center text-muted py-3">
+                                        @(hasKeyword ? "Không có khóa phù hợp với từ khóa." : "Chương trình này chưa có khóa.")
                                     </td>
                                 </tr>
                             }
                         }
-                        else
-                        {
-                            <tr class="@groupId child-row">
-                                <td colspan="7" class="text-center text-muted">
-                                    Chương trình này chưa có khóa.
-                                </td>
-                            </tr>
-                        }
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="7" class="text-center">Chưa có dữ liệu.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                @(hasKeyword ? "Không tìm thấy chương trình hoặc khóa phù hợp." : "Chưa có dữ liệu.")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .admin-account-page {
+            color: #1f2937;
+        }
+
+        .admin-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .admin-page-title {
+            margin: 0;
+            color: #111827;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .admin-page-subtitle {
+            margin: 6px 0 0;
+            color: #6b7280;
+            font-size: 0.94rem;
+        }
+
+        .admin-btn-main {
+            border-radius: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+            padding: 9px 14px;
+        }
+
+        .admin-filter-card,
+        .admin-table-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .admin-filter-card {
+            padding: 16px;
+        }
+
+        .admin-label {
+            color: #374151;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .admin-input {
+            border-radius: 8px;
+            border-color: #d1d5db;
+            min-height: 40px;
+            font-size: 0.94rem;
+        }
+
+            .admin-input:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.12);
+            }
+
+        .admin-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .admin-filter-actions .btn {
+                flex: 1;
+                border-radius: 8px;
+                font-weight: 700;
+                min-height: 40px;
+            }
+
+        .admin-filter-note {
+            margin-top: 12px;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .admin-table-title {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111827;
+            font-weight: 800;
+            background: #f9fafb;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .admin-table {
+            width: 100%;
+            table-layout: fixed;
+            margin-bottom: 0;
+        }
+
+            .admin-table thead th {
+                background: #f9fafb;
+                color: #374151;
+                font-size: 0.78rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.035em;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 14px 12px;
+                white-space: nowrap;
+                vertical-align: middle;
+            }
+
+            .admin-table tbody td {
+                padding: 14px 12px;
+                border-bottom: 1px solid #edf0f3;
+                vertical-align: middle;
+                font-size: 0.92rem;
+            }
+
+            .admin-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+            .admin-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+        .program-parent-row {
+            background: #fbfdff;
+        }
+
+        .program-name-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .toggle-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            color: #4b5563;
+            background: #f3f4f6;
+            cursor: pointer;
+            user-select: none;
+            flex-shrink: 0;
+            font-size: 0.78rem;
+        }
+
+            .toggle-arrow:hover {
+                background: #e5e7eb;
+                color: #111827;
+            }
+
+        .admin-code {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 64px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #111827;
+            font-size: 0.82rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .child-code {
+            background: #f9fafb;
+            color: #4b5563;
+            font-weight: 700;
+        }
+
+        .admin-name {
+            color: #111827;
+            font-weight: 800;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .program-child-name {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            color: #374151;
+            font-weight: 600;
+            line-height: 1.45;
+            word-break: break-word;
+            padding-left: 22px;
+        }
+
+        .child-mark {
+            color: #9ca3af;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .admin-text-limit {
+            color: #4b5563;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            line-height: 1.25;
+            white-space: normal;
+            text-align: center;
+        }
+
+        .admin-badge-role {
+            background: #eef2ff;
+            color: #3730a3;
+        }
+
+        .admin-badge-linked {
+            background: #ecfeff;
+            color: #155e75;
+        }
+
+        .admin-badge-muted {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .admin-badge-success {
+            background: #ecfdf5;
+            color: #166534;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+            .admin-actions .btn {
+                min-width: 64px;
+                border-radius: 7px;
+                font-size: 0.8rem;
+                font-weight: 700;
+                white-space: nowrap;
+                padding: 6px 10px;
+            }
+
+        @@media (max-width: 1199.98px) {
+            .department-table {
+                min-width: 1080px;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .admin-page-header {
+                flex-direction: column;
+            }
+
+            .admin-btn-main {
+                width: 100%;
+            }
+
+            .admin-filter-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+}
 
 @section Scripts {
     <script>
