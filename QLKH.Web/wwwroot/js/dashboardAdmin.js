@@ -2,19 +2,15 @@
     'use strict';
 
     var C = {
-        violet: '#7c3aed',
-        violetSoft: 'rgba(124,58,237,.18)',
-        pink: '#db2777',
-        pinkSoft: 'rgba(219,39,119,.16)',
-        sky: '#0ea5e9',
-        skySoft: 'rgba(14,165,233,.18)',
-        emerald: '#10b981',
-        amber: '#f59e0b',
-        danger: '#ef4444',
-        text: '#332f3a',
-        muted: '#635f69',
-        grid: 'rgba(124,58,237,.08)',
-        gridSoft: 'rgba(14,165,233,.06)',
+        purple: '#5b45f2',
+        blue: '#2388ff',
+        cyan: '#18b8f2',
+        teal: '#10b981',
+        orange: '#fb923c',
+        pink: '#f43f5e',
+        text: '#0f172a',
+        muted: '#64748b',
+        grid: 'rgba(148,163,184,0.18)',
         white: '#ffffff'
     };
 
@@ -56,10 +52,10 @@
                 entry.target.classList.add('is-visible');
                 observer.unobserve(entry.target);
             });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
         targets.forEach(function (el, index) {
-            el.style.transitionDelay = Math.min(index * 0.05, 0.35) + 's';
+            el.style.transitionDelay = Math.min(index * 0.05, 0.32) + 's';
             observer.observe(el);
         });
     }
@@ -72,9 +68,10 @@
         }
 
         var startTime = null;
-        function step(ts) {
-            if (!startTime) startTime = ts;
-            var progress = Math.min((ts - startTime) / duration, 1);
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
             var eased = 1 - Math.pow(1 - progress, 3);
             el.textContent = Math.round(eased * num).toLocaleString('vi-VN');
             if (progress < 1) requestAnimationFrame(step);
@@ -88,85 +85,21 @@
         $$('.admin-dashboard-page .stat-value').forEach(function (el) {
             var raw = el.textContent.trim().replace(/\D/g, '');
             if (!raw) return;
-            setTimeout(function () { countUp(el, raw, 900); }, 250);
-        });
-    }
-
-    function initGlow() {
-        if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
-
-        var targets = $$('.admin-dashboard-page .da-header, .admin-dashboard-page .da-kpi, .admin-dashboard-page .da-card, .admin-dashboard-page .da-maintenance-alert, .admin-dashboard-page .da-action-item');
-        targets.forEach(function (el) {
-            var rafId = 0;
-            var nextX = 50;
-            var nextY = 50;
-            var alpha = el.classList.contains('da-action-item') ? 0.22 : 0.34;
-
-            function commit() {
-                rafId = 0;
-                el.style.setProperty('--da-light-x', nextX.toFixed(2) + '%');
-                el.style.setProperty('--da-light-y', nextY.toFixed(2) + '%');
-            }
-
-            function queue(x, y) {
-                nextX = x;
-                nextY = y;
-                if (rafId) return;
-                rafId = requestAnimationFrame(commit);
-            }
-
-            el.addEventListener('pointerenter', function (event) {
-                if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
-                var rect = el.getBoundingClientRect();
-                el.style.setProperty('--da-light-alpha', String(alpha));
-                queue(((event.clientX - rect.left) / rect.width) * 100, ((event.clientY - rect.top) / rect.height) * 100);
-            });
-
-            el.addEventListener('pointermove', function (event) {
-                if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
-                var rect = el.getBoundingClientRect();
-                queue(((event.clientX - rect.left) / rect.width) * 100, ((event.clientY - rect.top) / rect.height) * 100);
-            });
-
-            el.addEventListener('pointerleave', function () {
-                if (rafId) cancelAnimationFrame(rafId);
-                rafId = 0;
-                el.style.setProperty('--da-light-alpha', '0');
-                el.style.setProperty('--da-light-x', '50%');
-                el.style.setProperty('--da-light-y', '50%');
-            });
+            setTimeout(function () { countUp(el, raw, 850); }, 180);
         });
     }
 
     function applyChartDefaults() {
         if (typeof Chart === 'undefined') return;
 
-        Chart.defaults.font.family = "'DM Sans', 'Segoe UI', Arial, sans-serif";
+        Chart.defaults.font.family = "'Roboto', 'Segoe UI', Arial, sans-serif";
         Chart.defaults.font.size = 12;
         Chart.defaults.color = C.muted;
-        Chart.defaults.borderColor = C.gridSoft;
+        Chart.defaults.borderColor = C.grid;
 
         if (Chart._daPluginsRegistered) return;
 
         Chart.register({
-            id: 'daLineGlow',
-            beforeDatasetDraw: function (chart, args) {
-                if (chart.config.type !== 'line') return;
-                var dataset = chart.data.datasets[args.index];
-                if (!dataset || dataset.hidden) return;
-
-                var ctx = chart.ctx;
-                ctx.save();
-                ctx.shadowBlur = dataset.shadowBlur || 18;
-                ctx.shadowColor = dataset.shadowColor || dataset.borderColor || 'rgba(124,58,237,.18)';
-                ctx.lineJoin = 'round';
-                ctx.lineCap = 'round';
-            },
-            afterDatasetDraw: function (chart) {
-                if (chart.config.type !== 'line') return;
-                chart.ctx.restore();
-            }
-        }, {
             id: 'daCenterText',
             afterDraw: function (chart, args, pluginOptions) {
                 if (chart.config.type !== 'doughnut' || !pluginOptions || !pluginOptions.lines || !pluginOptions.lines.length) return;
@@ -185,7 +118,7 @@
                 ctx.textBaseline = 'middle';
 
                 pluginOptions.lines.forEach(function (line, index) {
-                    ctx.font = line.font || "700 24px 'Nunito', 'DM Sans', sans-serif";
+                    ctx.font = line.font || "700 22px 'Roboto', sans-serif";
                     ctx.fillStyle = line.color || C.text;
                     ctx.fillText(line.text, centerX, startY + index * lineHeight);
                 });
@@ -199,13 +132,11 @@
 
     function tooltip(extra) {
         return Object.assign({
-            backgroundColor: 'rgba(255,255,255,.96)',
+            backgroundColor: 'rgba(15,23,42,0.94)',
             padding: 12,
-            cornerRadius: 16,
-            titleColor: C.text,
-            bodyColor: C.muted,
-            borderColor: 'rgba(124,58,237,.14)',
-            borderWidth: 1,
+            cornerRadius: 14,
+            titleColor: C.white,
+            bodyColor: 'rgba(255,255,255,0.88)',
             displayColors: true,
             boxPadding: 4
         }, extra || {});
@@ -236,36 +167,28 @@
         if (!el || typeof Chart === 'undefined') return;
 
         new Chart(el, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Học viên', 'Giáo viên', 'Khóa học', 'Lớp học', 'Khoa/Ngành'],
+                labels: ['H\u1ecdc vi\u00ean', 'Gi\u00e1o vi\u00ean', 'Kh\u00f3a h\u1ecdc', 'L\u1edbp h\u1ecdc', 'Ch\u01b0\u01a1ng tr\u00ecnh'],
                 datasets: [{
-                    label: 'Số lượng',
+                    label: 'S\u1ed1 l\u01b0\u1ee3ng',
                     data: [data.TotalStudents || 0, data.TotalTeachers || 0, data.TotalCourses || 0, data.TotalClassRooms || 0, data.TotalDepartments || 0],
-                    borderColor: C.violet,
                     backgroundColor: function (context) {
                         return createVerticalGradient(context.chart, [
-                            [0, 'rgba(124,58,237,.28)'],
-                            [0.45, 'rgba(219,39,119,.14)'],
-                            [1, 'rgba(255,255,255,0)']
+                            [0, '#8b5cf6'],
+                            [0.55, '#5b45f2'],
+                            [1, '#2388ff']
                         ]);
                     },
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.42,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    pointBorderWidth: 0,
-                    pointBackgroundColor: '#ffffff',
-                    pointHoverBackgroundColor: '#f3e8ff',
-                    shadowBlur: 20,
-                    shadowColor: 'rgba(124,58,237,.22)'
+                    borderRadius: 16,
+                    borderSkipped: false,
+                    maxBarThickness: 46
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: { duration: 1000, easing: 'easeOutQuart' },
+                animation: { duration: 900, easing: 'easeOutQuart' },
                 plugins: {
                     legend: { display: false },
                     tooltip: Object.assign(tooltip(), {
@@ -286,28 +209,37 @@
         new Chart(el, {
             type: 'doughnut',
             data: {
-                labels: ['Đang hoạt động', 'Đã khóa'],
+                labels: ['\u0110ang ho\u1ea1t \u0111\u1ed9ng', '\u0110\u00e3 kh\u00f3a'],
                 datasets: [{
                     data: [data.ActiveUsers || 0, data.LockedUsers || 0],
-                    backgroundColor: [C.emerald, C.amber],
-                    borderColor: ['rgba(255,255,255,.96)', 'rgba(255,255,255,.96)'],
-                    borderWidth: 6,
+                    backgroundColor: [C.teal, C.orange],
+                    borderColor: [C.white, C.white],
+                    borderWidth: 8,
                     spacing: 3,
-                    hoverOffset: 6
+                    hoverOffset: 5
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '68%',
-                animation: { duration: 900, easing: 'easeOutQuart' },
+                cutout: '70%',
+                animation: { duration: 850, easing: 'easeOutQuart' },
                 plugins: {
-                    legend: { display: false },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: C.muted,
+                            padding: 18,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: { weight: '700', size: 12 }
+                        }
+                    },
                     daCenterText: {
-                        lineHeight: 20,
+                        lineHeight: 22,
                         lines: [
-                            { text: (data.ActiveUsers || 0).toLocaleString('vi-VN'), font: "900 28px 'Nunito', 'DM Sans', sans-serif", color: C.text },
-                            { text: 'hoạt động', font: "700 12px 'DM Sans', sans-serif", color: C.muted }
+                            { text: (data.ActiveUsers || 0).toLocaleString('vi-VN'), font: "900 28px 'Roboto', sans-serif", color: C.text },
+                            { text: 'ho\u1ea1t \u0111\u1ed9ng', font: "700 12px 'Roboto', sans-serif", color: C.muted }
                         ]
                     },
                     tooltip: Object.assign(tooltip(), {
@@ -329,61 +261,37 @@
         if (!el || typeof Chart === 'undefined') return;
 
         new Chart(el, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Học viên', 'Giáo viên'],
+                labels: ['H\u1ecdc vi\u00ean', 'Gi\u00e1o vi\u00ean'],
                 datasets: [{
-                    label: 'Đã liên kết',
+                    label: '\u0110\u00e3 li\u00ean k\u1ebft',
                     data: [data.LinkedStudents || 0, data.LinkedTeachers || 0],
-                    borderColor: C.sky,
-                    backgroundColor: function (context) {
-                        return createVerticalGradient(context.chart, [
-                            [0, 'rgba(14,165,233,.22)'],
-                            [1, 'rgba(255,255,255,0)']
-                        ]);
-                    },
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.45,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    pointBorderWidth: 0,
-                    pointBackgroundColor: '#ffffff',
-                    shadowBlur: 20,
-                    shadowColor: 'rgba(14,165,233,.18)'
+                    backgroundColor: C.blue,
+                    borderRadius: 14,
+                    borderSkipped: false,
+                    maxBarThickness: 42
                 }, {
-                    label: 'Chưa liên kết',
+                    label: 'Ch\u01b0a li\u00ean k\u1ebft',
                     data: [data.UnlinkedStudents || 0, data.UnlinkedTeachers || 0],
-                    borderColor: C.pink,
-                    backgroundColor: function (context) {
-                        return createVerticalGradient(context.chart, [
-                            [0, 'rgba(219,39,119,.18)'],
-                            [1, 'rgba(255,255,255,0)']
-                        ]);
-                    },
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.45,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    pointBorderWidth: 0,
-                    pointBackgroundColor: '#ffffff',
-                    shadowBlur: 20,
-                    shadowColor: 'rgba(219,39,119,.16)'
+                    backgroundColor: C.pink,
+                    borderRadius: 14,
+                    borderSkipped: false,
+                    maxBarThickness: 42
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: { duration: 950, easing: 'easeOutQuart' },
+                animation: { duration: 900, easing: 'easeOutQuart' },
                 plugins: {
                     legend: {
                         position: 'bottom',
                         labels: {
                             color: C.muted,
-                            padding: 14,
+                            padding: 16,
                             usePointStyle: true,
-                            pointStyleWidth: 10,
+                            pointStyle: 'circle',
                             font: { weight: '700', size: 12 }
                         }
                     },
@@ -398,45 +306,14 @@
         });
     }
 
-    function initRipple() {
-        $$('.admin-dashboard-page .da-action-item').forEach(function (el) {
-            el.addEventListener('click', function (event) {
-                var rect = el.getBoundingClientRect();
-                var ripple = document.createElement('span');
-                ripple.style.cssText = [
-                    'position:absolute',
-                    'border-radius:50%',
-                    'background:rgba(255,255,255,.52)',
-                    'width:8px',
-                    'height:8px',
-                    'pointer-events:none',
-                    'transform:scale(0)',
-                    'transition:transform .55s ease,opacity .55s ease',
-                    'left:' + (event.clientX - rect.left - 4) + 'px',
-                    'top:' + (event.clientY - rect.top - 4) + 'px'
-                ].join(';');
-                el.appendChild(ripple);
-
-                requestAnimationFrame(function () {
-                    ripple.style.transform = 'scale(38)';
-                    ripple.style.opacity = '0';
-                });
-
-                setTimeout(function () { ripple.remove(); }, 650);
-            });
-        });
-    }
-
     function init() {
         var data = window.adminDashboardData || {};
-        initGlow();
         initReveal();
         initCountUps();
         applyChartDefaults();
         initOverviewChart(data);
         initUserStatusChart(data);
         initLinkStatusChart(data);
-        initRipple();
     }
 
     if (document.readyState === 'loading') {

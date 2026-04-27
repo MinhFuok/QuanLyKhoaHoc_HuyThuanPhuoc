@@ -17,7 +17,8 @@
     var currentArea = ViewContext.RouteData.Values["area"]?.ToString() ?? "";
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
-    var dashboardBodyClass = string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase)
+    var isAdminShell = string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase);
+    var dashboardBodyClass = isAdminShell
         ? "db-body db-body-admin"
         : "db-body";
 
@@ -45,17 +46,17 @@
     <title>@ViewData["Title"] - @siteName</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/dashboardlayout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QLKH.Web.styles.css" asp-append-version="true" />
-    @await RenderSectionAsync("Styles", required: false)
-    @if (string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase))
+    @if (isAdminShell)
     {
         <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
     }
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@dashboardBodyClass">
 
@@ -283,7 +284,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/dashboardlayout.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    @if (string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase))
+    @if (isAdminShell)
     {
         <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
     }

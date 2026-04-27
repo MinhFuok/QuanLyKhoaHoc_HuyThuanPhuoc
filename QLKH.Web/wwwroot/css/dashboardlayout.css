@@ -43,15 +43,15 @@ body.db-body {
 }
 
 body.db-body-admin {
-    --db-admin-bg: #08111f;
-    --db-admin-panel: rgba(11, 18, 32, 0.88);
-    --db-admin-panel-soft: rgba(17, 28, 48, 0.76);
-    --db-admin-panel-border: rgba(103, 198, 243, 0.12);
-    --db-admin-panel-border-strong: rgba(103, 198, 243, 0.2);
-    --db-admin-text: #f7fbff;
-    --db-admin-text-muted: rgba(196, 213, 228, 0.78);
-    --db-admin-primary: #67c6f3;
-    --db-admin-primary-soft: #d8f1ff;
+    --db-admin-bg: #ffffff;
+    --db-admin-panel: #ffffff;
+    --db-admin-panel-soft: #f8fafc;
+    --db-admin-panel-border: rgba(148, 163, 184, 0.18);
+    --db-admin-panel-border-strong: rgba(148, 163, 184, 0.26);
+    --db-admin-text: #1e293b;
+    --db-admin-text-muted: #64748b;
+    --db-admin-primary: #1a56db;
+    --db-admin-primary-soft: #e8f0fe;
     background: var(--db-admin-bg);
     color: var(--db-admin-text);
 }
@@ -62,22 +62,22 @@ body.db-body-admin .db-overlay {
 }
 
 body.db-body-admin .db-main-wrap {
-    background: transparent;
+    background: #ffffff;
     position: relative;
     isolation: isolate;
     overflow: hidden;
 }
 
 body.db-body-admin .db-content {
-    color: var(--db-admin-text);
+    color: var(--db-text);
     position: relative;
     z-index: 1;
 }
 
 body.db-body-admin .db-alert {
-    background: linear-gradient(180deg, rgba(15,23,42,.76) 0%, rgba(11,18,32,.82) 100%);
-    border: 1px solid rgba(255,255,255,.06);
-    box-shadow: 0 14px 26px rgba(2,6,23,.16);
+    background: #ffffff;
+    border: 1px solid var(--db-border);
+    box-shadow: 0 14px 26px rgba(15,23,42,.08);
 }
 
 body.db-body-admin .db-alert-success {
@@ -96,14 +96,7 @@ body.db-body-admin .db-main-wrap > :not(.da-space-bg) {
 }
 
 body.db-body-admin .da-space-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-    border-radius: 0;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    box-shadow: inset 0 0 120px rgba(34,211,238,.06);
+    display: none;
 }
 
 body.db-body-admin .da-space-bg::before,
