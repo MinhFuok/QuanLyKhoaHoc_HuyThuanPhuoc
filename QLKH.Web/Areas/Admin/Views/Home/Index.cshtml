@@ -7,6 +7,12 @@
     var activeRate = Model.TotalUsers > 0
         ? Math.Round((double)Model.ActiveUsers / Model.TotalUsers * 100, 1)
         : 0;
+    var studentLinkedRate = Model.TotalStudents > 0
+        ? Math.Round((double)Model.LinkedStudents / Model.TotalStudents * 100, 1)
+        : 0;
+    var teacherLinkedRate = Model.TotalTeachers > 0
+        ? Math.Round((double)Model.LinkedTeachers / Model.TotalTeachers * 100, 1)
+        : 0;
     var totalLinkedAccounts = Model.LinkedStudents + Model.LinkedTeachers;
     var totalLinkTargets = Model.TotalStudents + Model.TotalTeachers;
     var linkedRate = totalLinkTargets > 0
@@ -23,7 +29,7 @@
                     <i class="bi bi-grid-3x3-gap-fill"></i>
                     Hệ thống Quản lý Đào tạo
                 </div>
-                <h1 class="da-header-title">DASHBOARD ADMIN </h1>
+                <h1 class="da-header-title">DASHBOARD ADMIN</h1>
                 <p class="da-header-sub">
                     Vận hành hệ thống nền tảng - cập nhật theo thời gian thực.
                 </p>
@@ -73,14 +79,18 @@
     }
 
     <div class="row g-3 mb-4">
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-md-6 col-lg-3">
             <div class="da-kpi da-kpi-blue">
                 <div class="da-kpi-icon-wrap">
                     <i class="bi bi-people-fill"></i>
                 </div>
                 <div class="da-kpi-body">
-                    <div class="stat-label">Tổng tài khoản</div>
+                    <div class="stat-topline">
+                        <div class="stat-label">Tổng tài khoản</div>
+                        <span class="stat-status stat-status-blue">@activeRate.ToString("0.#")% active</span>
+                    </div>
                     <div class="stat-value">@Model.TotalUsers</div>
+                    <div class="stat-desc">Theo dõi đăng nhập, kích hoạt và trạng thái khóa trên toàn hệ thống.</div>
                     <div class="stat-meta">
                         <span><i class="bi bi-check-circle-fill text-success"></i> @Model.ActiveUsers hoạt động</span>
                         <span><i class="bi bi-lock-fill text-danger"></i> @Model.LockedUsers bị khóa</span>
@@ -89,14 +99,18 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-md-6 col-lg-3">
             <div class="da-kpi da-kpi-cyan">
                 <div class="da-kpi-icon-wrap">
                     <i class="bi bi-mortarboard-fill"></i>
                 </div>
                 <div class="da-kpi-body">
-                    <div class="stat-label">Học viên</div>
+                    <div class="stat-topline">
+                        <div class="stat-label">Học viên</div>
+                        <span class="stat-status stat-status-cyan">@studentLinkedRate.ToString("0.#")% linked</span>
+                    </div>
                     <div class="stat-value">@Model.TotalStudents</div>
+                    <div class="stat-desc">Quản trị hồ sơ học viên và mức độ liên kết tài khoản học tập.</div>
                     <div class="stat-meta">
                         <span><i class="bi bi-link-45deg"></i> @Model.LinkedStudents đã liên kết</span>
                         <span><i class="bi bi-slash-circle"></i> @Model.UnlinkedStudents chưa liên kết</span>
@@ -105,14 +119,18 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-md-6 col-lg-3">
             <div class="da-kpi da-kpi-navy">
                 <div class="da-kpi-icon-wrap">
                     <i class="bi bi-person-video3"></i>
                 </div>
                 <div class="da-kpi-body">
-                    <div class="stat-label">Giáo viên</div>
+                    <div class="stat-topline">
+                        <div class="stat-label">Giáo viên</div>
+                        <span class="stat-status stat-status-navy">@teacherLinkedRate.ToString("0.#")% linked</span>
+                    </div>
                     <div class="stat-value">@Model.TotalTeachers</div>
+                    <div class="stat-desc">Kiểm soát đội ngũ giảng dạy và tài khoản giảng viên đang vận hành.</div>
                     <div class="stat-meta">
                         <span><i class="bi bi-link-45deg"></i> @Model.LinkedTeachers đã liên kết</span>
                         <span><i class="bi bi-slash-circle"></i> @Model.UnlinkedTeachers chưa liên kết</span>
@@ -121,14 +139,18 @@
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+        <div class="col-12 col-md-6 col-lg-3">
             <div class="da-kpi da-kpi-slate">
                 <div class="da-kpi-icon-wrap">
                     <i class="bi bi-journal-richtext"></i>
                 </div>
                 <div class="da-kpi-body">
-                    <div class="stat-label">Lớp học</div>
+                    <div class="stat-topline">
+                        <div class="stat-label">Lớp học</div>
+                        <span class="stat-status stat-status-slate">@Model.TotalCourses khóa</span>
+                    </div>
                     <div class="stat-value">@Model.TotalClassRooms</div>
+                    <div class="stat-desc">Theo dõi lớp học, khóa học và chương trình đào tạo đang quản trị.</div>
                     <div class="stat-meta">
                         <span><i class="bi bi-book-fill"></i> @Model.TotalCourses khóa học</span>
                         <span><i class="bi bi-diagram-3-fill"></i> @Model.TotalDepartments chương trình/khóa</span>

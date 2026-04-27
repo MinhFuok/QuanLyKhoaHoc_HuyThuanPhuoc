@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.ClassRoom>
 
 @{
-    ViewData["Title"] = "Danh sÃ¡ch lá»›p há»c";
+    ViewData["Title"] = "Danh sách lớp học";
 
     var currentDate = DateTime.Today;
     var classRooms = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassRoom>();
@@ -293,9 +293,9 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">DANH SÃCH Lá»šP Há»ŒC</h1>
+            <h1 class="cp-title">DANH SÁCH LỚP HỌC</h1>
             <p class="cp-subtitle">
-                Quáº£n lÃ½ cÃ¡c lá»›p há»c, khÃ³a há»c phá»¥ trÃ¡ch cho há»‡ thá»‘ng...
+                Quản lý các lớp học, khóa học phụ trách cho hệ thống...
             </p>
         </div>
 
@@ -303,7 +303,7 @@
            asp-controller="ClassRoom"
            asp-action="Create"
            class="cp-btn cp-btn--primary">
-            + ThÃªm lá»›p há»c
+            + Thêm lớp học
         </a>
     </div>
 
@@ -315,7 +315,7 @@
               class="classroom-filter-form">
 
             <div class="cp-filter-field">
-                <label>TÃ¬m kiáº¿m lá»›p há»c</label>
+                <label>Tìm kiếm lớp học</label>
                 <input type="text"
                        name="keyword"
                        value="@keyword"
@@ -324,14 +324,14 @@
 
             <div class="cp-filter-actions">
                 <button type="submit" class="cp-btn cp-btn--primary">
-                    Lá»c
+                    Lọc
                 </button>
 
                 <a asp-area="HocVu"
                    asp-controller="ClassRoom"
                    asp-action="Index"
                    class="cp-btn cp-btn--ghost">
-                    Bá» lá»c
+                    Bỏ lọc
                 </a>
             </div>
         </form>
@@ -339,20 +339,20 @@
         @if (!string.IsNullOrWhiteSpace(keyword))
         {
             <div class="cp-filter-note">
-                Äang tÃ¬m kiáº¿m: <strong>@keyword</strong>
+                Đang tìm kiếm: <strong>@keyword</strong>
             </div>
         }
     </div>
 
     <div class="classroom-tabs-wrap" data-classroom-tabs>
-        <div class="classroom-tabs" role="tablist" aria-label="Tráº¡ng thÃ¡i lá»›p há»c">
+        <div class="classroom-tabs" role="tablist" aria-label="Trạng thái lớp học">
             <button type="button"
                     class="classroom-tab-btn active"
                     data-tab="activeClassTab"
                     role="tab"
                     aria-selected="true"
                     aria-controls="activeClassTab">
-                Lá»›p Ä‘ang diá»…n ra
+                Lớp đang diễn ra
                 <span class="classroom-count">@activeCount</span>
             </button>
 
@@ -362,7 +362,7 @@
                     role="tab"
                     aria-selected="false"
                     aria-controls="endedClassTab">
-                Lá»›p Ä‘Ã£ káº¿t thÃºc
+                Lớp đã kết thúc
                 <span class="classroom-count">@endedCount</span>
             </button>
         </div>
@@ -383,8 +383,8 @@
     </div>
 
     <div class="classroom-summary">
-        <span>Äang diá»…n ra: <strong>@activeCount</strong></span>
-        <span>ÄÃ£ káº¿t thÃºc: <strong>@endedCount</strong></span>
+        <span>Đang diễn ra: <strong>@activeCount</strong></span>
+        <span>Đã kết thúc: <strong>@endedCount</strong></span>
     </div>
 </div>
 

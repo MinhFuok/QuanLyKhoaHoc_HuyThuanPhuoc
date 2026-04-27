@@ -191,7 +191,7 @@ body {
     }
 
         .card.login-card .card-header h3 {
-            font-family: monospace;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
             font-weight: 700;
             font-size: 1rem;
             color: #fff;
@@ -205,7 +205,7 @@ body {
                 display: block;
                 font-size: 2rem;
                 font-weight: 800;
-                font-family: Arial, Helvetica, sans-serif;
+                font-family: "Roboto", Arial, Helvetica, sans-serif;
                 -webkit-text-stroke: #fff 0.08rem;
                 letter-spacing: 0.2rem;
                 color: transparent;
@@ -259,7 +259,7 @@ body {
 /* ===== FORM LABEL ===== */
 .card.login-card .form-label {
     color: #d0d8e4;
-    font-family: monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
     font-size: 0.85rem;
     margin-bottom: 4px;
 }
@@ -269,7 +269,7 @@ body {
     background-color: rgba(255,255,255,0.93);
     border: 2px solid #ffffff;
     border-radius: 4px;
-    font-family: monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
     font-size: 0.875rem;
     color: #1a1a2e;
     padding: 7px 10px;
@@ -292,7 +292,7 @@ body {
 /* ===== CHECKBOX ===== */
 .card.login-card .form-check-label {
     color: #c0c0c0;
-    font-family: monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
     font-size: 0.85rem;
 }
 
@@ -305,7 +305,7 @@ body {
 .card.login-card .forgot-link a {
     color: #7ecfea;
     font-size: 0.82rem;
-    font-family: monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
     text-decoration: none;
     transition: color 0.2s;
 }
@@ -324,7 +324,7 @@ body {
     background: linear-gradient(90deg, #243949 0%, #517fa4 100%);
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    font-family: monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -376,6 +376,15 @@ body {
 
 /* ===== VALIDATION ===== */
 .card.login-card .text-danger {
-    font-family: monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
     font-size: 0.78rem;
 }
+
+/* Use the shared site font across account screens. */
+.login-page,
+.login-page *,
+.forgot-confirm-page,
+.forgot-confirm-page * {
+    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+}
+

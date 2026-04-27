@@ -26,7 +26,7 @@
     --db-radius: 10px;
     --db-radius-sm: 6px;
     --db-transition: 0.22s cubic-bezier(.4,0,.2,1);
-    --db-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --db-font: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
 *, *::before, *::after {
@@ -40,6 +40,145 @@ body.db-body {
     margin: 0;
     min-height: 100vh;
     display: flex;
+}
+
+body.db-body-admin {
+    --db-admin-bg: #08111f;
+    --db-admin-panel: rgba(11, 18, 32, 0.88);
+    --db-admin-panel-soft: rgba(17, 28, 48, 0.76);
+    --db-admin-panel-border: rgba(103, 198, 243, 0.12);
+    --db-admin-panel-border-strong: rgba(103, 198, 243, 0.2);
+    --db-admin-text: #f7fbff;
+    --db-admin-text-muted: rgba(196, 213, 228, 0.78);
+    --db-admin-primary: #67c6f3;
+    --db-admin-primary-soft: #d8f1ff;
+    background: var(--db-admin-bg);
+    color: var(--db-admin-text);
+}
+
+body.db-body-admin .db-overlay {
+    background: rgba(2, 8, 23, 0.58);
+    backdrop-filter: blur(4px);
+}
+
+body.db-body-admin .db-main-wrap {
+    background: transparent;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+body.db-body-admin .db-content {
+    color: var(--db-admin-text);
+    position: relative;
+    z-index: 1;
+}
+
+body.db-body-admin .db-alert {
+    background: linear-gradient(180deg, rgba(15,23,42,.76) 0%, rgba(11,18,32,.82) 100%);
+    border: 1px solid rgba(255,255,255,.06);
+    box-shadow: 0 14px 26px rgba(2,6,23,.16);
+}
+
+body.db-body-admin .db-alert-success {
+    border-left-color: var(--db-success);
+    color: #bbf7d0;
+}
+
+body.db-body-admin .db-alert-danger {
+    border-left-color: #fb7185;
+    color: #fecdd3;
+}
+
+body.db-body-admin .db-main-wrap > :not(.da-space-bg) {
+    position: relative;
+    z-index: 1;
+}
+
+body.db-body-admin .da-space-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    border-radius: 0;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    box-shadow: inset 0 0 120px rgba(34,211,238,.06);
+}
+
+body.db-body-admin .da-space-bg::before,
+body.db-body-admin .da-space-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+body.db-body-admin .da-space-bg::before {
+    background:
+        radial-gradient(circle at 15% 20%, rgba(37,99,235,.16), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(34,211,238,.14), transparent 24%),
+        radial-gradient(circle at 50% 80%, rgba(14,165,233,.08), transparent 26%);
+}
+
+body.db-body-admin .da-space-bg::after {
+    background: linear-gradient(180deg, rgba(9,10,15,.04) 0%, rgba(9,10,15,.1) 100%);
+}
+
+body.db-body-admin .da-space-layer {
+    position: absolute;
+    inset: 0;
+    animation: daAdminStar linear infinite;
+    will-change: transform;
+}
+
+body.db-body-admin .da-space-layer-1 {
+    animation-duration: 85s;
+}
+
+body.db-body-admin .da-space-layer-2 {
+    animation-duration: 130s;
+}
+
+body.db-body-admin .da-space-layer-3 {
+    animation-duration: 180s;
+}
+
+body.db-body-admin .da-space-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    background: transparent;
+    opacity: .92;
+}
+
+body.db-body-admin .da-space-stars-1 {
+    width: 1px;
+    height: 1px;
+}
+
+body.db-body-admin .da-space-stars-2 {
+    width: 2px;
+    height: 2px;
+}
+
+body.db-body-admin .da-space-stars-3 {
+    width: 3px;
+    height: 3px;
+}
+
+body.db-body-admin .da-space-stars-dup {
+    transform: translateY(var(--da-space-span, 4200px));
+}
+
+@keyframes daAdminStar {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(var(--da-space-span-negative, -4200px));
+    }
 }
 
 /* =============================================

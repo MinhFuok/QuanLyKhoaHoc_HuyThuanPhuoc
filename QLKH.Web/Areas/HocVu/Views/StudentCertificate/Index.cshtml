@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.StudentCertificate>
 
 @{
-    ViewData["Title"] = "Chá»©ng chá»‰ há»c viÃªn";
+    ViewData["Title"] = "Chứng chỉ học viên";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 
     var keyword = ViewBag.Keyword as string ?? "";
@@ -172,15 +172,15 @@
 <div class="course-page admin-profession-page student-certificate-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Cáº¤P CHá»¨NG CHá»ˆ Há»ŒC VIÃŠN</h1>
-            <p class="cp-subtitle">Danh sÃ¡ch cáº¥p chá»©ng chá»‰ cho há»c viÃªn Ä‘Ã£ hoÃ n thÃ nh khÃ³a há»c...</p>
+            <h1 class="cp-title">CẤP CHỨNG CHỈ HỌC VIÊN</h1>
+            <p class="cp-subtitle">Danh sách cấp chứng chỉ cho học viên đã hoàn thành khóa học...</p>
         </div>
 
         <a asp-area="HocVu"
            asp-controller="StudentCertificate"
            asp-action="Create"
            class="cp-btn cp-btn--primary">
-            + Cáº¥p chá»©ng chá»‰
+            + Cấp chứng chỉ
         </a>
     </div>
     <div class="certificate-filter-card">
@@ -191,7 +191,7 @@
               class="certificate-filter-form">
 
             <div class="certificate-filter-field">
-                <label>TÃ¬m kiáº¿m</label>
+                <label>Tìm kiếm</label>
                 <input type="text"
                        name="keyword"
                        value="@keyword"
@@ -200,14 +200,14 @@
 
             <div class="certificate-filter-actions">
                 <button type="submit" class="cp-btn cp-btn--primary">
-                    Lá»c
+                    Lọc
                 </button>
 
                 <a asp-area="HocVu"
                    asp-controller="StudentCertificate"
                    asp-action="Index"
                    class="cp-btn cp-btn--ghost">
-                    Bá» lá»c
+                    Bỏ lọc
                 </a>
             </div>
         </form>
@@ -215,19 +215,19 @@
         @if (!string.IsNullOrWhiteSpace(keyword))
         {
             <div class="certificate-filter-note">
-                Äang tÃ¬m kiáº¿m: <strong>@keyword</strong>
+                Đang tìm kiếm: <strong>@keyword</strong>
             </div>
         }
     </div>
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="cp-inline-alert cp-inline-alert--success" data-cp-alert>
-            <div class="cp-inline-alert-icon">âœ“</div>
+            <div class="cp-inline-alert-icon">✓</div>
             <div class="cp-inline-alert-content">
-                <strong>Thao tÃ¡c thÃ nh cÃ´ng</strong>
+                <strong>Thao tác thành công</strong>
                 <span>@TempData["SuccessMessage"]</span>
             </div>
-            <button type="button" class="cp-inline-alert-close" data-cp-alert-close aria-label="ÄÃ³ng thÃ´ng bÃ¡o">Ã—</button>
+            <button type="button" class="cp-inline-alert-close" data-cp-alert-close aria-label="Đóng thông báo">×</button>
         </div>
     }
 
@@ -246,14 +246,14 @@
 
             <thead>
                 <tr>
-                    <th class="text-center">Há»c viÃªn</th>
-                    <th class="text-center">TÃªn chá»©ng chá»‰</th>
-                    <th class="text-center">MÃ£/Sá»‘ chá»©ng chá»‰</th>
-                    <th class="text-center">NgÃ y cáº¥p</th>
-                    <th class="text-center">NgÃ y háº¿t háº¡n</th>
-                    <th class="text-center">Tráº¡ng thÃ¡i</th>
-                    <th class="text-center">Minh chá»©ng</th>
-                    <th class="cp-col-action text-center">Thao tÃ¡c</th>
+                    <th class="text-center">Học viên</th>
+                    <th class="text-center">Tên chứng chỉ</th>
+                    <th class="text-center">Mã/Số chứng chỉ</th>
+                    <th class="text-center">Ngày cấp</th>
+                    <th class="text-center">Ngày hết hạn</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center">Minh chứng</th>
+                    <th class="cp-col-action text-center">Thao tác</th>
                 </tr>
             </thead>
 
@@ -265,7 +265,7 @@
                         <tr class="cp-row">
                             <td>
                                 <div class="cp-name student-cell">
-                                    @(item.Student?.FullName ?? "ChÆ°a cÃ³ há»c viÃªn")
+                                    @(item.Student?.FullName ?? "Chưa có học viên")
                                 </div>
                             </td>
 
@@ -282,13 +282,13 @@
                                 }
                                 else
                                 {
-                                    <span class="cp-muted">ChÆ°a cÃ³</span>
+                                    <span class="cp-muted">Chưa có</span>
                                 }
                             </td>
 
                             <td>
                                 <span class="date-cell">
-                                    @(item.IssuedDate?.ToString("dd/MM/yyyy") ?? "ChÆ°a cÃ³")
+                                    @(item.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
                                 </span>
                             </td>
                             <td>
@@ -298,27 +298,27 @@
                                     {
                                         <div>
                                             <span class="date-cell">@item.ExpiryDate.Value.ToString("dd/MM/yyyy")</span>
-                                            <div class="cp-muted">ÄÃ£ háº¿t háº¡n</div>
+                                            <div class="cp-muted">Đã hết hạn</div>
                                         </div>
                                     }
                                     else
                                     {
                                         <div>
                                             <span class="date-cell">@item.ExpiryDate.Value.ToString("dd/MM/yyyy")</span>
-                                            <div class="cp-muted">CÃ²n hiá»‡u lá»±c</div>
+                                            <div class="cp-muted">Còn hiệu lực</div>
                                         </div>
                                     }
                                 }
                                 else
                                 {
-                                    <span class="cp-muted">KhÃ´ng thá»i háº¡n</span>
+                                    <span class="cp-muted">Không thời hạn</span>
                                 }
                             </td>
                             <td>
                                 <div class="certificate-status-cell">
                                     <div class="cp-status-surface cp-status-surface--@(item.IsApproved ? "confirmed" : "pending")">
                                         <span class="cp-badge cp-badge--@(item.IsApproved ? "confirmed" : "pending")">
-                                            @(item.IsApproved ? "ÄÃ£ xÃ¡c nháº­n" : "Chá» xÃ¡c nháº­n")
+                                            @(item.IsApproved ? "Đã xác nhận" : "Chờ xác nhận")
                                         </span>
                                     </div>
                                 </div>
@@ -337,7 +337,7 @@
                                     }
                                     else
                                     {
-                                        <span class="cp-muted">KhÃ´ng cÃ³</span>
+                                        <span class="cp-muted">Không có</span>
                                     }
                                 </div>
                             </td>
@@ -349,7 +349,7 @@
                                        asp-action="Details"
                                        asp-route-id="@item.Id"
                                        class="cp-btn cp-btn--info cp-btn--sm">
-                                        Chi tiáº¿t
+                                        Chi tiết
                                     </a>
 
                                     <a asp-area="HocVu"
@@ -357,7 +357,7 @@
                                        asp-action="Edit"
                                        asp-route-id="@item.Id"
                                        class="cp-btn cp-btn--warning cp-btn--sm">
-                                        Sá»­a
+                                        Sửa
                                     </a>
                                 </div>
                             </td>
@@ -367,7 +367,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="8" class="cp-empty">ChÆ°a cÃ³ chá»©ng chá»‰ nÃ o trong há»‡ thá»‘ng.</td>
+                        <td colspan="8" class="cp-empty">Chưa có chứng chỉ nào trong hệ thống.</td>
                     </tr>
                 }
             </tbody>

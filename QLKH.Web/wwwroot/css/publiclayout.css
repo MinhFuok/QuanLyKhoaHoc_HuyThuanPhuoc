@@ -1,7 +1,5 @@
 /* PUBLIC LAYOUT */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
-
 :root {
     --c-bg: #f5f3ef;
     --c-surface: #ffffff;
@@ -22,8 +20,8 @@
     --c-footer-text-soft: rgba(226, 232, 240, 0.84);
     --c-sky-bg: #050505;
     --c-sky-moon: #fdfbd3;
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'DM Sans', sans-serif;
+    --font-serif: 'Roboto', Arial, Helvetica, sans-serif;
+    --font-sans: 'Roboto', Arial, Helvetica, sans-serif;
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
     --dur: 0.22s;
     --radius-s: 6px;

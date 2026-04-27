@@ -8,26 +8,23 @@
 
     /* ── Palette (mirrors CSS vars) ────────────────────────────── */
     var C = {
-        blue: '#60a5fa',
-        blueMid: '#3b82f6',
+        blue: '#38bdf8',
+        blueMid: '#60a5fa',
         blueLight: '#7dd3fc',
-        bluePale: 'rgba(96,165,250,.18)',
-        cyan: '#67e8f9',
-        cyanLight: '#22d3ee',
-        cyanPale: 'rgba(103,232,249,.18)',
-        navy: '#c084fc',
-        navyPale: 'rgba(192,132,252,.16)',
+        bluePale: 'rgba(56,189,248,.18)',
+        cyan: '#22d3ee',
+        cyanLight: '#67e8f9',
+        cyanPale: 'rgba(34,211,238,.18)',
+        navy: '#a78bfa',
+        navyPale: 'rgba(167,139,250,.16)',
         slate: '#94a3b8',
         slatePale: 'rgba(148,163,184,.16)',
-        pink: '#f472b6',
-        pinkSoft: 'rgba(244,114,182,.18)',
-        violet: '#a78bfa',
-        teal: '#5eead4',
+        teal: '#0ea5e9',
         amber: '#fbbf24',
-        panel: '#1b1f3f',
-        success: '#10b981',
-        danger: '#fb7185',
-        muted: 'rgba(191,219,254,.68)',
+        panel: '#0f1b31',
+        success: '#34d399',
+        danger: '#f87171',
+        muted: 'rgba(203,218,235,.72)',
         grid: 'rgba(255,255,255,.08)',
         gridSoft: 'rgba(255,255,255,.04)',
         white: '#ffffff',
@@ -177,10 +174,70 @@
         });
     }
 
+    /* ── 2a. Liquid glass pointer light ───────────────────────── */
+    function initLiquidGlassPointer() {
+        if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
+
+        var targets = $$('.admin-dashboard-page .da-kpi, .admin-dashboard-page .da-card, .admin-dashboard-page .da-identity, .admin-dashboard-page .da-maintenance-alert, .admin-dashboard-page .da-action-item');
+
+        targets.forEach(function (el) {
+            var rafId = 0;
+            var lastX = 0;
+            var lastY = 0;
+            var alpha = el.classList.contains('da-action-item')
+                ? 0.18
+                : el.classList.contains('da-maintenance-alert')
+                    ? 0.16
+                    : 0.24;
+
+            function commit() {
+                rafId = 0;
+                var rect = el.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+
+                var x = ((lastX - rect.left) / rect.width) * 100;
+                var y = ((lastY - rect.top) / rect.height) * 100;
+
+                el.style.setProperty('--da-light-x', x.toFixed(2) + '%');
+                el.style.setProperty('--da-light-y', y.toFixed(2) + '%');
+            }
+
+            function queue(clientX, clientY) {
+                lastX = clientX;
+                lastY = clientY;
+                if (rafId) return;
+                rafId = requestAnimationFrame(commit);
+            }
+
+            el.addEventListener('pointerenter', function (e) {
+                if (e.pointerType && e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+                el.style.setProperty('--da-light-alpha', String(alpha));
+                queue(e.clientX, e.clientY);
+            });
+
+            el.addEventListener('pointermove', function (e) {
+                if (e.pointerType && e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+                el.style.setProperty('--da-light-alpha', String(alpha));
+                queue(e.clientX, e.clientY);
+            });
+
+            el.addEventListener('pointerleave', function () {
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = 0;
+                }
+
+                el.style.setProperty('--da-light-alpha', '0');
+                el.style.setProperty('--da-light-x', '50%');
+                el.style.setProperty('--da-light-y', '50%');
+            });
+        });
+    }
+
     /* ── 3. Chart.js global defaults ───────────────────────────── */
     function applyChartDefaults() {
         if (typeof Chart === 'undefined') return;
-        Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+        Chart.defaults.font.family = "'Roboto', 'Segoe UI', Arial, sans-serif";
         Chart.defaults.font.size = 12;
         Chart.defaults.color = C.muted;
         Chart.defaults.borderColor = C.gridSoft;
@@ -223,7 +280,7 @@
                     ctx.textBaseline = 'middle';
 
                     pluginOptions.lines.forEach(function (line, index) {
-                        ctx.font = line.font || "700 24px 'Segoe UI', system-ui, sans-serif";
+                        ctx.font = line.font || "700 24px 'Roboto', 'Segoe UI', Arial, sans-serif";
                         ctx.fillStyle = line.color || '#ffffff';
                         ctx.fillText(line.text, centerX, startY + index * lineHeight);
                     });
@@ -243,7 +300,7 @@
             cornerRadius: 12,
             titleColor: '#ffffff',
             bodyColor: 'rgba(226,232,240,.92)',
-            borderColor: 'rgba(167,139,250,.22)',
+            borderColor: 'rgba(103,198,243,.22)',
             borderWidth: 1,
             displayColors: true,
             boxPadding: 4,
@@ -268,11 +325,11 @@
                         data.TotalClassRooms || 0,
                         data.TotalDepartments || 0,
                     ],
-                    borderColor: C.pink,
+                    borderColor: C.blue,
                     backgroundColor: function (context) {
                         return createVerticalGradient(context.chart, [
-                            [0, 'rgba(244,114,182,.56)'],
-                            [0.45, 'rgba(192,132,252,.22)'],
+                            [0, 'rgba(56,189,248,.4)'],
+                            [0.45, 'rgba(96,165,250,.18)'],
                             [1, 'rgba(15,23,42,0)']
                         ]);
                     },
@@ -282,10 +339,10 @@
                     pointRadius: 3,
                     pointHoverRadius: 5,
                     pointBorderWidth: 0,
-                    pointBackgroundColor: '#fbcfe8',
+                    pointBackgroundColor: '#e0f2fe',
                     pointHoverBackgroundColor: '#ffffff',
                     shadowBlur: 24,
-                    shadowColor: 'rgba(244,114,182,.42)',
+                    shadowColor: 'rgba(56,189,248,.32)',
                 }]
             },
             options: {
@@ -307,7 +364,7 @@
                     x: {
                         grid: { display: false },
                         ticks: {
-                            color: 'rgba(191,219,254,.74)',
+                            color: 'rgba(203,218,235,.74)',
                             font: { weight: '600' }
                         },
                         border: { display: false }
@@ -318,7 +375,7 @@
                         border: { display: false },
                         ticks: {
                             precision: 0,
-                            color: 'rgba(191,219,254,.58)',
+                            color: 'rgba(203,218,235,.58)',
                             callback: function (v) { return v.toLocaleString('vi-VN'); }
                         }
                     }
@@ -338,7 +395,7 @@
                 labels: ['Đang hoạt động', 'Đã khóa'],
                 datasets: [{
                     data: [data.ActiveUsers || 0, data.LockedUsers || 0],
-                    backgroundColor: [C.blue, C.pink],
+                    backgroundColor: [C.success, C.amber],
                     borderColor: ['rgba(12,16,34,.94)', 'rgba(12,16,34,.94)'],
                     borderWidth: 4,
                     spacing: 2,
@@ -357,13 +414,13 @@
                         lines: [
                             {
                                 text: (data.ActiveUsers || 0).toLocaleString('vi-VN'),
-                                font: "800 28px 'Segoe UI', system-ui, sans-serif",
+                                font: "800 28px 'Roboto', 'Segoe UI', Arial, sans-serif",
                                 color: '#f8fafc'
                             },
                             {
                                 text: 'hoạt động',
-                                font: "600 12px 'Segoe UI', system-ui, sans-serif",
-                                color: 'rgba(191,219,254,.68)'
+                                font: "600 12px 'Roboto', 'Segoe UI', Arial, sans-serif",
+                                color: 'rgba(203,218,235,.68)'
                             }
                         ]
                     },
@@ -399,8 +456,8 @@
                         borderColor: C.cyan,
                         backgroundColor: function (context) {
                             return createVerticalGradient(context.chart, [
-                                [0, 'rgba(103,232,249,.34)'],
-                                [1, 'rgba(103,232,249,0)']
+                                [0, 'rgba(34,211,238,.28)'],
+                                [1, 'rgba(34,211,238,0)']
                             ]);
                         },
                         borderWidth: 3,
@@ -409,18 +466,18 @@
                         pointRadius: 4,
                         pointHoverRadius: 6,
                         pointBorderWidth: 0,
-                        pointBackgroundColor: '#a5f3fc',
+                        pointBackgroundColor: '#cffafe',
                         shadowBlur: 22,
-                        shadowColor: 'rgba(103,232,249,.36)',
+                        shadowColor: 'rgba(34,211,238,.28)',
                     },
                     {
                         label: 'Chưa liên kết',
                         data: [data.UnlinkedStudents || 0, data.UnlinkedTeachers || 0],
-                        borderColor: C.pink,
+                        borderColor: C.navy,
                         backgroundColor: function (context) {
                             return createVerticalGradient(context.chart, [
-                                [0, 'rgba(244,114,182,.30)'],
-                                [1, 'rgba(244,114,182,0)']
+                                [0, 'rgba(167,139,250,.18)'],
+                                [1, 'rgba(167,139,250,0)']
                             ]);
                         },
                         borderWidth: 3,
@@ -429,9 +486,9 @@
                         pointRadius: 4,
                         pointHoverRadius: 6,
                         pointBorderWidth: 0,
-                        pointBackgroundColor: '#fbcfe8',
+                        pointBackgroundColor: '#ede9fe',
                         shadowBlur: 20,
-                        shadowColor: 'rgba(244,114,182,.32)',
+                        shadowColor: 'rgba(167,139,250,.22)',
                     }
                 ]
             },
@@ -443,7 +500,7 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: 'rgba(191,219,254,.76)',
+                            color: 'rgba(203,218,235,.76)',
                             padding: 14,
                             usePointStyle: true,
                             pointStyleWidth: 10,
@@ -464,7 +521,7 @@
                         grid: { display: false },
                         border: { display: false },
                         ticks: {
-                            color: 'rgba(191,219,254,.74)',
+                            color: 'rgba(203,218,235,.74)',
                             font: { weight: '600' }
                         }
                     },
@@ -474,7 +531,7 @@
                         border: { display: false },
                         ticks: {
                             precision: 0,
-                            color: 'rgba(191,219,254,.58)',
+                            color: 'rgba(203,218,235,.58)',
                             callback: function (v) { return v.toLocaleString('vi-VN'); }
                         }
                     }
@@ -514,6 +571,7 @@
     function init() {
         var data = window.adminDashboardData || {};
         initSpaceBackground();
+        initLiquidGlassPointer();
         initReveal();
         initCountUps();
         applyChartDefaults();

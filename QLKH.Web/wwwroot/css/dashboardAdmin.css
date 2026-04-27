@@ -5,6 +5,27 @@
    ============================================================ */
 
 /* ── CSS Variables ──────────────────────────────────────────── */
+:root {
+    --bg-dark: #08111f;
+    --panel: rgba(15, 23, 42, 0.74);
+    --panel-soft: rgba(20, 31, 56, 0.56);
+    --primary: #67c6f3;
+    --primary-soft: #d8f1ff;
+    --primary-border: rgba(103, 198, 243, 0.26);
+    --text-main: #f7fbff;
+    --text-muted: rgba(203, 218, 235, 0.78);
+    --success: #34d399;
+    --warning: #f59e0b;
+    --danger: #f87171;
+    --accent-account: #38bdf8;
+    --accent-student: #60a5fa;
+    --accent-teacher: #a78bfa;
+    --accent-class: #fbbf24;
+    --accent-setting: #22d3ee;
+    --accent-notify: #0ea5e9;
+    --accent-log: #818cf8;
+}
+
 body.db-body.da-space-body {
     background: #090a0f;
 }
@@ -27,6 +48,24 @@ body.db-body.da-space-body {
     }
 
 .admin-dashboard-page {
+    --bg-dark: #08111f;
+    --panel: rgba(15, 23, 42, 0.74);
+    --panel-soft: rgba(20, 31, 56, 0.56);
+    --primary: #67c6f3;
+    --primary-soft: #d8f1ff;
+    --primary-border: rgba(103, 198, 243, 0.26);
+    --text-main: #f7fbff;
+    --text-muted: rgba(203, 218, 235, 0.78);
+    --success: #34d399;
+    --warning: #f59e0b;
+    --danger: #f87171;
+    --accent-account: #38bdf8;
+    --accent-student: #60a5fa;
+    --accent-teacher: #a78bfa;
+    --accent-class: #fbbf24;
+    --accent-setting: #22d3ee;
+    --accent-notify: #0ea5e9;
+    --accent-log: #818cf8;
     --da-navy-900: #0a1628;
     --da-navy-800: #0d1b3e;
     --da-navy-700: #12275a;
@@ -62,9 +101,14 @@ body.db-body.da-space-body {
     --da-t: all .2s cubic-bezier(.4,0,.2,1);
     --da-space-span: 4200px;
     --da-space-span-negative: -4200px;
+    --da-liquid-border: rgba(255,255,255,.12);
+    --da-liquid-border-strong: rgba(255,255,255,.24);
+    --da-liquid-shadow: 0 22px 48px rgba(2,6,23,.3);
+    --da-liquid-shadow-soft: 0 12px 28px rgba(15,23,42,.2);
+    --da-liquid-blur: blur(24px) saturate(175%);
     background-color: transparent;
     color: var(--da-navy-800);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
     position: relative;
     isolation: isolate;
     min-height: calc(100vh - 2rem);
@@ -74,6 +118,12 @@ body.db-body.da-space-body {
 .admin-dashboard-page > :not(.da-space-bg) {
     position: relative;
     z-index: 1;
+}
+
+.admin-dashboard-page :is(.da-kpi, .da-card, .da-identity, .da-maintenance-alert, .da-action-item) {
+    --da-light-x: 50%;
+    --da-light-y: 50%;
+    --da-light-alpha: 0;
 }
 
 .da-space-bg {
@@ -197,11 +247,11 @@ body.db-body.da-space-body {
 .da-header {
     border-radius: var(--da-radius-xl);
     background:
-        radial-gradient(circle at top right, rgba(96,165,250,.16) 0%, transparent 24%),
-        radial-gradient(circle at bottom left, rgba(244,114,182,.12) 0%, transparent 34%),
-        linear-gradient(180deg, rgba(34,38,72,.98) 0%, rgba(27,30,61,.98) 100%);
-    border: 1px solid rgba(255,255,255,.06);
-    box-shadow: 0 20px 48px rgba(6,8,20,.4), 0 0 30px rgba(96,165,250,.08);
+        radial-gradient(circle at top right, rgba(103,198,243,.16) 0%, transparent 22%),
+        radial-gradient(circle at bottom left, rgba(59,130,246,.1) 0%, transparent 30%),
+        linear-gradient(180deg, rgba(8,17,31,.96) 0%, rgba(12,24,43,.94) 52%, rgba(16,29,51,.94) 100%);
+    border: 1px solid var(--primary-border);
+    box-shadow: 0 24px 52px rgba(2,6,23,.32), 0 0 28px rgba(103,198,243,.08);
     position: relative;
     overflow: hidden;
 }
@@ -212,7 +262,7 @@ body.db-body.da-space-body {
         inset: 0;
         padding: 1px;
         border-radius: inherit;
-        background: linear-gradient(135deg, rgba(96,165,250,.82) 0%, rgba(255,255,255,.08) 34%, rgba(255,255,255,.04) 66%, rgba(244,114,182,.78) 100%);
+        background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(103,198,243,.48) 18%, rgba(255,255,255,.08) 46%, rgba(255,255,255,.04) 72%, rgba(103,198,243,.34) 100%);
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
@@ -224,9 +274,9 @@ body.db-body.da-space-body {
         position: absolute;
         inset: 0;
         background:
-            linear-gradient(145deg, rgba(255,255,255,.08) 0%, transparent 24%),
-            radial-gradient(circle at 84% 18%, rgba(255,255,255,.08) 0%, transparent 18%);
-        opacity: .72;
+            linear-gradient(145deg, rgba(255,255,255,.09) 0%, transparent 26%),
+            radial-gradient(circle at 82% 16%, rgba(216,241,255,.12) 0%, transparent 16%);
+        opacity: .64;
         pointer-events: none;
     }
 
@@ -255,31 +305,35 @@ body.db-body.da-space-body {
     font-weight: 700;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: #bae6fd;
+    color: var(--primary-soft);
     margin-bottom: .9rem;
-    background: rgba(15,23,42,.38);
-    border: 1px solid rgba(148,163,184,.16);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(56,189,248,.12) 0%, transparent 36%),
+        linear-gradient(180deg, rgba(17,28,48,.78) 0%, rgba(14,24,43,.66) 100%);
+    border: 1px solid color-mix(in srgb, var(--accent-account) 28%, rgba(255,255,255,.12));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 10px 22px rgba(2,6,23,.16);
 }
 
     .da-header-eyebrow .bi {
         font-size: .85rem;
-        color: #67e8f9;
-        text-shadow: 0 0 14px rgba(34,211,238,.35);
+        color: var(--accent-setting);
+        text-shadow: 0 0 14px rgba(34,211,238,.3);
     }
 
 .da-header-title {
     font-size: clamp(2rem, 3vw, 2.7rem);
     font-weight: 900;
-    color: var(--da-white);
+    color: var(--text-main);
     letter-spacing: -.03em;
     line-height: 1.1;
     margin: 0 0 .35rem;
-    text-shadow: 0 0 26px rgba(255,255,255,.06);
+    text-shadow: 0 0 18px rgba(255,255,255,.04);
 }
 
 .da-header-sub {
-    color: rgba(191,219,254,.72);
+    color: var(--text-muted);
     font-size: .96rem;
     margin: 0;
     line-height: 1.6;
@@ -292,19 +346,26 @@ body.db-body.da-space-body {
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.2rem;
-    background: linear-gradient(180deg, rgba(15,23,42,.5) 0%, rgba(15,23,42,.3) 100%);
-    border: 1px solid rgba(148,163,184,.16);
+    background:
+        radial-gradient(220px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 62%),
+        radial-gradient(circle at 18% 0%, rgba(255,255,255,.14) 0%, transparent 34%),
+        linear-gradient(165deg, rgba(14,24,43,.72) 0%, rgba(16,29,51,.58) 54%, rgba(10,18,33,.72) 100%);
+    border: 1px solid color-mix(in srgb, var(--accent-account) 22%, rgba(255,255,255,.12));
     border-radius: var(--da-radius-lg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: var(--da-liquid-blur);
+    -webkit-backdrop-filter: var(--da-liquid-blur);
     flex-shrink: 0;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 16px 32px rgba(2,6,23,.22);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -18px 30px rgba(255,255,255,.02),
+        0 16px 34px rgba(2,6,23,.22);
 }
 
 .da-avatar {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed 0%, #f472b6 52%, #67e8f9 100%);
+    background: linear-gradient(135deg, var(--accent-account) 0%, var(--accent-setting) 52%, var(--primary-soft) 100%);
     color: var(--da-white);
     font-weight: 800;
     font-size: 1.4rem;
@@ -312,7 +373,10 @@ body.db-body.da-space-body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 0 0 3px rgba(255,255,255,.08), 0 10px 24px rgba(244,114,182,.18);
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,.08),
+        0 0 24px rgba(56,189,248,.18),
+        0 12px 28px rgba(14,165,233,.18);
 }
 
 .da-identity-info {
@@ -322,13 +386,13 @@ body.db-body.da-space-body {
 .da-identity-name {
     font-weight: 700;
     font-size: .96rem;
-    color: var(--da-white);
+    color: var(--text-main);
     line-height: 1.3;
 }
 
 .da-identity-email {
     font-size: .78rem;
-    color: rgba(191,219,254,.62);
+    color: var(--text-muted);
     margin-bottom: .45rem;
 }
 
@@ -348,7 +412,12 @@ body.db-body.da-space-body {
     padding: .28rem .68rem;
     border-radius: 999px;
     letter-spacing: .04em;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 8px 16px rgba(2,6,23,.08);
+    backdrop-filter: blur(14px) saturate(155%);
+    -webkit-backdrop-filter: blur(14px) saturate(155%);
 }
 
     .da-badge .bi {
@@ -356,52 +425,52 @@ body.db-body.da-space-body {
     }
 
 .da-badge-role {
-    background: rgba(96,165,250,.16);
-    color: #dbeafe;
-    border: 1px solid rgba(96,165,250,.28);
+    background: color-mix(in srgb, var(--accent-account) 16%, rgba(10,18,33,.7));
+    color: color-mix(in srgb, var(--accent-account) 24%, white 76%);
+    border-color: color-mix(in srgb, var(--accent-account) 26%, rgba(255,255,255,.1));
 }
 
 .da-badge-online {
-    background: rgba(16,185,129,.16);
-    color: #86efac;
-    border: 1px solid rgba(16,185,129,.28);
+    background: color-mix(in srgb, var(--success) 14%, rgba(10,18,33,.7));
+    color: color-mix(in srgb, var(--success) 28%, white 72%);
+    border-color: color-mix(in srgb, var(--success) 26%, rgba(255,255,255,.1));
 }
 
 .da-badge-maintenance {
-    background: rgba(251,191,36,.16);
-    color: #fde68a;
-    border: 1px solid rgba(251,191,36,.28);
+    background: color-mix(in srgb, var(--accent-class) 14%, rgba(10,18,33,.7));
+    color: color-mix(in srgb, var(--accent-class) 26%, white 74%);
+    border-color: color-mix(in srgb, var(--accent-class) 26%, rgba(255,255,255,.1));
 }
 
 .da-badge-off {
     background: rgba(148,163,184,.12);
-    color: rgba(226,232,240,.76);
-    border: 1px solid rgba(148,163,184,.22);
+    color: rgba(226,232,240,.82);
+    border-color: rgba(148,163,184,.24);
 }
 
 /* Badge overrides inside info card (light background context) */
 .da-info-value .da-badge-role {
-    background: var(--da-blue-pale);
-    color: var(--da-blue);
-    border-color: #bfdbfe;
+    background: color-mix(in srgb, var(--accent-account) 16%, rgba(10,18,33,.72));
+    color: color-mix(in srgb, var(--accent-account) 22%, white 78%);
+    border-color: color-mix(in srgb, var(--accent-account) 24%, rgba(255,255,255,.1));
 }
 
 .da-info-value .da-badge-online {
-    background: #d1fae5;
-    color: #065f46;
-    border-color: #6ee7b7;
+    background: color-mix(in srgb, var(--success) 14%, rgba(10,18,33,.72));
+    color: color-mix(in srgb, var(--success) 26%, white 74%);
+    border-color: color-mix(in srgb, var(--success) 22%, rgba(255,255,255,.1));
 }
 
 .da-info-value .da-badge-maintenance {
-    background: #fef3c7;
-    color: #92400e;
-    border-color: #fde68a;
+    background: color-mix(in srgb, var(--accent-class) 14%, rgba(10,18,33,.72));
+    color: color-mix(in srgb, var(--accent-class) 26%, white 74%);
+    border-color: color-mix(in srgb, var(--accent-class) 22%, rgba(255,255,255,.1));
 }
 
 .da-info-value .da-badge-off {
-    background: var(--da-slate-pale);
-    color: var(--da-muted);
-    border-color: #cbd5e1;
+    background: rgba(148,163,184,.1);
+    color: rgba(226,232,240,.78);
+    border-color: rgba(148,163,184,.18);
 }
 
 /* ── Maintenance Alert ───────────────────────────────────────── */
@@ -410,12 +479,18 @@ body.db-body.da-space-body {
     align-items: flex-start;
     gap: 1rem;
     padding: 1rem 1.35rem;
-    background: rgba(255,251,235,.9);
-    border: 1px solid rgba(253,230,138,.8);
-    border-left: 4px solid var(--da-warning);
+    background:
+        radial-gradient(240px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 62%),
+        radial-gradient(circle at top left, rgba(255,255,255,.16) 0%, transparent 30%),
+        linear-gradient(160deg, rgba(28,24,18,.8) 0%, rgba(46,35,17,.7) 52%, rgba(30,24,16,.78) 100%);
+    border: 1px solid rgba(246,199,104,.26);
+    border-left: 4px solid rgba(246,199,104,.72);
     border-radius: var(--da-radius-md);
-    box-shadow: var(--da-shadow-xs);
-    backdrop-filter: blur(12px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        0 14px 30px rgba(15,23,42,.18);
+    backdrop-filter: var(--da-liquid-blur);
+    -webkit-backdrop-filter: var(--da-liquid-blur);
 }
 
 .da-alert-icon {
@@ -428,13 +503,13 @@ body.db-body.da-space-body {
 .da-alert-title {
     font-weight: 700;
     font-size: .875rem;
-    color: #92400e;
+    color: var(--text-main);
     margin-bottom: .2rem;
 }
 
 .da-alert-body {
     font-size: .85rem;
-    color: #b45309;
+    color: rgba(241, 245, 249, .76);
     line-height: 1.5;
 }
 
@@ -442,14 +517,15 @@ body.db-body.da-space-body {
    KPI CARDS
    ════════════════════════════════════════════════════════════ */
 .da-kpi {
-    --da-kpi-accent: #60a5fa;
-    --da-kpi-accent-2: #22d3ee;
-    --da-kpi-value: #7dd3fc;
-    --da-kpi-label: #f8fafc;
-    --da-kpi-meta: rgba(191,219,254,.76);
+    --accent: var(--accent-account);
+    --da-kpi-accent: var(--accent);
+    --da-kpi-accent-2: color-mix(in srgb, var(--accent) 64%, white 36%);
+    --da-kpi-value: color-mix(in srgb, var(--accent) 24%, white 76%);
+    --da-kpi-label: var(--text-main);
+    --da-kpi-meta: rgba(214,226,238,.84);
     --da-kpi-icon-bg: rgba(11,18,38,.82);
-    --da-kpi-icon-color: #dbeafe;
-    --da-kpi-orb: rgba(125,211,252,.20);
+    --da-kpi-icon-color: color-mix(in srgb, var(--accent) 30%, white 70%);
+    --da-kpi-orb: color-mix(in srgb, var(--accent) 18%, transparent);
     --da-kpi-border: rgba(255,255,255,.06);
     --da-kpi-shadow: rgba(6,8,20,.34);
     display: flex;
@@ -457,14 +533,21 @@ body.db-body.da-space-body {
     gap: 1rem;
     padding: 1.35rem 1.4rem;
     border-radius: var(--da-radius-lg);
-    border: 1px solid var(--da-kpi-border);
+    border: 1px solid color-mix(in srgb, var(--da-kpi-accent) 12%, var(--da-liquid-border));
     background:
-        radial-gradient(circle at top right, color-mix(in srgb, var(--da-kpi-accent-2) 16%, transparent) 0%, transparent 30%),
-        radial-gradient(circle at bottom left, color-mix(in srgb, var(--da-kpi-accent) 12%, transparent) 0%, transparent 38%),
-        linear-gradient(180deg, rgba(34,38,72,.96) 0%, rgba(27,30,61,.96) 100%);
-    box-shadow: 0 16px 40px var(--da-kpi-shadow), 0 0 24px color-mix(in srgb, var(--da-kpi-accent) 12%, transparent);
-    backdrop-filter: blur(14px);
-    transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+        radial-gradient(260px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 62%),
+        radial-gradient(circle at 14% -2%, rgba(255,255,255,.16) 0%, transparent 34%),
+        radial-gradient(circle at top right, color-mix(in srgb, var(--da-kpi-accent-2) 18%, transparent) 0%, transparent 30%),
+        radial-gradient(circle at bottom left, color-mix(in srgb, var(--da-kpi-accent) 14%, transparent) 0%, transparent 40%),
+        linear-gradient(160deg, rgba(14,24,43,.78) 0%, rgba(15,27,49,.68) 54%, rgba(9,18,33,.8) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -18px 36px rgba(255,255,255,.02),
+        0 20px 44px rgba(2,6,23,.28),
+        0 0 24px color-mix(in srgb, var(--da-kpi-accent) 12%, transparent);
+    backdrop-filter: var(--da-liquid-blur);
+    -webkit-backdrop-filter: var(--da-liquid-blur);
+    transition: box-shadow .22s ease, border-color .22s ease, transform .22s ease, background .22s ease;
     cursor: default;
     position: relative;
     overflow: hidden;
@@ -478,12 +561,12 @@ body.db-body.da-space-body {
     padding: 1px;
     z-index: 0;
     border-radius: inherit;
-    background: linear-gradient(135deg, color-mix(in srgb, var(--da-kpi-accent) 80%, white 20%) 0%, rgba(255,255,255,.08) 34%, rgba(255,255,255,.04) 66%, color-mix(in srgb, var(--da-kpi-accent-2) 78%, white 22%) 100%);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--da-kpi-accent) 66%, white 34%) 0%, rgba(255,255,255,.26) 16%, rgba(255,255,255,.08) 38%, rgba(255,255,255,.04) 64%, color-mix(in srgb, var(--da-kpi-accent-2) 64%, white 36%) 100%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
-    opacity: .96;
+    opacity: .88;
 }
 
 .da-kpi::after {
@@ -491,17 +574,23 @@ body.db-body.da-space-body {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(145deg, rgba(255,255,255,.08) 0%, transparent 24%),
-        radial-gradient(circle at 82% 18%, rgba(255,255,255,.08) 0%, transparent 16%),
-        radial-gradient(circle at 90% 86%, var(--da-kpi-orb) 0%, transparent 20%);
-    opacity: .74;
+        linear-gradient(140deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,.06) 18%, transparent 38%),
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,.12) 0%, transparent 16%),
+        radial-gradient(circle at 12% 100%, rgba(255,255,255,.08) 0%, transparent 28%),
+        radial-gradient(circle at 90% 86%, var(--da-kpi-orb) 0%, transparent 22%);
+    opacity: .92;
     pointer-events: none;
     z-index: 0;
 }
 
 .da-kpi:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 44px rgba(6,8,20,.4), 0 0 28px color-mix(in srgb, var(--da-kpi-accent) 16%, transparent);
+    transform: translateY(-6px) scale(1.01);
+    border-color: color-mix(in srgb, var(--da-kpi-accent-2) 28%, var(--da-liquid-border-strong));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.24),
+        inset 0 -18px 40px rgba(255,255,255,.03),
+        0 26px 52px rgba(2,6,23,.36),
+        0 0 30px color-mix(in srgb, var(--da-kpi-accent) 18%, transparent);
 }
 
 .da-kpi > * {
@@ -518,10 +607,16 @@ body.db-body.da-space-body {
     justify-content: center;
     font-size: 1.3rem;
     flex-shrink: 0;
-    background: linear-gradient(135deg, color-mix(in srgb, var(--da-kpi-accent) 20%, var(--da-kpi-icon-bg)) 0%, color-mix(in srgb, var(--da-kpi-accent-2) 14%, var(--da-kpi-icon-bg)) 100%);
+    background:
+        radial-gradient(circle at 30% 22%, rgba(255,255,255,.26) 0%, transparent 28%),
+        linear-gradient(160deg, color-mix(in srgb, var(--da-kpi-accent) 22%, rgba(8,17,31,.92)) 0%, color-mix(in srgb, var(--da-kpi-accent-2) 14%, rgba(10,19,35,.82)) 100%);
     color: var(--da-kpi-icon-color);
-    border: 1px solid color-mix(in srgb, var(--da-kpi-accent) 26%, rgba(255,255,255,.08));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 12px 24px rgba(2,6,23,.26);
+    border: 1px solid color-mix(in srgb, var(--da-kpi-accent) 28%, rgba(255,255,255,.16));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -10px 18px rgba(255,255,255,.04),
+        0 14px 24px rgba(2,6,23,.28),
+        0 0 18px color-mix(in srgb, var(--da-kpi-accent) 16%, transparent);
 }
 
 .da-kpi-body {
@@ -529,40 +624,29 @@ body.db-body.da-space-body {
     min-width: 0;
 }
 
+.stat-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: .45rem;
+    flex-wrap: wrap;
+}
+
 .da-kpi-blue {
-    --da-kpi-accent: #60a5fa;
-    --da-kpi-accent-2: #22d3ee;
-    --da-kpi-value: #7dd3fc;
-    --da-kpi-meta: rgba(191,219,254,.76);
-    --da-kpi-icon-color: #dbeafe;
-    --da-kpi-orb: rgba(125,211,252,.24);
+    --accent: var(--accent-account);
 }
 
 .da-kpi-cyan {
-    --da-kpi-accent: #fb7185;
-    --da-kpi-accent-2: #f97316;
-    --da-kpi-value: #fda4af;
-    --da-kpi-meta: rgba(255,228,230,.74);
-    --da-kpi-icon-color: #ffe4e6;
-    --da-kpi-orb: rgba(251,113,133,.22);
+    --accent: var(--accent-student);
 }
 
 .da-kpi-navy {
-    --da-kpi-accent: #a78bfa;
-    --da-kpi-accent-2: #f472b6;
-    --da-kpi-value: #e9d5ff;
-    --da-kpi-meta: rgba(237,233,254,.76);
-    --da-kpi-icon-color: #f5d0fe;
-    --da-kpi-orb: rgba(196,181,253,.22);
+    --accent: var(--accent-teacher);
 }
 
 .da-kpi-slate {
-    --da-kpi-accent: #fbbf24;
-    --da-kpi-accent-2: #f59e0b;
-    --da-kpi-value: #fde68a;
-    --da-kpi-meta: rgba(254,240,138,.74);
-    --da-kpi-icon-color: #fde68a;
-    --da-kpi-orb: rgba(251,191,36,.22);
+    --accent: var(--accent-class);
 }
 
 .stat-label {
@@ -570,7 +654,45 @@ body.db-body.da-space-body {
     font-weight: 800;
     letter-spacing: -.02em;
     color: var(--da-kpi-label);
-    margin-bottom: .45rem;
+    margin-bottom: 0;
+}
+
+.stat-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .38rem .7rem;
+    border-radius: 999px;
+    font-size: .69rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border: 1px solid color-mix(in srgb, var(--status-accent, var(--accent)) 26%, rgba(255,255,255,.14));
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.04) 100%),
+        color-mix(in srgb, var(--status-accent, var(--accent)) 10%, rgba(10,18,33,.62));
+    color: color-mix(in srgb, var(--status-accent, var(--accent)) 24%, white 76%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 0 0 1px color-mix(in srgb, var(--status-accent, var(--accent)) 8%, transparent);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+.stat-status-blue {
+    --status-accent: var(--accent-account);
+}
+
+.stat-status-cyan {
+    --status-accent: var(--accent-student);
+}
+
+.stat-status-navy {
+    --status-accent: var(--accent-teacher);
+}
+
+.stat-status-slate {
+    --status-accent: var(--accent-class);
 }
 
 .stat-value {
@@ -581,7 +703,17 @@ body.db-body.da-space-body {
     margin-bottom: .8rem;
     font-variant-numeric: tabular-nums;
     color: var(--da-kpi-value);
-    text-shadow: 0 0 22px color-mix(in srgb, var(--da-kpi-value) 22%, transparent);
+    text-shadow:
+        0 0 24px color-mix(in srgb, var(--accent) 18%, transparent),
+        0 0 6px rgba(255,255,255,.08);
+}
+
+.stat-desc {
+    font-size: .8rem;
+    line-height: 1.55;
+    color: rgba(219,229,239,.86);
+    margin-bottom: .8rem;
+    max-width: 32ch;
 }
 
 .stat-meta {
@@ -598,21 +730,30 @@ body.db-body.da-space-body {
         font-size: .78rem;
         padding: .42rem .65rem;
         border-radius: 999px;
-        background: rgba(12,18,40,.46);
-        border: 1px solid rgba(255,255,255,.06);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+        background:
+            linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.04) 100%),
+            color-mix(in srgb, var(--accent) 8%, rgba(10,18,33,.56));
+        border: 1px solid color-mix(in srgb, var(--accent) 18%, rgba(255,255,255,.08));
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.16),
+            0 10px 22px rgba(2,6,23,.12);
+        backdrop-filter: blur(18px) saturate(155%);
+        -webkit-backdrop-filter: blur(18px) saturate(155%);
         color: var(--da-kpi-meta);
         max-width: 100%;
     }
 
     .stat-meta .bi {
         font-size: .72rem;
-        color: color-mix(in srgb, var(--da-kpi-accent-2) 74%, white 26%);
+        color: color-mix(in srgb, var(--accent) 42%, white 58%);
     }
 
-    .da-kpi .stat-meta .text-success,
+    .da-kpi .stat-meta .text-success {
+        color: color-mix(in srgb, var(--success) 72%, white 28%) !important;
+    }
+
     .da-kpi .stat-meta .text-danger {
-        color: inherit !important;
+        color: color-mix(in srgb, var(--warning) 76%, white 24%) !important;
     }
 
 @media (hover: none), (pointer: coarse) {
@@ -620,39 +761,77 @@ body.db-body.da-space-body {
         transform: none !important;
         filter: none !important;
     }
+
+    .admin-dashboard-page :is(.da-kpi, .da-card, .da-identity, .da-maintenance-alert, .da-action-item) {
+        --da-light-alpha: 0 !important;
+    }
 }
 
 /* ════════════════════════════════════════════════════════════
    GENERIC CARD
    ════════════════════════════════════════════════════════════ */
 .da-card {
-    background: #ffffff;
-    border: 1px solid rgba(226,232,240,.92);
+    background:
+        radial-gradient(280px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 62%),
+        radial-gradient(circle at 14% -6%, rgba(255,255,255,.16) 0%, transparent 30%),
+        linear-gradient(165deg, rgba(13,22,40,.78) 0%, rgba(16,28,50,.68) 28%, rgba(9,18,33,.8) 100%);
+    border: 1px solid rgba(255,255,255,.08);
     border-radius: var(--da-radius-lg);
-    box-shadow: var(--da-shadow-sm);
-    backdrop-filter: blur(16px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.24),
+        inset 0 -22px 36px rgba(255,255,255,.03),
+        var(--da-liquid-shadow-soft);
+    backdrop-filter: var(--da-liquid-blur);
+    -webkit-backdrop-filter: var(--da-liquid-blur);
     overflow: hidden;
     position: relative;
     isolation: isolate;
-    transition: box-shadow .2s ease;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
 
     .da-card:hover {
-        box-shadow: var(--da-shadow-md);
+        transform: translateY(-4px);
+        border-color: var(--da-liquid-border-strong);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.28),
+            inset 0 -22px 36px rgba(255,255,255,.04),
+            var(--da-liquid-shadow);
     }
+
+.da-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(140deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.06) 16%, transparent 42%),
+        radial-gradient(circle at 84% 16%, rgba(255,255,255,.1) 0%, transparent 18%);
+    pointer-events: none;
+    opacity: .9;
+}
+
+.da-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    border: 1px solid rgba(255,255,255,.06);
+    pointer-events: none;
+}
 
 .da-card-header {
     display: flex;
     align-items: center;
     gap: .6rem;
     padding: .9rem 1.35rem;
-    background: linear-gradient(180deg, rgba(248,250,255,.92) 0%, rgba(241,245,249,.78) 100%);
-    border-bottom: 1px solid rgba(199,214,238,.72);
+    background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.04) 100%);
+    border-bottom: 1px solid rgba(255,255,255,.08);
     font-size: .8rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: .08em;
-    color: var(--da-navy-800);
+    color: #f8fafc;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
 }
 
 .da-card-header-between {
@@ -660,7 +839,7 @@ body.db-body.da-space-body {
 }
 
 .da-card-header-icon {
-    color: var(--da-blue);
+    color: rgba(216,241,255,.86);
     font-size: 1rem;
 }
 
@@ -678,18 +857,24 @@ body.db-body.da-space-body {
 }
 
 .da-card-gradient {
-    --da-card-accent: #7dd3fc;
-    --da-card-header-1: #60a5fa;
-    --da-card-header-2: #22d3ee;
+    --da-card-accent: #67c6f3;
+    --da-card-header-1: #4f8ef7;
+    --da-card-header-2: #67c6f3;
     --da-card-text: #f8fafc;
-    --da-card-muted: rgba(191,219,254,.72);
+    --da-card-muted: rgba(203,218,235,.8);
     --da-card-divider: rgba(148,163,184,.14);
     background:
-        radial-gradient(circle at top right, color-mix(in srgb, var(--da-card-header-2) 16%, transparent) 0%, transparent 28%),
-        radial-gradient(circle at bottom left, color-mix(in srgb, var(--da-card-header-1) 14%, transparent) 0%, transparent 36%),
-        linear-gradient(180deg, rgba(34,38,72,.96) 0%, rgba(27,30,61,.96) 100%);
-    border: 1px solid rgba(255,255,255,.06);
-    box-shadow: 0 16px 40px rgba(6,8,20,.34), 0 0 24px color-mix(in srgb, var(--da-card-accent) 12%, transparent);
+        radial-gradient(300px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 62%),
+        radial-gradient(circle at 14% -4%, rgba(255,255,255,.18) 0%, transparent 30%),
+        radial-gradient(circle at top right, color-mix(in srgb, var(--da-card-header-2) 16%, transparent) 0%, transparent 30%),
+        radial-gradient(circle at bottom left, color-mix(in srgb, var(--da-card-header-1) 12%, transparent) 0%, transparent 38%),
+        linear-gradient(165deg, rgba(14,24,43,.76) 0%, rgba(15,27,49,.66) 52%, rgba(9,18,33,.8) 100%);
+    border: 1px solid color-mix(in srgb, var(--da-card-accent) 12%, var(--da-liquid-border));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -22px 36px rgba(255,255,255,.02),
+        0 20px 46px rgba(2,6,23,.3),
+        0 0 24px color-mix(in srgb, var(--da-card-accent) 12%, transparent);
 }
 
     .da-card-gradient::before {
@@ -699,12 +884,12 @@ body.db-body.da-space-body {
         padding: 1px;
         z-index: 0;
         border-radius: inherit;
-        background: linear-gradient(135deg, color-mix(in srgb, var(--da-card-header-1) 82%, white 18%) 0%, rgba(255,255,255,.08) 34%, rgba(255,255,255,.04) 66%, color-mix(in srgb, var(--da-card-header-2) 82%, white 18%) 100%);
+        background: linear-gradient(135deg, color-mix(in srgb, var(--da-card-header-1) 68%, white 32%) 0%, rgba(255,255,255,.26) 16%, rgba(255,255,255,.08) 40%, rgba(255,255,255,.04) 64%, color-mix(in srgb, var(--da-card-header-2) 68%, white 32%) 100%);
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
         pointer-events: none;
-        opacity: .96;
+        opacity: .84;
     }
 
     .da-card-gradient::after {
@@ -712,23 +897,27 @@ body.db-body.da-space-body {
         position: absolute;
         inset: 0;
         background:
-            linear-gradient(145deg, rgba(255,255,255,.08) 0%, transparent 24%),
-            radial-gradient(circle at 85% 15%, rgba(255,255,255,.08) 0%, transparent 18%);
+            linear-gradient(140deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.06) 16%, transparent 40%),
+            radial-gradient(circle at 85% 15%, rgba(255,255,255,.1) 0%, transparent 18%);
         pointer-events: none;
-        opacity: .66;
+        opacity: .9;
     }
 
     .da-card-gradient .da-card-header {
-        background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.015) 100%);
-        border-bottom: 1px solid var(--da-card-divider);
+        background: linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 100%);
+        border-bottom: 1px solid rgba(255,255,255,.08);
         color: #fff;
-        box-shadow: inset 3px 0 0 color-mix(in srgb, var(--da-card-header-2) 78%, white 22%);
-        backdrop-filter: blur(10px);
+        box-shadow:
+            inset 3px 0 0 color-mix(in srgb, var(--da-card-header-2) 78%, white 22%),
+            inset 0 1px 0 rgba(255,255,255,.12),
+            0 10px 20px rgba(2,6,23,.1);
+        backdrop-filter: blur(20px) saturate(165%);
+        -webkit-backdrop-filter: blur(20px) saturate(165%);
     }
 
     .da-card-gradient .da-card-header-icon {
         color: color-mix(in srgb, var(--da-card-header-2) 72%, white 28%);
-        text-shadow: 0 0 14px color-mix(in srgb, var(--da-card-header-2) 34%, transparent);
+        text-shadow: 0 0 16px color-mix(in srgb, var(--da-card-header-2) 38%, transparent);
     }
 
     .da-card-gradient .da-card-body {
@@ -736,7 +925,8 @@ body.db-body.da-space-body {
     }
 
     .da-card-gradient .da-info-label .bi {
-        color: color-mix(in srgb, var(--da-card-accent) 74%, white 26%);
+        color: color-mix(in srgb, var(--da-card-accent) 82%, white 18%);
+        text-shadow: 0 0 14px color-mix(in srgb, var(--da-card-accent) 24%, transparent);
     }
 
     .da-card-gradient .da-info-value,
@@ -761,9 +951,9 @@ body.db-body.da-space-body {
     }
 
     .da-card-gradient .da-info-value .da-badge-role {
-        background: color-mix(in srgb, var(--da-card-accent) 20%, rgba(10,13,29,.9));
-        color: color-mix(in srgb, var(--da-card-accent) 82%, white 18%);
-        border-color: color-mix(in srgb, var(--da-card-accent) 30%, rgba(255,255,255,.08));
+        background: color-mix(in srgb, var(--da-card-accent) 14%, rgba(8,17,31,.9));
+        color: #e7f6ff;
+        border-color: color-mix(in srgb, var(--da-card-accent) 24%, rgba(255,255,255,.08));
     }
 
     .da-card-gradient .da-info-value .da-badge-online {
@@ -789,56 +979,66 @@ body.db-body.da-space-body {
     }
 
     .da-card-gradient .da-action-item {
-        background: linear-gradient(180deg, rgba(12,18,40,.64) 0%, rgba(18,24,50,.8) 100%);
+        background: linear-gradient(160deg, rgba(19,31,56,.76) 0%, rgba(14,24,43,.7) 100%);
         border-color: rgba(255,255,255,.08);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 10px 24px rgba(2,6,23,.26);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.14),
+            0 12px 26px rgba(2,6,23,.24);
     }
 
     .da-card-gradient .da-action-item::before {
-        background: linear-gradient(135deg, color-mix(in srgb, var(--da-card-header-1) 68%, transparent) 0%, color-mix(in srgb, var(--da-card-header-2) 68%, transparent) 100%);
+        background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, color-mix(in srgb, var(--da-card-header-1) 18%, transparent) 52%, color-mix(in srgb, var(--da-card-header-2) 28%, transparent) 100%);
     }
 
     .da-card-gradient .da-action-item:hover {
-        border-color: color-mix(in srgb, var(--da-card-header-2) 36%, rgba(255,255,255,.16));
-        box-shadow: 0 14px 28px rgba(2,6,23,.32), 0 0 18px color-mix(in srgb, var(--da-card-accent) 12%, transparent);
+        border-color: color-mix(in srgb, var(--da-card-header-2) 22%, rgba(255,255,255,.16));
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.18),
+            0 16px 34px rgba(2,6,23,.3),
+            0 0 18px color-mix(in srgb, var(--da-card-accent) 12%, transparent);
     }
 
     .da-card-gradient .da-action-item:hover::before {
-        opacity: .22;
+        opacity: .86;
     }
 
     .da-card-gradient .da-action-icon-wrap {
-        background: color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 22%, rgba(10,13,29,.88));
-        color: color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 74%, white 26%);
-        border: 1px solid color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 30%, rgba(255,255,255,.08));
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 10px 20px rgba(2,6,23,.24);
+        background:
+            radial-gradient(circle at 30% 22%, rgba(255,255,255,.24) 0%, transparent 28%),
+            linear-gradient(160deg, color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 18%, rgba(8,17,31,.92)) 0%, color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 10%, rgba(10,19,35,.84)) 100%);
+        color: color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 68%, white 32%);
+        border: 1px solid color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 28%, rgba(255,255,255,.08));
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.08),
+            0 12px 22px color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 14%, rgba(2,6,23,.24));
     }
 
     .da-card-gradient .da-action-item:hover .da-action-icon-wrap {
-        background: linear-gradient(135deg, color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 82%, black 18%) 0%, color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 62%, white 38%) 100%);
-        border-color: transparent;
+        background: linear-gradient(135deg, color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 34%, rgba(8,17,31,.92)) 0%, color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 18%, rgba(8,17,31,.82)) 100%);
+        border-color: color-mix(in srgb, var(--ai-color, var(--da-card-accent)) 26%, rgba(255,255,255,.1));
         color: #fff;
     }
 
     .da-card-gradient .da-view-all-btn {
         color: rgba(226,232,240,.9);
-        background: rgba(15,23,42,.38);
-        border-color: rgba(148,163,184,.18);
+        background: linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 100%);
+        border-color: rgba(255,255,255,.12);
         border-radius: 999px;
-        backdrop-filter: blur(10px);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+        backdrop-filter: blur(18px) saturate(160%);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
     }
 
     .da-card-gradient .da-view-all-btn:hover {
-        background: color-mix(in srgb, var(--da-card-header-2) 20%, rgba(15,23,42,.94));
-        border-color: color-mix(in srgb, var(--da-card-header-2) 32%, rgba(255,255,255,.18));
+        background: color-mix(in srgb, var(--da-card-header-2) 14%, rgba(15,23,42,.94));
+        border-color: color-mix(in srgb, var(--da-card-header-2) 24%, rgba(255,255,255,.18));
         color: #fff;
     }
 
     .da-card-gradient .da-action-badge {
-        background: color-mix(in srgb, var(--da-card-header-1) 18%, rgba(10,13,29,.92));
-        border-color: color-mix(in srgb, var(--da-card-header-2) 26%, rgba(255,255,255,.1));
-        color: color-mix(in srgb, var(--da-card-header-2) 80%, white 20%);
+        background: color-mix(in srgb, var(--da-card-header-1) 14%, rgba(10,13,29,.92));
+        border-color: color-mix(in srgb, var(--da-card-header-2) 24%, rgba(255,255,255,.1));
+        color: color-mix(in srgb, var(--da-card-header-2) 78%, white 22%);
     }
 
     .da-card-gradient .da-table thead th {
@@ -855,7 +1055,7 @@ body.db-body.da-space-body {
     }
 
     .da-card-gradient .da-table tbody tr:hover td {
-        background: rgba(17,24,39,.34);
+        background: color-mix(in srgb, var(--da-card-accent) 10%, rgba(14,24,43,.82));
     }
 
     .da-card-gradient .da-td-time {
@@ -863,7 +1063,7 @@ body.db-body.da-space-body {
     }
 
     .da-card-gradient .da-td-time-sub {
-        color: rgba(191,219,254,.68);
+        color: rgba(203,218,235,.7);
     }
 
     .da-card-gradient .da-empty {
@@ -876,39 +1076,39 @@ body.db-body.da-space-body {
     }
 
 .da-card-gradient-ice {
-    --da-card-accent: #7dd3fc;
-    --da-card-header-1: #60a5fa;
-    --da-card-header-2: #22d3ee;
+    --da-card-accent: var(--accent-account);
+    --da-card-header-1: var(--accent-account);
+    --da-card-header-2: var(--accent-setting);
 }
 
 .da-card-gradient-cyan {
-    --da-card-accent: #5eead4;
-    --da-card-header-1: #14b8a6;
-    --da-card-header-2: #22d3ee;
+    --da-card-accent: var(--accent-setting);
+    --da-card-header-1: var(--accent-setting);
+    --da-card-header-2: var(--accent-notify);
 }
 
 .da-card-gradient-ocean {
-    --da-card-accent: #60a5fa;
-    --da-card-header-1: #3b82f6;
-    --da-card-header-2: #818cf8;
+    --da-card-accent: #6daef6;
+    --da-card-header-1: #2563eb;
+    --da-card-header-2: #67c6f3;
 }
 
 .da-card-gradient-sky {
     --da-card-accent: #7dd3fc;
     --da-card-header-1: #38bdf8;
-    --da-card-header-2: #a78bfa;
+    --da-card-header-2: #67c6f3;
 }
 
 .da-card-gradient-slate {
-    --da-card-accent: #c4b5fd;
-    --da-card-header-1: #6366f1;
-    --da-card-header-2: #a78bfa;
+    --da-card-accent: var(--accent-class);
+    --da-card-header-1: color-mix(in srgb, var(--accent-class) 66%, #8b5e00 34%);
+    --da-card-header-2: var(--accent-account);
 }
 
 .da-card-gradient-aurora {
-    --da-card-accent: #f472b6;
-    --da-card-header-1: #a78bfa;
-    --da-card-header-2: #f472b6;
+    --da-card-accent: var(--accent-log);
+    --da-card-header-1: var(--accent-log);
+    --da-card-header-2: var(--accent-teacher);
 }
 
 /* ── Info List ───────────────────────────────────────────────── */
@@ -937,13 +1137,14 @@ body.db-body.da-space-body {
     gap: .45rem;
     font-size: .82rem;
     font-weight: 500;
-    color: var(--da-muted);
+    color: rgba(210,223,236,.78);
     flex-shrink: 0;
     min-width: 130px;
 }
 
     .da-info-label .bi {
-        color: var(--da-blue-light);
+        color: color-mix(in srgb, var(--accent-setting) 70%, white 30%);
+        text-shadow: 0 0 12px rgba(34,211,238,.18);
         font-size: .8rem;
     }
 
@@ -968,31 +1169,52 @@ body.db-body.da-space-body {
     gap: .85rem;
     padding: .9rem 1rem;
     border-radius: var(--da-radius-md);
-    border: 1px solid rgba(207,224,255,.62);
-    background: rgba(248,250,255,.74);
+    border: 1px solid rgba(255,255,255,.12);
+    background:
+        radial-gradient(180px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 60%),
+        radial-gradient(circle at 16% 0%, rgba(255,255,255,.14) 0%, transparent 34%),
+        linear-gradient(160deg, rgba(18,31,55,.74) 0%, rgba(13,24,43,.68) 100%);
     text-decoration: none !important;
     transition: var(--da-t);
     position: relative;
     overflow: hidden;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 12px 24px rgba(15,23,42,.12);
+    backdrop-filter: blur(18px) saturate(165%);
+    -webkit-backdrop-filter: blur(18px) saturate(165%);
 }
 
     .da-action-item::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, var(--da-blue) 0%, var(--da-cyan) 100%);
-        opacity: 0;
-        transition: opacity .22s;
+        background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, transparent 36%, color-mix(in srgb, var(--ai-color, var(--primary)) 16%, transparent) 100%);
+        opacity: .88;
+        transition: opacity .22s, transform .22s;
+    }
+
+    .da-action-item::after {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        border-radius: inherit;
+        border: 1px solid rgba(255,255,255,.06);
+        pointer-events: none;
     }
 
     .da-action-item:hover {
-        border-color: var(--da-blue-light);
-        transform: translateY(-2px);
-        box-shadow: var(--da-shadow-md);
+        border-color: color-mix(in srgb, var(--ai-color, var(--primary)) 18%, rgba(255,255,255,.24));
+        transform: translateY(-4px);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.18),
+            0 18px 32px rgba(15,23,42,.18),
+            0 0 18px rgba(56,189,248,.06);
     }
 
         .da-action-item:hover::before {
             opacity: 1;
+            transform: scale(1.03);
         }
 
     .da-action-item:active {
@@ -1003,8 +1225,10 @@ body.db-body.da-space-body {
     width: 40px;
     height: 40px;
     border-radius: var(--da-radius-sm);
-    background: color-mix(in srgb, var(--ai-color, #1a56db) 12%, white);
-    color: var(--ai-color, #1a56db);
+    background:
+        radial-gradient(circle at 32% 22%, rgba(255,255,255,.28) 0%, transparent 28%),
+        linear-gradient(160deg, color-mix(in srgb, var(--ai-color, var(--primary)) 18%, rgba(8,17,31,.9)) 0%, color-mix(in srgb, var(--ai-color, var(--primary)) 10%, rgba(10,19,35,.84)) 100%);
+    color: color-mix(in srgb, var(--ai-color, var(--primary)) 68%, white 32%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1013,10 +1237,14 @@ body.db-body.da-space-body {
     position: relative;
     z-index: 1;
     transition: var(--da-t);
+    border: 1px solid color-mix(in srgb, var(--ai-color, var(--primary)) 28%, rgba(255,255,255,.18));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.22),
+        0 10px 20px color-mix(in srgb, var(--ai-color, var(--primary)) 12%, rgba(15,23,42,.16));
 }
 
 .da-action-item:hover .da-action-icon-wrap {
-    background: rgba(255,255,255,.2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--ai-color, var(--primary)) 28%, rgba(8,17,31,.86)) 0%, color-mix(in srgb, var(--ai-color, var(--primary)) 14%, rgba(8,17,31,.72)) 100%);
     color: var(--da-white);
 }
 
@@ -1029,8 +1257,8 @@ body.db-body.da-space-body {
 
 .da-action-title {
     font-size: .85rem;
-    font-weight: 700;
-    color: var(--da-navy-800);
+    font-weight: 800;
+    color: var(--text-main);
     margin-bottom: .18rem;
     transition: color .22s;
     white-space: nowrap;
@@ -1040,13 +1268,13 @@ body.db-body.da-space-body {
 
 .da-action-desc {
     font-size: .75rem;
-    color: var(--da-muted);
+    color: rgba(214,226,238,.82);
     line-height: 1.4;
     transition: color .22s;
 }
 
 .da-action-arrow {
-    color: var(--da-border-mid);
+    color: rgba(203,218,235,.5);
     font-size: .8rem;
     position: relative;
     z-index: 1;
@@ -1068,18 +1296,26 @@ body.db-body.da-space-body {
    CHARTS
    ════════════════════════════════════════════════════════════ */
 .da-chart-card {
-    --da-chart-accent: #60a5fa;
-    --da-chart-accent-2: #f472b6;
-    --da-chart-border-1: rgba(96,165,250,.82);
-    --da-chart-border-2: rgba(244,114,182,.78);
-    --da-chart-glow: rgba(99,102,241,.18);
+    --da-chart-accent: var(--accent-account);
+    --da-chart-accent-2: var(--accent-setting);
+    --da-chart-border-1: color-mix(in srgb, var(--da-chart-accent) 64%, white 36%);
+    --da-chart-border-2: color-mix(in srgb, var(--da-chart-accent-2) 36%, white 64%);
+    --da-chart-glow: color-mix(in srgb, var(--da-chart-accent) 10%, transparent);
     background:
-        radial-gradient(circle at top right, rgba(96,165,250,.12) 0%, transparent 28%),
-        radial-gradient(circle at bottom left, rgba(244,114,182,.12) 0%, transparent 34%),
-        linear-gradient(180deg, rgba(34,38,72,.96) 0%, rgba(27,30,61,.96) 100%);
-    border: 1px solid rgba(255,255,255,.06);
-    box-shadow: 0 16px 40px rgba(6,8,20,.34), 0 0 26px var(--da-chart-glow);
+        radial-gradient(320px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / var(--da-light-alpha)) 0%, transparent 62%),
+        radial-gradient(circle at 14% -4%, rgba(255,255,255,.18) 0%, transparent 30%),
+        radial-gradient(circle at top right, rgba(103,198,243,.14) 0%, transparent 30%),
+        radial-gradient(circle at bottom left, rgba(59,130,246,.08) 0%, transparent 36%),
+        linear-gradient(165deg, rgba(14,24,43,.78) 0%, rgba(15,27,49,.66) 52%, rgba(9,18,33,.82) 100%);
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -22px 38px rgba(255,255,255,.03),
+        0 20px 46px rgba(6,8,20,.34),
+        0 0 28px var(--da-chart-glow);
     overflow: hidden;
+    backdrop-filter: var(--da-liquid-blur);
+    -webkit-backdrop-filter: var(--da-liquid-blur);
 }
 
     .da-chart-card::before {
@@ -1088,12 +1324,12 @@ body.db-body.da-space-body {
         inset: 0;
         padding: 1px;
         border-radius: inherit;
-        background: linear-gradient(135deg, var(--da-chart-border-1) 0%, rgba(255,255,255,.08) 34%, rgba(255,255,255,.04) 66%, var(--da-chart-border-2) 100%);
+        background: linear-gradient(135deg, var(--da-chart-border-1) 0%, rgba(255,255,255,.24) 16%, rgba(255,255,255,.08) 40%, rgba(255,255,255,.04) 64%, var(--da-chart-border-2) 100%);
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
         pointer-events: none;
-        opacity: .96;
+        opacity: .84;
     }
 
     .da-chart-card::after {
@@ -1101,10 +1337,10 @@ body.db-body.da-space-body {
         position: absolute;
         inset: 0;
         background:
-            linear-gradient(145deg, rgba(255,255,255,.08) 0%, transparent 24%),
-            radial-gradient(circle at 85% 15%, rgba(255,255,255,.10) 0%, transparent 18%);
+            linear-gradient(140deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,.06) 16%, transparent 42%),
+            radial-gradient(circle at 85% 15%, rgba(255,255,255,.12) 0%, transparent 18%);
         pointer-events: none;
-        opacity: .72;
+        opacity: .9;
     }
 
 .da-chart-card-body {
@@ -1132,14 +1368,14 @@ body.db-body.da-space-body {
     font-weight: 900;
     line-height: 1;
     letter-spacing: -.05em;
-    color: var(--da-chart-accent-2);
-    text-shadow: 0 0 24px color-mix(in srgb, var(--da-chart-accent-2) 28%, transparent);
+    color: color-mix(in srgb, var(--da-chart-accent) 28%, white 72%);
+    text-shadow: 0 0 22px color-mix(in srgb, var(--da-chart-accent) 22%, transparent);
     margin-bottom: .45rem;
 }
 
 .da-chart-card-note {
     font-size: .78rem;
-    color: rgba(191,219,254,.72);
+    color: rgba(214,226,238,.82);
     line-height: 1.45;
     max-width: 260px;
 }
@@ -1150,14 +1386,18 @@ body.db-body.da-space-body {
     gap: .35rem;
     padding: .45rem .8rem;
     border-radius: 999px;
-    background: rgba(17,24,39,.34);
-    border: 1px solid rgba(148,163,184,.16);
-    color: rgba(186,230,253,.84);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 100%),
+        color-mix(in srgb, var(--da-chart-accent) 12%, rgba(10,18,33,.68));
+    border: 1px solid color-mix(in srgb, var(--da-chart-accent) 22%, rgba(255,255,255,.1));
+    color: color-mix(in srgb, var(--da-chart-accent) 28%, white 72%);
     font-size: .72rem;
     font-weight: 700;
     letter-spacing: .02em;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
     white-space: nowrap;
+    backdrop-filter: blur(18px) saturate(165%);
+    -webkit-backdrop-filter: blur(18px) saturate(165%);
 }
 
     .da-chart-card-pill::before {
@@ -1174,10 +1414,16 @@ body.db-body.da-space-body {
     min-height: 255px;
     border-radius: 1.15rem;
     background:
-        linear-gradient(180deg, rgba(15,19,42,.58) 0%, rgba(13,17,38,.34) 100%);
-    border: 1px solid rgba(255,255,255,.06);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+        radial-gradient(260px circle at var(--da-light-x) var(--da-light-y), rgb(255 255 255 / calc(var(--da-light-alpha) * .7)) 0%, transparent 62%),
+        radial-gradient(circle at 14% 0%, rgba(255,255,255,.12) 0%, transparent 34%),
+        linear-gradient(180deg, rgba(12,19,34,.58) 0%, rgba(9,16,30,.4) 100%);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        inset 0 -18px 30px rgba(255,255,255,.02);
     overflow: hidden;
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
     .da-chart-stage::before {
@@ -1202,27 +1448,18 @@ body.db-body.da-space-body {
     }
 
 .da-chart-card-overview {
-    --da-chart-accent: #7dd3fc;
-    --da-chart-accent-2: #f472b6;
-    --da-chart-border-1: rgba(96,165,250,.82);
-    --da-chart-border-2: rgba(244,114,182,.78);
-    --da-chart-glow: rgba(96,165,250,.18);
+    --da-chart-accent: var(--accent-account);
+    --da-chart-accent-2: var(--accent-setting);
 }
 
 .da-chart-card-status {
-    --da-chart-accent: #60a5fa;
-    --da-chart-accent-2: #c084fc;
-    --da-chart-border-1: rgba(96,165,250,.74);
-    --da-chart-border-2: rgba(192,132,252,.72);
-    --da-chart-glow: rgba(168,85,247,.18);
+    --da-chart-accent: var(--accent-teacher);
+    --da-chart-accent-2: var(--accent-account);
 }
 
 .da-chart-card-link {
-    --da-chart-accent: #67e8f9;
-    --da-chart-accent-2: #f472b6;
-    --da-chart-border-1: rgba(103,232,249,.74);
-    --da-chart-border-2: rgba(244,114,182,.72);
-    --da-chart-glow: rgba(34,211,238,.18);
+    --da-chart-accent: var(--accent-student);
+    --da-chart-accent-2: var(--accent-notify);
 }
 
 .da-chart-wrap {
@@ -1263,7 +1500,7 @@ body.db-body.da-space-body {
 .da-table {
     width: 100%;
     font-size: .82rem;
-    color: var(--da-navy-800);
+    color: rgba(241,248,255,.92);
     border-collapse: collapse;
 }
 
@@ -1273,20 +1510,20 @@ body.db-body.da-space-body {
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .07em;
-        color: var(--da-muted);
-        background: rgba(248,250,255,.84);
-        border-bottom: 2px solid rgba(221,230,245,.9);
+        color: rgba(214,226,238,.8);
+        background: rgba(13,22,40,.82);
+        border-bottom: 1px solid rgba(129,140,248,.14);
         white-space: nowrap;
     }
 
         .da-table thead th .bi {
-            color: var(--da-blue-light);
+            color: color-mix(in srgb, var(--accent-log) 42%, white 58%);
             font-size: .75rem;
         }
 
     .da-table tbody td {
         padding: .8rem 1.1rem;
-        border-bottom: 1px solid var(--da-border);
+        border-bottom: 1px solid rgba(148,163,184,.1);
         vertical-align: middle;
     }
 
@@ -1299,34 +1536,41 @@ body.db-body.da-space-body {
 }
 
 .da-table tbody tr:hover td {
-    background: rgba(239,246,255,.88);
+    background: color-mix(in srgb, var(--accent-log) 10%, rgba(14,24,43,.84));
 }
 
 .da-td-time {
     font-size: .8rem;
     font-weight: 600;
-    color: var(--da-slate);
+    color: rgba(241,248,255,.94);
     white-space: nowrap;
 }
 
 .da-td-time-sub {
     display: block;
     font-size: .72rem;
-    color: var(--da-muted);
+    color: rgba(203,218,235,.72);
     font-weight: 400;
 }
 
 .da-action-badge {
     display: inline-block;
     padding: .2rem .6rem;
-    background: var(--da-blue-pale);
-    color: var(--da-blue);
-    border: 1px solid #bfdbfe;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 100%),
+        color-mix(in srgb, var(--accent-log) 12%, rgba(10,18,33,.72));
+    color: color-mix(in srgb, var(--accent-log) 26%, white 74%);
+    border: 1px solid color-mix(in srgb, var(--accent-log) 24%, rgba(255,255,255,.1));
     border-radius: 20px;
     font-size: .72rem;
     font-weight: 700;
     letter-spacing: .03em;
     white-space: nowrap;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        0 10px 20px rgba(2,6,23,.12);
+    backdrop-filter: blur(16px) saturate(155%);
+    -webkit-backdrop-filter: blur(16px) saturate(155%);
 }
 
 .da-view-all-btn {
@@ -1335,20 +1579,23 @@ body.db-body.da-space-body {
     gap: .4rem;
     font-size: .75rem;
     font-weight: 700;
-    color: var(--da-blue);
+    color: #e0f2fe;
     text-decoration: none;
     padding: .3rem .8rem;
-    border: 1px solid #bfdbfe;
+    border: 1px solid rgba(255,255,255,.12);
     border-radius: var(--da-radius-sm);
-    background: var(--da-blue-pale);
+    background: linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 100%);
     transition: var(--da-t);
     letter-spacing: .03em;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+    backdrop-filter: blur(18px) saturate(165%);
+    -webkit-backdrop-filter: blur(18px) saturate(165%);
 }
 
     .da-view-all-btn:hover {
-        background: var(--da-blue);
+        background: linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.08) 100%);
         color: var(--da-white);
-        border-color: var(--da-blue);
+        border-color: rgba(255,255,255,.22);
     }
 
 .da-empty {
@@ -1420,6 +1667,14 @@ body.db-body.da-space-body {
 
     .stat-value {
         font-size: 1.85rem;
+    }
+
+    .stat-topline {
+        align-items: flex-start;
+    }
+
+    .stat-desc {
+        max-width: none;
     }
 
     .da-kpi {

@@ -17,6 +17,9 @@
     var currentArea = ViewContext.RouteData.Values["area"]?.ToString() ?? "";
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var dashboardBodyClass = string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase)
+        ? "db-body db-body-admin"
+        : "db-body";
 
     string IsActive(string area, string controller, string? action = null)
     {
@@ -40,14 +43,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @siteName</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/dashboardlayout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QLKH.Web.styles.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
+    @if (string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase))
+    {
+        <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+    }
 </head>
-<body class="db-body">
+<body class="@dashboardBodyClass">
 
     <div class="db-overlay" id="dbOverlay"></div>
 
@@ -273,5 +283,9 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/dashboardlayout.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @if (string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase))
+    {
+        <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+    }
 </body>
 </html>

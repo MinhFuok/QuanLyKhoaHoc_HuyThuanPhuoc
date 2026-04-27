@@ -520,7 +520,7 @@ namespace QLKH.Web.Areas.Admin.Controllers
             var subject = "Thông tin tài khoản đăng nhập hệ thống QLKH";
 
             var body = $@"
-<div style='font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:1.6; color:#222;'>
+<div style='font-family:Roboto,Arial,Helvetica,sans-serif; font-size:14px; line-height:1.6; color:#222;'>
     <p>Xin chào <strong>{fullName}</strong>,</p>
 
     <p>Tài khoản của bạn trên hệ thống <strong>QLKH</strong> đã được tạo thành công.</p>

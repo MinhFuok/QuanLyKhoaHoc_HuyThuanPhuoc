@@ -26,7 +26,7 @@
     --db-radius: 10px;
     --db-radius-sm: 6px;
     --db-transition: 0.22s cubic-bezier(.4,0,.2,1);
-    --db-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --db-font: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
 *, *::before, *::after {

@@ -3,9 +3,6 @@
    Dung chung cho Course, ClassRoom va cac module admin cung style.
    ============================================= */
 
-/* ---- Google Font ---- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 /* =============================================
    GALAXY BACKGROUND
    ============================================= */
@@ -182,7 +179,7 @@
     --cp-transition: 0.2s cubic-bezier(.4,0,.2,1);
     --cp-spring: 0.3s cubic-bezier(.34,1.56,.64,1);
     max-width: 1120px;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
     color: var(--cp-text);
     position: relative;
     z-index: 1;
@@ -429,7 +426,7 @@
 /* ---- Code chip ---- */
 .cp-code {
     display: inline-block;
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
     font-size: 0.78rem;
     font-weight: 700;
     background: rgba(168,85,247,.14);

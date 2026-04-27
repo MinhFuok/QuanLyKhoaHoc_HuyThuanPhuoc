@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
