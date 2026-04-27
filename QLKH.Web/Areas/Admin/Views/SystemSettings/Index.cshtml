@@ -1,4 +1,4 @@
-﻿@model QLKH.Web.Areas.Admin.Models.SystemSettingsPageViewModel
+@model QLKH.Web.Areas.Admin.Models.SystemSettingsPageViewModel
 
 @{
     ViewData["Title"] = "Cấu hình hệ thống";
@@ -37,7 +37,7 @@
                         role="tab"
                         aria-controls="website-pane"
                         aria-selected="true">
-                    Trang chủ
+                    Trang ch?
                 </button>
 
                 <button class="nav-link admin-tab"
@@ -95,7 +95,7 @@
 
                         <div asp-validation-summary="All" class="text-danger admin-validation"></div>
 
-                        <div class="admin-section-title">Thông tin trang chủ</div>
+                        <div class="admin-section-title">Thông tin trang ch?</div>
 
                         <div class="row g-3">
                             <div class="col-12">
@@ -130,10 +130,10 @@
                         <div class="admin-section-title">Thẻ giới thiệu trang chủ</div>
 
                         <div class="admin-feature-card">
-                            <div class="admin-feature-title">Thẻ 1</div>
+                            <div class="admin-feature-title">Th? 1</div>
                             <div class="row g-3">
                                 <div class="col-md-2">
-                                    <label asp-for="SystemSetting.FeatureCard1Number" class="form-label admin-label">Số</label>
+                                    <label asp-for="SystemSetting.FeatureCard1Number" class="form-label admin-label">S?</label>
                                     <input asp-for="SystemSetting.FeatureCard1Number" class="form-control admin-input" />
                                     <span asp-validation-for="SystemSetting.FeatureCard1Number" class="text-danger admin-field-error"></span>
                                 </div>
@@ -151,10 +151,10 @@
                         </div>
 
                         <div class="admin-feature-card">
-                            <div class="admin-feature-title">Thẻ 2</div>
+                            <div class="admin-feature-title">Th? 2</div>
                             <div class="row g-3">
                                 <div class="col-md-2">
-                                    <label asp-for="SystemSetting.FeatureCard2Number" class="form-label admin-label">Số</label>
+                                    <label asp-for="SystemSetting.FeatureCard2Number" class="form-label admin-label">S?</label>
                                     <input asp-for="SystemSetting.FeatureCard2Number" class="form-control admin-input" />
                                     <span asp-validation-for="SystemSetting.FeatureCard2Number" class="text-danger admin-field-error"></span>
                                 </div>
@@ -172,10 +172,10 @@
                         </div>
 
                         <div class="admin-feature-card">
-                            <div class="admin-feature-title">Thẻ 3</div>
+                            <div class="admin-feature-title">Th? 3</div>
                             <div class="row g-3">
                                 <div class="col-md-2">
-                                    <label asp-for="SystemSetting.FeatureCard3Number" class="form-label admin-label">Số</label>
+                                    <label asp-for="SystemSetting.FeatureCard3Number" class="form-label admin-label">S?</label>
                                     <input asp-for="SystemSetting.FeatureCard3Number" class="form-control admin-input" />
                                     <span asp-validation-for="SystemSetting.FeatureCard3Number" class="text-danger admin-field-error"></span>
                                 </div>
@@ -193,10 +193,10 @@
                         </div>
 
                         <div class="admin-feature-card">
-                            <div class="admin-feature-title">Thẻ 4</div>
+                            <div class="admin-feature-title">Th? 4</div>
                             <div class="row g-3">
                                 <div class="col-md-2">
-                                    <label asp-for="SystemSetting.FeatureCard4Number" class="form-label admin-label">Số</label>
+                                    <label asp-for="SystemSetting.FeatureCard4Number" class="form-label admin-label">S?</label>
                                     <input asp-for="SystemSetting.FeatureCard4Number" class="form-control admin-input" />
                                     <span asp-validation-for="SystemSetting.FeatureCard4Number" class="text-danger admin-field-error"></span>
                                 </div>
@@ -265,9 +265,9 @@
 
                             <thead>
                                 <tr>
-                                    <th class="text-center">Thứ tự</th>
+                                    <th class="text-center">Th? t?</th>
                                     <th>Tiêu đề</th>
-                                    <th class="text-center">Ảnh</th>
+                                    <th class="text-center">?nh</th>
                                     <th>Mô tả ảnh</th>
                                     <th class="text-center">Trạng thái</th>
                                     <th class="text-center">Thao tác</th>
@@ -320,7 +320,7 @@
                                                           method="post">
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="id" value="@item.Id" />
-                                                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa lên">↑</button>
+                                                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa lên">?</button>
                                                     </form>
 
                                                     <form asp-area="Admin"
@@ -329,7 +329,7 @@
                                                           method="post">
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="id" value="@item.Id" />
-                                                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa xuống">↓</button>
+                                                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Đưa xuống">?</button>
                                                     </form>
 
                                                     <a asp-area="Admin"
@@ -615,397 +615,6 @@
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .admin-account-page {
-            color: #1f2937;
-        }
-
-        .admin-page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .admin-page-title {
-            margin: 0;
-            color: #111827;
-            font-size: 1.55rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .admin-page-subtitle {
-            margin: 6px 0 0;
-            color: #6b7280;
-            font-size: 0.94rem;
-        }
-
-        .admin-btn-main {
-            border-radius: 8px;
-            font-weight: 700;
-            white-space: nowrap;
-            padding: 9px 14px;
-        }
-
-        .admin-alert {
-            border-radius: 8px;
-            border: 0;
-            margin-bottom: 14px;
-        }
-
-        .admin-table-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-
-        .admin-table-title {
-            padding: 13px 16px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #111827;
-            font-weight: 800;
-            background: #f9fafb;
-        }
-
-        .admin-system-body {
-            padding: 16px;
-        }
-
-        .admin-tabbar {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 0;
-            padding: 6px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px 10px 0 0;
-            background: #ffffff;
-            border-bottom: 0;
-        }
-
-        .admin-tab {
-            padding: 8px 13px;
-            border-radius: 8px !important;
-            border: 0 !important;
-            background: transparent !important;
-            color: #4b5563 !important;
-            font-size: 0.92rem;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-            .admin-tab:hover {
-                background: #f3f4f6 !important;
-                color: #111827 !important;
-            }
-
-            .admin-tab.active {
-                background: #111827 !important;
-                color: #ffffff !important;
-            }
-
-        .admin-system-tab-content {
-            border: 1px solid #e5e7eb;
-            border-top: 0;
-            border-radius: 0 0 10px 10px;
-            padding: 18px;
-            background: #ffffff;
-        }
-
-        .admin-section-title {
-            color: #111827;
-            font-size: 1rem;
-            font-weight: 800;
-            margin-bottom: 14px;
-        }
-
-        .admin-section-divider {
-            height: 1px;
-            background: #e5e7eb;
-            margin: 22px 0 18px;
-        }
-
-        .admin-label {
-            color: #374151;
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-        }
-
-        .admin-input {
-            border-radius: 8px;
-            border-color: #d1d5db;
-            min-height: 40px;
-            font-size: 0.94rem;
-        }
-
-            .admin-input:focus {
-                border-color: #2563eb;
-                box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.12);
-            }
-
-        .admin-textarea {
-            resize: vertical;
-        }
-
-        .admin-validation {
-            margin-bottom: 14px;
-            font-size: 0.9rem;
-        }
-
-        .admin-field-error {
-            font-size: 0.84rem;
-            margin-top: 4px;
-            display: block;
-        }
-
-        .admin-feature-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            background: #f9fafb;
-            padding: 14px;
-            margin-bottom: 14px;
-        }
-
-        .admin-feature-title {
-            color: #374151;
-            font-weight: 800;
-            font-size: 0.92rem;
-            margin-bottom: 12px;
-        }
-
-        .admin-tab-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-            .admin-tab-header h5 {
-                margin: 0;
-                color: #111827;
-                font-size: 1rem;
-                font-weight: 800;
-            }
-
-            .admin-tab-header .admin-btn-main {
-                min-height: 38px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-        .admin-table {
-            width: 100%;
-            table-layout: fixed;
-            margin-bottom: 0;
-        }
-
-            .admin-table thead th {
-                background: #f9fafb;
-                color: #374151;
-                font-size: 0.78rem;
-                font-weight: 800;
-                text-transform: uppercase;
-                letter-spacing: 0.035em;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 14px 12px;
-                white-space: nowrap;
-                vertical-align: middle;
-            }
-
-            .admin-table tbody td {
-                padding: 14px 12px;
-                border-bottom: 1px solid #edf0f3;
-                vertical-align: middle;
-                font-size: 0.92rem;
-                word-break: break-word;
-            }
-
-            .admin-table tbody tr:hover {
-                background: #f9fafb;
-            }
-
-            .admin-table tbody tr:last-child td {
-                border-bottom: 0;
-            }
-
-        .admin-code {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 46px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: #f3f4f6;
-            color: #111827;
-            font-size: 0.82rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .admin-name {
-            color: #111827;
-            font-weight: 700;
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .admin-text-limit {
-            color: #4b5563;
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .admin-banner-img {
-            height: 70px;
-            max-width: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            background: #f9fafb;
-        }
-
-        .admin-badge {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 100%;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            line-height: 1.25;
-            white-space: normal;
-            text-align: center;
-        }
-
-        .admin-badge-success {
-            background: #ecfdf5;
-            color: #166534;
-        }
-
-        .admin-badge-muted {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-
-        .admin-actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-        }
-
-            .admin-actions form {
-                margin: 0;
-            }
-
-            .admin-actions .btn {
-                min-width: 46px;
-                border-radius: 7px;
-                font-size: 0.8rem;
-                font-weight: 700;
-                white-space: nowrap;
-                padding: 6px 10px;
-            }
-
-        .admin-check-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 14px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            background: #f9fafb;
-        }
-
-        .admin-check-input {
-            margin: 0;
-            width: 18px;
-            height: 18px;
-        }
-
-        .admin-check-label {
-            color: #374151;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .admin-form-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-            .admin-form-actions .btn {
-                border-radius: 8px;
-                font-weight: 700;
-                min-width: 150px;
-            }
-
-        .admin-system-tab-content .tab-pane {
-            display: none;
-        }
-
-            .admin-system-tab-content .tab-pane.active {
-                display: block;
-            }
-        @@media (max-width: 1199.98px) {
-            .admin-banner-table {
-                min-width: 950px;
-            }
-        }
-
-        @@media (max-width: 767.98px) {
-            .admin-page-header {
-                flex-direction: column;
-            }
-
-            .admin-tabbar {
-                flex-direction: column;
-            }
-
-            .admin-tab {
-                width: 100%;
-            }
-
-            .admin-system-tab-content {
-                border-top: 1px solid #e5e7eb;
-                border-radius: 10px;
-            }
-
-            .admin-tab-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-                .admin-tab-header .admin-btn-main {
-                    width: 100%;
-                }
-
-            .admin-form-actions {
-                flex-direction: column;
-            }
-
-                .admin-form-actions .btn {
-                    width: 100%;
-                }
-        }
-    </style>
-}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 

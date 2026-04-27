@@ -1,865 +1,154 @@
-body.db-body-admin {
-    --ap-panel: #0f172a;
-    --ap-panel-soft: #162033;
-    --ap-panel-muted: #1b263b;
-    --ap-border: #243247;
-    --ap-border-strong: #2f4662;
-    --ap-primary: #38bdf8;
-    --ap-primary-soft: rgba(56, 189, 248, 0.12);
-    --ap-primary-ring: rgba(56, 189, 248, 0.16);
-    --ap-text-main: #f8fafc;
-    --ap-text-muted: #d8e1ed;
-    --ap-text-soft: #94a3b8;
-    --ap-success: #34d399;
-    --ap-warning: #f59e0b;
-    --ap-danger: #f87171;
-    --ap-shadow: 0 10px 24px rgba(2, 6, 23, 0.16);
-    --ap-radius-xl: 22px;
-    --ap-radius-lg: 18px;
-    --ap-radius-md: 14px;
-    --ap-radius-sm: 10px;
-    --ap-transition: 0.16s ease;
-}
-
-body.db-body-admin .admin-account-page,
-body.db-body-admin .admin-system-page,
-body.db-body-admin .admin-program-page,
-body.db-body-admin .admin-notification-page,
-body.db-body-admin .admin-audit-page,
-body.db-body-admin .admin-banner-page {
-    --ap-accent: var(--ap-primary);
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-program-page {
-    --ap-accent: #60a5fa;
-}
-
-body.db-body-admin .admin-system-page {
-    --ap-accent: #22d3ee;
-}
-
-body.db-body-admin .admin-notification-page {
-    --ap-accent: #38bdf8;
-}
-
-body.db-body-admin .admin-audit-page {
-    --ap-accent: #93c5fd;
-}
-
-body.db-body-admin .admin-banner-page {
-    --ap-accent: #67e8f9;
-}
-
-body.db-body-admin .admin-account-page {
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .text-muted {
-    color: var(--ap-text-soft) !important;
-}
-
-body.db-body-admin .admin-account-page .admin-page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-    padding: 1.25rem 1.35rem;
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-xl);
-    background: var(--ap-panel);
-    box-shadow: var(--ap-shadow);
-}
-
-body.db-body-admin .admin-account-page .admin-page-header > * {
-    min-width: 0;
-}
-
-body.db-body-admin .admin-account-page .admin-page-title {
-    margin: 0;
-    color: var(--ap-text-main);
-    font-size: clamp(1.5rem, 2.1vw, 1.9rem);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    line-height: 1.08;
-}
-
-body.db-body-admin .admin-account-page .admin-page-subtitle {
-    margin: 0.45rem 0 0;
-    color: var(--ap-text-soft);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    max-width: 64ch;
-}
-
-body.db-body-admin .admin-account-page :is(
-    .admin-filter-card,
-    .admin-table-card,
-    .admin-form-card,
-    .admin-delete-card,
-    .admin-system-card
-) {
-    margin-bottom: 1rem;
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-lg);
-    background: var(--ap-panel);
-    box-shadow: var(--ap-shadow);
-    overflow: hidden;
-}
-
-body.db-body-admin .admin-account-page :is(
-    .admin-feature-card,
-    .admin-section-box,
-    .admin-info-box,
-    .admin-warning-box,
-    .admin-danger-box,
-    .admin-current-image-box
-) {
-    margin-bottom: 1rem;
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-md);
-    background: var(--ap-panel-soft);
-}
-
-body.db-body-admin .admin-account-page :is(
-    .admin-filter-card,
-    .admin-table-card,
-    .admin-form-card,
-    .admin-delete-card,
-    .admin-system-card,
-    .admin-feature-card,
-    .admin-section-box,
-    .admin-info-box,
-    .admin-current-image-box,
-    .admin-tabbar,
-    .admin-check-row
-) {
-    transition: border-color var(--ap-transition), background-color var(--ap-transition), transform var(--ap-transition);
-}
-
-body.db-body-admin .admin-account-page :is(
-    .admin-filter-card,
-    .admin-table-card,
-    .admin-form-card,
-    .admin-delete-card,
-    .admin-system-card
-):hover {
-    border-color: var(--ap-border-strong);
-}
-
-body.db-body-admin .admin-account-page .admin-alert {
-    margin-bottom: 1rem;
-    padding: 0.95rem 1rem;
-    border-radius: var(--ap-radius-md);
-    border: 1px solid var(--ap-border);
-    background: var(--ap-panel-soft);
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .admin-alert.alert-success {
-    border-color: rgba(52, 211, 153, 0.24);
-    background: rgba(52, 211, 153, 0.12);
-    color: #d1fae5;
-}
-
-body.db-body-admin .admin-account-page .admin-alert.alert-danger {
-    border-color: rgba(248, 113, 113, 0.24);
-    background: rgba(248, 113, 113, 0.12);
-    color: #fecaca;
-}
-
-body.db-body-admin .admin-account-page .admin-filter-card,
-body.db-body-admin .admin-account-page .admin-form-card form,
-body.db-body-admin .admin-account-page .admin-delete-body,
-body.db-body-admin .admin-account-page .admin-system-body,
-body.db-body-admin .admin-account-page .admin-system-tab-content {
-    padding: 1.2rem 1.3rem;
-}
-
-body.db-body-admin .admin-account-page :is(
-    .admin-table-title,
-    .admin-form-title,
-    .admin-delete-title
-) {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--ap-border);
-    background: var(--ap-panel-muted);
-    color: var(--ap-text-main);
-    font-size: 0.92rem;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-
-body.db-body-admin .admin-account-page .admin-feature-card,
-body.db-body-admin .admin-account-page .admin-section-box,
-body.db-body-admin .admin-account-page .admin-info-box {
-    padding: 1rem 1.05rem;
-}
-
-body.db-body-admin .admin-account-page .admin-feature-title,
-body.db-body-admin .admin-account-page .admin-section-title,
-body.db-body-admin .admin-account-page .admin-section-label,
-body.db-body-admin .admin-account-page .admin-tab-header h5 {
-    margin: 0 0 0.85rem;
-    color: var(--ap-text-main);
-    font-size: 0.95rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-}
-
-body.db-body-admin .admin-account-page .admin-section-label {
-    color: var(--ap-text-muted);
-    font-size: 0.88rem;
-    margin-bottom: 0.75rem;
-}
-
-body.db-body-admin .admin-account-page .admin-section-divider {
-    height: 1px;
-    margin: 1.15rem 0;
-    background: var(--ap-border);
-}
-
-body.db-body-admin .admin-account-page .admin-tab-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-body.db-body-admin .admin-account-page .admin-tabbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    padding: 0.45rem;
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-lg);
-    background: var(--ap-panel);
-}
-
-body.db-body-admin .admin-account-page .admin-tab {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    padding: 0.58rem 1rem;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    background: transparent;
-    color: var(--ap-text-soft);
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all var(--ap-transition);
-}
-
-body.db-body-admin .admin-account-page .admin-tab:hover {
-    border-color: var(--ap-border);
-    background: var(--ap-panel-soft);
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .admin-tab.active,
-body.db-body-admin .admin-account-page .admin-tab.show,
-body.db-body-admin .admin-account-page .admin-tab[aria-selected="true"] {
-    border-color: rgba(56, 189, 248, 0.24);
-    background: rgba(56, 189, 248, 0.14);
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .admin-system-tab-content {
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-lg);
-    background: var(--ap-panel);
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .admin-system-tab-content > .tab-pane {
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .admin-label {
-    display: block;
-    margin-bottom: 0.45rem;
-    color: var(--ap-text-muted);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-}
-
-body.db-body-admin .admin-account-page .admin-input {
-    min-height: 42px;
-    border-radius: var(--ap-radius-sm);
-    border: 1px solid var(--ap-border);
-    background: #0b1220;
-    color: var(--ap-text-main);
-    font-size: 0.94rem;
-    box-shadow: none;
-}
-
-body.db-body-admin .admin-account-page .admin-input::placeholder {
-    color: #7f90a7;
-}
-
-body.db-body-admin .admin-account-page .admin-input:focus {
-    border-color: rgba(56, 189, 248, 0.42);
-    background: #0b1220;
-    color: var(--ap-text-main);
-    box-shadow: 0 0 0 0.18rem var(--ap-primary-ring);
-}
-
-body.db-body-admin .admin-account-page .admin-input[readonly],
-body.db-body-admin .admin-account-page .admin-input:disabled {
-    background: #121c2f;
-    color: #aab7c8;
-}
-
-body.db-body-admin .admin-account-page select.admin-input option {
-    background: #0b1220;
-    color: #f8fafc;
-}
-
-body.db-body-admin .admin-account-page .admin-input[type="file"] {
-    padding: 0.3rem;
-}
-
-body.db-body-admin .admin-account-page .admin-input[type="file"]::file-selector-button {
-    margin-right: 0.8rem;
-    padding: 0.45rem 0.82rem;
-    border: 1px solid var(--ap-border);
-    border-radius: 10px;
-    background: #162033;
-    color: var(--ap-text-main);
-    font-weight: 700;
-    cursor: pointer;
-}
-
-body.db-body-admin .admin-account-page .admin-textarea {
-    min-height: 116px;
-    resize: vertical;
-}
-
-body.db-body-admin .admin-account-page .admin-validation {
-    margin-bottom: 1rem;
-    padding: 0.9rem 1rem;
-    border: 1px solid rgba(248, 113, 113, 0.24);
-    border-radius: var(--ap-radius-md);
-    background: rgba(127, 29, 29, 0.24);
-    color: #fecaca;
-    font-size: 0.9rem;
-}
-
-body.db-body-admin .admin-account-page .admin-validation ul {
-    margin: 0;
-    padding-left: 1.1rem;
-}
-
-body.db-body-admin .admin-account-page .admin-field-error {
-    display: block;
-    margin-top: 0.35rem;
-    color: #fda4af !important;
-    font-size: 0.84rem;
-}
-
-body.db-body-admin .admin-account-page .input-validation-error,
-body.db-body-admin .admin-account-page .input-validation-error:focus {
-    border-color: rgba(248, 113, 113, 0.42);
-    box-shadow: 0 0 0 0.18rem rgba(248, 113, 113, 0.14);
-}
-
-body.db-body-admin .admin-account-page .admin-help-text,
-body.db-body-admin .admin-account-page .admin-filter-note {
-    margin-top: 0.45rem;
-    color: var(--ap-text-soft);
-    font-size: 0.84rem;
-    line-height: 1.55;
-}
-
-body.db-body-admin .admin-account-page .admin-filter-note strong {
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .admin-check-list {
-    display: grid;
-    gap: 0.75rem;
-}
-
-body.db-body-admin .admin-account-page .admin-check-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    margin-bottom: 0;
-    padding: 0.9rem 1rem;
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-md);
-    background: var(--ap-panel-soft);
-    color: var(--ap-text-muted);
-    cursor: pointer;
-}
-
-body.db-body-admin .admin-account-page .admin-check-row.is-checked {
-    border-color: rgba(56, 189, 248, 0.3);
-    background: rgba(56, 189, 248, 0.12);
-}
-
-body.db-body-admin .admin-account-page .admin-check-row.is-disabled {
-    opacity: 0.66;
-    cursor: not-allowed;
-}
-
-body.db-body-admin .admin-account-page .admin-check-input {
-    width: 18px;
-    height: 18px;
-    margin: 0.1rem 0 0;
-    accent-color: var(--ap-accent);
-    flex: 0 0 auto;
-}
-
-body.db-body-admin .admin-account-page .admin-check-label {
-    margin: 0;
-    color: var(--ap-text-main);
-    font-weight: 700;
-}
-
-body.db-body-admin .admin-account-page .admin-filter-actions,
-body.db-body-admin .admin-account-page .admin-form-actions,
-body.db-body-admin .admin-account-page .admin-actions,
-body.db-body-admin .admin-account-page .admin-banner-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-}
-
-body.db-body-admin .admin-account-page .admin-filter-actions {
-    justify-content: flex-end;
-}
-
-body.db-body-admin .admin-account-page .admin-form-actions {
-    justify-content: flex-end;
-    margin-top: 1.25rem;
-}
-
-body.db-body-admin .admin-account-page .admin-actions {
-    justify-content: center;
-}
-
-body.db-body-admin .admin-account-page .admin-actions form,
-body.db-body-admin .admin-account-page .admin-banner-actions form {
-    margin: 0;
-}
-
-body.db-body-admin .admin-account-page .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    min-height: 40px;
-    padding: 0.56rem 1rem;
-    border-radius: 10px;
-    font-weight: 700;
-    border-width: 1px;
-    box-shadow: none;
-    transition: border-color var(--ap-transition), background-color var(--ap-transition), color var(--ap-transition), transform var(--ap-transition);
-}
-
-body.db-body-admin .admin-account-page .btn:hover {
-    transform: translateY(-1px);
-}
-
-body.db-body-admin .admin-account-page .btn:focus-visible {
-    box-shadow: 0 0 0 0.18rem var(--ap-primary-ring);
-}
-
-body.db-body-admin .admin-account-page .btn-sm {
-    min-height: 34px;
-    padding: 0.4rem 0.78rem;
-    border-radius: 9px;
-    font-size: 0.84rem;
-}
-
-body.db-body-admin .admin-account-page .btn-primary {
-    border-color: #0ea5e9;
-    background: #0ea5e9;
-    color: #f8fbff;
-}
-
-body.db-body-admin .admin-account-page .btn-primary:hover,
-body.db-body-admin .admin-account-page .btn-primary:focus {
-    border-color: #38bdf8;
-    background: #38bdf8;
-    color: #f8fbff;
-}
-
-body.db-body-admin .admin-account-page .btn-outline-secondary {
-    border-color: var(--ap-border);
-    background: var(--ap-panel-soft);
-    color: var(--ap-text-muted);
-}
-
-body.db-body-admin .admin-account-page .btn-outline-secondary:hover,
-body.db-body-admin .admin-account-page .btn-outline-secondary:focus {
-    border-color: var(--ap-border-strong);
-    background: var(--ap-panel-muted);
-    color: var(--ap-text-main);
-}
-
-body.db-body-admin .admin-account-page .btn-outline-primary {
-    border-color: rgba(56, 189, 248, 0.22);
-    background: rgba(56, 189, 248, 0.08);
-    color: #d8f3ff;
-}
-
-body.db-body-admin .admin-account-page .btn-outline-primary:hover,
-body.db-body-admin .admin-account-page .btn-outline-primary:focus {
-    border-color: rgba(56, 189, 248, 0.34);
-    background: rgba(56, 189, 248, 0.16);
-    color: #effbff;
-}
-
-body.db-body-admin .admin-account-page .btn-outline-success {
-    border-color: rgba(52, 211, 153, 0.24);
-    background: rgba(52, 211, 153, 0.08);
-    color: #d1fae5;
-}
-
-body.db-body-admin .admin-account-page .btn-outline-success:hover,
-body.db-body-admin .admin-account-page .btn-outline-success:focus {
-    border-color: rgba(52, 211, 153, 0.34);
-    background: rgba(52, 211, 153, 0.16);
-    color: #ecfdf5;
-}
-
-body.db-body-admin .admin-account-page .btn-outline-danger {
-    border-color: rgba(248, 113, 113, 0.24);
-    background: rgba(248, 113, 113, 0.08);
-    color: #fecaca;
-}
-
-body.db-body-admin .admin-account-page .btn-outline-danger:hover,
-body.db-body-admin .admin-account-page .btn-outline-danger:focus {
-    border-color: rgba(248, 113, 113, 0.34);
-    background: rgba(248, 113, 113, 0.16);
-    color: #ffe4e6;
-}
-
-body.db-body-admin .admin-account-page .admin-btn-main {
-    white-space: nowrap;
-}
-
-body.db-body-admin .admin-account-page .admin-table.table {
-    --bs-table-color: var(--ap-text-muted);
-    --bs-table-bg: transparent;
-    --bs-table-border-color: var(--ap-border);
-    --bs-table-hover-color: var(--ap-text-main);
-    --bs-table-hover-bg: transparent;
-    margin-bottom: 0;
-}
-
-body.db-body-admin .admin-account-page .admin-table > :not(caption) > * > * {
-    background: transparent;
-    box-shadow: none;
-}
-
-body.db-body-admin .admin-account-page .admin-table thead th {
-    padding: 0.92rem 1rem;
-    border-bottom: 1px solid var(--ap-border);
-    background: var(--ap-panel-muted);
-    color: #c9d5e5;
-    font-size: 0.76rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-body.db-body-admin .admin-account-page .admin-table tbody td {
-    padding: 0.95rem 1rem;
-    border-top: 1px solid rgba(36, 50, 71, 0.9);
-    color: var(--ap-text-muted);
-    vertical-align: middle;
-}
-
-body.db-body-admin .admin-account-page .admin-table tbody tr:hover td {
-    background: #162033;
-}
-
-body.db-body-admin .admin-account-page .admin-table-note {
-    padding: 0.9rem 1.25rem 1rem;
-    border-top: 1px solid var(--ap-border);
-    color: var(--ap-text-soft);
-    font-size: 0.86rem;
-}
-
-body.db-body-admin .admin-account-page .admin-code {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.3rem 0.62rem;
-    border-radius: 999px;
-    border: 1px solid rgba(56, 189, 248, 0.18);
-    background: rgba(56, 189, 248, 0.1);
-    color: #dff5ff;
-    font-family: Consolas, "Courier New", monospace;
-    font-size: 0.82rem;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-body.db-body-admin .admin-account-page .child-code {
-    opacity: 0.92;
-}
-
-body.db-body-admin .admin-account-page .admin-name,
-body.db-body-admin .admin-account-page .admin-username,
-body.db-body-admin .admin-account-page .admin-email {
-    color: var(--ap-text-main);
-    font-weight: 600;
-    line-height: 1.45;
-    word-break: break-word;
-}
-
-body.db-body-admin .admin-account-page .admin-username,
-body.db-body-admin .admin-account-page .admin-email {
-    font-size: 0.9rem;
-}
-
-body.db-body-admin .admin-account-page .admin-time {
-    color: var(--ap-text-main);
-    font-family: Consolas, "Courier New", monospace;
-    font-size: 0.84rem;
-}
-
-body.db-body-admin .admin-account-page .admin-text-limit {
-    color: var(--ap-text-soft);
-    line-height: 1.55;
-    word-break: break-word;
-}
-
-body.db-body-admin .admin-account-page .admin-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 28px;
-    padding: 0.3rem 0.7rem;
-    border: 1px solid var(--ap-border);
-    border-radius: 999px;
-    background: var(--ap-panel-soft);
-    color: var(--ap-text-main);
-    font-size: 0.76rem;
-    font-weight: 700;
-    line-height: 1;
-    white-space: nowrap;
-}
-
-body.db-body-admin .admin-account-page .admin-badge-role {
-    border-color: rgba(56, 189, 248, 0.22);
-    background: rgba(56, 189, 248, 0.12);
-    color: #dff5ff;
-}
-
-body.db-body-admin .admin-account-page .admin-badge-linked {
-    border-color: rgba(34, 211, 238, 0.22);
-    background: rgba(34, 211, 238, 0.12);
-    color: #d8fbff;
-}
-
-body.db-body-admin .admin-account-page .admin-badge-success {
-    border-color: rgba(52, 211, 153, 0.24);
-    background: rgba(52, 211, 153, 0.12);
-    color: #d1fae5;
-}
-
-body.db-body-admin .admin-account-page .admin-badge-danger {
-    border-color: rgba(248, 113, 113, 0.24);
-    background: rgba(248, 113, 113, 0.12);
-    color: #fecaca;
-}
-
-body.db-body-admin .admin-account-page .admin-badge-muted {
-    border-color: rgba(148, 163, 184, 0.2);
-    background: rgba(148, 163, 184, 0.1);
-    color: #d5deea;
-}
-
-body.db-body-admin .admin-account-page .admin-warning-box,
-body.db-body-admin .admin-account-page .admin-danger-box {
-    padding: 0.95rem 1rem;
-    line-height: 1.6;
-}
-
-body.db-body-admin .admin-account-page .admin-warning-box {
-    border-color: rgba(245, 158, 11, 0.24);
-    background: rgba(245, 158, 11, 0.1);
-    color: #fde68a;
-}
-
-body.db-body-admin .admin-account-page .admin-danger-box {
-    border-color: rgba(248, 113, 113, 0.24);
-    background: rgba(248, 113, 113, 0.1);
-    color: #fecaca;
-}
-
-body.db-body-admin .admin-account-page .admin-detail-list {
-    display: grid;
-    gap: 0.8rem;
-}
-
-body.db-body-admin .admin-account-page .admin-detail-row {
-    display: grid;
-    grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
-    gap: 0.75rem 1rem;
-    padding: 0.95rem 1rem;
-    border: 1px solid var(--ap-border);
-    border-radius: var(--ap-radius-md);
-    background: var(--ap-panel-soft);
-}
-
-body.db-body-admin .admin-account-page .admin-detail-label {
-    color: var(--ap-text-soft);
-    font-weight: 700;
-}
-
-body.db-body-admin .admin-account-page .admin-detail-value {
-    min-width: 0;
-    color: var(--ap-text-main);
-    line-height: 1.55;
-    word-break: break-word;
-}
-
-body.db-body-admin .admin-account-page .admin-banner-img {
-    width: 112px;
-    max-width: 100%;
-    height: 68px;
-    object-fit: cover;
-    border: 1px solid var(--ap-border);
-    border-radius: 12px;
-    background: #0b1220;
-}
-
-body.db-body-admin .admin-account-page .admin-current-image-box {
-    min-height: 148px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-body.db-body-admin .admin-account-page :is(.admin-current-image, .admin-delete-image) {
-    max-width: 100%;
-    max-height: 220px;
-    object-fit: contain;
-    border: 1px solid var(--ap-border);
-    border-radius: 14px;
-    background: #0b1220;
-}
-
-body.db-body-admin .admin-account-page .program-parent-row td {
-    background: #162033;
-}
-
-body.db-body-admin .admin-account-page .child-row td {
-    background: #111b2e;
-}
-
-body.db-body-admin .admin-account-page .program-name-wrap,
-body.db-body-admin .admin-account-page .program-child-name {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    min-width: 0;
-}
-
-body.db-body-admin .admin-account-page .program-child-name {
-    color: var(--ap-text-muted);
-}
-
-body.db-body-admin .admin-account-page .toggle-arrow {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.7rem;
-    height: 1.7rem;
-    border: 1px solid rgba(56, 189, 248, 0.22);
-    border-radius: 10px;
-    background: rgba(56, 189, 248, 0.12);
-    color: #dff5ff;
-    font-size: 0.78rem;
-    line-height: 1;
-    cursor: pointer;
-    user-select: none;
-}
-
-body.db-body-admin .admin-account-page .toggle-arrow:hover {
-    background: rgba(56, 189, 248, 0.18);
-}
-
-body.db-body-admin .admin-account-page .child-mark {
-    color: var(--ap-accent);
-    font-weight: 800;
-}
-
-body.db-body-admin .admin-account-page .admin-banner-actions {
-    justify-content: center;
-}
-
-@media (max-width: 991.98px) {
-    body.db-body-admin .admin-account-page .admin-page-header,
-    body.db-body-admin .admin-account-page .admin-tab-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    body.db-body-admin .admin-account-page .admin-page-header .admin-btn-main {
-        width: 100%;
-    }
-
-    body.db-body-admin .admin-account-page .admin-filter-actions .btn,
-    body.db-body-admin .admin-account-page .admin-form-actions .btn {
-        flex: 1 1 180px;
-    }
-}
-
-@media (max-width: 767.98px) {
-    body.db-body-admin .admin-account-page .admin-page-header,
-    body.db-body-admin .admin-account-page .admin-filter-card,
-    body.db-body-admin .admin-account-page .admin-form-card form,
-    body.db-body-admin .admin-account-page .admin-delete-body,
-    body.db-body-admin .admin-account-page .admin-system-body,
-    body.db-body-admin .admin-account-page .admin-system-tab-content {
-        padding: 1rem;
-    }
-
-    body.db-body-admin .admin-account-page :is(
-        .admin-table-title,
-        .admin-form-title,
-        .admin-delete-title
-    ) {
-        padding: 0.9rem 1rem;
-    }
-
-    body.db-body-admin .admin-account-page .admin-form-actions,
-    body.db-body-admin .admin-account-page .admin-filter-actions,
-    body.db-body-admin .admin-account-page .admin-tabbar {
-        flex-direction: column;
-    }
-
-    body.db-body-admin .admin-account-page .admin-form-actions .btn,
-    body.db-body-admin .admin-account-page .admin-filter-actions .btn,
-    body.db-body-admin .admin-account-page .admin-btn-main {
-        width: 100%;
-    }
-
-    body.db-body-admin .admin-account-page .admin-detail-row {
-        grid-template-columns: 1fr;
-        gap: 0.45rem;
-    }
-
-    body.db-body-admin .admin-account-page .admin-actions {
-        justify-content: flex-start;
-    }
-}
+body.db-body-admin{--ap-bg:#f4f1fa;--ap-surface:rgba(255,255,255,.74);--ap-surface-soft:rgba(255,255,255,.58);--ap-recessed:#efebf5;--ap-border:rgba(255,255,255,.82);--ap-text:#332f3a;--ap-muted:#635f69;--ap-subtle:#847f8f;--ap-accent:#7c3aed;--ap-accent-alt:#db2777;--ap-info:#0ea5e9;--ap-success:#10b981;--ap-warning:#f59e0b;--ap-danger:#ef4444;--ap-shadow-deep:28px 28px 56px rgba(205,198,217,.92),-28px -28px 56px rgba(255,255,255,.98),inset 10px 10px 18px rgba(124,58,237,.05),inset -10px -10px 18px rgba(255,255,255,.84);--ap-shadow-card:18px 18px 36px rgba(181,171,197,.34),-12px -12px 26px rgba(255,255,255,.95),inset 6px 6px 12px rgba(124,58,237,.04),inset -6px -6px 12px rgba(255,255,255,.96);--ap-shadow-hover:24px 24px 44px rgba(176,165,194,.38),-14px -14px 28px rgba(255,255,255,.98),inset 7px 7px 14px rgba(124,58,237,.05),inset -7px -7px 14px rgba(255,255,255,.98);--ap-shadow-pressed:inset 10px 10px 20px rgba(211,205,223,.95),inset -10px -10px 20px rgba(255,255,255,.98);--ap-shadow-btn:12px 12px 24px rgba(124,58,237,.22),-8px -8px 18px rgba(255,255,255,.78),inset 4px 4px 8px rgba(255,255,255,.44),inset -4px -4px 8px rgba(74,38,126,.1);--ap-shadow-btn-soft:12px 12px 24px rgba(179,171,194,.25),-8px -8px 18px rgba(255,255,255,.92),inset 4px 4px 8px rgba(255,255,255,.44),inset -4px -4px 8px rgba(74,38,126,.08);background:radial-gradient(circle at top left,rgba(167,139,250,.22),transparent 24%),radial-gradient(circle at top right,rgba(219,39,119,.12),transparent 22%),radial-gradient(circle at 50% 100%,rgba(14,165,233,.1),transparent 34%),var(--ap-bg);color:var(--ap-text);font-family:"DM Sans",Arial,Helvetica,sans-serif;overflow-x:hidden}
+body.db-body-admin .db-main-wrap{position:relative;isolation:isolate;background:transparent;min-height:100vh}
+body.db-body-admin .db-main-wrap>:not(.ap-ambient){position:relative;z-index:1}
+body.db-body-admin .db-content{max-width:1520px;padding:32px 34px 48px}
+body.db-body-admin .ap-ambient{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+body.db-body-admin .ap-blob{position:absolute;border-radius:50%;filter:blur(30px);opacity:.78;will-change:transform}
+body.db-body-admin .ap-blob-violet{top:-14%;left:-10%;width:min(34rem,42vw);height:min(34rem,42vw);background:rgba(167,139,250,.28);animation:apBlobA 11s ease-in-out infinite}
+body.db-body-admin .ap-blob-pink{top:12%;right:-12%;width:min(28rem,36vw);height:min(28rem,36vw);background:rgba(219,39,119,.16);animation:apBlobB 13s ease-in-out infinite}
+body.db-body-admin .ap-blob-sky{right:18%;bottom:-18%;width:min(30rem,38vw);height:min(30rem,38vw);background:rgba(14,165,233,.16);animation:apBlobC 15s ease-in-out infinite}
+body.db-body-admin .ap-blob-emerald{left:28%;bottom:12%;width:min(22rem,28vw);height:min(22rem,28vw);background:rgba(16,185,129,.12);animation:apBlobB 14s ease-in-out infinite}
+@keyframes apBlobA{0%,100%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(0,-22px,0) rotate(3deg)}}
+@keyframes apBlobB{0%,100%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(-14px,-18px,0) rotate(-4deg)}}
+@keyframes apBlobC{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(14px,-26px,0) scale(1.04)}}
+body.db-body-admin .db-sidebar{background:linear-gradient(180deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,.54) 100%);border-right:1px solid var(--ap-border);box-shadow:24px 0 52px rgba(177,168,193,.22),inset -8px -8px 18px rgba(255,255,255,.62),inset 8px 8px 18px rgba(124,58,237,.03);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
+body.db-body-admin .db-sidebar-header,body.db-body-admin .db-sidebar-footer{border-color:rgba(143,109,184,.14)}
+body.db-body-admin .db-sidebar-header{min-height:78px;padding:0 20px}
+body.db-body-admin .db-brand{gap:12px;color:var(--ap-text);font-family:"Nunito",Arial,Helvetica,sans-serif;font-size:1.22rem;font-weight:900;letter-spacing:-.02em}
+body.db-body-admin .db-brand:hover,body.db-body-admin .db-brand:focus-visible{color:var(--ap-text);opacity:1}
+body.db-body-admin .db-brand-icon{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;border-radius:18px;background:linear-gradient(135deg,#a78bfa 0%,#7c3aed 58%,#db2777 100%);box-shadow:var(--ap-shadow-btn);font-size:1.35rem}
+body.db-body-admin .db-brand-text{color:var(--ap-text)}
+body.db-body-admin .db-sidebar-close{color:var(--ap-muted);border-radius:16px}
+body.db-body-admin .db-sidebar-close:hover{background:rgba(124,58,237,.08);color:var(--ap-text)}
+body.db-body-admin .db-nav{padding:16px 14px;scrollbar-color:rgba(124,58,237,.24) transparent}
+body.db-body-admin .db-nav-group{margin-bottom:10px}
+body.db-body-admin .db-nav-group-label{color:rgba(99,95,105,.82);font-size:.72rem;font-weight:800;letter-spacing:.16em;padding:14px 14px 8px}
+body.db-body-admin .db-nav-link{min-height:54px;gap:12px;padding:10px 14px;margin-bottom:8px;border-radius:22px;background:rgba(255,255,255,.44);color:var(--ap-muted);font-size:.94rem;font-weight:700;box-shadow:10px 10px 18px rgba(194,186,208,.22),-8px -8px 18px rgba(255,255,255,.9),inset 3px 3px 6px rgba(255,255,255,.42),inset -3px -3px 6px rgba(124,58,237,.04);transition:transform .2s ease,box-shadow .2s ease,color .2s ease,background .2s ease}
+body.db-body-admin .db-nav-link:hover{transform:translateY(-2px);background:rgba(255,255,255,.68);color:var(--ap-text)}
+body.db-body-admin .db-nav-link.active{background:linear-gradient(135deg,#a78bfa 0%,#7c3aed 58%,#db2777 100%);color:#fff;font-weight:800;box-shadow:14px 14px 28px rgba(124,58,237,.28),-10px -10px 18px rgba(255,255,255,.58),inset 4px 4px 8px rgba(255,255,255,.24),inset -4px -4px 8px rgba(76,29,149,.16)}
+body.db-body-admin .db-nav-link.active::before{display:none}
+body.db-body-admin .db-nav-icon{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(255,255,255,.64);box-shadow:6px 6px 12px rgba(191,182,205,.24),-6px -6px 12px rgba(255,255,255,.96);font-size:.96rem}
+body.db-body-admin .db-nav-link.active .db-nav-icon{background:rgba(255,255,255,.22);box-shadow:inset 3px 3px 8px rgba(255,255,255,.12),inset -3px -3px 8px rgba(76,29,149,.18)}
+body.db-body-admin .db-sidebar-footer{padding:18px 16px 20px}
+body.db-body-admin .db-user-info{padding:14px;border-radius:28px;background:rgba(255,255,255,.54);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .db-user-avatar{width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);box-shadow:var(--ap-shadow-btn)}
+body.db-body-admin .db-user-name{color:var(--ap-text);font-size:.92rem;font-weight:800}
+body.db-body-admin .db-user-role{color:var(--ap-muted);font-size:.76rem}
+body.db-body-admin .db-logout-btn,body.db-body-admin .db-login-btn{min-height:52px;border-radius:20px;font-weight:800;letter-spacing:.01em;transition:transform .18s ease,box-shadow .18s ease,background .18s ease,color .18s ease}
+body.db-body-admin .db-logout-btn{background:linear-gradient(135deg,rgba(255,255,255,.74) 0%,rgba(255,228,236,.84) 100%);border:1px solid rgba(239,68,68,.18);color:#b91c1c;box-shadow:var(--ap-shadow-btn-soft)}
+body.db-body-admin .db-login-btn{background:linear-gradient(135deg,#a78bfa 0%,#7c3aed 58%,#db2777 100%);border:0;color:#fff;box-shadow:var(--ap-shadow-btn)}
+body.db-body-admin .db-logout-btn:hover,body.db-body-admin .db-login-btn:hover{transform:translateY(-2px)}
+body.db-body-admin .db-overlay{background:rgba(68,48,93,.24);backdrop-filter:blur(8px)}
+body.db-body-admin .db-alert{border:1px solid var(--ap-border);border-radius:24px;background:rgba(255,255,255,.74);color:var(--ap-text);box-shadow:var(--ap-shadow-card);padding:14px 18px}
+body.db-body-admin .db-alert-success .db-alert-icon{background:linear-gradient(135deg,#34d399 0%,#10b981 100%)}
+body.db-body-admin .db-alert-danger .db-alert-icon{background:linear-gradient(135deg,#fb7185 0%,#ef4444 100%)}
+body.db-body-admin .db-alert-close{color:var(--ap-muted)}
+body.db-body-admin .db-alert-close:hover{color:var(--ap-text)}
+body.db-body-admin .admin-account-page,body.db-body-admin .admin-system-page,body.db-body-admin .admin-program-page,body.db-body-admin .admin-notification-page,body.db-body-admin .admin-audit-page,body.db-body-admin .admin-banner-page{--ap-page-accent:#7c3aed;--ap-page-alt:#db2777;--ap-glow-x:50%;--ap-glow-y:50%;--ap-glow-alpha:0;color:var(--ap-text);position:relative;isolation:isolate}
+body.db-body-admin .admin-program-page{--ap-page-accent:#0ea5e9;--ap-page-alt:#2563eb}
+body.db-body-admin .admin-system-page{--ap-page-accent:#0ea5e9;--ap-page-alt:#10b981}
+body.db-body-admin .admin-notification-page{--ap-page-accent:#db2777;--ap-page-alt:#7c3aed}
+body.db-body-admin .admin-audit-page{--ap-page-accent:#7c3aed;--ap-page-alt:#0ea5e9}
+body.db-body-admin .admin-banner-page{--ap-page-accent:#10b981;--ap-page-alt:#0ea5e9}
+body.db-body-admin .admin-account-page .text-muted,body.db-body-admin .admin-account-page .small,body.db-body-admin .admin-account-page .admin-page-subtitle,body.db-body-admin .admin-account-page .admin-help-text,body.db-body-admin .admin-account-page .admin-filter-note{color:var(--ap-muted)!important}
+body.db-body-admin .admin-account-page .admin-page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1.2rem;margin-bottom:1.6rem;padding:1.8rem 2rem;border:1px solid var(--ap-border);border-radius:52px;background:radial-gradient(circle at var(--ap-glow-x) var(--ap-glow-y),rgba(255,255,255,var(--ap-glow-alpha)) 0%,transparent 42%),radial-gradient(circle at top right,rgba(255,255,255,.64) 0%,transparent 26%),linear-gradient(135deg,rgba(255,255,255,.78) 0%,rgba(255,255,255,.58) 100%);box-shadow:var(--ap-shadow-deep);overflow:hidden}
+body.db-body-admin .admin-account-page .admin-page-header>*{min-width:0}
+body.db-body-admin .admin-account-page .admin-page-title{margin:0;color:var(--ap-text);font-family:"Nunito",Arial,Helvetica,sans-serif;font-size:clamp(1.9rem,2.6vw,2.5rem);font-weight:900;letter-spacing:-.04em;line-height:1.06}
+body.db-body-admin .admin-account-page .admin-page-subtitle{margin:.65rem 0 0;font-size:1rem;line-height:1.7;max-width:62ch}
+body.db-body-admin .admin-account-page :is(.admin-filter-card,.admin-table-card,.admin-form-card,.admin-delete-card,.admin-system-card,.admin-feature-card,.admin-section-box,.admin-info-box,.admin-warning-box,.admin-danger-box,.admin-current-image-box){background:radial-gradient(circle at var(--ap-glow-x) var(--ap-glow-y),rgba(255,255,255,var(--ap-glow-alpha)) 0%,transparent 54%),linear-gradient(145deg,rgba(255,255,255,.78) 0%,rgba(255,255,255,.58) 100%);border:1px solid var(--ap-border);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page :is(.admin-filter-card,.admin-table-card,.admin-form-card,.admin-delete-card,.admin-system-card){margin-bottom:1.2rem;border-radius:34px;backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);overflow:hidden;transition:transform .32s ease,box-shadow .32s ease}
+body.db-body-admin .admin-account-page :is(.admin-filter-card,.admin-table-card,.admin-form-card,.admin-delete-card,.admin-system-card):hover{transform:translateY(-3px);box-shadow:var(--ap-shadow-hover)}
+body.db-body-admin .admin-account-page :is(.admin-feature-card,.admin-section-box,.admin-info-box,.admin-warning-box,.admin-danger-box,.admin-current-image-box){margin-bottom:1rem;border-radius:28px}
+body.db-body-admin .admin-account-page .admin-filter-card,body.db-body-admin .admin-account-page .admin-form-card form,body.db-body-admin .admin-account-page .admin-delete-body,body.db-body-admin .admin-account-page .admin-system-body,body.db-body-admin .admin-account-page .admin-system-tab-content{padding:1.4rem 1.5rem}
+body.db-body-admin .admin-account-page :is(.admin-table-title,.admin-form-title,.admin-delete-title){display:flex;align-items:center;gap:.65rem;padding:1.1rem 1.4rem;border-bottom:1px solid rgba(143,109,184,.12);background:linear-gradient(135deg,rgba(167,139,250,.16) 0%,rgba(219,39,119,.1) 100%);color:var(--ap-text);font-family:"Nunito",Arial,Helvetica,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em}
+body.db-body-admin .admin-account-page :is(.admin-section-title,.admin-feature-title,.admin-section-label,.admin-tab-header h5){margin:0 0 .95rem;color:var(--ap-text);font-family:"Nunito",Arial,Helvetica,sans-serif;font-size:1.02rem;font-weight:900;letter-spacing:-.02em}
+body.db-body-admin .admin-account-page .admin-feature-card,body.db-body-admin .admin-account-page .admin-section-box,body.db-body-admin .admin-account-page .admin-info-box{padding:1.15rem 1.2rem}
+body.db-body-admin .admin-account-page .admin-section-divider{height:1px;margin:1.35rem 0 1.15rem;background:linear-gradient(90deg,transparent 0%,rgba(124,58,237,.18) 20%,rgba(14,165,233,.18) 80%,transparent 100%)}
+body.db-body-admin .admin-account-page .admin-tab-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem}
+body.db-body-admin .admin-account-page .admin-tabbar{display:flex;flex-wrap:wrap;gap:.65rem;margin-bottom:.9rem;padding:.7rem;border:1px solid var(--ap-border);border-radius:28px;background:rgba(255,255,255,.58);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page .admin-tab{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:.72rem 1.1rem;border:0;border-radius:20px!important;background:rgba(255,255,255,.76)!important;color:var(--ap-muted)!important;font-weight:800;text-decoration:none;box-shadow:var(--ap-shadow-btn-soft);transition:transform .18s ease,box-shadow .18s ease,background .18s ease,color .18s ease}
+body.db-body-admin .admin-account-page .admin-tab:hover{transform:translateY(-2px);color:var(--ap-text)!important}
+body.db-body-admin .admin-account-page .admin-tab.active,body.db-body-admin .admin-account-page .admin-tab.show,body.db-body-admin .admin-account-page .admin-tab[aria-selected=true]{background:linear-gradient(135deg,var(--ap-page-accent) 0%,var(--ap-page-alt) 100%)!important;color:#fff!important;box-shadow:14px 14px 24px rgba(124,58,237,.22),inset 4px 4px 8px rgba(255,255,255,.2),inset -4px -4px 8px rgba(76,29,149,.15)}
+body.db-body-admin .admin-account-page .admin-system-tab-content{border:1px solid var(--ap-border);border-radius:30px;background:rgba(255,255,255,.58);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page .admin-label{display:block;margin-bottom:.52rem;color:var(--ap-text);font-size:.92rem;font-weight:800;letter-spacing:.01em}
+body.db-body-admin .admin-account-page .admin-input{min-height:54px;border:0;border-radius:20px;background:var(--ap-recessed);color:var(--ap-text);font-size:.96rem;box-shadow:var(--ap-shadow-pressed);transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+body.db-body-admin .admin-account-page .admin-input::placeholder{color:var(--ap-subtle)}
+body.db-body-admin .admin-account-page .admin-input:focus{background:rgba(255,255,255,.96);color:var(--ap-text);box-shadow:0 0 0 4px rgba(124,58,237,.14),12px 12px 24px rgba(196,187,208,.24),-10px -10px 18px rgba(255,255,255,.96);transform:translateY(-1px)}
+body.db-body-admin .admin-account-page .admin-input[readonly],body.db-body-admin .admin-account-page .admin-input:disabled{background:rgba(234,229,241,.94);color:var(--ap-muted)}
+body.db-body-admin .admin-account-page select.admin-input option{background:#fff;color:var(--ap-text)}
+body.db-body-admin .admin-account-page .admin-input[type=file]{padding:.42rem .48rem}
+body.db-body-admin .admin-account-page .admin-input[type=file]::file-selector-button{margin-right:.8rem;padding:.62rem .92rem;border:0;border-radius:16px;background:linear-gradient(135deg,rgba(167,139,250,.24) 0%,rgba(14,165,233,.14) 100%);color:var(--ap-text);font-weight:800;cursor:pointer;box-shadow:var(--ap-shadow-btn-soft)}
+body.db-body-admin .admin-account-page .admin-textarea{min-height:138px;resize:vertical;padding-top:.95rem;padding-bottom:.95rem}
+body.db-body-admin .admin-account-page .admin-validation{margin-bottom:1rem;padding:1rem 1.1rem;border:1px solid rgba(239,68,68,.16);border-radius:24px;background:rgba(254,226,226,.78);color:#b91c1c;box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page .admin-validation ul{margin:0;padding-left:1.1rem}
+body.db-body-admin .admin-account-page .admin-field-error{display:block;margin-top:.4rem;color:#be123c!important;font-size:.84rem;font-weight:700}
+body.db-body-admin .admin-account-page .input-validation-error,body.db-body-admin .admin-account-page .input-validation-error:focus{box-shadow:0 0 0 4px rgba(239,68,68,.12),var(--ap-shadow-pressed)}
+body.db-body-admin .admin-account-page .admin-help-text,body.db-body-admin .admin-account-page .admin-filter-note{margin-top:.55rem;font-size:.86rem;line-height:1.65}
+body.db-body-admin .admin-account-page .admin-filter-note strong{color:var(--ap-text)}
+body.db-body-admin .admin-account-page .admin-check-list{display:grid;gap:.8rem}
+body.db-body-admin .admin-account-page .admin-check-row{display:flex;align-items:flex-start;gap:.82rem;margin-bottom:0;padding:1rem 1.05rem;border:1px solid var(--ap-border);border-radius:24px;background:radial-gradient(circle at var(--ap-glow-x) var(--ap-glow-y),rgba(255,255,255,calc(var(--ap-glow-alpha)*.8)) 0%,transparent 54%),linear-gradient(145deg,rgba(255,255,255,.74) 0%,rgba(255,255,255,.56) 100%);color:var(--ap-muted);box-shadow:var(--ap-shadow-card);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease}
+body.db-body-admin .admin-account-page .admin-check-row:hover{transform:translateY(-2px)}
+body.db-body-admin .admin-account-page .admin-check-row.is-checked{border-color:rgba(124,58,237,.18);background:linear-gradient(145deg,rgba(240,231,255,.9) 0%,rgba(255,232,243,.82) 100%)}
+body.db-body-admin .admin-account-page .admin-check-row.is-disabled{opacity:.64;cursor:not-allowed}
+body.db-body-admin .admin-account-page .admin-check-input{width:18px;height:18px;margin:.18rem 0 0;accent-color:var(--ap-page-accent);flex:0 0 auto}
+body.db-body-admin .admin-account-page .admin-check-label,body.db-body-admin .admin-account-page .admin-check-row>span{color:var(--ap-text);font-weight:800;line-height:1.5}
+body.db-body-admin .admin-account-page .admin-filter-actions,body.db-body-admin .admin-account-page .admin-form-actions,body.db-body-admin .admin-account-page .admin-actions,body.db-body-admin .admin-account-page .admin-banner-actions{display:flex;flex-wrap:wrap;gap:.7rem}
+body.db-body-admin .admin-account-page .admin-filter-actions,body.db-body-admin .admin-account-page .admin-form-actions{justify-content:flex-end}
+body.db-body-admin .admin-account-page .admin-form-actions{margin-top:1.4rem;padding-top:1.3rem;border-top:1px solid rgba(143,109,184,.12)}
+body.db-body-admin .admin-account-page .admin-actions,body.db-body-admin .admin-account-page .admin-banner-actions{justify-content:center}
+body.db-body-admin .admin-account-page .admin-actions form,body.db-body-admin .admin-account-page .admin-banner-actions form{margin:0}
+body.db-body-admin .admin-account-page .btn{display:inline-flex;align-items:center;justify-content:center;gap:.42rem;min-height:52px;padding:.75rem 1.15rem;border:0;border-radius:20px;font-family:"Nunito",Arial,Helvetica,sans-serif;font-size:.95rem;font-weight:800;letter-spacing:-.01em;transition:transform .18s ease,box-shadow .18s ease,background .18s ease,color .18s ease,border-color .18s ease}
+body.db-body-admin .admin-account-page .btn:hover{transform:translateY(-3px)}
+body.db-body-admin .admin-account-page .btn:active{transform:translateY(0) scale(.94)}
+body.db-body-admin .admin-account-page .btn:focus-visible{box-shadow:0 0 0 4px rgba(124,58,237,.16)}
+body.db-body-admin .admin-account-page .btn-sm{min-height:40px;padding:.52rem .84rem;border-radius:16px;font-size:.84rem}
+body.db-body-admin .admin-account-page .btn-primary{background:linear-gradient(135deg,#a78bfa 0%,#7c3aed 58%,#db2777 100%);color:#fff;box-shadow:var(--ap-shadow-btn)}
+body.db-body-admin .admin-account-page .btn-danger{background:linear-gradient(135deg,#fb7185 0%,#ef4444 100%);color:#fff;box-shadow:12px 12px 24px rgba(239,68,68,.18),-8px -8px 18px rgba(255,255,255,.82),inset 4px 4px 8px rgba(255,255,255,.28),inset -4px -4px 8px rgba(127,29,29,.12)}
+body.db-body-admin .admin-account-page :is(.btn-outline-secondary,.btn-outline-primary,.btn-outline-success,.btn-outline-danger){background:rgba(255,255,255,.78);box-shadow:var(--ap-shadow-btn-soft)}
+body.db-body-admin .admin-account-page .btn-outline-secondary{border:1px solid rgba(143,109,184,.14);color:var(--ap-text)}
+body.db-body-admin .admin-account-page .btn-outline-primary{border:1px solid rgba(124,58,237,.14);color:#5b21b6}
+body.db-body-admin .admin-account-page .btn-outline-success{border:1px solid rgba(16,185,129,.16);color:#047857}
+body.db-body-admin .admin-account-page .btn-outline-danger{border:1px solid rgba(239,68,68,.14);color:#be123c}
+body.db-body-admin .admin-account-page .admin-btn-main{white-space:nowrap}
+body.db-body-admin .admin-account-page .admin-table.table{--bs-table-color:var(--ap-text);--bs-table-bg:transparent;--bs-table-border-color:transparent;--bs-table-hover-color:var(--ap-text);--bs-table-hover-bg:transparent;margin-bottom:0}
+body.db-body-admin .admin-account-page .admin-table>:not(caption)>*>*{background:transparent;box-shadow:none}
+body.db-body-admin .admin-account-page .admin-table thead th{padding:1rem 1rem .95rem;border-bottom:1px solid rgba(143,109,184,.14);background:rgba(255,255,255,.48);color:var(--ap-muted);font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+body.db-body-admin .admin-account-page .admin-table tbody td{padding:1rem;border-top:1px solid rgba(143,109,184,.08);color:var(--ap-text);vertical-align:middle}
+body.db-body-admin .admin-account-page .admin-table tbody tr:hover td{background:rgba(255,255,255,.42)}
+body.db-body-admin .admin-account-page .admin-table-note{padding:1rem 1.4rem 1.2rem;border-top:1px solid rgba(143,109,184,.12);color:var(--ap-muted);font-size:.88rem;text-align:center}
+body.db-body-admin .admin-account-page .admin-code,body.db-body-admin .admin-account-page .admin-badge{display:inline-flex;align-items:center;justify-content:center;max-width:100%;min-height:34px;padding:.42rem .82rem;border-radius:999px;font-weight:800;line-height:1.25;text-align:center;white-space:normal}
+body.db-body-admin .admin-account-page .admin-code{min-width:68px;background:linear-gradient(135deg,rgba(167,139,250,.18) 0%,rgba(14,165,233,.12) 100%);color:#5b21b6;box-shadow:var(--ap-shadow-btn-soft);font-family:Consolas,"Courier New",monospace;font-size:.82rem}
+body.db-body-admin .admin-account-page .child-code{color:#0369a1}
+body.db-body-admin .admin-account-page :is(.admin-name,.admin-username,.admin-email,.admin-detail-value){color:var(--ap-text);font-weight:700;line-height:1.55;word-break:break-word}
+body.db-body-admin .admin-account-page :is(.admin-username,.admin-email,.admin-text-limit,.admin-time){color:var(--ap-muted)}
+body.db-body-admin .admin-account-page .admin-time{font-family:Consolas,"Courier New",monospace;font-size:.84rem;font-weight:700}
+body.db-body-admin .admin-account-page .admin-text-limit{line-height:1.6;word-break:break-word}
+body.db-body-admin .admin-account-page .admin-badge{border:1px solid var(--ap-border);box-shadow:var(--ap-shadow-btn-soft);font-size:.78rem}
+body.db-body-admin .admin-account-page .admin-badge-role{background:linear-gradient(135deg,rgba(167,139,250,.26) 0%,rgba(124,58,237,.18) 100%);color:#5b21b6}
+body.db-body-admin .admin-account-page .admin-badge-linked{background:linear-gradient(135deg,rgba(14,165,233,.2) 0%,rgba(34,211,238,.18) 100%);color:#0f766e}
+body.db-body-admin .admin-account-page .admin-badge-success{background:linear-gradient(135deg,rgba(16,185,129,.18) 0%,rgba(74,222,128,.14) 100%);color:#047857}
+body.db-body-admin .admin-account-page .admin-badge-danger{background:linear-gradient(135deg,rgba(251,113,133,.18) 0%,rgba(239,68,68,.14) 100%);color:#be123c}
+body.db-body-admin .admin-account-page .admin-badge-muted{background:rgba(255,255,255,.74);color:var(--ap-muted)}
+body.db-body-admin .admin-account-page .admin-info-box{color:#5b21b6;font-weight:700}
+body.db-body-admin .admin-account-page .admin-warning-box{background:linear-gradient(135deg,rgba(254,243,199,.88) 0%,rgba(255,251,235,.74) 100%);border-color:rgba(245,158,11,.18);color:#92400e;padding:1rem 1.1rem;line-height:1.65}
+body.db-body-admin .admin-account-page .admin-danger-box{background:linear-gradient(135deg,rgba(254,226,226,.88) 0%,rgba(255,241,242,.74) 100%);border-color:rgba(239,68,68,.16);color:#9f1239;padding:1rem 1.1rem;line-height:1.65}
+body.db-body-admin .admin-account-page .admin-detail-list{display:grid;gap:.85rem}
+body.db-body-admin .admin-account-page .admin-detail-row{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:.8rem 1rem;padding:.95rem 1rem;border:1px solid var(--ap-border);border-radius:24px;background:rgba(255,255,255,.58);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page .admin-detail-label{color:var(--ap-muted);font-weight:800}
+body.db-body-admin .admin-account-page .admin-banner-img{width:112px;max-width:100%;height:72px;object-fit:cover;border:1px solid var(--ap-border);border-radius:22px;background:rgba(255,255,255,.84);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page .admin-current-image-box{min-height:152px;padding:1rem;display:flex;align-items:center;justify-content:center}
+body.db-body-admin .admin-account-page :is(.admin-current-image,.admin-delete-image){max-width:100%;max-height:220px;object-fit:contain;border:1px solid var(--ap-border);border-radius:24px;background:rgba(255,255,255,.84);box-shadow:var(--ap-shadow-card)}
+body.db-body-admin .admin-account-page .program-parent-row td{background:rgba(167,139,250,.06)}
+body.db-body-admin .admin-account-page .child-row td{background:rgba(14,165,233,.04)}
+body.db-body-admin .admin-account-page :is(.program-name-wrap,.program-child-name){display:flex;align-items:center;gap:.65rem;min-width:0}
+body.db-body-admin .admin-account-page .program-child-name{color:var(--ap-text)}
+body.db-body-admin .admin-account-page .toggle-arrow{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:16px;background:rgba(255,255,255,.86);color:#5b21b6;font-size:.8rem;line-height:1;cursor:pointer;user-select:none;box-shadow:var(--ap-shadow-btn-soft);transition:transform .18s ease,box-shadow .18s ease}
+body.db-body-admin .admin-account-page .toggle-arrow:hover{transform:translateY(-2px)}
+body.db-body-admin .admin-account-page .child-mark{color:var(--ap-page-accent);font-weight:900}
+body.db-body-admin .admin-account-page .admin-banner-actions{justify-content:center}
+body.db-body-admin .ap-reveal{opacity:0;transform:translateY(18px) scale(.985);transition:opacity .45s ease,transform .45s ease}
+body.db-body-admin .ap-reveal.is-visible{opacity:1;transform:none}
+@media (max-width:1199.98px){body.db-body-admin .db-content{padding:28px 24px 42px}}
+@media (max-width:991.98px){body.db-body-admin .db-sidebar{box-shadow:22px 0 48px rgba(171,161,188,.24),inset -8px -8px 18px rgba(255,255,255,.58)}body.db-body-admin .admin-account-page .admin-page-header,body.db-body-admin .admin-account-page .admin-tab-header{flex-direction:column;align-items:stretch}body.db-body-admin .admin-account-page .admin-page-header .admin-btn-main{width:100%}body.db-body-admin .admin-account-page .admin-filter-actions .btn,body.db-body-admin .admin-account-page .admin-form-actions .btn{flex:1 1 180px}}
+@media (max-width:767.98px){body.db-body-admin .db-content{padding:22px 16px 36px}body.db-body-admin .admin-account-page .admin-page-header,body.db-body-admin .admin-account-page .admin-filter-card,body.db-body-admin .admin-account-page .admin-form-card form,body.db-body-admin .admin-account-page .admin-delete-body,body.db-body-admin .admin-account-page .admin-system-body,body.db-body-admin .admin-account-page .admin-system-tab-content{padding:1.1rem}body.db-body-admin .admin-account-page .admin-page-header{border-radius:40px}body.db-body-admin .admin-account-page :is(.admin-table-title,.admin-form-title,.admin-delete-title){padding:1rem 1.1rem}body.db-body-admin .admin-account-page .admin-form-actions,body.db-body-admin .admin-account-page .admin-filter-actions,body.db-body-admin .admin-account-page .admin-tabbar{flex-direction:column}body.db-body-admin .admin-account-page .admin-form-actions .btn,body.db-body-admin .admin-account-page .admin-filter-actions .btn,body.db-body-admin .admin-account-page .admin-btn-main,body.db-body-admin .admin-account-page .admin-tab{width:100%}body.db-body-admin .admin-account-page .admin-detail-row{grid-template-columns:1fr;gap:.4rem}body.db-body-admin .admin-account-page .admin-actions{justify-content:flex-start}}
+@media (prefers-reduced-motion:reduce){body.db-body-admin .ap-blob,body.db-body-admin .ap-reveal,body.db-body-admin .db-nav-link,body.db-body-admin .btn,body.db-body-admin .admin-check-row,body.db-body-admin .toggle-arrow{animation:none!important;transition:none!important;transform:none!important}}

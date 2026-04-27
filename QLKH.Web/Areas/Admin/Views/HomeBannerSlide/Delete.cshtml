@@ -1,4 +1,4 @@
-﻿@model QLKH.Web.Areas.Admin.Models.HomeBannerSlideViewModel
+@model QLKH.Web.Areas.Admin.Models.HomeBannerSlideViewModel
 
 @{
     ViewData["Title"] = "Xóa banner";
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="admin-detail-row">
-                    <div class="admin-detail-label">Ảnh</div>
+                    <div class="admin-detail-label">?nh</div>
                     <div class="admin-detail-value">
                         @if (!string.IsNullOrWhiteSpace(Model.ExistingImageUrl))
                         {
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="admin-detail-row">
-                    <div class="admin-detail-label">Thứ tự hiển thị</div>
+                    <div class="admin-detail-label">Th? t? hiển thị</div>
                     <div class="admin-detail-value">@Model.DisplayOrder</div>
                 </div>
 
@@ -103,166 +103,3 @@
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .admin-account-page {
-            color: #1f2937;
-        }
-
-        .admin-page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .admin-page-title {
-            margin: 0;
-            color: #111827;
-            font-size: 1.55rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .admin-btn-main {
-            border-radius: 8px;
-            font-weight: 700;
-            white-space: nowrap;
-            padding: 9px 14px;
-        }
-
-        .admin-delete-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .admin-delete-title {
-            padding: 13px 16px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #111827;
-            font-weight: 800;
-            background: #f9fafb;
-        }
-
-        .admin-delete-body {
-            padding: 16px;
-        }
-
-        .admin-warning-box {
-            padding: 12px 14px;
-            margin-bottom: 16px;
-            border-radius: 8px;
-            border: 1px solid #fde68a;
-            background: #fffbeb;
-            color: #92400e;
-            font-size: 0.92rem;
-        }
-
-        .admin-detail-list {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .admin-detail-row {
-            display: grid;
-            grid-template-columns: 220px minmax(0, 1fr);
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-            .admin-detail-row:last-child {
-                border-bottom: 0;
-            }
-
-        .admin-detail-label {
-            padding: 12px 14px;
-            background: #f9fafb;
-            color: #374151;
-            font-weight: 800;
-            font-size: 0.9rem;
-        }
-
-        .admin-detail-value {
-            padding: 12px 14px;
-            color: #111827;
-            font-weight: 600;
-            word-break: break-word;
-        }
-
-        .admin-delete-image {
-            max-height: 120px;
-            max-width: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            background: #ffffff;
-        }
-
-        .admin-badge {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 100%;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            line-height: 1.25;
-            white-space: normal;
-            text-align: center;
-        }
-
-        .admin-badge-success {
-            background: #ecfdf5;
-            color: #166534;
-        }
-
-        .admin-badge-muted {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-
-        .admin-form-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-            .admin-form-actions .btn {
-                border-radius: 8px;
-                font-weight: 700;
-                min-width: 120px;
-            }
-
-        @@media (max-width: 767.98px) {
-            .admin-page-header {
-                flex-direction: column;
-            }
-
-            .admin-btn-main,
-            .admin-form-actions .btn {
-                width: 100%;
-            }
-
-            .admin-form-actions {
-                flex-direction: column;
-            }
-
-            .admin-detail-row {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-detail-label {
-                border-bottom: 1px solid #e5e7eb;
-            }
-        }
-    </style>
-}

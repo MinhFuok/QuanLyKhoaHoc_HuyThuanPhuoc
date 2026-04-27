@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QLKH.Domain.Entities.Department>
+@model IEnumerable<QLKH.Domain.Entities.Department>
 
 @{
     ViewData["Title"] = "Chương trình đào tạo";
@@ -142,7 +142,7 @@
                     <tr>
                         <th class="text-center">Mã</th>
                         <th class="text-center">Tên chương trình</th>
-                        <th class="text-center">Mô tả</th>
+                        <th class="text-center">Mã t?</th>
                         <th class="text-center">Loại</th>
                         <th class="text-center">Trạng thái</th>
                         <th class="text-center">Thao tác</th>
@@ -170,7 +170,7 @@
                                         <span class="toggle-arrow"
                                               data-target="@groupId"
                                               title="Ẩn/hiện khóa thuộc chương trình">
-                                            ▼
+                                            ?
                                         </span>
 
                                         <span class="admin-name">@parent.DepartmentName</span>
@@ -230,7 +230,7 @@
 
                                         <td>
                                             <div class="program-child-name">
-                                                <span class="child-mark">↳</span>
+                                                <span class="child-mark">?</span>
                                                 <span>@child.DepartmentName</span>
                                             </div>
                                         </td>
@@ -302,287 +302,6 @@
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .admin-account-page {
-            color: #1f2937;
-        }
-
-        .admin-page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .admin-page-title {
-            margin: 0;
-            color: #111827;
-            font-size: 1.55rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .admin-page-subtitle {
-            margin: 6px 0 0;
-            color: #6b7280;
-            font-size: 0.94rem;
-        }
-
-        .admin-btn-main {
-            border-radius: 8px;
-            font-weight: 700;
-            white-space: nowrap;
-            padding: 9px 14px;
-        }
-
-        .admin-filter-card,
-        .admin-table-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            margin-bottom: 16px;
-        }
-
-        .admin-filter-card {
-            padding: 16px;
-        }
-
-        .admin-label {
-            color: #374151;
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-        }
-
-        .admin-input {
-            border-radius: 8px;
-            border-color: #d1d5db;
-            min-height: 40px;
-            font-size: 0.94rem;
-        }
-
-            .admin-input:focus {
-                border-color: #2563eb;
-                box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.12);
-            }
-
-        .admin-filter-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-            .admin-filter-actions .btn {
-                flex: 1;
-                border-radius: 8px;
-                font-weight: 700;
-                min-height: 40px;
-            }
-
-        .admin-filter-note {
-            margin-top: 12px;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .admin-table-title {
-            padding: 13px 16px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #111827;
-            font-weight: 800;
-            background: #f9fafb;
-            border-radius: 10px 10px 0 0;
-        }
-
-        .admin-table {
-            width: 100%;
-            table-layout: fixed;
-            margin-bottom: 0;
-        }
-
-            .admin-table thead th {
-                background: #f9fafb;
-                color: #374151;
-                font-size: 0.78rem;
-                font-weight: 800;
-                text-transform: uppercase;
-                letter-spacing: 0.035em;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 14px 12px;
-                white-space: nowrap;
-                vertical-align: middle;
-            }
-
-            .admin-table tbody td {
-                padding: 14px 12px;
-                border-bottom: 1px solid #edf0f3;
-                vertical-align: middle;
-                font-size: 0.92rem;
-            }
-
-            .admin-table tbody tr:hover {
-                background: #f9fafb;
-            }
-
-            .admin-table tbody tr:last-child td {
-                border-bottom: 0;
-            }
-
-        .program-parent-row {
-            background: #fbfdff;
-        }
-
-        .program-name-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 0;
-        }
-
-        .toggle-arrow {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
-            color: #4b5563;
-            background: #f3f4f6;
-            cursor: pointer;
-            user-select: none;
-            flex-shrink: 0;
-            font-size: 0.78rem;
-        }
-
-            .toggle-arrow:hover {
-                background: #e5e7eb;
-                color: #111827;
-            }
-
-        .admin-code {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 64px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: #f3f4f6;
-            color: #111827;
-            font-size: 0.82rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .child-code {
-            background: #f9fafb;
-            color: #4b5563;
-            font-weight: 700;
-        }
-
-        .admin-name {
-            color: #111827;
-            font-weight: 800;
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .program-child-name {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            color: #374151;
-            font-weight: 600;
-            line-height: 1.45;
-            word-break: break-word;
-            padding-left: 22px;
-        }
-
-        .child-mark {
-            color: #9ca3af;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-
-        .admin-text-limit {
-            color: #4b5563;
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .admin-badge {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 100%;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            line-height: 1.25;
-            white-space: normal;
-            text-align: center;
-        }
-
-        .admin-badge-role {
-            background: #eef2ff;
-            color: #3730a3;
-        }
-
-        .admin-badge-linked {
-            background: #ecfeff;
-            color: #155e75;
-        }
-
-        .admin-badge-muted {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-
-        .admin-badge-success {
-            background: #ecfdf5;
-            color: #166534;
-        }
-
-        .admin-actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-        }
-
-            .admin-actions .btn {
-                min-width: 64px;
-                border-radius: 7px;
-                font-size: 0.8rem;
-                font-weight: 700;
-                white-space: nowrap;
-                padding: 6px 10px;
-            }
-
-        @@media (max-width: 1199.98px) {
-            .department-table {
-                min-width: 1080px;
-            }
-        }
-
-        @@media (max-width: 767.98px) {
-            .admin-page-header {
-                flex-direction: column;
-            }
-
-            .admin-btn-main {
-                width: 100%;
-            }
-
-            .admin-filter-actions {
-                flex-direction: column;
-            }
-        }
-    </style>
-}
 
 @section Scripts {
     <script>
@@ -606,7 +325,7 @@
                         row.style.display = isVisible ? "none" : "table-row";
                     });
 
-                    this.textContent = isVisible ? "▶" : "▼";
+                    this.textContent = isVisible ? "?" : "?";
                 });
             });
         });
