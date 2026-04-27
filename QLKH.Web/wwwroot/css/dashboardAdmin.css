@@ -15,11 +15,15 @@
 .admin-dashboard-page .da-identity-name{font-size:1rem;font-weight:800;color:#fff;line-height:1.3}
 .admin-dashboard-page .da-identity-email{margin-top:2px;font-size:.8rem;color:rgba(255,255,255,.7)}
 .admin-dashboard-page .da-identity-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.admin-dashboard-page .da-badge{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:6px 12px;border-radius:999px;font-size:.74rem;font-weight:700}
-.admin-dashboard-page .da-badge-role{background:rgba(255,255,255,.16);color:#fff}
-.admin-dashboard-page .da-badge-online{background:rgba(16,185,129,.18);color:#dcfce7}
-.admin-dashboard-page .da-badge-maintenance{background:rgba(251,146,60,.16);color:#ffedd5}
-.admin-dashboard-page .da-badge-off{background:rgba(255,255,255,.14);color:rgba(255,255,255,.72)}
+.admin-dashboard-page .da-badge{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:6px 12px;border:1px solid transparent;border-radius:999px;font-size:.74rem;font-weight:700}
+.admin-dashboard-page .da-badge-role{background:rgba(91,69,242,.1);border-color:rgba(91,69,242,.14);color:#5b45f2}
+.admin-dashboard-page .da-badge-online{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.16);color:#15803d}
+.admin-dashboard-page .da-badge-maintenance{background:rgba(251,146,60,.14);border-color:rgba(251,146,60,.18);color:#c2410c}
+.admin-dashboard-page .da-badge-off{background:#f1f5f9;border-color:rgba(148,163,184,.16);color:var(--da-muted)}
+.admin-dashboard-page .da-identity .da-badge-role{background:rgba(255,255,255,.16);border-color:transparent;color:#fff}
+.admin-dashboard-page .da-identity .da-badge-online{background:rgba(16,185,129,.18);border-color:transparent;color:#dcfce7}
+.admin-dashboard-page .da-identity .da-badge-maintenance{background:rgba(251,146,60,.16);border-color:transparent;color:#ffedd5}
+.admin-dashboard-page .da-identity .da-badge-off{background:rgba(255,255,255,.14);border-color:transparent;color:rgba(255,255,255,.72)}
 .admin-dashboard-page .da-maintenance-alert{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;padding:16px 20px;border:1px solid rgba(251,146,60,.18);border-radius:22px;background:rgba(255,247,237,.94);box-shadow:var(--da-shadow-sm);color:#9a3412}
 .admin-dashboard-page .da-alert-icon{font-size:1.2rem}
 .admin-dashboard-page .da-alert-title{margin-bottom:4px;font-size:.95rem;font-weight:800}

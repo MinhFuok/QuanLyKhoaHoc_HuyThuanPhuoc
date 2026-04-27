@@ -64,7 +64,43 @@ body.db-body-admin .admin-filter-actions,body.db-body-admin .admin-form-actions,
 body.db-body-admin .admin-filter-actions,body.db-body-admin .admin-form-actions{justify-content:flex-end}
 body.db-body-admin .admin-form-actions{margin-top:24px;padding-top:20px;border-top:1px solid var(--ap-border)}
 body.db-body-admin .admin-actions,body.db-body-admin .admin-banner-actions{justify-content:center}
-body.db-body-admin .admin-actions form,body.db-body-admin .admin-banner-actions form{margin:0}
+body.db-body-admin .admin-actions form,body.db-body-admin .admin-banner-actions form{margin:0;display:flex}
+body.db-body-admin .admin-icon-action{--aa-bg:#fff;--aa-border:#cbd5e1;--aa-shadow:0 10px 20px rgba(15,23,42,.12);position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:2px solid var(--aa-border);border-radius:50%;background:var(--aa-bg);color:#fff;text-decoration:none!important;cursor:pointer;overflow:hidden;flex:0 0 auto;box-shadow:var(--aa-shadow);transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;-webkit-tap-highlight-color:transparent}
+body.db-body-admin button.admin-icon-action{-webkit-appearance:none;appearance:none}
+body.db-body-admin .admin-icon-action svg{pointer-events:none}
+body.db-body-admin .admin-icon-action:hover{transform:translateY(-2px);box-shadow:0 14px 24px rgba(15,23,42,.18)}
+body.db-body-admin .admin-icon-action:active{transform:scale(.92)}
+body.db-body-admin .admin-icon-action:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(91,69,242,.14),var(--aa-shadow)}
+body.db-body-admin .admin-icon-action::after{content:attr(data-label);position:absolute;left:50%;bottom:calc(100% + 8px);padding:5px 9px;border-radius:999px;background:#0f172a;color:#fff;font-size:.7rem;font-weight:700;line-height:1;white-space:nowrap;opacity:0;transform:translate(-50%,4px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+body.db-body-admin .admin-icon-action:hover::after{opacity:1;transform:translate(-50%,0)}
+body.db-body-admin .admin-action-edit{--aa-bg:#2563eb;--aa-border:#bfdbfe}
+body.db-body-admin .admin-action-edit:hover{background:#1d4ed8}
+body.db-body-admin .edit-svgIcon{width:17px;transition:transform .3s ease}
+body.db-body-admin .edit-svgIcon path{fill:#fff}
+body.db-body-admin .admin-action-edit:hover .edit-svgIcon{transform:rotate(360deg) scale(1.08)}
+body.db-body-admin .admin-action-delete{--aa-bg:#ff5f5f;--aa-border:#ffc9c9}
+body.db-body-admin .admin-action-delete:hover{background:#ff2525}
+body.db-body-admin .bin-top{position:absolute;top:8px;width:15px;transform-origin:right;transition:transform .3s ease;z-index:2}
+body.db-body-admin .bin-bottom{position:absolute;bottom:8px;width:13px;z-index:2}
+body.db-body-admin .garbage{position:absolute;top:11px;left:14px;width:12px;height:auto;z-index:1;opacity:0}
+body.db-body-admin .admin-action-delete:hover .bin-top{transform:rotate(45deg)}
+body.db-body-admin .admin-action-delete:hover .garbage{animation:adminTrashThrow .4s linear forwards}
+body.db-body-admin .admin-action-lock{--aa-bg:#20cca5;--aa-border:#baf4e6}
+body.db-body-admin .admin-action-lock:hover{background:#14b88f}
+body.db-body-admin .admin-action-unlock{--aa-bg:#ff6b6b;--aa-border:#ffd0d0}
+body.db-body-admin .admin-action-unlock:hover{background:#ff4747}
+body.db-body-admin .lock-action-svg{width:24px;height:24px;display:block;overflow:hidden;fill:none;transform:translate3d(0,0,0)}
+body.db-body-admin .lock-action-svg .bling{fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:3;stroke-dashoffset:15;transition:all .3s ease}
+body.db-body-admin .lock-action-svg .lock{fill:none;stroke:#fff;stroke-width:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:36;transition:all .4s ease}
+body.db-body-admin .lock-action-svg .lockb{fill:#fff;fill-rule:evenodd;clip-rule:evenodd;transform:rotate(8deg);transform-origin:14px 20px;transition:all .2s ease}
+body.db-body-admin .admin-action-unlock .lock{stroke-dasharray:48}
+body.db-body-admin .admin-action-unlock .lockb{transform:rotate(0);transform-origin:14px 22px}
+body.db-body-admin :is(.admin-action-lock:hover,.admin-action-unlock:hover) .bling{animation:adminLockBling .3s linear forwards;animation-delay:.2s}
+body.db-body-admin :is(.admin-action-lock:hover,.admin-action-unlock:hover) .lock{stroke-dasharray:48;animation:adminLockPulse .3s linear forwards}
+body.db-body-admin :is(.admin-action-lock:hover,.admin-action-unlock:hover) .lockb{transform:rotate(0);transform-origin:14px 22px}
+@keyframes adminTrashThrow{from{transform:translate(-400%,-700%);opacity:0}to{transform:translate(0,0);opacity:1}}
+@keyframes adminLockBling{50%{stroke-dasharray:3;stroke-dashoffset:12}100%{stroke-dasharray:3;stroke-dashoffset:9}}
+@keyframes adminLockPulse{50%{transform:translateY(1px)}}
 body.db-body-admin .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:16px;font-family:"Roboto",Arial,Helvetica,sans-serif;font-size:.94rem;font-weight:700;letter-spacing:-.01em;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease,border-color .2s ease}
 body.db-body-admin .btn:hover{transform:translateY(-1px)}
 body.db-body-admin .btn:active{transform:translateY(0)}
