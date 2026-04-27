@@ -12,6 +12,7 @@ using QLKH.Infrastructure.Seed;
 using QLKH.Web.Models;
 using QLKH.Web.Services;
 using QLKH.Web.Middleware;
+using QLKH.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +80,7 @@ builder.Services.AddScoped<IHomeBannerSlideService, HomeBannerSlideService>();
 builder.Services.AddScoped<IStudentCertificateService, StudentCertificateService>();
 builder.Services.AddScoped<IAdminAuditLogService, AdminAuditLogService>();
 builder.Services.AddScoped<IBulkNotificationService, BulkNotificationService>();
+builder.Services.AddHttpClient<IAiSupportService, AiSupportService>();
 
 builder.Services.AddScoped<IMessagePublisher, RabbitMqPublisher>();
 
