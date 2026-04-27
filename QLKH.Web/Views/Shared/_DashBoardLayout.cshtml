@@ -18,9 +18,12 @@
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
     var isAdminShell = string.Equals(currentArea, "Admin", StringComparison.OrdinalIgnoreCase);
+    var isHocVuShell = string.Equals(currentArea, "HocVu", StringComparison.OrdinalIgnoreCase);
     var dashboardBodyClass = isAdminShell
         ? "db-body db-body-admin"
-        : "db-body";
+        : isHocVuShell
+            ? "db-body db-body-hocvu"
+            : "db-body";
 
     string IsActive(string area, string controller, string? action = null)
     {
@@ -49,7 +52,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/dashboardlayout.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QLKH.Web.styles.css" asp-append-version="true" />
     @if (isAdminShell)
@@ -57,6 +59,10 @@
         <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
     }
     @await RenderSectionAsync("Styles", required: false)
+    @if (isHocVuShell)
+    {
+        <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
+    }
 </head>
 <body class="@dashboardBodyClass">
 

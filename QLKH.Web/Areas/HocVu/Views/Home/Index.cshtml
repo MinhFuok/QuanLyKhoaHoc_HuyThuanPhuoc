@@ -1,170 +1,273 @@
-﻿@model QLKH.Web.Areas.HocVu.Models.HocVuDashboardViewModel
+@model QLKH.Web.Areas.HocVu.Models.HocVuDashboardViewModel
 
 @{
     ViewData["Title"] = "Dashboard Học vụ";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+
+    var confirmRate = Model.TotalEnrollments > 0
+        ? Math.Round((double)Model.ConfirmedEnrollments / Model.TotalEnrollments * 100, 1)
+        : 0;
+    var certificateRate = Model.TotalStudents > 0
+        ? Math.Round((double)Model.TotalCertificates / Model.TotalStudents * 100, 1)
+        : 0;
+    var classPerCourse = Model.TotalCourses > 0
+        ? Math.Round((double)Model.TotalClassRooms / Model.TotalCourses, 1)
+        : 0;
 }
 
-<div class="admin-dashboard-page">
-    <div class="dashboard-header card shadow-sm border-0 mb-4">
-        <div class="card-body p-4">
-            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-                <div>
-                    <h2 class="dashboard-title mb-2">DASHBOARD HỌC VỤ</h2>
-                    <p class="text-muted mb-0">
-                        Tổng quan nhanh tình hình vận hành lớp học, ghi danh và học viên trong hệ thống.
-                    </p>
+<div class="admin-dashboard-page hocvu-dashboard-page">
+    <div class="da-header mb-4">
+        <div class="da-header-inner">
+            <div class="da-header-left">
+                <div class="da-header-eyebrow">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Điều phối đào tạo
                 </div>
+                <h1 class="da-header-title">DASHBOARD HỌC VỤ</h1>
+                <p class="da-header-sub">
+                    Tổng quan lớp học, ghi danh, học viên và luồng vận hành đào tạo trong hệ thống.
+                </p>
+            </div>
 
-                <div class="admin-identity-box">
-                    <div class="admin-avatar">
-                        @(string.IsNullOrWhiteSpace(Model.HocVuFullName) ? "H" : Model.HocVuFullName.Trim()[0].ToString().ToUpper())
-                    </div>
-                    <div>
-                        <div class="fw-bold">@Model.HocVuFullName</div>
-                        <div class="text-muted small">@Model.HocVuEmail</div>
-                        <span class="badge bg-primary mt-1">@Model.HocVuRole</span>
+            <div class="da-identity">
+                <div class="da-avatar">
+                    @(string.IsNullOrWhiteSpace(Model.HocVuFullName)
+                        ? "H"
+                        : Model.HocVuFullName.Trim()[0].ToString().ToUpper())
+                </div>
+                <div class="da-identity-info">
+                    <div class="da-identity-name">@Model.HocVuFullName</div>
+                    <div class="da-identity-email">@Model.HocVuEmail</div>
+                    <div class="da-identity-badges">
+                        <span class="da-badge da-badge-role">
+                            <i class="bi bi-person-badge-fill"></i>
+                            @Model.HocVuRole
+                        </span>
+                        <span class="da-badge da-badge-online">
+                            <i class="bi bi-hourglass-split"></i>
+                            @Model.PendingEnrollments chờ duyệt
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="card dashboard-stat-card stat-primary shadow-sm h-100 border-0">
-                <div class="card-body">
-                    <div class="stat-label">Khóa học / Lớp học</div>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="da-kpi da-kpi-blue">
+                <div class="da-kpi-icon-wrap">
+                    <i class="bi bi-journal-richtext"></i>
+                </div>
+                <div class="da-kpi-body">
+                    <div class="stat-topline">
+                        <div class="stat-label">Lớp học</div>
+                        <span class="stat-status">@classPerCourse.ToString("0.#") lớp / khóa</span>
+                    </div>
                     <div class="stat-value">@Model.TotalClassRooms</div>
+                    <div class="stat-desc">Theo dõi số lớp đang quản lý cùng mức phân bổ trên mỗi khóa học.</div>
                     <div class="stat-meta">
-                        Khóa học: <strong>@Model.TotalCourses</strong>
+                        <span><i class="bi bi-book-fill"></i> @Model.TotalCourses khóa học</span>
+                        <span><i class="bi bi-diagram-3-fill"></i> @classPerCourse.ToString("0.#") trung bình</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="card dashboard-stat-card stat-success shadow-sm h-100 border-0">
-                <div class="card-body">
-                    <div class="stat-label">Học viên</div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="da-kpi da-kpi-cyan">
+                <div class="da-kpi-icon-wrap">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="da-kpi-body">
+                    <div class="stat-topline">
+                        <div class="stat-label">Học viên</div>
+                        <span class="stat-status">@certificateRate.ToString("0.#")% có chứng chỉ</span>
+                    </div>
                     <div class="stat-value">@Model.TotalStudents</div>
+                    <div class="stat-desc">Toàn bộ hồ sơ học viên và mức độ cấp chứng chỉ trên hệ thống.</div>
                     <div class="stat-meta">
-                        Tổng hồ sơ học viên hiện có trong hệ thống
+                        <span><i class="bi bi-patch-check-fill"></i> @Model.TotalCertificates chứng chỉ</span>
+                        <span><i class="bi bi-people-fill"></i> @Model.TotalStudents học viên</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="card dashboard-stat-card stat-warning shadow-sm h-100 border-0">
-                <div class="card-body">
-                    <div class="stat-label">Giảng viên</div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="da-kpi da-kpi-navy">
+                <div class="da-kpi-icon-wrap">
+                    <i class="bi bi-person-video3"></i>
+                </div>
+                <div class="da-kpi-body">
+                    <div class="stat-topline">
+                        <div class="stat-label">Giảng viên</div>
+                        <span class="stat-status">@Model.TotalCourses khóa phụ trách</span>
+                    </div>
                     <div class="stat-value">@Model.TotalTeachers</div>
+                    <div class="stat-desc">Đội ngũ giảng viên đang tham gia triển khai chương trình đào tạo.</div>
                     <div class="stat-meta">
-                        Tổng giảng viên đang quản lý
+                        <span><i class="bi bi-briefcase-fill"></i> @Model.TotalTeachers giảng viên</span>
+                        <span><i class="bi bi-book-half"></i> @Model.TotalCourses khóa học</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="card dashboard-stat-card stat-info shadow-sm h-100 border-0">
-                <div class="card-body">
-                    <div class="stat-label">Chứng chỉ</div>
-                    <div class="stat-value">@Model.TotalCertificates</div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="da-kpi da-kpi-slate">
+                <div class="da-kpi-icon-wrap">
+                    <i class="bi bi-clipboard-check-fill"></i>
+                </div>
+                <div class="da-kpi-body">
+                    <div class="stat-topline">
+                        <div class="stat-label">Ghi danh</div>
+                        <span class="stat-status">@confirmRate.ToString("0.#")% đã duyệt</span>
+                    </div>
+                    <div class="stat-value">@Model.TotalEnrollments</div>
+                    <div class="stat-desc">Giám sát tiến độ duyệt, hủy và xử lý đăng ký học viên theo lớp.</div>
                     <div class="stat-meta">
-                        Tổng chứng chỉ học viên đã tạo
+                        <span><i class="bi bi-check-circle-fill"></i> @Model.ConfirmedEnrollments đã duyệt</span>
+                        <span><i class="bi bi-x-circle-fill"></i> @Model.CancelledEnrollments đã hủy</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
+    <div class="row g-3 mb-4">
         <div class="col-12 col-xl-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0 pb-0">
-                    <h5 class="mb-0">Thông tin học vụ</h5>
+            <div class="da-card h-100">
+                <div class="da-card-header">
+                    <i class="bi bi-person-badge-fill da-card-header-icon"></i>
+                    <span>Thông tin học vụ</span>
                 </div>
-                <div class="card-body">
-                    <div class="info-list">
-                        <div class="info-item">
-                            <span class="info-label">Họ tên</span>
-                            <span class="info-value">@Model.HocVuFullName</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Email</span>
-                            <span class="info-value">@Model.HocVuEmail</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Vai trò</span>
-                            <span class="info-value">
-                                <span class="badge bg-primary">@Model.HocVuRole</span>
+                <div class="da-card-body">
+                    <ul class="da-info-list">
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-person-fill"></i> Họ tên</span>
+                            <span class="da-info-value">@Model.HocVuFullName</span>
+                        </li>
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-envelope-fill"></i> Email</span>
+                            <span class="da-info-value">@Model.HocVuEmail</span>
+                        </li>
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-shield-fill"></i> Vai trò</span>
+                            <span class="da-info-value">
+                                <span class="da-badge da-badge-role">@Model.HocVuRole</span>
                             </span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Ghi danh chờ duyệt</span>
-                            <span class="info-value">
-                                <span class="badge bg-warning text-dark">@Model.PendingEnrollments</span>
+                        </li>
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-hourglass-split"></i> Chờ duyệt</span>
+                            <span class="da-info-value">
+                                <span class="da-badge da-badge-maintenance">@Model.PendingEnrollments hồ sơ</span>
                             </span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Ghi danh đã duyệt</span>
-                            <span class="info-value">
-                                <span class="badge bg-success">@Model.ConfirmedEnrollments</span>
+                        </li>
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-check-circle-fill"></i> Đã duyệt</span>
+                            <span class="da-info-value">
+                                <span class="da-badge da-badge-online">@Model.ConfirmedEnrollments hồ sơ</span>
                             </span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Ghi danh đã hủy</span>
-                            <span class="info-value">
-                                <span class="badge bg-secondary">@Model.CancelledEnrollments</span>
+                        </li>
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-x-circle-fill"></i> Đã hủy</span>
+                            <span class="da-info-value">
+                                <span class="da-badge da-badge-off">@Model.CancelledEnrollments hồ sơ</span>
                             </span>
-                        </div>
-                    </div>
+                        </li>
+                        <li class="da-info-item">
+                            <span class="da-info-label"><i class="bi bi-patch-check-fill"></i> Chứng chỉ</span>
+                            <span class="da-info-value">@Model.TotalCertificates đang quản lý</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-xl-8">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0 pb-0">
-                    <h5 class="mb-0">Tác vụ nhanh</h5>
+            <div class="da-card h-100">
+                <div class="da-card-header">
+                    <i class="bi bi-lightning-charge-fill da-card-header-icon"></i>
+                    <span>Tác vụ nhanh</span>
                 </div>
-                <div class="card-body">
-                    <div class="quick-actions-grid">
-                        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Khóa học</div>
-                            <div class="quick-action-desc">Quản lý danh sách khóa học đào tạo</div>
+                <div class="da-card-body">
+                    <div class="da-actions-grid">
+                        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#0f77f0">
+                                <i class="bi bi-book-fill"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Khóa học</div>
+                                <div class="da-action-desc">Quản lý chương trình và học phí đào tạo</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
 
-                        <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Lớp học</div>
-                            <div class="quick-action-desc">Quản lý lớp học, giảng viên và sĩ số</div>
+                        <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#14b8a6">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Lớp học</div>
+                                <div class="da-action-desc">Theo dõi sĩ số, lịch mở lớp và phân công</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
 
-                        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Ghi danh</div>
-                            <div class="quick-action-desc">Duyệt và theo dõi đăng ký học viên</div>
+                        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#fb923c">
+                                <i class="bi bi-clipboard-check-fill"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Ghi danh</div>
+                                <div class="da-action-desc">Duyệt và xử lý đăng ký học viên theo lớp</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
 
-                        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Lịch học</div>
-                            <div class="quick-action-desc">Quản lý buổi học và tránh trùng lịch</div>
+                        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#8b5cf6">
+                                <i class="bi bi-calendar-week-fill"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Lịch học</div>
+                                <div class="da-action-desc">Quản lý buổi học và tránh trùng lịch</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
 
-                        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Học viên</div>
-                            <div class="quick-action-desc">Quản lý hồ sơ và tài khoản học viên</div>
+                        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#22c55e">
+                                <i class="bi bi-mortarboard-fill"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Học viên</div>
+                                <div class="da-action-desc">Quản lý hồ sơ, liên hệ và trạng thái học tập</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
 
-                        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Giảng viên</div>
-                            <div class="quick-action-desc">Quản lý hồ sơ giảng viên giảng dạy</div>
+                        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#5b45f2">
+                                <i class="bi bi-person-video3"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Giảng viên</div>
+                                <div class="da-action-desc">Hồ sơ, chuyên môn và đánh giá giảng dạy</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
 
-                        <a asp-area="HocVu" asp-controller="StudentCertificate" asp-action="Index" class="quick-action-item">
-                            <div class="quick-action-title">Chứng chỉ học viên</div>
-                            <div class="quick-action-desc">Theo dõi và xử lý chứng chỉ học viên</div>
+                        <a asp-area="HocVu" asp-controller="StudentCertificate" asp-action="Index" class="da-action-item">
+                            <div class="da-action-icon-wrap" style="--ai-color:#0ea5e9">
+                                <i class="bi bi-patch-check-fill"></i>
+                            </div>
+                            <div class="da-action-content">
+                                <div class="da-action-title">Chứng chỉ học viên</div>
+                                <div class="da-action-desc">Theo dõi cấp chứng chỉ và minh chứng kèm theo</div>
+                            </div>
+                            <i class="bi bi-chevron-right da-action-arrow"></i>
                         </a>
                     </div>
                 </div>
@@ -172,275 +275,141 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-12 col-xl-6">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">Tổng quan dữ liệu đào tạo</h5>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-xl-7">
+            <div class="da-card h-100">
+                <div class="da-card-header da-card-header-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-bar-chart-fill da-card-header-icon"></i>
+                        <span>Tổng quan đào tạo</span>
+                    </div>
+                    <span class="da-chart-card-pill">Dữ liệu hiện tại</span>
                 </div>
-                <div class="card-body">
-                    <canvas id="hocVuOverviewChart" height="130"></canvas>
+                <div class="da-chart-card-body">
+                    <div class="da-chart-card-top">
+                        <div>
+                            <div class="da-chart-card-title">Khối lượng quản lý học vụ</div>
+                            <div class="da-chart-card-value">@((Model.TotalCourses + Model.TotalClassRooms + Model.TotalStudents + Model.TotalTeachers + Model.TotalCertificates).ToString("N0"))</div>
+                            <div class="hv-chart-note">So sánh nhanh quy mô khóa học, lớp học, học viên, giảng viên và chứng chỉ.</div>
+                        </div>
+                    </div>
+                    <div class="da-chart-stage">
+                        <div class="da-chart-wrap">
+                            <canvas id="hocVuOverviewChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-xl-6">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">Trạng thái ghi danh</h5>
+        <div class="col-12 col-xl-5">
+            <div class="da-card h-100">
+                <div class="da-card-header da-card-header-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-pie-chart-fill da-card-header-icon"></i>
+                        <span>Trạng thái ghi danh</span>
+                    </div>
+                    <span class="da-chart-card-pill">Theo hồ sơ</span>
                 </div>
-                <div class="card-body">
-                    <canvas id="hocVuEnrollmentChart" height="130"></canvas>
+                <div class="da-chart-card-body">
+                    <div class="da-chart-card-top">
+                        <div>
+                            <div class="da-chart-card-title">Tỷ lệ duyệt ghi danh</div>
+                            <div class="da-chart-card-value">@confirmRate.ToString("0.#")%</div>
+                            <div class="hv-chart-note">Theo dõi tỷ lệ chờ duyệt, đã duyệt và đã hủy để điều phối xử lý hồ sơ nhanh hơn.</div>
+                        </div>
+                    </div>
+                    <div class="da-chart-stage da-chart-donut">
+                        <div class="da-chart-wrap">
+                            <canvas id="hocVuEnrollmentChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-white border-0">
-            <h5 class="mb-0">Ghi chú vận hành</h5>
+    <div class="da-card">
+        <div class="da-card-header">
+            <i class="bi bi-journal-text da-card-header-icon"></i>
+            <span>Ghi chú vận hành</span>
         </div>
-        <div class="card-body">
+        <div class="da-card-body">
             @if (Model.RecentNotes != null && Model.RecentNotes.Any())
             {
-                <ul class="mb-0">
+                <div class="hv-note-list">
                     @foreach (var note in Model.RecentNotes)
                     {
-                        <li class="mb-2">@note</li>
+                        <div class="hv-note-item">
+                            <span class="hv-note-icon">
+                                <i class="bi bi-chat-left-text-fill"></i>
+                            </span>
+                            <div class="hv-note-text">
+                                @note
+                                <span class="hv-note-meta">Theo dõi và xử lý trong vận hành học vụ.</span>
+                            </div>
+                        </div>
                     }
-                </ul>
+                </div>
             }
             else
             {
-                <div class="text-muted">Chưa có ghi chú vận hành.</div>
+                <div class="da-empty">
+                    <i class="bi bi-inbox da-empty-icon"></i>
+                    <span>Chưa có ghi chú vận hành.</span>
+                </div>
             }
         </div>
     </div>
 </div>
 
 @section Styles {
-    <style>
-        .admin-dashboard-page .dashboard-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1d2b53;
-        }
-
-        .admin-identity-box {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            background: #f8f9ff;
-            border-radius: 16px;
-            border: 1px solid #e9ecf5;
-        }
-
-        .admin-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4f8cff, #6a5cff);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dashboard-stat-card {
-            border-radius: 18px;
-            overflow: hidden;
-        }
-
-            .dashboard-stat-card .card-body {
-                padding: 1.25rem;
-            }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 10px;
-            color: #1f2d3d;
-        }
-
-        .stat-meta {
-            color: #6c757d;
-            font-size: 0.92rem;
-        }
-
-        .stat-primary {
-            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
-            border-left: 5px solid #0d6efd;
-        }
-
-        .stat-success {
-            background: linear-gradient(135deg, #eefbf3 0%, #ffffff 100%);
-            border-left: 5px solid #198754;
-        }
-
-        .stat-warning {
-            background: linear-gradient(135deg, #fff8eb 0%, #ffffff 100%);
-            border-left: 5px solid #ffc107;
-        }
-
-        .stat-info {
-            background: linear-gradient(135deg, #eef8ff 0%, #ffffff 100%);
-            border-left: 5px solid #0dcaf0;
-        }
-
-        .info-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-
-            .info-item:last-child {
-                border-bottom: none;
-            }
-
-        .info-label {
-            min-width: 130px;
-            color: #6c757d;
-            font-weight: 500;
-        }
-
-        .info-value {
-            text-align: right;
-            color: #212529;
-            font-weight: 600;
-        }
-
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .quick-action-item {
-            display: block;
-            text-decoration: none;
-            padding: 14px 16px;
-            border-radius: 14px;
-            background: #f8f9fc;
-            border: 1px solid #e9ecf5;
-            transition: all 0.2s ease-in-out;
-        }
-
-            .quick-action-item:hover {
-                background: #eef4ff;
-                border-color: #cfe0ff;
-                transform: translateY(-1px);
-            }
-
-        .quick-action-title {
-            font-weight: 700;
-            color: #1d2b53;
-            margin-bottom: 4px;
-        }
-
-        .quick-action-desc {
-            color: #6c757d;
-            font-size: 0.92rem;
-        }
-
-        @@media (max-width: 991.98px) {
-            .quick-actions-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @@media (max-width: 767.98px) {
-            .info-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .info-value {
-                text-align: left;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/dashboardAdmin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dashboardHocVu.css" asp-append-version="true" />
 }
 
+<div id="hocVuDashboardData"
+     data-total-courses="@Model.TotalCourses"
+     data-total-class-rooms="@Model.TotalClassRooms"
+     data-total-students="@Model.TotalStudents"
+     data-total-teachers="@Model.TotalTeachers"
+     data-total-enrollments="@Model.TotalEnrollments"
+     data-pending-enrollments="@Model.PendingEnrollments"
+     data-confirmed-enrollments="@Model.ConfirmedEnrollments"
+     data-cancelled-enrollments="@Model.CancelledEnrollments"
+     data-total-certificates="@Model.TotalCertificates"
+     hidden>
+</div>
+
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
-        const hocVuOverviewChart = document.getElementById('hocVuOverviewChart');
-        if (hocVuOverviewChart) {
-            new Chart(hocVuOverviewChart, {
-                type: 'bar',
-                data: {
-                    labels: ['Khóa học', 'Lớp học', 'Học viên', 'Giảng viên', 'Chứng chỉ'],
-                    datasets: [{
-                        label: 'Số lượng',
-                        data: [
-                            @Model.TotalCourses,
-                            @Model.TotalClassRooms,
-                            @Model.TotalStudents,
-                            @Model.TotalTeachers,
-                            @Model.TotalCertificates
-                        ],
-                        borderWidth: 1,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { precision: 0 }
-                        }
-                    }
-                }
-            });
-        }
+        (function () {
+            const dataElement = document.getElementById('hocVuDashboardData');
 
-        const hocVuEnrollmentChart = document.getElementById('hocVuEnrollmentChart');
-        if (hocVuEnrollmentChart) {
-            new Chart(hocVuEnrollmentChart, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Chờ duyệt', 'Đã duyệt', 'Đã hủy'],
-                    datasets: [{
-                        data: [
-                            @Model.PendingEnrollments,
-                            @Model.ConfirmedEnrollments,
-                            @Model.CancelledEnrollments
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
+            if (!dataElement) {
+                window.hocVuDashboardData = {};
+                return;
+            }
+
+            const getNumber = function (name) {
+                return Number(dataElement.dataset[name] || 0);
+            };
+
+            window.hocVuDashboardData = {
+                TotalCourses: getNumber('totalCourses'),
+                TotalClassRooms: getNumber('totalClassRooms'),
+                TotalStudents: getNumber('totalStudents'),
+                TotalTeachers: getNumber('totalTeachers'),
+                TotalEnrollments: getNumber('totalEnrollments'),
+                PendingEnrollments: getNumber('pendingEnrollments'),
+                ConfirmedEnrollments: getNumber('confirmedEnrollments'),
+                CancelledEnrollments: getNumber('cancelledEnrollments'),
+                TotalCertificates: getNumber('totalCertificates')
+            };
+        })();
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/dashboardHocVu.js" asp-append-version="true"></script>
 }
