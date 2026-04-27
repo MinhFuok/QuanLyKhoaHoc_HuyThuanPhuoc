@@ -16,6 +16,34 @@
     var activeClasses = classes.Count(x => x.StartDate.Date <= today && x.EndDate.Date >= today);
     var upcomingClasses = classes.Count(x => x.StartDate.Date > today);
     var endedClasses = classes.Count(x => x.EndDate.Date < today);
+
+    var activeClassList = classes
+        .Where(x => x.StartDate.Date <= today && x.EndDate.Date >= today)
+        .OrderBy(x => x.EndDate)
+        .ToList();
+
+    var upcomingClassList = classes
+        .Where(x => x.StartDate.Date > today)
+        .OrderBy(x => x.StartDate)
+        .ToList();
+
+    var endedClassList = classes
+        .Where(x => x.EndDate.Date < today)
+        .OrderByDescending(x => x.EndDate)
+        .ToList();
+
+    var currentTab = Context.Request.Query["tab"].ToString();
+    if (string.IsNullOrWhiteSpace(currentTab))
+    {
+        currentTab = "active";
+    }
+
+    var displayClasses = currentTab switch
+    {
+        "upcoming" => upcomingClassList,
+        "ended" => endedClassList,
+        _ => activeClassList
+    };
 }
 
 <div class="student-classes-page">
@@ -32,57 +60,6 @@
         </div>
     </div>
 
-    <!-- KPI -->
-    <div class="row g-4 mb-4">
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-total card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">🎓</div>
-                    <div>
-                        <div class="stat-label">Tổng lớp học</div>
-                        <div class="stat-value">@totalClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-active card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">✅</div>
-                    <div>
-                        <div class="stat-label">Đang học</div>
-                        <div class="stat-value">@activeClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-upcoming card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">⏳</div>
-                    <div>
-                        <div class="stat-label">Sắp học</div>
-                        <div class="stat-value">@upcomingClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-ended card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">🏁</div>
-                    <div>
-                        <div class="stat-label">Đã kết thúc</div>
-                        <div class="stat-value">@endedClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Content -->
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white border-0 p-4 pb-2">
@@ -92,14 +69,43 @@
                 </div>
 
                 <div class="class-filter-note">
-                    <span class="status-dot active"></span> Đang học
-                    <span class="status-dot upcoming ms-3"></span> Sắp học
+                    <span class="status-dot active"></span> Đang diễn ra
+                    <span class="status-dot upcoming ms-3"></span> Sắp diễn ra
                     <span class="status-dot ended ms-3"></span> Đã kết thúc
                 </div>
             </div>
         </div>
 
         <div class="card-body p-4">
+            <div class="class-tabs mb-4">
+                <a asp-area="HocVien"
+                   asp-controller="MyClasses"
+                   asp-action="Index"
+                   asp-route-tab="active"
+                   class="class-tab @(currentTab == "active" ? "active" : "")">
+                    <span>Đang diễn ra</span>
+                    <strong>@activeClasses</strong>
+                </a>
+
+                <a asp-area="HocVien"
+                   asp-controller="MyClasses"
+                   asp-action="Index"
+                   asp-route-tab="upcoming"
+                   class="class-tab @(currentTab == "upcoming" ? "active" : "")">
+                    <span>Sắp diễn ra</span>
+                    <strong>@upcomingClasses</strong>
+                </a>
+
+                <a asp-area="HocVien"
+                   asp-controller="MyClasses"
+                   asp-action="Index"
+                   asp-route-tab="ended"
+                   class="class-tab @(currentTab == "ended" ? "active" : "")">
+                    <span>Đã kết thúc</span>
+                    <strong>@endedClasses</strong>
+                </a>
+            </div>
+
             @if (!classes.Any())
             {
                 <div class="empty-state">
@@ -109,6 +115,34 @@
                         Hiện tại bạn chưa được ghi danh vào lớp nào.
                         Khi được ghi danh, danh sách lớp học sẽ hiển thị tại đây.
                     </p>
+                </div>
+            }
+            else if (!displayClasses.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+
+                    @if (currentTab == "upcoming")
+                    {
+                        <h5>Chưa có lớp sắp diễn ra</h5>
+                        <p>
+                            Các lớp có ngày bắt đầu trong tương lai sẽ được hiển thị tại đây.
+                        </p>
+                    }
+                    else if (currentTab == "ended")
+                    {
+                        <h5>Chưa có lớp đã kết thúc</h5>
+                        <p>
+                            Các lớp đã hoàn thành thời gian học sẽ được hiển thị tại đây.
+                        </p>
+                    }
+                    else
+                    {
+                        <h5>Chưa có lớp đang diễn ra</h5>
+                        <p>
+                            Các lớp đang trong thời gian học sẽ được hiển thị tại đây.
+                        </p>
+                    }
                 </div>
             }
             else
@@ -140,14 +174,14 @@
                         </thead>
 
                         <tbody>
-                            @foreach (var item in classes.OrderBy(x => x.StartDate))
+                            @foreach (var item in displayClasses)
                             {
                                 var statusText = "";
                                 var statusClass = "";
 
                                 if (item.StartDate.Date > today)
                                 {
-                                    statusText = "Sắp học";
+                                    statusText = "Sắp diễn ra";
                                     statusClass = "badge-upcoming";
                                 }
                                 else if (item.EndDate.Date < today)
@@ -157,7 +191,7 @@
                                 }
                                 else
                                 {
-                                    statusText = "Đang học";
+                                    statusText = "Đang diễn ra";
                                     statusClass = "badge-active";
                                 }
 
@@ -276,8 +310,8 @@
 
                 <div class="class-summary mt-3">
                     <span>Tổng lớp: <strong>@totalClasses</strong></span>
-                    <span>Đang học: <strong>@activeClasses</strong></span>
-                    <span>Sắp học: <strong>@upcomingClasses</strong></span>
+                    <span>Đang diễn ra: <strong>@activeClasses</strong></span>
+                    <span>Sắp diễn ra: <strong>@upcomingClasses</strong></span>
                     <span>Đã kết thúc: <strong>@endedClasses</strong></span>
                 </div>
             }
@@ -330,47 +364,48 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
-            .icon-action-btn::after {
-                content: attr(data-tooltip);
-                position: absolute;
-                left: 50%;
-                bottom: calc(100% + 9px);
-                transform: translateX(-50%) translateY(4px);
-                padding: 7px 9px;
-                border-radius: 8px;
-                background: rgba(15, 23, 42, 0.96);
-                color: #ffffff;
-                font-size: 0.75rem;
-                font-weight: 700;
-                white-space: nowrap;
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                transition: all 0.16s ease;
-                z-index: 20;
-            }
 
-            .icon-action-btn::before {
-                content: "";
-                position: absolute;
-                left: 50%;
-                bottom: calc(100% + 4px);
-                transform: translateX(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: rgba(15, 23, 42, 0.96) transparent transparent transparent;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.16s ease;
-                z-index: 19;
-            }
+        .icon-action-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 9px);
+            transform: translateX(-50%) translateY(4px);
+            padding: 7px 9px;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.96);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.16s ease;
+            z-index: 20;
+        }
 
-            .icon-action-btn:hover::after,
-            .icon-action-btn:hover::before {
-                opacity: 1;
-                visibility: visible;
-                transform: translateX(-50%) translateY(0);
-            }
+        .icon-action-btn::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 4px);
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(15, 23, 42, 0.96) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.16s ease;
+            z-index: 19;
+        }
+
+        .icon-action-btn:hover::after,
+        .icon-action-btn:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
 
         .class-action-group-center {
             display: flex;
@@ -399,6 +434,59 @@
             line-height: 1.25;
             text-align: center;
         }
+
+        .class-tabs {
+            display: inline-flex;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 16px;
+            background: #f1f5f9;
+            border: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .class-tab {
+            min-width: 165px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #475569;
+            text-decoration: none;
+            font-weight: 800;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .class-tab:hover {
+                color: #1d4ed8;
+                background: #ffffff;
+            }
+
+            .class-tab.active {
+                color: #ffffff;
+                background: #2563eb;
+                box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+            }
+
+            .class-tab strong {
+                min-width: 28px;
+                height: 24px;
+                padding: 0 8px;
+                border-radius: 999px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.85);
+                color: #1d4ed8;
+                font-size: 0.82rem;
+            }
+
+            .class-tab.active strong {
+                background: rgba(255, 255, 255, 0.95);
+                color: #1d4ed8;
+            }
 
         .student-classes-page {
             animation: fadeInPage 0.25s ease-in-out;
@@ -721,6 +809,16 @@
 
             .class-summary {
                 justify-content: flex-start;
+            }
+
+            .class-tabs {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .class-tab {
+                width: 100%;
             }
         }
     </style>

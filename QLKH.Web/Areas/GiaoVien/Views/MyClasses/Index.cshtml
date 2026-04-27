@@ -11,6 +11,34 @@
     var activeClasses = classes.Count(x => x.StartDate.Date <= today && x.EndDate.Date >= today);
     var upcomingClasses = classes.Count(x => x.StartDate.Date > today);
     var endedClasses = classes.Count(x => x.EndDate.Date < today);
+
+    var activeClassList = classes
+        .Where(x => x.StartDate.Date <= today && x.EndDate.Date >= today)
+        .OrderBy(x => x.EndDate)
+        .ToList();
+
+    var upcomingClassList = classes
+        .Where(x => x.StartDate.Date > today)
+        .OrderBy(x => x.StartDate)
+        .ToList();
+
+    var endedClassList = classes
+        .Where(x => x.EndDate.Date < today)
+        .OrderByDescending(x => x.EndDate)
+        .ToList();
+
+    var currentTab = Context.Request.Query["tab"].ToString();
+    if (string.IsNullOrWhiteSpace(currentTab))
+    {
+        currentTab = "active";
+    }
+
+    var displayClasses = currentTab switch
+    {
+        "upcoming" => upcomingClassList,
+        "ended" => endedClassList,
+        _ => activeClassList
+    };
 }
 
 <div class="teacher-classes-page">
@@ -20,7 +48,7 @@
         <div class="card-body p-4">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h2 class="page-title mb-2">LỚP HỌC</h2>
+                    <h2 class="page-title mb-2">LỚP HỌC CỦA TÔI</h2>
                     <div class="page-eyebrow">GIẢNG DẠY</div>
                 </div>
 
@@ -29,57 +57,6 @@
                     <div>
                         <div class="hero-badge-label">Tổng số lớp</div>
                         <div class="hero-badge-value">@totalClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- KPI -->
-    <div class="row g-4 mb-4">
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-total card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">📚</div>
-                    <div>
-                        <div class="stat-label">Tổng lớp phụ trách</div>
-                        <div class="stat-value">@totalClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-active card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">✅</div>
-                    <div>
-                        <div class="stat-label">Lớp đang học</div>
-                        <div class="stat-value">@activeClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-upcoming card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">⏳</div>
-                    <div>
-                        <div class="stat-label">Lớp sắp học</div>
-                        <div class="stat-value">@upcomingClasses</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-            <div class="class-stat-card stat-ended card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="stat-icon">🏁</div>
-                    <div>
-                        <div class="stat-label">Lớp đã kết thúc</div>
-                        <div class="stat-value">@endedClasses</div>
                     </div>
                 </div>
             </div>
@@ -95,14 +72,43 @@
                 </div>
 
                 <div class="class-filter-note">
-                    <span class="status-dot active"></span> Đang học
-                    <span class="status-dot upcoming ms-3"></span> Sắp học
+                    <span class="status-dot active"></span> Đang diễn ra
+                    <span class="status-dot upcoming ms-3"></span> Sắp diễn ra
                     <span class="status-dot ended ms-3"></span> Đã kết thúc
                 </div>
             </div>
         </div>
 
         <div class="card-body p-4">
+            <div class="class-tabs mb-4">
+                <a asp-area="GiaoVien"
+                   asp-controller="MyClasses"
+                   asp-action="Index"
+                   asp-route-tab="active"
+                   class="class-tab @(currentTab == "active" ? "active" : "")">
+                    <span>Đang diễn ra</span>
+                    <strong>@activeClasses</strong>
+                </a>
+
+                <a asp-area="GiaoVien"
+                   asp-controller="MyClasses"
+                   asp-action="Index"
+                   asp-route-tab="upcoming"
+                   class="class-tab @(currentTab == "upcoming" ? "active" : "")">
+                    <span>Sắp diễn ra</span>
+                    <strong>@upcomingClasses</strong>
+                </a>
+
+                <a asp-area="GiaoVien"
+                   asp-controller="MyClasses"
+                   asp-action="Index"
+                   asp-route-tab="ended"
+                   class="class-tab @(currentTab == "ended" ? "active" : "")">
+                    <span>Đã kết thúc</span>
+                    <strong>@endedClasses</strong>
+                </a>
+            </div>
+
             @if (!classes.Any())
             {
                 <div class="empty-state">
@@ -114,30 +120,60 @@
                     </p>
                 </div>
             }
+            else if (!displayClasses.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+
+                    @if (currentTab == "upcoming")
+                    {
+                        <h5>Chưa có lớp sắp diễn ra</h5>
+                        <p>
+                            Các lớp có ngày bắt đầu trong tương lai sẽ được hiển thị tại đây.
+                        </p>
+                    }
+                    else if (currentTab == "ended")
+                    {
+                        <h5>Chưa có lớp đã kết thúc</h5>
+                        <p>
+                            Các lớp đã hoàn thành thời gian giảng dạy sẽ được hiển thị tại đây.
+                        </p>
+                    }
+                    else
+                    {
+                        <h5>Chưa có lớp đang diễn ra</h5>
+                        <p>
+                            Các lớp đang trong thời gian giảng dạy sẽ được hiển thị tại đây.
+                        </p>
+                    }
+                </div>
+            }
             else
             {
                 <div class="table-responsive class-table-wrap">
                     <table class="table class-table align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Mã lớp</th>
-                                <th>Tên lớp</th>
-                                <th>Khóa học</th>
-                                <th>Thời gian</th>
-                                <th>Trạng thái</th>
-                                <th>Sĩ số</th>
+                                <th class="text-center">Mã lớp</th>
+                                <th class="text-center">Tên lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Thời gian</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Sĩ số</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            @foreach (var item in classes.OrderBy(x => x.StartDate))
+                            @foreach (var item in displayClasses)
                             {
                                 var statusText = "";
                                 var statusClass = "";
+                                var isEnded = item.EndDate.Date < today;
 
                                 if (item.StartDate.Date > today)
                                 {
-                                    statusText = "Sắp học";
+                                    statusText = "Sắp diễn ra";
                                     statusClass = "badge-upcoming";
                                 }
                                 else if (item.EndDate.Date < today)
@@ -147,7 +183,7 @@
                                 }
                                 else
                                 {
-                                    statusText = "Đang học";
+                                    statusText = "Đang diễn ra";
                                     statusClass = "badge-active";
                                 }
 
@@ -185,22 +221,61 @@
                                         <span class="capacity-pill">@item.MaxStudents học viên</span>
                                     </td>
 
-                                    <td class="text-end">
-                                        <div class="action-group">
+                                    <td class="text-center">
+                                        <div class="action-group action-icons">
                                             <a asp-area="GiaoVien"
                                                asp-controller="MyClasses"
                                                asp-action="Students"
                                                asp-route-id="@item.Id"
-                                               class="btn btn-sm btn-primary">
-                                                Danh sách
+                                               class="icon-action-btn icon-action-btn--students"
+                                               data-tooltip="Danh sách học viên"
+                                               aria-label="Danh sách học viên">
+                                                <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                    <path d="M8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11Z" />
+                                                    <path d="M16 11C17.6569 11 19 9.65685 19 8C19 6.34315 17.6569 5 16 5C14.3431 5 13 6.34315 13 8C13 9.65685 14.3431 11 16 11Z" />
+                                                    <path d="M3.5 19C3.5 16.7909 5.51472 15 8 15C10.4853 15 12.5 16.7909 12.5 19" />
+                                                    <path d="M11.5 19C11.5 16.7909 13.5147 15 16 15C18.4853 15 20.5 16.7909 20.5 19" />
+                                                </svg>
                                             </a>
 
                                             <a asp-area="GiaoVien"
-                                               asp-controller="Assignments"
-                                               asp-action="Create"
+                                               asp-controller="MyAssignments"
+                                               asp-action="Index"
                                                asp-route-classRoomId="@item.Id"
-                                               class="btn btn-sm btn-outline-warning">
-                                                Bài Tập
+                                               class="icon-action-btn icon-action-btn--assignments"
+                                               data-tooltip="Bài tập đã giao"
+                                               aria-label="Bài tập đã giao">
+                                                <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                    <path d="M8 6H16M8 10H16M8 14H13" />
+                                                    <path d="M7 3H17C18.1046 3 19 3.89543 19 5V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3Z" />
+                                                </svg>
+                                            </a>
+
+                                            <a asp-area="GiaoVien"
+                                               asp-controller="ClassGrades"
+                                               asp-action="Index"
+                                               asp-route-classRoomId="@item.Id"
+                                               class="icon-action-btn icon-action-btn--grades"
+                                               data-tooltip="Bảng điểm"
+                                               aria-label="Bảng điểm">
+                                                <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                    <path d="M7 20V10" />
+                                                    <path d="M12 20V4" />
+                                                    <path d="M17 20V14" />
+                                                    <path d="M4 20H20" />
+                                                </svg>
+                                            </a>
+
+                                            <a asp-area="GiaoVien"
+                                               asp-controller="ClassMaterials"
+                                               asp-action="Index"
+                                               asp-route-classRoomId="@item.Id"
+                                               class="icon-action-btn icon-action-btn--materials"
+                                               data-tooltip="Tài liệu"
+                                               aria-label="Tài liệu">
+                                                <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                    <path d="M3 7C3 5.89543 3.89543 5 5 5H9L11 7H19C20.1046 7 21 7.89543 21 9V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V7Z" />
+                                                </svg>
                                             </a>
                                         </div>
                                     </td>
@@ -208,6 +283,13 @@
                             }
                         </tbody>
                     </table>
+                </div>
+
+                <div class="class-summary mt-3">
+                    <span>Tổng lớp: <strong>@totalClasses</strong></span>
+                    <span>Đang diễn ra: <strong>@activeClasses</strong></span>
+                    <span>Sắp diễn ra: <strong>@upcomingClasses</strong></span>
+                    <span>Đã kết thúc: <strong>@endedClasses</strong></span>
                 </div>
             }
         </div>
@@ -392,6 +474,59 @@
                 background: #64748b;
             }
 
+        .class-tabs {
+            display: inline-flex;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 16px;
+            background: #f1f5f9;
+            border: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .class-tab {
+            min-width: 165px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #475569;
+            text-decoration: none;
+            font-weight: 800;
+            transition: all 0.18s ease-in-out;
+        }
+
+            .class-tab:hover {
+                color: #1d4ed8;
+                background: #ffffff;
+            }
+
+            .class-tab.active {
+                color: #ffffff;
+                background: #2563eb;
+                box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+            }
+
+            .class-tab strong {
+                min-width: 28px;
+                height: 24px;
+                padding: 0 8px;
+                border-radius: 999px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.85);
+                color: #1d4ed8;
+                font-size: 0.82rem;
+            }
+
+            .class-tab.active strong {
+                background: rgba(255, 255, 255, 0.95);
+                color: #1d4ed8;
+            }
+
         .class-table-wrap {
             border: 1px solid #e5e7eb;
             border-radius: 18px;
@@ -512,15 +647,136 @@
 
         .action-group {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             gap: 8px;
             flex-wrap: wrap;
         }
 
-            .action-group .btn {
-                border-radius: 10px;
-                font-weight: 700;
-                padding: 7px 11px;
+        .action-icons {
+            min-width: 170px;
+        }
+
+        .icon-action-btn {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            border: 1px solid #d7dee8;
+            border-radius: 11px;
+            background: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.18s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+            cursor: pointer;
+        }
+
+            .icon-action-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+            }
+
+        .action-svg {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icon-action-btn--students {
+            color: #2563eb;
+            border-color: rgba(37, 99, 235, 0.22);
+            background: rgba(37, 99, 235, 0.06);
+        }
+
+        .icon-action-btn--assignments {
+            color: #059669;
+            border-color: rgba(5, 150, 105, 0.22);
+            background: rgba(5, 150, 105, 0.06);
+        }
+
+        .icon-action-btn--grades {
+            color: #d97706;
+            border-color: rgba(217, 119, 6, 0.24);
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .icon-action-btn--materials {
+            color: #7c3aed;
+            border-color: rgba(124, 58, 237, 0.22);
+            background: rgba(124, 58, 237, 0.06);
+        }
+
+        .icon-action-btn--disabled {
+            color: #94a3b8;
+            border-color: #e2e8f0;
+            background: #f8fafc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+            .icon-action-btn--disabled:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+        .icon-action-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 9px);
+            transform: translateX(-50%) translateY(4px);
+            padding: 7px 9px;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.96);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.16s ease;
+            z-index: 20;
+        }
+
+        .icon-action-btn::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 4px);
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(15, 23, 42, 0.96) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.16s ease;
+            z-index: 19;
+        }
+
+        .icon-action-btn:hover::after,
+        .icon-action-btn:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .class-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .class-summary strong {
+                color: #172554;
             }
 
         .empty-state {
@@ -552,6 +808,14 @@
             .class-filter-note {
                 white-space: normal;
             }
+
+            .class-table {
+                min-width: 1080px;
+            }
+
+            .class-table-wrap {
+                overflow-x: auto;
+            }
         }
 
         @@media (max-width: 767.98px) {
@@ -573,6 +837,20 @@
 
             .action-group {
                 justify-content: flex-start;
+            }
+
+            .class-summary {
+                justify-content: flex-start;
+            }
+
+            .class-tabs {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .class-tab {
+                width: 100%;
             }
         }
     </style>

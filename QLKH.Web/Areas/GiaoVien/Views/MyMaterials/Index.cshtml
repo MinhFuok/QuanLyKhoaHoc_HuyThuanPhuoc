@@ -5,7 +5,41 @@
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var today = DateTime.Today;
-    var materials = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassMaterial>();
+
+    var allMaterials = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassMaterial>();
+
+    int? selectedClassRoomId = null;
+    var classRoomIdQuery = Context.Request.Query["classRoomId"].ToString();
+
+    if (int.TryParse(classRoomIdQuery, out var parsedClassRoomId) && parsedClassRoomId > 0)
+    {
+        selectedClassRoomId = parsedClassRoomId;
+    }
+
+    var classRoomOptions = allMaterials
+        .Where(x => x.ClassRoom != null)
+        .GroupBy(x => x.ClassRoomId)
+        .Select(g =>
+        {
+            var first = g.First();
+
+            return new
+            {
+                Id = first.ClassRoomId,
+                Text = $"{first.ClassRoom!.ClassCode} - {first.ClassRoom.ClassName}"
+            };
+        })
+        .OrderBy(x => x.Text)
+        .ToList();
+
+    var materials = allMaterials;
+
+    if (selectedClassRoomId.HasValue)
+    {
+        materials = materials
+            .Where(x => x.ClassRoomId == selectedClassRoomId.Value)
+            .ToList();
+    }
 
     var totalMaterials = materials.Count;
     var totalClassesWithMaterials = materials
@@ -85,16 +119,8 @@
                        asp-controller="ClassMaterials"
                        asp-action="Create"
                        class="btn btn-primary hero-action-btn">
-                        + Tạo tài liệu
+                        + Tài liệu mới
                     </a>
-
-                    <div class="hero-badge">
-                        <div class="hero-badge-icon">📁</div>
-                        <div>
-                            <div class="hero-badge-label">Tổng tài liệu</div>
-                            <div class="hero-badge-value">@totalMaterials</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -156,7 +182,7 @@
         <div class="card-header bg-white border-0 p-4 pb-2">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h5 class="section-title mb-1">Danh sách tài liệu đã đăng</h5>
+                    <h5 class="section-title mb-1">Danh sách tài liệu</h5>
                 </div>
 
                 <div class="material-filter-note">
@@ -169,7 +195,50 @@
         </div>
 
         <div class="card-body p-4">
-            @if (!materials.Any())
+
+            <!-- Filter -->
+            <form asp-area="GiaoVien"
+                  asp-controller="ClassMaterials"
+                  asp-action="Index"
+                  method="get"
+                  class="material-filter-form mb-4">
+
+                <div class="material-filter-field">
+                    <select name="classRoomId" class="form-select material-class-select">
+                        <option value="">-- Tất cả lớp --</option>
+
+                        @foreach (var option in classRoomOptions)
+                        {
+                            var isSelected = selectedClassRoomId.HasValue &&
+                            option.Id == selectedClassRoomId.Value;
+
+                            if (isSelected)
+                            {
+                                <option value="@option.Id" selected="selected">@option.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Id">@option.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="material-filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Lọc
+                    </button>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="ClassMaterials"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        x
+                    </a>
+                </div>
+            </form>
+
+            @if (!allMaterials.Any())
             {
                 <div class="empty-state">
                     <div class="empty-icon">📭</div>
@@ -187,20 +256,39 @@
                     </a>
                 </div>
             }
+            else if (!materials.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Không có tài liệu trong lớp đã chọn</h5>
+                    <p>
+                        Lớp này hiện chưa có tài liệu nào. Bạn có thể chọn lớp khác hoặc tạo tài liệu mới.
+                    </p>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="ClassMaterials"
+                       asp-action="Create"
+                       asp-route-classRoomId="@selectedClassRoomId"
+                       class="btn btn-primary mt-3">
+                        + Tạo tài liệu cho lớp này
+                    </a>
+                </div>
+            }
             else
             {
                 <div class="table-responsive material-table-wrap">
                     <table class="table material-table align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Tài liệu</th>
-                                <th>Lớp</th>
-                                <th>Khóa học</th>
-                                <th>Loại file</th>
-                                <th>Ngày tạo</th>
+                                <th class="text-center">Tài liệu</th>
+                                <th class="text-center">Lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Loại file</th>
+                                <th class="text-center">Ngày tạo</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @foreach (var item in materials.OrderByDescending(x => x.CreatedAt))
                             {
@@ -287,6 +375,13 @@
                             }
                         </tbody>
                     </table>
+                </div>
+
+                <div class="material-summary mt-3">
+                    <span>Tổng tài liệu: <strong>@totalMaterials</strong></span>
+                    <span>Lớp có tài liệu: <strong>@totalClassesWithMaterials</strong></span>
+                    <span>Trong tháng: <strong>@materialsThisMonth</strong></span>
+                    <span>7 ngày gần đây: <strong>@recentMaterials</strong></span>
                 </div>
             }
         </div>
@@ -483,6 +578,44 @@
                 background: #16a34a;
             }
 
+        .material-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .material-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .material-class-select {
+            min-height: 42px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .material-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .material-filter-actions .btn {
+                min-height: 42px;
+                border-radius: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
         .material-table-wrap {
             border: 1px solid #e5e7eb;
             border-radius: 18px;
@@ -641,6 +774,19 @@
                 padding: 7px 11px;
             }
 
+        .material-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .material-summary strong {
+                color: #172554;
+            }
+
         .empty-state {
             text-align: center;
             padding: 50px 20px;
@@ -670,6 +816,14 @@
             .material-filter-note {
                 white-space: normal;
             }
+
+            .material-table {
+                min-width: 980px;
+            }
+
+            .material-table-wrap {
+                overflow-x: auto;
+            }
         }
 
         @@media (max-width: 767.98px) {
@@ -696,6 +850,22 @@
             .action-group {
                 justify-content: flex-start;
             }
+
+            .material-summary {
+                justify-content: flex-start;
+            }
+
+            .material-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .material-filter-actions {
+                flex-direction: column;
+            }
+
+                .material-filter-actions .btn {
+                    width: 100%;
+                }
         }
     </style>
 }

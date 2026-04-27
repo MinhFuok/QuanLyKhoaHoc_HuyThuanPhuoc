@@ -2,11 +2,37 @@
 @using System.Linq
 
 @{
-    ViewData["Title"] = "Chọn lớp để xem bảng điểm";
+    ViewData["Title"] = "Danh Sách Bảng điểm";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var today = DateTime.Today;
-    var classes = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassRoom>();
+    var allClasses = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassRoom>();
+
+    int? selectedClassRoomId = null;
+    var classRoomIdQuery = Context.Request.Query["classRoomId"].ToString();
+
+    if (int.TryParse(classRoomIdQuery, out var parsedClassRoomId) && parsedClassRoomId > 0)
+    {
+        selectedClassRoomId = parsedClassRoomId;
+    }
+
+    var classRoomOptions = allClasses
+        .OrderBy(x => x.ClassCode)
+        .Select(x => new
+        {
+            Id = x.Id,
+            Text = $"{x.ClassCode} - {x.ClassName}"
+        })
+        .ToList();
+
+    var classes = allClasses;
+
+    if (selectedClassRoomId.HasValue)
+    {
+        classes = classes
+            .Where(x => x.Id == selectedClassRoomId.Value)
+            .ToList();
+    }
 
     var totalClasses = classes.Count;
     var activeClasses = classes.Count(x => x.StartDate.Date <= today && x.EndDate.Date >= today);
@@ -23,14 +49,6 @@
                 <div>
                     <h2 class="page-title mb-2">BẢNG ĐIỂM</h2>
                     <div class="page-eyebrow">GIẢNG DẠY</div>
-                </div>
-
-                <div class="hero-badge">
-                    <div class="hero-badge-icon">📊</div>
-                    <div>
-                        <div class="hero-badge-label">Tổng số lớp</div>
-                        <div class="hero-badge-value">@totalClasses</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -92,7 +110,7 @@
         <div class="card-header bg-white border-0 p-4 pb-2">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h5 class="section-title mb-1">Chọn lớp để xem bảng điểm</h5>
+                    <h5 class="section-title mb-1">Danh sách bảng điểm lớp</h5>
                 </div>
 
                 <div class="class-filter-note">
@@ -104,7 +122,50 @@
         </div>
 
         <div class="card-body p-4">
-            @if (!classes.Any())
+
+            <!-- Filter -->
+            <form asp-area="GiaoVien"
+                  asp-controller="ClassGrades"
+                  asp-action="Classes"
+                  method="get"
+                  class="grade-class-filter-form mb-4">
+
+                <div class="grade-class-filter-field">
+                    <select name="classRoomId" class="form-select grade-class-select">
+                        <option value="">-- Tất cả lớp --</option>
+
+                        @foreach (var option in classRoomOptions)
+                        {
+                            var isSelected = selectedClassRoomId.HasValue &&
+                            option.Id == selectedClassRoomId.Value;
+
+                            if (isSelected)
+                            {
+                                <option value="@option.Id" selected="selected">@option.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Id">@option.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="grade-class-filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Lọc
+                    </button>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="ClassGrades"
+                       asp-action="Classes"
+                       class="btn btn-outline-secondary">
+                        Bỏ lọc
+                    </a>
+                </div>
+            </form>
+
+            @if (!allClasses.Any())
             {
                 <div class="empty-state">
                     <div class="empty-icon">📭</div>
@@ -114,20 +175,38 @@
                     </p>
                 </div>
             }
+            else if (!classes.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Không tìm thấy lớp đã chọn</h5>
+                    <p>
+                        Lớp này không còn trong danh sách lớp bạn phụ trách. Vui lòng chọn lại lớp khác.
+                    </p>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="ClassGrades"
+                       asp-action="Classes"
+                       class="btn btn-primary mt-3">
+                        x
+                    </a>
+                </div>
+            }
             else
             {
                 <div class="table-responsive grade-class-table-wrap">
                     <table class="table grade-class-table align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Mã lớp</th>
-                                <th>Tên lớp</th>
-                                <th>Khóa học</th>
-                                <th>Thời gian</th>
-                                <th>Trạng thái</th>
+                                <th class="text-center">Mã lớp</th>
+                                <th class="text-center">Tên lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Thời gian</th>
+                                <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @foreach (var item in classes.OrderBy(x => x.StartDate))
                             {
@@ -195,6 +274,13 @@
                             }
                         </tbody>
                     </table>
+                </div>
+
+                <div class="grade-class-summary mt-3">
+                    <span>Đang hiển thị: <strong>@totalClasses</strong></span>
+                    <span>Đang học: <strong>@activeClasses</strong></span>
+                    <span>Sắp học: <strong>@upcomingClasses</strong></span>
+                    <span>Đã kết thúc: <strong>@endedClasses</strong></span>
                 </div>
             }
         </div>
@@ -379,6 +465,44 @@
                 background: #64748b;
             }
 
+        .grade-class-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .grade-class-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .grade-class-select {
+            min-height: 42px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .grade-class-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .grade-class-filter-actions .btn {
+                min-height: 42px;
+                border-radius: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
         .grade-class-table-wrap {
             border: 1px solid #e5e7eb;
             border-radius: 18px;
@@ -499,6 +623,19 @@
                 padding: 7px 11px;
             }
 
+        .grade-class-summary {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+            .grade-class-summary strong {
+                color: #172554;
+            }
+
         .empty-state {
             text-align: center;
             padding: 50px 20px;
@@ -528,6 +665,14 @@
             .class-filter-note {
                 white-space: normal;
             }
+
+            .grade-class-table {
+                min-width: 980px;
+            }
+
+            .grade-class-table-wrap {
+                overflow-x: auto;
+            }
         }
 
         @@media (max-width: 767.98px) {
@@ -550,6 +695,22 @@
             .action-group {
                 justify-content: flex-start;
             }
+
+            .grade-class-summary {
+                justify-content: flex-start;
+            }
+
+            .grade-class-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-class-filter-actions {
+                flex-direction: column;
+            }
+
+                .grade-class-filter-actions .btn {
+                    width: 100%;
+                }
         }
     </style>
 }

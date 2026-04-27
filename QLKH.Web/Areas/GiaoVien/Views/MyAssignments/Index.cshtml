@@ -5,7 +5,40 @@
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var today = DateTime.Today;
-    var assignments = Model?.ToList() ?? new List<QLKH.Domain.Entities.Assignment>();
+
+    var allAssignments = Model?.ToList() ?? new List<QLKH.Domain.Entities.Assignment>();
+
+    int? selectedClassRoomId = null;
+    var classRoomIdQuery = Context.Request.Query["classRoomId"].ToString();
+
+    if (int.TryParse(classRoomIdQuery, out var parsedClassRoomId) && parsedClassRoomId > 0)
+    {
+        selectedClassRoomId = parsedClassRoomId;
+    }
+
+    var classRoomOptions = allAssignments
+        .Where(x => x.ClassRoom != null)
+        .GroupBy(x => x.ClassRoomId)
+        .Select(g =>
+        {
+            var first = g.First();
+            return new
+            {
+                Id = first.ClassRoomId,
+                Text = $"{first.ClassRoom!.ClassCode} - {first.ClassRoom.ClassName}"
+            };
+        })
+        .OrderBy(x => x.Text)
+        .ToList();
+
+    var assignments = allAssignments;
+
+    if (selectedClassRoomId.HasValue)
+    {
+        assignments = assignments
+            .Where(x => x.ClassRoomId == selectedClassRoomId.Value)
+            .ToList();
+    }
 
     var totalAssignments = assignments.Count;
     var activeAssignments = assignments.Count(x => x.DueDate.Date >= today);
@@ -32,16 +65,8 @@
                        asp-controller="Assignments"
                        asp-action="Create"
                        class="btn btn-primary hero-action-btn">
-                        + Tạo bài tập
+                        + Bài tập mới
                     </a>
-
-                    <div class="hero-badge">
-                        <div class="hero-badge-icon">📝</div>
-                        <div>
-                            <div class="hero-badge-label">Tổng bài tập</div>
-                            <div class="hero-badge-value">@totalAssignments</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -103,7 +128,7 @@
         <div class="card-header bg-white border-0 p-4 pb-2">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h5 class="section-title mb-1">Danh sách bài tập đã giao</h5>
+                    <h5 class="section-title mb-1">Danh sách bài tập</h5>
                 </div>
 
                 <div class="assignment-filter-note">
@@ -115,7 +140,50 @@
         </div>
 
         <div class="card-body p-4">
-            @if (!assignments.Any())
+
+            <!-- Filter -->
+            <form asp-area="GiaoVien"
+                  asp-controller="MyAssignments"
+                  asp-action="Index"
+                  method="get"
+                  class="assignment-filter-form mb-4">
+
+                <div class="assignment-filter-field">
+                    <select name="classRoomId" class="form-select assignment-class-select">
+                        <option value="">-- Tất cả lớp --</option>
+
+                        @foreach (var option in classRoomOptions)
+                        {
+                            var isSelected = selectedClassRoomId.HasValue &&
+                            option.Id == selectedClassRoomId.Value;
+
+                            if (isSelected)
+                            {
+                                <option value="@option.Id" selected="selected">@option.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Id">@option.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="assignment-filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Lọc
+                    </button>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="MyAssignments"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        x
+                    </a>
+                </div>
+            </form>
+
+            @if (!allAssignments.Any())
             {
                 <div class="empty-state">
                     <div class="empty-icon">📭</div>
@@ -133,20 +201,39 @@
                     </a>
                 </div>
             }
+            else if (!assignments.Any())
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h5>Không có bài tập trong lớp đã chọn</h5>
+                    <p>
+                        Lớp này hiện chưa có bài tập nào. Bạn có thể chọn lớp khác hoặc tạo bài tập mới.
+                    </p>
+
+                    <a asp-area="GiaoVien"
+                       asp-controller="Assignments"
+                       asp-action="Create"
+                       asp-route-classRoomId="@selectedClassRoomId"
+                       class="btn btn-primary mt-3">
+                        + Tạo bài tập cho lớp này
+                    </a>
+                </div>
+            }
             else
             {
                 <div class="table-responsive assignment-table-wrap">
                     <table class="table assignment-table align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Bài tập</th>
-                                <th>Lớp</th>
-                                <th>Khóa học</th>
-                                <th>Hạn nộp</th>
-                                <th>Ngày tạo</th>
+                                <th class="text-center">Bài tập</th>
+                                <th class="text-center">Lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Hạn nộp</th>
+                                <th class="text-center">Ngày tạo</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @foreach (var item in assignments.OrderBy(x => x.DueDate))
                             {
@@ -223,6 +310,7 @@
                                                class="btn btn-sm btn-outline-warning">
                                                 Sửa
                                             </a>
+
                                             <a asp-area="GiaoVien"
                                                asp-controller="AssignmentSubmissions"
                                                asp-action="Index"
@@ -434,6 +522,44 @@
                 background: #e11d48;
             }
 
+        .assignment-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .assignment-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .assignment-class-select {
+            min-height: 42px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .assignment-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .assignment-filter-actions .btn {
+                min-height: 42px;
+                border-radius: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
         .assignment-table-wrap {
             border: 1px solid #e5e7eb;
             border-radius: 18px;
@@ -633,6 +759,14 @@
             .assignment-filter-note {
                 white-space: normal;
             }
+
+            .assignment-table {
+                min-width: 980px;
+            }
+
+            .assignment-table-wrap {
+                overflow-x: auto;
+            }
         }
 
         @@media (max-width: 767.98px) {
@@ -660,6 +794,18 @@
             .assignment-summary {
                 justify-content: flex-start;
             }
+
+            .assignment-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .assignment-filter-actions {
+                flex-direction: column;
+            }
+
+                .assignment-filter-actions .btn {
+                    width: 100%;
+                }
         }
     </style>
 }

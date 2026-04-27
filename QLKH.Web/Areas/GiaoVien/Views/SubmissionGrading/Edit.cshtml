@@ -245,9 +245,6 @@
             <div class="card border-0 shadow-sm form-card">
                 <div class="card-header bg-white border-0 p-4 pb-2">
                     <h5 class="section-title mb-1">Chấm điểm và nhận xét</h5>
-                    <p class="section-subtitle mb-0">
-                        Nhập điểm và phản hồi để học viên theo dõi kết quả học tập.
-                    </p>
                 </div>
 
                 <div class="card-body p-4">
@@ -267,12 +264,8 @@
                                    max="10"
                                    name="score"
                                    value="@(Model.Score.HasValue? Model.Score.Value.ToString("0.##") : "")"
-                                   class="form-control custom-control"
-                                   placeholder="Nhập điểm từ 0 đến 10" />
+                                   class="form-control custom-control"/>
 
-                            <div class="form-hint">
-                                Nên nhập điểm trong thang 0 - 10.
-                            </div>
                         </div>
 
                         <div class="mb-4">
@@ -280,8 +273,7 @@
 
                             <textarea name="feedback"
                                       class="form-control custom-control"
-                                      rows="6"
-                                      placeholder="Nhập nhận xét, góp ý hoặc hướng cải thiện cho học viên...">@Model.Feedback</textarea>
+                                      rows="6">@Model.Feedback</textarea>
                         </div>
 
                         <div class="form-actions">

@@ -183,13 +183,13 @@
 
                         <thead>
                             <tr>
-                                <th>Lớp</th>
-                                <th>Bài tập</th>
-                                <th>Hạn nộp</th>
+                                <th class ="text-center">Lớp</th>
+                                <th class="text-center">Bài tập</th>
+                                <th class="text-center">Hạn nộp</th>
                                 <th class="text-center">Nộp bài</th>
-                                <th>Thời gian nộp</th>
+                                <th class="text-center">Thời gian nộp</th>
                                 <th class="text-center">Điểm</th>
-                                <th>Nhận xét</th>
+                                <th class="text-center">Nhận xét</th>
                             </tr>
                         </thead>
 
@@ -264,7 +264,7 @@
                                     <td>
                                         <div class="feedback-text">
                                             @(string.IsNullOrWhiteSpace(item.Feedback)
-                                                ? "Chưa có nhận xét"
+                                                ? "Chưa nhận xét"
                                                 : item.Feedback)
                                         </div>
                                     </td>

@@ -57,14 +57,6 @@
                        class="btn btn-outline-primary hero-action-btn">
                         ← Quay lại 
                     </a>
-
-                    <div class="hero-badge">
-                        <div class="hero-badge-icon">🎓</div>
-                        <div>
-                            <div class="hero-badge-label">Tổng học viên</div>
-                            <div class="hero-badge-value">@totalStudents</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -203,12 +195,12 @@
                     <table class="table grade-table align-middle mb-0">
                         <thead>
                             <tr>
-                                <th class="sticky-student-code">Mã học viên</th>
-                                <th class="sticky-student-name">Họ tên</th>
+                                <th class="sticky-student-code text-center">Mã học viên</th>
+                                <th class="sticky-student-name text-center">Họ tên</th>
 
                                 @foreach (var assignment in assignments)
                                 {
-                                    <th>
+                                    <th >
                                         <div class="assignment-header">
                                             @assignment.AssignmentTitle
                                         </div>

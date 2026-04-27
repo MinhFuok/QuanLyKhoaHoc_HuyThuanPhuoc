@@ -3,7 +3,7 @@
 @using System.Linq
 
 @{
-    ViewData["Title"] = "Sửa bài tập";
+    ViewData["Title"] = "Cập nhật bài tập";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var myClasses = ViewBag.MyClasses as IEnumerable<ClassRoom> ?? Enumerable.Empty<ClassRoom>();
@@ -17,7 +17,7 @@
         <div class="card-body p-4">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h2 class="page-title mb-2">SỬA BÀI TẬP</h2>
+                    <h2 class="page-title mb-2">CẬP NHẬT BÀI TẬP</h2>
                     <div class="page-eyebrow">GIẢNG DẠY</div>
                 </div>
 
@@ -59,9 +59,6 @@
             <div class="card border-0 shadow-sm form-card">
                 <div class="card-header bg-white border-0 p-4 pb-2">
                     <h5 class="section-title mb-1">Thông tin bài tập</h5>
-                    <p class="section-subtitle mb-0">
-                        Cập nhật lớp, tiêu đề, mô tả hoặc hạn nộp của bài tập.
-                    </p>
                 </div>
 
                 <div class="card-body p-4">
@@ -76,7 +73,7 @@
                             </label>
 
                             <select name="classRoomId" class="form-select custom-control" required>
-                                <option value="">-- Chọn lớp muốn giao bài tập --</option>
+                                <option value="">-- Chọn lớp --</option>
                                 @foreach (var item in classList.OrderBy(x => x.StartDate))
                                 {
                                     var statusText = "";
@@ -108,15 +105,11 @@
                                     }
                                 }
                             </select>
-
-                            <div class="form-hint">
-                                Chỉ được chọn các lớp bạn đang được phân công giảng dạy.
-                            </div>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label custom-label">
-                                Tiêu đề bài tập <span class="required">*</span>
+                                Tiêu đề <span class="required">*</span>
                             </label>
 
                             <input type="text"
@@ -125,10 +118,6 @@
                                    value="@Model.Title"
                                    maxlength="200"
                                    required />
-
-                            <div class="form-hint">
-                                Nên đặt tiêu đề ngắn gọn, dễ hiểu cho học viên.
-                            </div>
                         </div>
 
                         <div class="row g-3 mb-4">
@@ -157,7 +146,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label custom-label">Mô tả bài tập</label>
+                            <label class="form-label custom-label">Mô tả</label>
 
                             <textarea name="description"
                                       class="form-control custom-control"
@@ -173,7 +162,7 @@
                             </a>
 
                             <button type="submit" class="btn btn-primary submit-btn">
-                                Lưu thay đổi
+                                Cập nhật thay đổi
                             </button>
                         </div>
                     </form>

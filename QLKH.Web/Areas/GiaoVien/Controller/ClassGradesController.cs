@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using QLKH.Application.Interfaces.Services;
 using System.Security.Claims;
 
@@ -32,7 +33,7 @@ namespace QLKH.Web.Areas.GiaoVien.Controllers
             return View(myClasses);
         }
 
-        public async Task<IActionResult> Index(int classRoomId)
+        public async Task<IActionResult> Index(int? classRoomId)
         {
             var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(applicationUserId))
@@ -40,15 +41,31 @@ namespace QLKH.Web.Areas.GiaoVien.Controllers
                 return Challenge();
             }
 
-            var myClasses = await _teacherService.GetMyTeachingClassesAsync(applicationUserId);
-            var isMyClass = myClasses.Any(x => x.Id == classRoomId);
+            var myClasses = (await _teacherService.GetMyTeachingClassesAsync(applicationUserId))
+                .OrderBy(x => x.ClassCode)
+                .ToList();
 
-            if (!isMyClass)
+            ViewBag.ClassRoomOptions = myClasses
+                .Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = $"{x.ClassCode} - {x.ClassName}"
+                })
+                .ToList();
+
+            if (!myClasses.Any())
             {
-                return Forbid();
+                ViewBag.SelectedClassRoomId = null;
+                return View(null);
             }
 
-            var model = await _submissionService.GetTeacherGradeOverviewByClassAsync(classRoomId);
+            var selectedClassRoomId = classRoomId.HasValue && myClasses.Any(x => x.Id == classRoomId.Value)
+                ? classRoomId.Value
+                : myClasses.First().Id;
+
+            ViewBag.SelectedClassRoomId = selectedClassRoomId;
+
+            var model = await _submissionService.GetTeacherGradeOverviewByClassAsync(selectedClassRoomId);
 
             if (model == null)
             {

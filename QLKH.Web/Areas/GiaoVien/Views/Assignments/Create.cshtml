@@ -7,6 +7,12 @@
 
     var myClasses = ViewBag.MyClasses as IEnumerable<ClassRoom> ?? Enumerable.Empty<ClassRoom>();
     var classList = myClasses.ToList();
+
+    var selectableClasses = classList
+        .Where(x => x.EndDate.Date >= DateTime.Today)
+        .OrderBy(x => x.StartDate)
+        .ToList();
+
     var selectedClassRoomId = ViewBag.SelectedClassRoomId as int?;
 }
 
@@ -17,7 +23,7 @@
         <div class="card-body p-4">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h2 class="page-title mb-2">TẠO BÀI TẬP</h2>
+                    <h2 class="page-title mb-2">BÀI TẬP MỚI</h2>
                     <div class="page-eyebrow">GIẢNG DẠY</div>
                 </div>
 
@@ -28,14 +34,6 @@
                        class="btn btn-outline-primary hero-action-btn">
                         ← Quay lại
                     </a>
-
-                    <div class="hero-badge">
-                        <div class="hero-badge-icon">🎓</div>
-                        <div>
-                            <div class="hero-badge-label">Lớp có thể giao</div>
-                            <div class="hero-badge-value">@classList.Count</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -82,43 +80,40 @@
                             </label>
 
                             <select name="classRoomId" class="form-select custom-control" required>
-                                <option value="">-- Chọn lớp muốn giao bài tập --</option>
-                                @foreach (var item in classList.OrderBy(x => x.StartDate))
+                                @if (selectableClasses.Any())
                                 {
-                                    var statusText = "";
+                                    <option value="">-- Chọn lớp --</option>
 
-                                    if (item.StartDate.Date > DateTime.Today)
+                                    @foreach (var item in selectableClasses)
                                     {
-                                        statusText = "Sắp học";
-                                    }
-                                    else if (item.EndDate.Date < DateTime.Today)
-                                    {
-                                        statusText = "Đã kết thúc";
-                                    }
-                                    else
-                                    {
-                                        statusText = "Đang học";
-                                    }
+                                        var statusText = item.StartDate.Date > DateTime.Today
+                                        ? "Sắp học"
+                                        : "Đang học";
 
-                                    if (selectedClassRoomId.HasValue && item.Id == selectedClassRoomId.Value)
-                                    {
-                                        <option value="@item.Id" selected>
-                                            @item.ClassName (@item.ClassCode) - @statusText
-                                        </option>
+                                        if (selectedClassRoomId.HasValue && item.Id == selectedClassRoomId.Value)
+                                        {
+                                            <option value="@item.Id" selected>
+                                                @item.ClassName (@item.ClassCode) - @statusText
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">
+                                                @item.ClassName (@item.ClassCode) - @statusText
+                                            </option>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <option value="@item.Id">
-                                            @item.ClassName (@item.ClassCode) - @statusText
-                                        </option>
-                                    }
+                                }
+                                else
+                                {
+                                    <option value="">Không có lớp đang diễn ra hoặc sắp diễn ra</option>
                                 }
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label custom-label">
-                                Tiêu đề bài tập <span class="required">*</span>
+                                Tiêu đề <span class="required">*</span>
                             </label>
 
                             <input type="text"
@@ -141,7 +136,7 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label custom-label">Mô tả bài tập</label>
+                            <label class="form-label custom-label">Mô tả</label>
 
                             <textarea name="description"
                                       class="form-control custom-control"
