@@ -5,7 +5,25 @@
     ViewData["Title"] = "Bảng điểm của tôi";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
-    var items = Model?.Items?.ToList() ?? new List<QLKH.Application.ViewModels.StudentGradeItemViewModel>();
+    var allItems = Model?.Items?.ToList() ?? new List<QLKH.Application.ViewModels.StudentGradeItemViewModel>();
+
+    var selectedClassName = ViewBag.SelectedClassName as string ?? "";
+
+    var classNameOptions = allItems
+        .Where(x => !string.IsNullOrWhiteSpace(x.ClassName))
+        .Select(x => x.ClassName)
+        .Distinct()
+        .OrderBy(x => x)
+        .ToList();
+
+    var items = allItems;
+
+    if (!string.IsNullOrWhiteSpace(selectedClassName))
+    {
+        items = items
+            .Where(x => string.Equals(x.ClassName, selectedClassName, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+    }
 
     var totalItems = items.Count;
     var submittedItems = items.Count(x => x.IsSubmitted);
@@ -98,6 +116,46 @@
         </div>
 
         <div class="card-body p-4">
+            <form asp-area="HocVien"
+                  asp-controller="MyGrades"
+                  asp-action="Index"
+                  method="get"
+                  class="grade-class-filter-form mb-4">
+
+                <div class="grade-class-filter-field">
+                    <select name="className" class="form-select grade-class-select">
+                        <option value="">-- Tất cả lớp --</option>
+
+                        @foreach (var option in classNameOptions)
+                        {
+                            var isSelected = string.Equals(option, selectedClassName, StringComparison.OrdinalIgnoreCase);
+
+                            if (isSelected)
+                            {
+                                <option value="@option" selected="selected">@option</option>
+                            }
+                            else
+                            {
+                                <option value="@option">@option</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="grade-class-filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Lọc
+                    </button>
+
+                    <a asp-area="HocVien"
+                       asp-controller="MyGrades"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        x
+                    </a>
+                </div>
+            </form>
+
             @if (!items.Any())
             {
                 <div class="empty-state">
@@ -617,6 +675,58 @@
             .grade-summary {
                 justify-content: flex-start;
             }
+        }
+
+        .grade-class-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .grade-class-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .grade-class-select {
+            min-height: 42px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .grade-class-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .grade-class-filter-actions .btn {
+                min-height: 42px;
+                border-radius: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
+        @@media (max-width: 767.98px) {
+            .grade-class-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-class-filter-actions {
+                flex-direction: column;
+            }
+
+                .grade-class-filter-actions .btn {
+                    width: 100%;
+                }
         }
     </style>
 }

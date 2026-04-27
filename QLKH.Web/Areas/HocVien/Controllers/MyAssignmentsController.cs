@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using QLKH.Application.Interfaces.Services;
 using System.Security.Claims;
 
@@ -20,7 +21,7 @@ namespace QLKH.Web.Areas.HocVien.Controllers
             _submissionService = submissionService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? classRoomId)
         {
             var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -29,7 +30,33 @@ namespace QLKH.Web.Areas.HocVien.Controllers
                 return Challenge();
             }
 
-            var assignments = await _assignmentService.GetMyLearningAssignmentsAsync(applicationUserId);
+            var allAssignments = (await _assignmentService.GetMyLearningAssignmentsAsync(applicationUserId))
+                .ToList();
+
+            var classRoomOptions = allAssignments
+                .Where(x => x.ClassRoom != null)
+                .GroupBy(x => x.ClassRoomId)
+                .Select(g =>
+                {
+                    var first = g.First();
+
+                    return new SelectListItem
+                    {
+                        Value = first.ClassRoomId.ToString(),
+                        Text = $"{first.ClassRoom!.ClassCode} - {first.ClassRoom.ClassName}"
+                    };
+                })
+                .OrderBy(x => x.Text)
+                .ToList();
+
+            var assignments = allAssignments;
+
+            if (classRoomId.HasValue && classRoomId.Value > 0)
+            {
+                assignments = assignments
+                    .Where(x => x.ClassRoomId == classRoomId.Value)
+                    .ToList();
+            }
 
             var submissions = await _submissionService.GetMySubmissionsAsync(applicationUserId);
 
@@ -37,6 +64,9 @@ namespace QLKH.Web.Areas.HocVien.Controllers
                 .Select(x => x.AssignmentId)
                 .Distinct()
                 .ToList();
+
+            ViewBag.ClassRoomOptions = classRoomOptions;
+            ViewBag.SelectedClassRoomId = classRoomId;
 
             return View(assignments);
         }

@@ -1,11 +1,16 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.ClassRoom>
+@using System.Linq
 
 @{
-    ViewData["Title"] = "Lớp tôi học";
+    ViewData["Title"] = "Lớp học của tôi";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var today = DateTime.Today;
     var classes = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassRoom>();
+
+    var reviewedClassIds = (ViewBag.ReviewedClassIds as IEnumerable<int>
+        ?? Enumerable.Empty<int>())
+        .ToHashSet();
 
     var totalClasses = classes.Count;
     var activeClasses = classes.Count(x => x.StartDate.Date <= today && x.EndDate.Date >= today);
@@ -20,7 +25,7 @@
         <div class="card-body p-4">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h2 class="page-title mb-2">LỚP HỌC</h2>
+                    <h2 class="page-title mb-2">LỚP HỌC CỦA TÔI</h2>
                     <div class="page-eyebrow">HỌC TẬP</div>
                 </div>
             </div>
@@ -111,24 +116,24 @@
                 <div class="table-responsive class-table-wrap">
                     <table class="table class-table align-middle mb-0">
                         <colgroup>
+                            <col style="width: 9%;" />
+                            <col style="width: 17%;" />
+                            <col style="width: 17%;" />
+                            <col style="width: 15%;" />
                             <col style="width: 10%;" />
-                            <col style="width: 18%;" />
-                            <col style="width: 18%;" />
-                            <col style="width: 16%;" />
-                            <col style="width: 11%;" />
-                            <col style="width: 11%;" />
+                            <col style="width: 10%;" />
                             <col style="width: 6%;" />
-                            <col style="width: 10%;" />
+                            <col style="width: 16%;" />
                         </colgroup>
 
                         <thead>
                             <tr>
-                                <th>Mã lớp</th>
-                                <th>Tên lớp</th>
-                                <th>Khóa học</th>
-                                <th>Giáo viên</th>
-                                <th>Bắt đầu</th>
-                                <th>Kết thúc</th>
+                                <th class="text-center">Mã lớp</th>
+                                <th class="text-center">Tên lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Giáo viên</th>
+                                <th class="text-center">Bắt đầu</th>
+                                <th class="text-center">Kết thúc</th>
                                 <th class="text-center">Sĩ số</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
@@ -193,24 +198,74 @@
                                     <td class="text-center">
                                         <span class="capacity-pill">@item.MaxStudents</span>
                                     </td>
+
                                     <td class="text-center">
-                                        @if (item.EndDate.Date <= DateTime.Today)
+                                        @if (item.EndDate.Date <= today)
                                         {
-                                            <a asp-area="HocVien"
-                                               asp-controller="TeacherReviews"
-                                               asp-action="Edit"
-                                               asp-route-classRoomId="@item.Id"
-                                               class="btn btn-sm btn-primary action-btn">
-                                                Đánh giá
-                                            </a>
+                                            if (reviewedClassIds.Contains(item.Id))
+                                            {
+                                                <div class="class-action-group class-action-group-center">
+                                                    <span class="completed-class-message">
+                                                        Đã hoàn thành
+                                                    </span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="class-action-group class-action-group-center">
+                                                    <a asp-area="HocVien"
+                                                       asp-controller="TeacherReviews"
+                                                       asp-action="Edit"
+                                                       asp-route-classRoomId="@item.Id"
+                                                       class="btn btn-sm btn-primary action-btn action-btn-review">
+                                                        Đánh giá
+                                                    </a>
+                                                </div>
+                                            }
                                         }
                                         else
                                         {
-                                            <button type="button"
-                                                    class="btn btn-sm btn-outline-secondary action-btn"
-                                                    disabled>
-                                                Chưa mở
-                                            </button>
+                                            <div class="class-action-group class-action-icons">
+                                                <a asp-area="HocVien"
+                                                   asp-controller="MyAssignments"
+                                                   asp-action="Index"
+                                                   asp-route-classRoomId="@item.Id"
+                                                   class="btn btn-sm btn-outline-primary action-btn icon-action-btn"
+                                                   data-tooltip="Bài tập"
+                                                   aria-label="Bài tập">
+                                                    <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                        <path d="M8 6H16M8 10H16M8 14H13" />
+                                                        <path d="M7 3H17C18.1046 3 19 3.89543 19 5V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3Z" />
+                                                    </svg>
+                                                </a>
+
+                                                <a asp-area="HocVien"
+                                                   asp-controller="MyGrades"
+                                                   asp-action="Index"
+                                                   asp-route-className="@item.ClassName"
+                                                   class="btn btn-sm btn-outline-success action-btn icon-action-btn"
+                                                   data-tooltip="Bảng điểm"
+                                                   aria-label="Bảng điểm">
+                                                    <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                        <path d="M7 20V10" />
+                                                        <path d="M12 20V4" />
+                                                        <path d="M17 20V14" />
+                                                        <path d="M4 20H20" />
+                                                    </svg>
+                                                </a>
+
+                                                <a asp-area="HocVien"
+                                                   asp-controller="MyMaterials"
+                                                   asp-action="Index"
+                                                   asp-route-classRoomId="@item.Id"
+                                                   class="btn btn-sm btn-outline-secondary action-btn icon-action-btn"
+                                                   data-tooltip="Tài liệu"
+                                                   aria-label="Tài liệu">
+                                                    <svg viewBox="0 0 24 24" class="action-svg" aria-hidden="true">
+                                                        <path d="M3 7C3 5.89543 3.89543 5 5 5H9L11 7H19C20.1046 7 21 7.89543 21 9V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V7Z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         }
                                     </td>
                                 </tr>
@@ -239,6 +294,112 @@
             white-space: nowrap;
             font-size: 0.82rem;
         }
+
+        .class-action-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 7px;
+            min-width: 120px;
+        }
+
+        .class-action-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+        }
+
+        .icon-action-btn {
+            position: relative;
+            width: 34px !important;
+            height: 34px;
+            min-width: 34px;
+            padding: 0 !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-svg {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+            .icon-action-btn::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                left: 50%;
+                bottom: calc(100% + 9px);
+                transform: translateX(-50%) translateY(4px);
+                padding: 7px 9px;
+                border-radius: 8px;
+                background: rgba(15, 23, 42, 0.96);
+                color: #ffffff;
+                font-size: 0.75rem;
+                font-weight: 700;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: all 0.16s ease;
+                z-index: 20;
+            }
+
+            .icon-action-btn::before {
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: calc(100% + 4px);
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: rgba(15, 23, 42, 0.96) transparent transparent transparent;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.16s ease;
+                z-index: 19;
+            }
+
+            .icon-action-btn:hover::after,
+            .icon-action-btn:hover::before {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+
+        .class-action-group-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .class-action-group .action-btn {
+            width: 100%;
+        }
+
+        .action-btn-review {
+            min-width: 92px;
+        }
+
+        .completed-class-message {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 155px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: #dcfce7;
+            color: #166534;
+            font-weight: 800;
+            font-size: 0.78rem;
+            line-height: 1.25;
+            text-align: center;
+        }
+
         .student-classes-page {
             animation: fadeInPage 0.25s ease-in-out;
         }
@@ -537,7 +698,7 @@
             }
 
             .class-table {
-                min-width: 980px;
+                min-width: 1080px;
             }
 
             .class-table-wrap {

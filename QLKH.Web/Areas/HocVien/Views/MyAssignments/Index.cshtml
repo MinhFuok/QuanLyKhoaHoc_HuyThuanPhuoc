@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.Assignment>
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
     ViewData["Title"] = "Bài tập lớp tôi học";
@@ -7,12 +8,17 @@
     var today = DateTime.Today;
     var assignments = Model?.ToList() ?? new List<QLKH.Domain.Entities.Assignment>();
 
+    var classRoomOptions = ViewBag.ClassRoomOptions as List<SelectListItem>
+        ?? new List<SelectListItem>();
+
+    int? selectedClassRoomId = ViewBag.SelectedClassRoomId as int?;
+
     var totalAssignments = assignments.Count;
     var activeAssignments = assignments.Count(x => x.DueDate.Date >= today);
     var dueSoonAssignments = assignments.Count(x => x.DueDate.Date >= today && x.DueDate.Date <= today.AddDays(3));
     var overdueAssignments = assignments.Count(x => x.DueDate.Date < today);
     var submittedAssignmentIds = (ViewBag.SubmittedAssignmentIds as IEnumerable<int>)?.ToHashSet()
-    ?? new HashSet<int>();
+        ?? new HashSet<int>();
 }
 
 <div class="student-assignments-page">
@@ -97,6 +103,47 @@
         </div>
 
         <div class="card-body p-4">
+            <form asp-area="HocVien"
+                  asp-controller="MyAssignments"
+                  asp-action="Index"
+                  method="get"
+                  class="assignment-filter-form mb-4">
+
+                <div class="assignment-filter-field">
+                    <select name="classRoomId" class="form-select assignment-class-select">
+                        <option value="">-- Tất cả lớp --</option>
+
+                        @foreach (var option in classRoomOptions)
+                        {
+                            var isSelected = selectedClassRoomId.HasValue &&
+                            option.Value == selectedClassRoomId.Value.ToString();
+
+                            if (isSelected)
+                            {
+                                <option value="@option.Value" selected="selected">@option.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Value">@option.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="assignment-filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Lọc
+                    </button>
+
+                    <a asp-area="HocVien"
+                       asp-controller="MyAssignments"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        X
+                    </a>
+                </div>
+            </form>
+
             @if (!assignments.Any())
             {
                 <div class="empty-state">
@@ -124,11 +171,11 @@
 
                         <thead>
                             <tr>
-                                <th>Bài tập</th>
-                                <th>Lớp</th>
-                                <th>Khóa học</th>
-                                <th>Giáo viên</th>
-                                <th>Hạn nộp</th>
+                                <th class="text-center">Bài tập</th>
+                                <th class="text-center">Lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Giáo viên</th>
+                                <th class="text-center">Hạn nộp</th>
                                 <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
@@ -686,6 +733,58 @@
             .assignment-summary {
                 justify-content: flex-start;
             }
+        }
+
+        .assignment-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .assignment-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .assignment-class-select {
+            min-height: 42px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .assignment-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .assignment-filter-actions .btn {
+                min-height: 42px;
+                border-radius: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
+        @@media (max-width: 767.98px) {
+            .assignment-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .assignment-filter-actions {
+                flex-direction: column;
+            }
+
+                .assignment-filter-actions .btn {
+                    width: 100%;
+                }
         }
     </style>
 }

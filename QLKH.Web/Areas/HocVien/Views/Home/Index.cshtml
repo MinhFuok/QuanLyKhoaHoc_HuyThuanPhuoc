@@ -1,11 +1,27 @@
-﻿@{
+﻿@using QLKH.Domain.Entities
+@using System.Linq
+
+@{
     ViewData["Title"] = "Dashboard Học viên";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var certificates = ViewBag.MyCertificates as IEnumerable<StudentCertificate>
+        ?? Enumerable.Empty<StudentCertificate>();
+
+    var certificateList = certificates.ToList();
+
+    var totalCertificates = certificateList.Count;
+    var approvedCertificates = certificateList.Count(x => x.IsApproved);
+    var expiredCertificates = certificateList.Count(x => x.ExpiryDate.HasValue && x.ExpiryDate.Value.Date < DateTime.Today);
+    var activeCertificates = certificateList.Count(x => !x.ExpiryDate.HasValue || x.ExpiryDate.Value.Date >= DateTime.Today);
+
+    var completedCourses = 0;
+    var progressPercent = 60;
 }
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 hv-dashboard-page">
     <div class="mb-4">
-        <h2 class="fw-bold mb-2">Dashboard Học viên</h2>
+        <h2 class="fw-bold mb-2">DASHBOARD</h2>
         <p class="text-muted mb-0">
             Theo dõi nhanh tình trạng học tập, chứng chỉ và mức độ hoàn thành khóa học của bạn.
         </p>
@@ -13,89 +29,326 @@
 
     <!-- Tổng quan -->
     <div class="row g-4 mb-4">
-        <div class="col-md-6 col-xl-4">
-            <a href="/HocVien/MyCertificates" class="text-decoration-none">
-                <div class="card border-0 shadow-sm h-100 dashboard-stat-card stat-blue">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <div class="stat-label">Chứng chỉ của tôi</div>
-                                <div class="stat-value">0</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-award"></i>
-                            </div>
+        <div class="col-md-6 col-xl-6">
+            <div class="card border-0 shadow-sm h-100 dashboard-stat-card stat-blue">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <div class="stat-label">Chứng chỉ của tôi</div>
+                            <div class="stat-value">@totalCertificates</div>
                         </div>
-                        <div class="stat-desc">
-                            Tổng số chứng chỉ đã được cập nhật cho tài khoản của bạn.
+                        <div class="stat-icon">
+                            <i class="fas fa-award"></i>
                         </div>
-                        <div class="stat-link mt-3">Xem chi tiết →</div>
                     </div>
+                    <div class="stat-desc">
+                        Các chứng chỉ được cấp sau khi hoàn thành khóa học
+                    </div>
+                    <a href="#myCertificatesSection" class="stat-link mt-3 d-inline-block">
+                        Xem chứng chỉ →
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
 
-        <div class="col-md-6 col-xl-4">
-            <a href="/HocVien/MyCertificates" class="text-decoration-none">
-                <div class="card border-0 shadow-sm h-100 dashboard-stat-card stat-green">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <div class="stat-label">Chứng chỉ đã xác nhận</div>
-                                <div class="stat-value">0</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                        </div>
-                        <div class="stat-desc">
-                            Các chứng chỉ đã được xác nhận và hiển thị trong hồ sơ học tập.
-                        </div>
-                        <div class="stat-link mt-3">Xem chi tiết →</div>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-md-6 col-xl-4">
+        <div class="col-md-6 col-xl-6">
             <a href="/HocVien/MyLearningProgress" class="text-decoration-none">
                 <div class="card border-0 shadow-sm h-100 dashboard-stat-card stat-orange">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
-                                <div class="stat-label">Hoàn thành khóa học</div>
-                                <div class="stat-value">Xem</div>
+                                <div class="stat-label">Tiến độ học tập</div>
+                                <div class="stat-value">Đang học</div>
                             </div>
                             <div class="stat-icon">
                                 <i class="fas fa-graduation-cap"></i>
                             </div>
                         </div>
+
                         <div class="stat-desc">
-                            Theo dõi mức độ hoàn thành khóa học và tiến độ học tập hiện tại.
+                            Theo dõi chi tiết trạng thái hoàn thành và tiến độ học tập của bạn.
                         </div>
-                        <div class="stat-link mt-3">Xem chi tiết →</div>
+
+                        <div class="stat-link mt-3">
+                            Xem tiến độ →
+                        </div>
                     </div>
                 </div>
             </a>
         </div>
     </div>
 
-    <!-- Sơ đồ tiến độ + trạng thái -->
+    <!-- Chứng chỉ hiện có -->
+    <div class="card border-0 shadow-sm mb-4" id="myCertificatesSection">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+                <div>
+                    <h5 class="fw-bold mb-1">Chứng chỉ hiện có</h5>
+                </div>
+
+                <div class="certificate-summary">
+                    <div class="certificate-mini-stat">
+                        <span>Tổng</span>
+                        <strong>@totalCertificates</strong>
+                    </div>
+                    <div class="certificate-mini-stat">
+                        <span>Còn hiệu lực</span>
+                        <strong>@activeCertificates</strong>
+                    </div>
+                    <div class="certificate-mini-stat">
+                        <span>Hết hạn</span>
+                        <strong>@expiredCertificates</strong>
+                    </div>
+                </div>
+            </div>
+
+            @if (certificateList.Any())
+            {
+                <div class="certificate-list">
+                    @foreach (var cert in certificateList.Take(6))
+                    {
+                        var isExpired = cert.ExpiryDate.HasValue && cert.ExpiryDate.Value.Date < DateTime.Today;
+                        var isNoExpiry = !cert.ExpiryDate.HasValue;
+
+                        <div class="certificate-item">
+                            <div class="certificate-main">
+                                <div class="certificate-icon">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+
+                                <div class="certificate-info">
+                                    <div class="certificate-name">
+                                        @cert.CertificateName
+                                    </div>
+
+                                    <div class="certificate-meta">
+                                        <span>
+                                            Mã/Số:
+                                            <strong>@(!string.IsNullOrWhiteSpace(cert.CertificateCode) ? cert.CertificateCode : "Chưa có")</strong>
+                                        </span>
+
+                                        <span>
+                                            Ngày cấp:
+                                            <strong>@(cert.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</strong>
+                                        </span>
+
+                                        <span>
+                                            Hết hạn:
+                                            <strong>
+                                                @(cert.ExpiryDate?.ToString("dd/MM/yyyy") ?? "Không thời hạn")
+                                            </strong>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="certificate-status-area">
+                                @if (isNoExpiry)
+                                {
+                                    <span class="cert-badge cert-badge-neutral">Không thời hạn</span>
+                                }
+                                else if (isExpired)
+                                {
+                                    <span class="cert-badge cert-badge-danger">Đã hết hạn</span>
+                                }
+                                else
+                                {
+                                    <span class="cert-badge cert-badge-success">Còn hiệu lực</span>
+                                }
+
+                                @if (cert.IsApproved)
+                                {
+                                    <span class="cert-badge cert-badge-primary">Đã xác nhận</span>
+                                }
+                                else
+                                {
+                                    <span class="cert-badge cert-badge-warning">Chờ xác nhận</span>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(cert.EvidenceFilePath))
+                                {
+                                    <a href="@cert.EvidenceFilePath"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="certificate-file-link">
+                                        Xem file
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (certificateList.Count > 6)
+                {
+                    <div class="text-muted small mt-3">
+                        Đang hiển thị 6 chứng chỉ gần nhất.
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-certificate-box">
+                    <div class="empty-certificate-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h6>Chưa có chứng chỉ nào</h6>
+                    <p>
+                        Khi học vụ cập nhật chứng chỉ cho bạn, thông tin sẽ hiển thị tại đây.
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Trạng thái + Sơ đồ tiến độ -->
     <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Trạng thái học tập hiện tại</h5>
+
+                    <div class="status-box mb-3">
+                        <div class="status-title">Tài khoản học tập</div>
+                        <div class="status-badge bg-success-subtle text-success">Đang hoạt động</div>
+                    </div>
+
+                    <div class="status-box mb-3">
+                        <div class="status-title">Tiến độ hiện tại</div>
+                        <div class="status-badge bg-warning-subtle text-warning">Đang học</div>
+                    </div>
+
+                    <div class="status-box mb-3">
+                        <div class="status-title">Chứng chỉ</div>
+                        @if (totalCertificates > 0)
+                        {
+                            <div class="status-badge bg-success-subtle text-success">Đã có @totalCertificates chứng chỉ</div>
+                        }
+                        else
+                        {
+                            <div class="status-badge bg-secondary-subtle text-secondary">Chưa có</div>
+                        }
+                    </div>
+
+                    <div class="status-box">
+                        <div class="status-title">Khuyến nghị</div>
+                        <div class="text-muted small mt-1">
+                            Ưu tiên hoàn thành các bài tập còn thiếu để tăng tỉ lệ hoàn thành khóa học.
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <h6 class="fw-bold mb-3">Tổng quan nhanh</h6>
+                    <div class="quick-summary">
+                        <div class="quick-item">
+                            <span>Khóa đã hoàn thành</span>
+                            <strong>@completedCourses</strong>
+                        </div>
+
+                        <div class="quick-item">
+                            <span>Chứng chỉ hiện có</span>
+                            <strong>@totalCertificates</strong>
+                        </div>
+
+                        <div class="quick-item">
+                            <span>Chứng chỉ còn hiệu lực</span>
+                            <strong>@activeCertificates</strong>
+                        </div>
+
+                        <div class="quick-item">
+                            <span>Tiến độ trung bình</span>
+                            <strong>@progressPercent%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tiến độ học tập -->
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h5 class="fw-bold mb-1">Sơ đồ tiến độ học tập</h5>
-                            <p class="text-muted mb-0">Mô phỏng hành trình học tập của học viên trong hệ thống.</p>
+                            <h5 class="fw-bold mb-1">Tiến độ học tập</h5>
+                            <p class="text-muted mb-0">Theo dõi hành trình học tập và mức độ hoàn thành hiện tại.</p>
                         </div>
+
                         <a href="/HocVien/MyLearningProgress" class="btn btn-outline-success btn-sm">
                             Xem tiến độ
                         </a>
                     </div>
 
-                    <div class="learning-flow">
+                    <div class="progress-dashboard-grid">
+                        <div class="progress-donut-card">
+                            <div class="progress-donut"
+                                 style="--progress:@progressPercent;">
+                                <div class="progress-donut-inner">
+                                    <strong>@progressPercent%</strong>
+                                    <span>Hoàn thành</span>
+                                </div>
+                            </div>
+
+                            <div class="donut-caption">
+                                Mức độ hoàn thành tổng quan
+                            </div>
+                        </div>
+
+                        <div class="progress-detail-card">
+                            <div class="progress-row">
+                                <div class="progress-row-header">
+                                    <span>Ghi danh</span>
+                                    <strong>100%</strong>
+                                </div>
+                                <div class="mini-progress">
+                                    <div style="width:100%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="progress-row">
+                                <div class="progress-row-header">
+                                    <span>Học tập</span>
+                                    <strong>75%</strong>
+                                </div>
+                                <div class="mini-progress">
+                                    <div style="width:75%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="progress-row">
+                                <div class="progress-row-header">
+                                    <span>Bài tập</span>
+                                    <strong>60%</strong>
+                                </div>
+                                <div class="mini-progress">
+                                    <div style="width:60%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="progress-row">
+                                <div class="progress-row-header">
+                                    <span>Hoàn thành khóa học</span>
+                                    <strong>40%</strong>
+                                </div>
+                                <div class="mini-progress">
+                                    <div style="width:40%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="progress-row">
+                                <div class="progress-row-header">
+                                    <span>Chứng chỉ</span>
+                                    <strong>@(totalCertificates > 0 ? "100%" : "0%")</strong>
+                                </div>
+                                <div class="mini-progress">
+                                    <div style="width:@(totalCertificates > 0 ? 100 : 0)%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="learning-flow mt-4">
                         <div class="flow-step active">
                             <div class="flow-circle">1</div>
                             <div class="flow-title">Ghi danh</div>
@@ -128,106 +381,31 @@
 
                         <div class="flow-line"></div>
 
-                        <div class="flow-step">
+                        <div class="flow-step @(totalCertificates > 0 ? "active" : "")">
                             <div class="flow-circle">5</div>
                             <div class="flow-title">Chứng chỉ</div>
-                            <div class="flow-text">Chưa cấp</div>
+                            <div class="flow-text">@(totalCertificates > 0 ? "Đã cấp" : "Chưa cấp")</div>
                         </div>
                     </div>
 
                     <div class="mt-4">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="fw-semibold">Mức độ hoàn thành tổng quan</span>
-                            <span class="fw-bold text-success">60%</span>
+                            <span class="fw-bold text-success">@progressPercent%</span>
                         </div>
+
                         <div class="progress" style="height: 12px; border-radius: 999px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 60%; border-radius: 999px;"
-                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-success"
+                                 role="progressbar"
+                                 style="width: @progressPercent%; border-radius: 999px;"
+                                 aria-valuenow="@progressPercent"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
                             </div>
                         </div>
+
                         <div class="mt-2 text-muted small">
                             Bạn đang ở giai đoạn giữa của quá trình học. Hãy tiếp tục hoàn thành bài tập và theo dõi tiến độ thường xuyên.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
-                    <h5 class="fw-bold mb-3">Trạng thái học tập hiện tại</h5>
-
-                    <div class="status-box mb-3">
-                        <div class="status-title">Tài khoản học tập</div>
-                        <div class="status-badge bg-success-subtle text-success">Đang hoạt động</div>
-                    </div>
-
-                    <div class="status-box mb-3">
-                        <div class="status-title">Tiến độ hiện tại</div>
-                        <div class="status-badge bg-warning-subtle text-warning">Đang học</div>
-                    </div>
-
-                    <div class="status-box mb-3">
-                        <div class="status-title">Chứng chỉ</div>
-                        <div class="status-badge bg-secondary-subtle text-secondary">Chưa có</div>
-                    </div>
-
-                    <div class="status-box">
-                        <div class="status-title">Khuyến nghị</div>
-                        <div class="text-muted small mt-1">
-                            Ưu tiên hoàn thành các bài tập còn thiếu để tăng tỉ lệ hoàn thành khóa học.
-                        </div>
-                    </div>
-
-                    <hr class="my-4" />
-
-                    <h6 class="fw-bold mb-3">Tổng quan nhanh</h6>
-                    <div class="quick-summary">
-                        <div class="quick-item">
-                            <span>Khóa đã hoàn thành</span>
-                            <strong>0</strong>
-                        </div>
-                        <div class="quick-item">
-                            <span>Chứng chỉ đã xác nhận</span>
-                            <strong>0</strong>
-                        </div>
-                        <div class="quick-item">
-                            <span>Tiến độ trung bình</span>
-                            <strong>60%</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gợi ý -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-            <h5 class="fw-bold mb-3">Gợi ý thao tác tiếp theo</h5>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="hint-box">
-                        <div class="hint-title">Chứng chỉ</div>
-                        <div class="hint-text">
-                            Bấm vào khối <strong>Chứng chỉ của tôi</strong> để xem toàn bộ danh sách chứng chỉ hiện có.
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="hint-box">
-                        <div class="hint-title">Hoàn thành khóa học</div>
-                        <div class="hint-text">
-                            Theo dõi chi tiết trạng thái hoàn thành và tiến độ học ở khối <strong>Hoàn thành khóa học</strong>.
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="hint-box">
-                        <div class="hint-title">Tiến độ học tập</div>
-                        <div class="hint-text">
-                            Kiểm tra sơ đồ tiến độ để biết bạn đang ở giai đoạn nào trong hành trình học tập.
                         </div>
                     </div>
                 </div>
@@ -237,6 +415,10 @@
 </div>
 
 <style>
+    .hv-dashboard-page {
+        color: #111827;
+    }
+
     .dashboard-stat-card {
         border-radius: 18px;
         transition: all 0.2s ease;
@@ -251,11 +433,6 @@
     .stat-blue {
         border-left: 5px solid #0d6efd;
         background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-    }
-
-    .stat-green {
-        border-left: 5px solid #198754;
-        background: linear-gradient(180deg, #ffffff 0%, #f7fcf9 100%);
     }
 
     .stat-orange {
@@ -287,6 +464,7 @@
         color: #2563eb;
         font-weight: 600;
         font-size: 0.95rem;
+        text-decoration: none;
     }
 
     .stat-icon {
@@ -301,12 +479,322 @@
         color: #374151;
     }
 
+    .certificate-summary {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .certificate-mini-stat {
+        min-width: 95px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        text-align: center;
+    }
+
+        .certificate-mini-stat span {
+            display: block;
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .certificate-mini-stat strong {
+            color: #111827;
+            font-size: 1.1rem;
+        }
+
+    .certificate-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .certificate-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        background: #ffffff;
+    }
+
+    .certificate-main {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .certificate-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .certificate-info {
+        min-width: 0;
+    }
+
+    .certificate-name {
+        color: #111827;
+        font-weight: 800;
+        margin-bottom: 5px;
+        word-break: break-word;
+    }
+
+    .certificate-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        color: #64748b;
+        font-size: 0.86rem;
+    }
+
+    .certificate-status-area {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+    }
+
+    .cert-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .cert-badge-success {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .cert-badge-danger {
+        background: #ffe4e6;
+        color: #be123c;
+    }
+
+    .cert-badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .cert-badge-primary {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .cert-badge-neutral {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .certificate-file-link {
+        color: #2563eb;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .empty-certificate-box {
+        text-align: center;
+        padding: 34px 20px;
+        border: 1px dashed #cbd5e1;
+        border-radius: 16px;
+        background: #f8fafc;
+    }
+
+    .empty-certificate-icon {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 12px;
+        border-radius: 18px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+    }
+
+    .empty-certificate-box h6 {
+        color: #111827;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
+
+    .empty-certificate-box p {
+        color: #64748b;
+        margin: 0;
+    }
+
+    .status-box {
+        padding: 14px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .status-title {
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .status-badge {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .quick-summary {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .quick-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px dashed #e5e7eb;
+    }
+
+        .quick-item:last-child {
+            border-bottom: none;
+        }
+
+        .quick-item span {
+            color: #6b7280;
+        }
+
+        .quick-item strong {
+            color: #111827;
+        }
+
+    .progress-dashboard-grid {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 22px;
+        align-items: center;
+    }
+
+    .progress-donut-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        border-radius: 18px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+    }
+
+    .progress-donut {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: conic-gradient(#198754 calc(var(--progress) * 1%), #e5e7eb 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .progress-donut-inner {
+        width: 108px;
+        height: 108px;
+        border-radius: 50%;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .progress-donut-inner strong {
+            color: #198754;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .progress-donut-inner span {
+            color: #64748b;
+            font-size: 0.82rem;
+            margin-top: 4px;
+        }
+
+    .donut-caption {
+        margin-top: 12px;
+        color: #475569;
+        font-weight: 700;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .progress-detail-card {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .progress-row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #334155;
+        font-size: 0.92rem;
+        margin-bottom: 6px;
+    }
+
+        .progress-row-header span {
+            font-weight: 700;
+        }
+
+        .progress-row-header strong {
+            color: #111827;
+        }
+
+    .mini-progress {
+        height: 9px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        overflow: hidden;
+    }
+
+        .mini-progress div {
+            height: 100%;
+            border-radius: 999px;
+            background: #198754;
+        }
+
     .learning-flow {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 0;
         flex-wrap: wrap;
+        padding-top: 6px;
     }
 
     .flow-step {
@@ -364,71 +852,19 @@
         box-shadow: 0 0 0 5px rgba(25, 135, 84, 0.15);
     }
 
-    .status-box {
-        padding: 14px 16px;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        background: #fff;
-    }
-
-    .status-title {
-        font-weight: 600;
-        color: #1f2937;
-    }
-
-    .status-badge {
-        display: inline-block;
-        margin-top: 8px;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 0.85rem;
-        font-weight: 700;
-    }
-
-    .quick-summary {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .quick-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px dashed #e5e7eb;
-    }
-
-        .quick-item:last-child {
-            border-bottom: none;
+    @@media (max-width: 1199.98px) {
+        .certificate-item {
+            align-items: flex-start;
+            flex-direction: column;
         }
 
-        .quick-item span {
-            color: #6b7280;
+        .certificate-status-area {
+            justify-content: flex-start;
         }
 
-        .quick-item strong {
-            color: #111827;
+        .progress-dashboard-grid {
+            grid-template-columns: 1fr;
         }
-
-    .hint-box {
-        height: 100%;
-        padding: 16px;
-        border-radius: 14px;
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
-    }
-
-    .hint-title {
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: #111827;
-    }
-
-    .hint-text {
-        color: #6b7280;
-        font-size: 0.95rem;
-        line-height: 1.6;
     }
 
     @@media (max-width: 991.98px) {

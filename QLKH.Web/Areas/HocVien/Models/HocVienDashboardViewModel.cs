@@ -6,4 +6,4 @@
         public int TotalCertificates { get; set; }
         public int TotalActiveCertificates { get; set; }
     }
-}
+} 
