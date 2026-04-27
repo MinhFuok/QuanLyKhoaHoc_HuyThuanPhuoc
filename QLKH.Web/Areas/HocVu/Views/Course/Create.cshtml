@@ -1,67 +1,67 @@
-@model QLKH.Domain.Entities.Course
+﻿@model QLKH.Domain.Entities.Course
 
 @{
-    ViewData["Title"] = "Thêm khóa học";
+    ViewData["Title"] = "ThÃªm khÃ³a há»c";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
 }
 
 <div class="course-page course-form">
 
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">KHÓA HỌC MỚI</h1>
+            <h1 class="cp-title">KHÃ“A Há»ŒC Má»šI</h1>
         </div>
-        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">â†Quay láº¡i</a>
     </div>
 
     <div class="cp-form-card">
         <form asp-area="HocVu" asp-controller="Course" asp-action="Create" method="post" id="courseForm">
             <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
-            <div class="cp-form-group-label">Thông tin cơ bản</div>
+            <div class="cp-form-group-label">ThÃ´ng tin cÆ¡ báº£n</div>
             <div class="cp-form-row">
                 <div class="cp-field">
-                    <label asp-for="CourseCode" class="cp-label">Mã khóa học</label>
+                    <label asp-for="CourseCode" class="cp-label">MÃ£ khÃ³a há»c</label>
                     <input asp-for="CourseCode" class="cp-input" readonly />
                     <span asp-validation-for="CourseCode" class="text-danger"></span>
                 </div>
                 <div class="cp-field">
-                    <label asp-for="CourseName" class="cp-label">Tên khóa học</label>
+                    <label asp-for="CourseName" class="cp-label">TÃªn khÃ³a há»c</label>
                     <input asp-for="CourseName" class="cp-input" />
                     <span asp-validation-for="CourseName" class="cp-field-error"></span>
                 </div>
             </div>
 
             <div class="cp-field">
-                <label asp-for="Description" class="cp-label">Mô tả</label>
+                <label asp-for="Description" class="cp-label">MÃ´ táº£</label>
                 <textarea asp-for="Description" class="cp-input cp-textarea" rows="4"></textarea>
             </div>
 
-            <div class="cp-form-group-label">Thông tin chi tiết</div>
+            <div class="cp-form-group-label">ThÃ´ng tin chi tiáº¿t</div>
             <div class="cp-form-row">
                 <div class="cp-field">
-                    <label asp-for="DurationInMonths" class="cp-label">Thời lượng (tháng)</label>
+                    <label asp-for="DurationInMonths" class="cp-label">Thá»i lÆ°á»£ng (thÃ¡ng)</label>
                     <input asp-for="DurationInMonths" class="cp-input" type="number" min="1" />
                     <span asp-validation-for="DurationInMonths" class="cp-field-error"></span>
                 </div>
                 <div class="cp-field">
-                    <label asp-for="Fee" class="cp-label">Học phí (₫)</label>
+                    <label asp-for="Fee" class="cp-label">Há»c phÃ­ (â‚«)</label>
                     <input asp-for="Fee" class="cp-input" type="number" min="0" />
                     <span asp-validation-for="Fee" class="cp-field-error"></span>
                 </div>
                 <div class="cp-field">
-                    <label asp-for="Status" class="cp-label">Trạng thái</label>
+                    <label asp-for="Status" class="cp-label">Tráº¡ng thÃ¡i</label>
                     <select asp-for="Status" class="cp-input cp-select" asp-items="Html.GetEnumSelectList<QLKH.Domain.Enums.CourseStatus>()"></select>
                 </div>
             </div>
 
             <div class="cp-form-actions">
-                <button type="submit" class="cp-btn cp-btn--primary">Xác nhận</button>
-                <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
+                <button type="submit" class="cp-btn cp-btn--primary">XÃ¡c nháº­n</button>
+                <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">Há»§y</a>
             </div>
 
         </form>
@@ -73,5 +73,6 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+    <script src="~/js/HocVuProfession.js" asp-append-version="true"></script>
 }
+

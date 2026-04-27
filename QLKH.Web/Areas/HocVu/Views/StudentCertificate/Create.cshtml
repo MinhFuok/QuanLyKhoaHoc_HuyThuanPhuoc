@@ -1,25 +1,25 @@
-@model QLKH.Web.Areas.HocVu.Models.StudentCertificateViewModel
+﻿@model QLKH.Web.Areas.HocVu.Models.StudentCertificateViewModel
 
 @{
-    ViewData["Title"] = "Thêm chứng chỉ học viên";
+    ViewData["Title"] = "ThÃªm chá»©ng chá»‰ há»c viÃªn";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
 }
 
 <div class="course-page admin-profession-page student-certificate-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">CHỨNG CHỈ MỚI</h1>
+            <h1 class="cp-title">CHá»¨NG CHá»ˆ Má»šI</h1>
         </div>
 
         <a asp-area="HocVu"
            asp-controller="StudentCertificate"
            asp-action="Index"
            class="cp-btn cp-btn--ghost">
-            ←Quay lại
+            â†Quay láº¡i
         </a>
     </div>
 
@@ -30,7 +30,7 @@
           enctype="multipart/form-data"
           id="studentCertificateForm"
           data-admin-form
-          data-loading-text="Đang lưu chứng chỉ..."
+          data-loading-text="Äang lÆ°u chá»©ng chá»‰..."
           class="cp-form-card">
 
         @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
@@ -38,12 +38,12 @@
             <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
         }
 
-        <div class="cp-form-group-label">Thông tin chính</div>
+        <div class="cp-form-group-label">ThÃ´ng tin chÃ­nh</div>
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="StudentId" class="cp-label"></label>
                 <select asp-for="StudentId" asp-items="Model.StudentOptions" class="cp-input cp-select">
-                    <option value="">-- Chọn học viên --</option>
+                    <option value="">-- Chá»n há»c viÃªn --</option>
                 </select>
                 <span asp-validation-for="StudentId" class="cp-field-error"></span>
             </div>
@@ -67,10 +67,10 @@
                 <span asp-validation-for="IssuedDate" class="cp-field-error"></span>
             </div>
             <div class="cp-field">
-                <label asp-for="ExpiryDate" class="cp-label">Ngày hết hạn</label>
+                <label asp-for="ExpiryDate" class="cp-label">NgÃ y háº¿t háº¡n</label>
                 <input asp-for="ExpiryDate" type="date" class="cp-input" />
                 <span asp-validation-for="ExpiryDate" class="cp-field-error"></span>
-                <small class="text-muted">Để trống nếu không thời hạn.</small>
+                <small class="text-muted">Äá»ƒ trá»‘ng náº¿u khÃ´ng thá»i háº¡n.</small>
             </div>
             <div class="cp-field">
                 <label asp-for="IssuedBy" class="cp-label"></label>
@@ -87,38 +87,38 @@
                        class="cp-file-input"
                        data-cp-file-input
                        data-cp-file-target="studentCertificateFileName" />
-                <label asp-for="EvidenceFile" class="cp-btn cp-btn--ghost">Chọn file</label>
-                <span id="studentCertificateFileName" class="cp-file-name">Chưa chọn file nào</span>
+                <label asp-for="EvidenceFile" class="cp-btn cp-btn--ghost">Chá»n file</label>
+                <span id="studentCertificateFileName" class="cp-file-name">ChÆ°a chá»n file nÃ o</span>
             </div>
-            <span class="cp-form-hint">Chấp nhận file `.jpg`, `.jpeg`, `.png`, `.pdf`.</span>
+            <span class="cp-form-hint">Cháº¥p nháº­n file `.jpg`, `.jpeg`, `.png`, `.pdf`.</span>
             <span asp-validation-for="EvidenceFile" class="cp-field-error"></span>
         </div>
 
         <div class="cp-field cp-field--full">
             <label asp-for="Note" class="cp-label"></label>
-            <textarea asp-for="Note" class="cp-input cp-textarea" rows="4" placeholder="Ghi chú thêm về chứng chỉ, kết quả hoặc tình trạng xác minh"></textarea>
+            <textarea asp-for="Note" class="cp-input cp-textarea" rows="4" placeholder="Ghi chÃº thÃªm vá» chá»©ng chá»‰, káº¿t quáº£ hoáº·c tÃ¬nh tráº¡ng xÃ¡c minh"></textarea>
             <span asp-validation-for="Note" class="cp-field-error"></span>
         </div>
 
-        <div class="cp-form-group-label">Xác nhận</div>
+        <div class="cp-form-group-label">XÃ¡c nháº­n</div>
         <div class="cp-switch-card">
             <label class="cp-switch">
                 <input asp-for="IsApproved" class="cp-switch-input" />
                 <span class="cp-switch-slider"></span>
                 <span class="cp-switch-content">
-                    <span class="cp-switch-title">Đã xác nhận</span>
-                    <span class="cp-switch-subtitle">Bật nếu chứng chỉ đã được kiểm tra và duyệt.</span>
+                    <span class="cp-switch-title">ÄÃ£ xÃ¡c nháº­n</span>
+                    <span class="cp-switch-subtitle">Báº­t náº¿u chá»©ng chá»‰ Ä‘Ã£ Ä‘Æ°á»£c kiá»ƒm tra vÃ  duyá»‡t.</span>
                 </span>
             </label>
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Xác nhận</button>
+            <button type="submit" class="cp-btn cp-btn--primary">XÃ¡c nháº­n</button>
             <a asp-area="HocVu"
                asp-controller="StudentCertificate"
                asp-action="Index"
                class="cp-btn cp-btn--ghost">
-                Hủy
+                Há»§y
             </a>
         </div>
     </form>
@@ -126,5 +126,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+    <script src="~/js/HocVuProfession.js" asp-append-version="true"></script>
 }

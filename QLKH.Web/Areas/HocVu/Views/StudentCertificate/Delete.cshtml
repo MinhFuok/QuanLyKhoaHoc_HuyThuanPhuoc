@@ -1,19 +1,19 @@
-@model QLKH.Domain.Entities.StudentCertificate
+﻿@model QLKH.Domain.Entities.StudentCertificate
 
 @{
-    ViewData["Title"] = "Xóa chứng chỉ học viên";
+    ViewData["Title"] = "XÃ³a chá»©ng chá»‰ há»c viÃªn";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
 }
 
 <div class="course-page admin-profession-page student-certificate-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa chứng chỉ học viên</h1>
-            <p class="cp-subtitle">Kiểm tra lại toàn bộ thông tin trước khi xác nhận xóa chứng chỉ.</p>
+            <h1 class="cp-title">XÃ³a chá»©ng chá»‰ há»c viÃªn</h1>
+            <p class="cp-subtitle">Kiá»ƒm tra láº¡i toÃ n bá»™ thÃ´ng tin trÆ°á»›c khi xÃ¡c nháº­n xÃ³a chá»©ng chá»‰.</p>
         </div>
     </div>
 
@@ -21,74 +21,74 @@
         <div class="cp-delete-warning">
             <div class="cp-delete-warning-icon">!</div>
             <div>
-                <strong>Bạn có chắc muốn xóa chứng chỉ này không?</strong>
-                <p>Hành động này sẽ xóa hồ sơ chứng chỉ và liên kết file minh chứng hiện tại.</p>
+                <strong>Báº¡n cÃ³ cháº¯c muá»‘n xÃ³a chá»©ng chá»‰ nÃ y khÃ´ng?</strong>
+                <p>HÃ nh Ä‘á»™ng nÃ y sáº½ xÃ³a há»“ sÆ¡ chá»©ng chá»‰ vÃ  liÃªn káº¿t file minh chá»©ng hiá»‡n táº¡i.</p>
             </div>
         </div>
 
         <div class="cp-detail-body">
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Học viên</div>
+                <div class="cp-detail-label">Há»c viÃªn</div>
                 <div class="cp-detail-value"><strong>@Model.Student?.FullName</strong></div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Tên chứng chỉ</div>
+                <div class="cp-detail-label">TÃªn chá»©ng chá»‰</div>
                 <div class="cp-detail-value">@Model.CertificateName</div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Mã/Số chứng chỉ</div>
-                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.CertificateCode) ? Model.CertificateCode : "Chưa có")</div>
+                <div class="cp-detail-label">MÃ£/Sá»‘ chá»©ng chá»‰</div>
+                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.CertificateCode) ? Model.CertificateCode : "ChÆ°a cÃ³")</div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Ngày cấp</div>
-                <div class="cp-detail-value">@(Model.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</div>
+                <div class="cp-detail-label">NgÃ y cáº¥p</div>
+                <div class="cp-detail-value">@(Model.IssuedDate?.ToString("dd/MM/yyyy") ?? "ChÆ°a cÃ³")</div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Ngày hết hạn</div>
+                <div class="cp-detail-label">NgÃ y háº¿t háº¡n</div>
                 <div class="cp-detail-value">
-                    @(Model.ExpiryDate.HasValue? Model.ExpiryDate.Value.ToString("dd/MM/yyyy") : "Không thời hạn")
+                    @(Model.ExpiryDate.HasValue? Model.ExpiryDate.Value.ToString("dd/MM/yyyy") : "KhÃ´ng thá»i háº¡n")
                 </div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Đơn vị cấp</div>
-                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.IssuedBy) ? Model.IssuedBy : "Chưa có")</div>
+                <div class="cp-detail-label">ÄÆ¡n vá»‹ cáº¥p</div>
+                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.IssuedBy) ? Model.IssuedBy : "ChÆ°a cÃ³")</div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Trạng thái</div>
+                <div class="cp-detail-label">Tráº¡ng thÃ¡i</div>
                 <div class="cp-detail-value">
                     <div class="cp-status-surface cp-status-surface--@(Model.IsApproved ? "confirmed" : "pending")">
                         <span class="cp-badge cp-badge--@(Model.IsApproved ? "confirmed" : "pending")">
-                            @(Model.IsApproved ? "Đã xác nhận" : "Chờ xác nhận")
+                            @(Model.IsApproved ? "ÄÃ£ xÃ¡c nháº­n" : "Chá» xÃ¡c nháº­n")
                         </span>
                     </div>
                 </div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Minh chứng</div>
+                <div class="cp-detail-label">Minh chá»©ng</div>
                 <div class="cp-detail-value">
                     @if (!string.IsNullOrWhiteSpace(Model.EvidenceFilePath))
                     {
                         <a href="@Model.EvidenceFilePath" target="_blank" rel="noopener noreferrer" class="cp-file-link">
-                            Xem file minh chứng
+                            Xem file minh chá»©ng
                         </a>
                     }
                     else
                     {
-                        <span class="cp-muted">Không có file minh chứng</span>
+                        <span class="cp-muted">KhÃ´ng cÃ³ file minh chá»©ng</span>
                     }
                 </div>
             </div>
 
             <div class="cp-detail-row">
-                <div class="cp-detail-label">Ghi chú</div>
-                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.Note) ? Model.Note : "Không có ghi chú")</div>
+                <div class="cp-detail-label">Ghi chÃº</div>
+                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.Note) ? Model.Note : "KhÃ´ng cÃ³ ghi chÃº")</div>
             </div>
         </div>
 
@@ -99,16 +99,16 @@
               method="post"
               id="deleteForm"
               data-delete-form
-              data-delete-label="chứng chỉ này">
+              data-delete-label="chá»©ng chá»‰ nÃ y">
             @Html.AntiForgeryToken()
 
             <div class="cp-delete-actions">
-                <button type="submit" class="cp-btn cp-btn--danger">Xóa chứng chỉ</button>
+                <button type="submit" class="cp-btn cp-btn--danger">XÃ³a chá»©ng chá»‰</button>
                 <a asp-area="HocVu"
                    asp-controller="StudentCertificate"
                    asp-action="Index"
                    class="cp-btn cp-btn--ghost">
-                    Quay lại
+                    Quay láº¡i
                 </a>
             </div>
         </form>
@@ -116,5 +116,6 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
+    <script src="~/js/HocVuProfession.js" asp-append-version="true"></script>
 }
+
