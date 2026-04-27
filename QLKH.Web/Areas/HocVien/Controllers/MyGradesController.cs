@@ -16,7 +16,7 @@ namespace QLKH.Web.Areas.HocVien.Controllers
             _submissionService = submissionService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? className)
         {
             var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -31,6 +31,8 @@ namespace QLKH.Web.Areas.HocVien.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.SelectedClassName = className ?? string.Empty;
 
             return View(model);
         }

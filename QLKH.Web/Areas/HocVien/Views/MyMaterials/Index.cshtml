@@ -1,10 +1,16 @@
 ﻿@model IEnumerable<QLKH.Domain.Entities.ClassMaterial>
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
     ViewData["Title"] = "Tài liệu lớp tôi học";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var materials = Model?.ToList() ?? new List<QLKH.Domain.Entities.ClassMaterial>();
+
+    var classRoomOptions = ViewBag.ClassRoomOptions as List<SelectListItem>
+        ?? new List<SelectListItem>();
+
+    int? selectedClassRoomId = ViewBag.SelectedClassRoomId as int?;
 
     var totalMaterials = materials.Count;
     var materialsWithFile = materials.Count(x => !string.IsNullOrWhiteSpace(x.FilePath));
@@ -95,6 +101,42 @@
         </div>
 
         <div class="card-body p-4">
+            <form asp-area="HocVien"
+                  asp-controller="MyMaterials"
+                  asp-action="Index"
+                  method="get"
+                  class="material-filter-form mb-4">
+
+                <div class="material-filter-field">
+                    <select name="classRoomId" class="form-select material-class-select">
+                        <option value="">-- Tất cả lớp --</option>
+
+                        @foreach (var option in classRoomOptions)
+                        {
+                            var isSelected = selectedClassRoomId.HasValue &&
+                            option.Value == selectedClassRoomId.Value.ToString();
+
+                            <option value="@option.Value" selected="@isSelected">
+                                @option.Text
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="material-filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Lọc
+                    </button>
+
+                    <a asp-area="HocVien"
+                       asp-controller="MyMaterials"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        X
+                    </a>
+                </div>
+            </form>
+
             @if (!materials.Any())
             {
                 <div class="empty-state">
@@ -121,11 +163,11 @@
 
                         <thead>
                             <tr>
-                                <th>Tài liệu</th>
-                                <th>Lớp</th>
-                                <th>Khóa học</th>
-                                <th>Giáo viên</th>
-                                <th>Trạng thái</th>
+                                <th class="text-center">Tài liệu</th>
+                                <th class="text-center">Lớp</th>
+                                <th class="text-center">Khóa học</th>
+                                <th class="text-center">Giáo viên</th>
+                                <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
@@ -186,7 +228,7 @@
                                                 <a href="@item.FilePath"
                                                    target="_blank"
                                                    class="btn btn-sm btn-primary">
-                                                    Mở
+                                                    Mở tài liệu
                                                 </a>
                                             }
                                             else
@@ -567,6 +609,58 @@
             .material-summary {
                 justify-content: flex-start;
             }
+        }
+
+        .material-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .material-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .material-class-select {
+            min-height: 42px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .material-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .material-filter-actions .btn {
+                min-height: 42px;
+                border-radius: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
+        @@media (max-width: 767.98px) {
+            .material-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .material-filter-actions {
+                flex-direction: column;
+            }
+
+                .material-filter-actions .btn {
+                    width: 100%;
+                }
         }
     </style>
 }

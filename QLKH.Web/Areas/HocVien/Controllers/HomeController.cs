@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QLKH.Application.Interfaces.Services;
+using QLKH.Domain.Entities;
 using QLKH.Infrastructure.Identity;
 using QLKH.Web.Areas.HocVien.Models;
 
@@ -32,24 +33,41 @@ namespace QLKH.Web.Areas.HocVien.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
+                ViewBag.MyCertificates = new List<StudentCertificate>();
                 return View(model);
             }
+
+            model.FullName = user.FullName ?? user.Email ?? "Học viên";
 
             var students = await _studentService.GetAllAsync();
             var student = students.FirstOrDefault(x => x.Email == user.Email);
 
-            if (student != null)
+            if (student == null)
             {
-                model.FullName = student.FullName;
+                ViewBag.MyCertificates = new List<StudentCertificate>();
+                return View(model);
+            }
 
-                var certificates = await _studentCertificateService.GetByStudentIdAsync(student.Id);
-                model.TotalCertificates = certificates.Count();
-                model.TotalActiveCertificates = certificates.Count(x => x.IsApproved);
-            }
-            else
-            {
-                model.FullName = user.FullName ?? user.Email ?? "Học viên";
-            }
+            model.FullName = student.FullName;
+
+            var certificates = (await _studentCertificateService.GetByStudentIdAsync(student.Id))
+                .OrderByDescending(x => x.IssuedDate)
+                .ThenByDescending(x => x.CreatedAt)
+                .ToList();
+
+            model.TotalCertificates = certificates.Count;
+
+            model.TotalActiveCertificates = certificates.Count(x =>
+                x.IsApproved &&
+                (!x.ExpiryDate.HasValue || x.ExpiryDate.Value.Date >= DateTime.Today));
+
+            ViewBag.MyCertificates = certificates;
+
+            ViewBag.TotalExpiredCertificates = certificates.Count(x =>
+                x.ExpiryDate.HasValue &&
+                x.ExpiryDate.Value.Date < DateTime.Today);
+
+            ViewBag.TotalApprovedCertificates = certificates.Count(x => x.IsApproved);
 
             return View(model);
         }
