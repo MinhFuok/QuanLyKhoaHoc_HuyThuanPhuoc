@@ -11,9 +11,10 @@
 <div class="course-page admin-profession-page student-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Chi tiết học viên</h1>
-            <p class="cp-subtitle">Thông tin hồ sơ của học viên <strong>@Model.StudentCode</strong>.</p>
+            <h1 class="cp-title">THÔNG TIN CHI TIẾT</h1>
         </div>
+
+        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <div class="cp-detail-card">
@@ -80,8 +81,8 @@
         </div>
 
         <div class="cp-detail-footer">
-            <a asp-area="HocVu" asp-controller="Student" asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">Sửa</a>
-            <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <a asp-area="HocVu" asp-controller="Student" asp-action="Edit" asp-route-id="@Model.Id" class="cp-btn cp-btn--warning">Chỉnh sửa</a>
+            <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </div>
 </div>

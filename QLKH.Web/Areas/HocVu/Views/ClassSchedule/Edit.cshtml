@@ -1,8 +1,7 @@
 ﻿@model QLKH.Application.ViewModels.ClassScheduleFormViewModel
 
 @{
-    ViewData["Title"] = "Cập nhật lịch học";
-    var classRoomMetaJson = ViewBag.ClassRoomMetaJson as string ?? "[]";
+    ViewData["Title"] = "Cập nhật buổi học";
 }
 
 @section Styles {
@@ -12,11 +11,10 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Cập nhật lịch học</h1>
-            <p class="cp-subtitle">Chỉnh sửa một buổi học cụ thể với giao diện đồng bộ cùng form tạo lịch.</p>
+            <h1 class="cp-title">CẬP NHẬT BUỔI HỌC</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Edit" method="post" class="cp-form-card">
@@ -32,14 +30,12 @@
                     <option value="">-- Chọn lớp học --</option>
                 </select>
                 <span asp-validation-for="ClassRoomId" class="cp-field-error"></span>
-                <small id="classDateRangeText" class="text-muted"></small>
             </div>
 
             <div class="cp-field">
                 <label asp-for="StudyDate" class="cp-label"></label>
                 <input asp-for="StudyDate" type="date" class="cp-input" id="studyDateInput" />
                 <span asp-validation-for="StudyDate" class="cp-field-error"></span>
-                <small id="weekDayText" class="text-muted"></small>
             </div>
         </div>
 
@@ -73,61 +69,9 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu thay đổi</button>
-            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--primary">Cập nhật thay đổi</button>
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
-
-    <script>
-        const classRoomMeta = @Html.Raw(classRoomMetaJson);
-        const classRoomSelect = document.getElementById('classRoomSelect');
-        const studyDateInput = document.getElementById('studyDateInput');
-        const classDateRangeText = document.getElementById('classDateRangeText');
-        const weekDayText = document.getElementById('weekDayText');
-
-        function updateClassRange() {
-            const selectedId = parseInt(classRoomSelect.value);
-            const item = classRoomMeta.find(x => x.id === selectedId);
-
-            if (!item) {
-                classDateRangeText.textContent = '';
-                studyDateInput.min = '';
-                studyDateInput.max = '';
-                return;
-            }
-
-            classDateRangeText.textContent = `Thời gian lớp: ${formatDate(item.startDate)} - ${formatDate(item.endDate)}`;
-            studyDateInput.min = item.startDate;
-            studyDateInput.max = item.endDate;
-        }
-
-        function updateWeekDay() {
-            if (!studyDateInput.value) {
-                weekDayText.textContent = '';
-                return;
-            }
-
-            const date = new Date(studyDateInput.value + 'T00:00:00');
-            const weekdays = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
-            weekDayText.textContent = `Thứ trong tuần: ${weekdays[date.getDay()]}`;
-        }
-
-        function formatDate(yyyyMMdd) {
-            const [y, m, d] = yyyyMMdd.split('-');
-            return `${d}/${m}/${y}`;
-        }
-
-        classRoomSelect.addEventListener('change', updateClassRange);
-        studyDateInput.addEventListener('change', updateWeekDay);
-
-        updateClassRange();
-        updateWeekDay();
-    </script>
-}
+<script src="/js/AdminProfession.js"></script>

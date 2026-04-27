@@ -25,9 +25,30 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword)
         {
-            var certificates = await _studentCertificateService.GetAllAsync();
+            var certificates = (await _studentCertificateService.GetAllAsync()).ToList();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                var lowerKeyword = keyword.Trim().ToLower();
+
+                certificates = certificates
+                    .Where(x =>
+                        (x.Student != null &&
+                         !string.IsNullOrWhiteSpace(x.Student.FullName) &&
+                         x.Student.FullName.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.CertificateName) &&
+                         x.CertificateName.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.CertificateCode) &&
+                         x.CertificateCode.ToLower().Contains(lowerKeyword)))
+                    .ToList();
+            }
+
+            ViewBag.Keyword = keyword ?? string.Empty;
+
             return View(certificates);
         }
 
@@ -91,6 +112,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 CertificateName = model.CertificateName,
                 CertificateCode = model.CertificateCode,
                 IssuedDate = model.IssuedDate,
+                ExpiryDate = model.ExpiryDate,
                 IssuedBy = model.IssuedBy,
                 Note = model.Note,
                 EvidenceFilePath = savedFilePath,
@@ -128,6 +150,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 CertificateName = entity.CertificateName,
                 CertificateCode = entity.CertificateCode,
                 IssuedDate = entity.IssuedDate,
+                ExpiryDate = entity.ExpiryDate,
                 IssuedBy = entity.IssuedBy,
                 Note = entity.Note,
                 ExistingEvidenceFilePath = entity.EvidenceFilePath,
@@ -161,6 +184,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             entity.CertificateName = model.CertificateName;
             entity.CertificateCode = model.CertificateCode;
             entity.IssuedDate = model.IssuedDate;
+            entity.ExpiryDate = model.ExpiryDate;
             entity.IssuedBy = model.IssuedBy;
             entity.Note = model.Note;
             entity.IsApproved = model.IsApproved;
@@ -209,7 +233,17 @@ namespace QLKH.Web.Areas.HocVu.Controllers
                 return View(model);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var entity = await _studentCertificateService.GetByIdAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
 
+            return View(entity);
+        }
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

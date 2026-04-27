@@ -40,9 +40,33 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             return $"KH{(number + 1):D3}";
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword, string? feeSort)
         {
             var courses = await _courseService.GetAllAsync();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                var lowerKeyword = keyword.Trim().ToLower();
+
+                courses = courses
+                    .Where(x =>
+                        (!string.IsNullOrWhiteSpace(x.CourseName) &&
+                         x.CourseName.ToLower().Contains(lowerKeyword)) ||
+                        (!string.IsNullOrWhiteSpace(x.CourseCode) &&
+                         x.CourseCode.ToLower().Contains(lowerKeyword)))
+                    .ToList();
+            }
+
+            courses = feeSort switch
+            {
+                "fee_asc" => courses.OrderBy(x => x.Fee).ToList(),
+                "fee_desc" => courses.OrderByDescending(x => x.Fee).ToList(),
+                _ => courses.OrderBy(x => x.CourseCode).ToList()
+            };
+
+            ViewBag.Keyword = keyword;
+            ViewBag.FeeSort = feeSort;
+
             return View(courses);
         }
 

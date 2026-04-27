@@ -3,7 +3,7 @@
 @using System.Text.Json
 
 @{
-    ViewData["Title"] = "Sửa học viên";
+    ViewData["Title"] = "Cập nhật học viên";
     var studentAccountMetaJson = JsonSerializer.Serialize(ViewBag.StudentAccountMeta ?? new List<object>());
 }
 
@@ -14,11 +14,10 @@
 <div class="course-page admin-profession-page student-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Sửa học viên</h1>
-            <p class="cp-subtitle">Cập nhật hồ sơ học viên <strong>@Model.StudentCode</strong>.</p>
+            <h1 class="cp-title">CẬP NHẬT HỌC VIÊN</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="Student" asp-action="Edit" method="post" class="cp-form-card">
@@ -91,8 +90,8 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật</button>
-            <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật thay đổi</button>
+            <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>

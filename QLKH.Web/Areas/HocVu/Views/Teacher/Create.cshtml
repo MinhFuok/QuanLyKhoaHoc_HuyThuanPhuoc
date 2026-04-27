@@ -2,7 +2,7 @@
 @using System.Text.Json
 
 @{
-    ViewData["Title"] = "Thêm giáo viên";
+    ViewData["Title"] = "Thêm giảng viên";
     var teacherAccountMetaJson = JsonSerializer.Serialize(ViewBag.TeacherAccountMeta ?? new List<object>());
 }
 
@@ -13,11 +13,9 @@
 <div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm giáo viên</h1>
-            <p class="cp-subtitle">Tạo hồ sơ giáo viên và liên kết với tài khoản do Admin đã tạo trước đó.</p>
+            <h1 class="cp-title">GIẢNG VIÊN MỚI</h1>
         </div>
-
-        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="Teacher" asp-action="Create" method="post" class="cp-form-card">
@@ -37,35 +35,27 @@
             </div>
         </div>
 
-        <div class="cp-form-group-label">Thông tin lấy từ tài khoản</div>
-        <div class="cp-form-row">
-            <div class="cp-field">
-                <label asp-for="FullName" class="cp-label"></label>
-                <input asp-for="FullName" class="cp-input" id="fullNameInput" readonly />
-                <span asp-validation-for="FullName" class="cp-field-error"></span>
-            </div>
-
-            <div class="cp-field">
-                <label asp-for="Email" class="cp-label"></label>
-                <input asp-for="Email" class="cp-input" id="emailInput" readonly />
-                <span asp-validation-for="Email" class="cp-field-error"></span>
-            </div>
-        </div>
-
         <div class="cp-form-group-label">Thông tin giáo viên</div>
         <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="TeacherCode" class="cp-label"></label>
                 <input asp-for="TeacherCode" class="cp-input" readonly />
-                <small class="text-muted">Mã giáo viên được hệ thống tự tạo.</small>
                 <span asp-validation-for="TeacherCode" class="cp-field-error"></span>
             </div>
-
+            <div class="cp-field">
+                <label asp-for="FullName" class="cp-label"></label>
+                <input asp-for="FullName" class="cp-input" id="fullNameInput" readonly />
+                <span asp-validation-for="FullName" class="cp-field-error"></span>
+            </div>
+            <div class="cp-field">
+                <label asp-for="Email" class="cp-label"></label>
+                <input asp-for="Email" class="cp-input" id="emailInput" readonly />
+                <span asp-validation-for="Email" class="cp-field-error"></span>
+            </div>
             <div class="cp-field">
                 <label asp-for="PhoneNumber" class="cp-label"></label>
                 <input asp-for="PhoneNumber"
                        class="cp-input"
-                       placeholder="VD: 0900000000"
                        maxlength="10"
                        inputmode="numeric"
                        pattern="\d{10}"
@@ -78,14 +68,14 @@
         <div class="cp-form-row">
             <div class="cp-field" style="flex:0 0 100%; max-width:100%;">
                 <label asp-for="Specialization" class="cp-label"></label>
-                <input asp-for="Specialization" class="cp-input" placeholder="VD: Lập trình Web, TOEIC, IELTS..." />
+                <input asp-for="Specialization" class="cp-input"/>
                 <span asp-validation-for="Specialization" class="cp-field-error"></span>
             </div>
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu giáo viên</button>
-            <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--primary">Xác nhận</button>
+            <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>

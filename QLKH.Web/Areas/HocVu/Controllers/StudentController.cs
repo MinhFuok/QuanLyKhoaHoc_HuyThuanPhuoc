@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLKH.Application.Interfaces.Services;
+using QLKH.Application.Services;
 using QLKH.Application.ViewModels;
 using QLKH.Domain.Entities;
 using QLKH.Infrastructure.Identity;
@@ -25,9 +26,35 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword)
         {
-            var students = await _studentService.GetAllAsync();
+            var students = (await _studentService.GetAllAsync()).ToList();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                var lowerKeyword = keyword.Trim().ToLower();
+
+                students = students
+                    .Where(x =>
+                        (!string.IsNullOrWhiteSpace(x.StudentCode) &&
+                         x.StudentCode.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.FullName) &&
+                         x.FullName.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.Email) &&
+                         x.Email.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.PhoneNumber) &&
+                         x.PhoneNumber.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.Address) &&
+                         x.Address.ToLower().Contains(lowerKeyword)))
+                    .ToList();
+            }
+
+            ViewBag.Keyword = keyword ?? string.Empty;
+
             return View(students);
         }
 

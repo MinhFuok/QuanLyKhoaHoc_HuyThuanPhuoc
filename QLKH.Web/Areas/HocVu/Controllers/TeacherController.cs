@@ -28,28 +28,66 @@ namespace QLKH.Web.Areas.HocVu.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword, string? ratingSort)
         {
-            var teachers = await _teacherService.GetAllAsync();
-            var reviews = await _teacherReviewService.GetAllAsync();
+            var teachers = (await _teacherService.GetAllAsync()).ToList();
 
-            var reviewList = reviews
-                .Where(x => x.TeacherId > 0)
-                .ToList();
+            var reviews = (await _teacherReviewService.GetAllAsync()).ToList();
 
-            ViewBag.TeacherAverageRatings = reviewList
+            var averageRatings = reviews
                 .GroupBy(x => x.TeacherId)
                 .ToDictionary(
                     g => g.Key,
-                    g => Math.Round(g.Average(x => x.Rating), 2)
+                    g => g.Average(x => x.Rating)
                 );
 
-            ViewBag.TeacherReviewCounts = reviewList
+            var reviewCounts = reviews
                 .GroupBy(x => x.TeacherId)
                 .ToDictionary(
                     g => g.Key,
                     g => g.Count()
                 );
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                var lowerKeyword = keyword.Trim().ToLower();
+
+                teachers = teachers
+                    .Where(x =>
+                        (!string.IsNullOrWhiteSpace(x.TeacherCode) &&
+                         x.TeacherCode.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.FullName) &&
+                         x.FullName.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.Specialization) &&
+                         x.Specialization.ToLower().Contains(lowerKeyword)))
+                    .ToList();
+            }
+
+            teachers = ratingSort switch
+            {
+                "rating_asc" => teachers
+                    .OrderBy(x => averageRatings.ContainsKey(x.Id) ? 0 : 1)
+                    .ThenBy(x => averageRatings.ContainsKey(x.Id) ? averageRatings[x.Id] : double.MaxValue)
+                    .ThenBy(x => x.FullName)
+                    .ToList(),
+
+                "rating_desc" => teachers
+                    .OrderBy(x => averageRatings.ContainsKey(x.Id) ? 0 : 1)
+                    .ThenByDescending(x => averageRatings.ContainsKey(x.Id) ? averageRatings[x.Id] : double.MinValue)
+                    .ThenBy(x => x.FullName)
+                    .ToList(),
+
+                _ => teachers
+                    .OrderBy(x => x.TeacherCode)
+                    .ToList()
+            };
+
+            ViewBag.Keyword = keyword;
+            ViewBag.RatingSort = ratingSort;
+            ViewBag.TeacherAverageRatings = averageRatings;
+            ViewBag.TeacherReviewCounts = reviewCounts;
 
             return View(teachers);
         }

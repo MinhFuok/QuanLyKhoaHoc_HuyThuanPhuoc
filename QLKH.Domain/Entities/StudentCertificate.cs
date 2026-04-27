@@ -36,7 +36,7 @@ namespace QLKH.Domain.Entities
         public bool IsApproved { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
+        public DateTime? ExpiryDate { get; set; }
         public Student? Student { get; set; }
     }
 }

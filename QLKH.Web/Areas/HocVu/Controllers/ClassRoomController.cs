@@ -49,9 +49,34 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             return $"LH{(number + 1):D3}";
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword)
         {
             var classRooms = await _classRoomService.GetAllAsync();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                var lowerKeyword = keyword.Trim().ToLower();
+
+                classRooms = classRooms
+                    .Where(x =>
+                        (!string.IsNullOrWhiteSpace(x.ClassCode) &&
+                         x.ClassCode.ToLower().Contains(lowerKeyword)) ||
+
+                        (!string.IsNullOrWhiteSpace(x.ClassName) &&
+                         x.ClassName.ToLower().Contains(lowerKeyword)) ||
+
+                        (x.Course != null &&
+                         !string.IsNullOrWhiteSpace(x.Course.CourseName) &&
+                         x.Course.CourseName.ToLower().Contains(lowerKeyword)) ||
+
+                        (x.Teacher != null &&
+                         !string.IsNullOrWhiteSpace(x.Teacher.FullName) &&
+                         x.Teacher.FullName.ToLower().Contains(lowerKeyword)))
+                    .ToList();
+            }
+
+            ViewBag.Keyword = keyword;
+
             return View(classRooms);
         }
         public async Task<IActionResult> Students(int id)

@@ -5,18 +5,26 @@
     ViewData["Title"] = "Bảng điểm lớp";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
-    var totalStudents = Model?.Students?.Count ?? 0;
-    var totalAssignments = Model?.Assignments?.Count ?? 0;
+    var students = (Model?.Students
+        ?? Enumerable.Empty<QLKH.Application.ViewModels.TeacherGradeStudentRowViewModel>())
+        .ToList();
+
+    var assignments = (Model?.Assignments
+        ?? Enumerable.Empty<QLKH.Application.ViewModels.TeacherGradeAssignmentViewModel>())
+        .ToList();
+
+    var totalStudents = students.Count;
+    var totalAssignments = assignments.Count;
 
     var totalGradeCells = totalStudents * totalAssignments;
 
     var gradedCells = 0;
 
-    if (Model != null && Model.Students != null && Model.Assignments != null)
+    if (students.Any() && assignments.Any())
     {
-        foreach (var student in Model.Students)
+        foreach (var student in students)
         {
-            foreach (var assignment in Model.Assignments)
+            foreach (var assignment in assignments)
             {
                 if (student.ScoresByAssignmentId.ContainsKey(assignment.AssignmentId)
                     && student.ScoresByAssignmentId[assignment.AssignmentId].HasValue)
@@ -72,12 +80,12 @@
             <div class="class-info-grid">
                 <div class="info-item">
                     <div class="info-label">Lớp</div>
-                    <div class="info-value">@Model.ClassName</div>
+                    <div class="info-value">@(Model?.ClassName ?? "Chưa có")</div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Khóa học</div>
-                    <div class="info-value">@Model.CourseName</div>
+                    <div class="info-value">@(Model?.CourseName ?? "Chưa có")</div>
                 </div>
 
                 <div class="info-item">
@@ -162,7 +170,7 @@
         </div>
 
         <div class="card-body p-4">
-            @if (!Model.Assignments.Any())
+            @if (!assignments.Any())
             {
                 <div class="empty-state">
                     <div class="empty-icon">📭</div>
@@ -179,7 +187,7 @@
                     </a>
                 </div>
             }
-            else if (!Model.Students.Any())
+            else if (!students.Any())
             {
                 <div class="empty-state">
                     <div class="empty-icon">👥</div>
@@ -198,7 +206,7 @@
                                 <th class="sticky-student-code">Mã học viên</th>
                                 <th class="sticky-student-name">Họ tên</th>
 
-                                @foreach (var assignment in Model.Assignments)
+                                @foreach (var assignment in assignments)
                                 {
                                     <th>
                                         <div class="assignment-header">
@@ -210,7 +218,7 @@
                         </thead>
 
                         <tbody>
-                            @foreach (var student in Model.Students)
+                            @foreach (var student in students)
                             {
                                 <tr>
                                     <td>
@@ -220,9 +228,14 @@
                                     <td>
                                         <div class="student-main">
                                             <div class="student-avatar">
-                                                @(string.IsNullOrWhiteSpace(student.StudentName)
-                                                                                        ? "HV"
-                                                                                        : student.StudentName.Trim()[0].ToString().ToUpper())
+                                                @{
+                                                    var displayName = student.StudentName ?? "";
+                                                    var avatarText = string.IsNullOrWhiteSpace(displayName)
+                                                    ? "HV"
+                                                    : displayName.Trim()[0].ToString().ToUpper();
+                                                }
+
+                                                @avatarText
                                     </div>
 
                                             <div>
@@ -231,7 +244,7 @@
                                         </div>
                                     </td>
 
-                            @foreach (var assignment in Model.Assignments)
+                            @foreach (var assignment in assignments)
                                     {
                                         var score = student.ScoresByAssignmentId.ContainsKey(assignment.AssignmentId)
                                         ? student.ScoresByAssignmentId[assignment.AssignmentId]

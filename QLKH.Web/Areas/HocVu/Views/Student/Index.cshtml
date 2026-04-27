@@ -2,10 +2,88 @@
 
 @{
     ViewData["Title"] = "Danh sách học viên";
+    var keyword = ViewBag.Keyword as string ?? "";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
+    <style>
+        .student-filter-card {
+            background: var(--cp-surface, rgba(13, 8, 30, .75));
+            border: 1px solid var(--cp-border, rgba(140, 80, 255, .18));
+            border-radius: var(--cp-radius, 10px);
+            padding: 16px;
+            margin: 18px 0;
+            box-shadow: var(--cp-shadow, 0 2px 12px rgba(0,0,0,.5));
+        }
+
+        .student-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .student-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--cp-text-sub, rgba(210,185,255,.8));
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .student-filter-input {
+            width: 100%;
+            min-height: 42px;
+            border: 1px solid var(--cp-border, rgba(140,80,255,.18));
+            border-radius: var(--cp-radius-sm, 7px);
+            padding: 9px 12px;
+            color: var(--cp-text, #f0e8ff);
+            background: var(--cp-surface-2, rgba(25,12,55,.65));
+            font-weight: 700;
+            outline: none;
+        }
+
+            .student-filter-input::placeholder {
+                color: var(--cp-text-muted, rgba(180,150,255,.55));
+            }
+
+            .student-filter-input:focus {
+                border-color: var(--cp-accent, #a855f7);
+                box-shadow: 0 0 0 0.18rem var(--cp-accent-light, rgba(168,85,247,.10));
+            }
+
+        .student-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .student-filter-actions .cp-btn {
+                min-height: 42px;
+                white-space: nowrap;
+            }
+
+        .student-filter-note {
+            margin-top: 10px;
+            color: var(--cp-text-muted, rgba(180,150,255,.55));
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        @@media (max-width: 575.98px) {
+            .student-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .student-filter-actions {
+                flex-direction: column;
+            }
+
+                .student-filter-actions .cp-btn {
+                    width: 100%;
+                }
+        }
+    </style>
 }
 @if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"]?.ToString()))
 {
@@ -19,23 +97,58 @@
 <div class="course-page admin-profession-page student-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Danh sách học viên</h1>
-            <p class="cp-subtitle">Quản lý hồ sơ học viên, thông tin liên hệ và ngày sinh.</p>
+            <h1 class="cp-title">DANH SÁCH HỌC VIÊN</h1>
+            <p class="cp-subtitle">Quản lý hồ sơ học viên, thông tin liên hệ...</p>
         </div>
 
-        <a asp-area="HocVu" asp-controller="Student" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm mới</a>
+        <a asp-area="HocVu" asp-controller="Student" asp-action="Create" class="cp-btn cp-btn--primary">+ Thêm học viên</a>
     </div>
+    <div class="student-filter-card">
+        <form asp-area="HocVu"
+              asp-controller="Student"
+              asp-action="Index"
+              method="get"
+              class="student-filter-form">
 
+            <div class="student-filter-field">
+                <label>Tìm kiếm</label>
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="student-filter-input"/>
+            </div>
+
+            <div class="student-filter-actions">
+                <button type="submit" class="cp-btn cp-btn--primary">
+                    Lọc
+                </button>
+
+                <a asp-area="HocVu"
+                   asp-controller="Student"
+                   asp-action="Index"
+                   class="cp-btn cp-btn--ghost">
+                    Bỏ lọc
+                </a>
+            </div>
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            <div class="student-filter-note">
+                Đang tìm kiếm: <strong>@keyword</strong>
+            </div>
+        }
+    </div>
     <div class="cp-table-wrap">
         <table class="cp-table">
             <thead>
                 <tr>
-                    <th>Mã học viên</th>
-                    <th>Họ tên</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                    <th class="cp-col-action">Chức năng</th>
+                    <th class="text-center">Mã học viên</th>
+                    <th class="text-center">Họ tên</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Số điện thoại</th>
+                    <th class="text-center">Địa chỉ</th>
+                    <th class="cp-col-action text-center">Chức năng</th>
                 </tr>
             </thead>
             <tbody>

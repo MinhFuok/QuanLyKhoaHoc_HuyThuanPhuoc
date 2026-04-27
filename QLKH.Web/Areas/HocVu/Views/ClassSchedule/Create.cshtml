@@ -73,11 +73,10 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm lịch học</h1>
-            <p class="cp-subtitle">Chọn lớp, tích các ngày trong tuần và hệ thống sẽ tự tạo lịch đến hết thời gian lớp.</p>
+            <h1 class="cp-title">LỊCH HỌC MỚI</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Create" method="post" class="cp-form-card">
@@ -103,9 +102,20 @@
                 </select>
                 <span asp-validation-for="Session" class="cp-field-error"></span>
             </div>
+            <div class="cp-field">
+                <label asp-for="TeamCode" class="cp-label"></label>
+                <input asp-for="TeamCode" class="cp-input"/>
+                <span asp-validation-for="TeamCode" class="cp-field-error"></span>
+            </div>
+
+            <div class="cp-field">
+                <label asp-for="Note" class="cp-label"></label>
+                <input asp-for="Note" class="cp-input"/>
+                <span asp-validation-for="Note" class="cp-field-error"></span>
+            </div>
         </div>
 
-        <div class="cp-form-group-label">Chọn ngày trong tuần</div>
+        <div class="cp-form-group-label">Chọn ngày</div>
 
         <div class="cp-form-row">
             <div class="cp-field" style="width:100%;">
@@ -143,21 +153,7 @@
 
         <div class="cp-form-group-label">TeamCode và ghi chú</div>
 
-        <div class="cp-form-row">
-            <div class="cp-field">
-                <label asp-for="TeamCode" class="cp-label"></label>
-                <input asp-for="TeamCode" class="cp-input" placeholder="VD: TEAM-ABC-01" />
-                <span asp-validation-for="TeamCode" class="cp-field-error"></span>
-            </div>
-
-            <div class="cp-field">
-                <label asp-for="Note" class="cp-label"></label>
-                <input asp-for="Note" class="cp-input" placeholder="Ghi chú thêm nếu có" />
-                <span asp-validation-for="Note" class="cp-field-error"></span>
-            </div>
-        </div>
-
-        <div class="cp-form-group-label">Xem trước lịch sẽ tạo</div>
+        <div class="cp-form-group-label">Xem trước lịch</div>
         <div class="cp-form-row preview-row-full">
             <div class="cp-field preview-wrapper-full" style="display:block !important; flex:0 0 100% !important; width:100% !important; max-width:100% !important; min-width:100% !important;">
                 <div id="schedulePreview" class="schedule-preview text-muted">
@@ -167,12 +163,14 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu lịch học</button>
-            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--primary">Xác nhận</button>
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>
-
+<script type="application/json" id="classRoomMetaJson">
+    @Html.Raw(classRoomMetaJson)
+</script>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -180,7 +178,10 @@
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
 
     <script>
-        const classRoomMeta = @Html.Raw(classRoomMetaJson);
+        const classRoomMetaElement = document.getElementById('classRoomMetaJson');
+        const classRoomMeta = classRoomMetaElement
+            ? JSON.parse(classRoomMetaElement.textContent || '[]')
+            : [];
         const classRoomSelect = document.getElementById('classRoomSelect');
         const sessionSelect = document.getElementById('sessionSelect');
         const classDateRangeText = document.getElementById('classDateRangeText');

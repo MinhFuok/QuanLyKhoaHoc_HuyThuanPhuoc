@@ -15,18 +15,14 @@
 <div class="course-page admin-profession-page enrollment-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm ghi danh</h1>
-            <p class="cp-subtitle">
-                Chọn lớp học, sau đó tích chọn một hoặc nhiều học viên để ghi danh vào lớp.
-                Trạng thái ban đầu luôn là chờ xác nhận.
-            </p>
+            <h1 class="cp-title">GHI DANH</h1>
         </div>
 
         <a asp-area="HocVu"
            asp-controller="Enrollment"
            asp-action="Index"
            class="cp-btn cp-btn--ghost">
-            Quay lại
+            ←Quay lại
         </a>
     </div>
 
@@ -118,10 +114,6 @@
                     <div>
                         <strong>@students.Count()</strong> học viên khả dụng
                     </div>
-
-                    <div class="enrollment-toolbar-note">
-                        Có thể chọn nhiều học viên cùng lúc
-                    </div>
                 </div>
 
                 <div class="table-responsive enrollment-table-wrap">
@@ -201,14 +193,14 @@
 
                 <div class="cp-form-actions">
                     <button type="submit" class="cp-btn cp-btn--primary">
-                        Lưu ghi danh
+                        Xác nhận ghi danh
                     </button>
 
                     <a asp-area="HocVu"
                        asp-controller="Enrollment"
                        asp-action="Index"
                        class="cp-btn cp-btn--ghost">
-                        Quay lại
+                        Hủy
                     </a>
                 </div>
             }

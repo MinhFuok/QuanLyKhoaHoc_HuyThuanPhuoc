@@ -12,15 +12,14 @@
 <div class="course-page admin-profession-page student-certificate-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm chứng chỉ học viên</h1>
-            <p class="cp-subtitle">Tạo hồ sơ chứng chỉ mới, kèm minh chứng và trạng thái xác nhận.</p>
+            <h1 class="cp-title">CHỨNG CHỈ MỚI</h1>
         </div>
 
         <a asp-area="HocVu"
            asp-controller="StudentCertificate"
            asp-action="Index"
            class="cp-btn cp-btn--ghost">
-            Quay lại
+            ←Quay lại
         </a>
     </div>
 
@@ -54,29 +53,31 @@
                 <input asp-for="CertificateName" class="cp-input" />
                 <span asp-validation-for="CertificateName" class="cp-field-error"></span>
             </div>
-        </div>
-
-        <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="CertificateCode" class="cp-label"></label>
                 <input asp-for="CertificateCode" class="cp-input" />
                 <span asp-validation-for="CertificateCode" class="cp-field-error"></span>
             </div>
+        </div>
 
+        <div class="cp-form-row">
             <div class="cp-field">
                 <label asp-for="IssuedDate" class="cp-label"></label>
                 <input asp-for="IssuedDate" type="date" class="cp-input" />
                 <span asp-validation-for="IssuedDate" class="cp-field-error"></span>
             </div>
-
+            <div class="cp-field">
+                <label asp-for="ExpiryDate" class="cp-label">Ngày hết hạn</label>
+                <input asp-for="ExpiryDate" type="date" class="cp-input" />
+                <span asp-validation-for="ExpiryDate" class="cp-field-error"></span>
+                <small class="text-muted">Để trống nếu không thời hạn.</small>
+            </div>
             <div class="cp-field">
                 <label asp-for="IssuedBy" class="cp-label"></label>
                 <input asp-for="IssuedBy" class="cp-input" />
                 <span asp-validation-for="IssuedBy" class="cp-field-error"></span>
             </div>
         </div>
-
-        <div class="cp-form-group-label">Minh chứng</div>
         <div class="cp-field cp-field--full">
             <label asp-for="EvidenceFile" class="cp-label"></label>
             <div class="cp-file-picker">
@@ -112,12 +113,12 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu chứng chỉ</button>
+            <button type="submit" class="cp-btn cp-btn--primary">Xác nhận</button>
             <a asp-area="HocVu"
                asp-controller="StudentCertificate"
                asp-action="Index"
                class="cp-btn cp-btn--ghost">
-                Quay lại
+                Hủy
             </a>
         </div>
     </form>

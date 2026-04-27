@@ -22,6 +22,9 @@ namespace QLKH.Web.Areas.HocVu.Models
         [Display(Name = "Ngày cấp")]
         [DataType(DataType.Date)]
         public DateTime? IssuedDate { get; set; }
+        [Display(Name = "Ngày hết hạn")]
+        [DataType(DataType.Date)]
+        public DateTime? ExpiryDate { get; set; }
 
         [Display(Name = "Đơn vị cấp")]
         public string? IssuedBy { get; set; }

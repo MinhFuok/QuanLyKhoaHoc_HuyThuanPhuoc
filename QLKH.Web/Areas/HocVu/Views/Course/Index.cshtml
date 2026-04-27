@@ -3,70 +3,215 @@
 @{
     ViewData["Title"] = "Danh sách khóa học";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+
+    var keyword = ViewBag.Keyword as string ?? "";
+    var feeSort = ViewBag.FeeSort as string ?? "";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/dashboardlayout.css" />
+    <style>
+        .course-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+            .course-table th,
+            .course-table td {
+                vertical-align: middle;
+            }
+
+                .course-table th:nth-child(1),
+                .course-table td:nth-child(1),
+                .course-table th:nth-child(3),
+                .course-table td:nth-child(3),
+                .course-table th:nth-child(4),
+                .course-table td:nth-child(4),
+                .course-table th:nth-child(5),
+                .course-table td:nth-child(5),
+                .course-table th:nth-child(6),
+                .course-table td:nth-child(6) {
+                    text-align: center;
+                }
+
+                .course-table th:nth-child(2),
+                .course-table td:nth-child(2) {
+                    text-align: left;
+                    word-break: break-word;
+                }
+
+            .course-table .cp-actions {
+                justify-content: center;
+            }
+
+        @@media (max-width: 1199.98px) {
+            .course-table {
+                min-width: 980px;
+            }
+        }
+    </style>
 }
 
 <div class="course-page course-index">
 
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Danh sách khóa học</h1>
-            <p class="cp-subtitle">Quản lý toàn bộ khóa học trong hệ thống</p>
+            <h1 class="cp-title">DANH SÁCH KHÓA HỌC</h1>
+            <p class="cp-subtitle">Quản lý các khóa học có trên nền tảng...</p>
         </div>
+
         @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
         {
-            <a asp-area="HocVu" asp-controller="Course" asp-action="Create" class="cp-btn cp-btn--primary">
-                <span>＋</span> Thêm mới
+            <a asp-area="HocVu"
+               asp-controller="Course"
+               asp-action="Create"
+               class="cp-btn cp-btn--primary">
+                <span>＋</span> Thêm khóa học
             </a>
         }
     </div>
 
+    <div class="cp-filter-card">
+        <form asp-area="HocVu"
+              asp-controller="Course"
+              asp-action="Index"
+              method="get"
+              class="cp-filter-form">
+
+            <div class="cp-filter-field cp-filter-field--wide">
+                <label>Tìm kiếm</label>
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="cp-input"/>
+            </div>
+
+            <div class="cp-filter-field">
+                <label>Học phí</label>
+                <select name="feeSort" class="cp-input cp-select">
+                    <option value="" selected="@(feeSort == "")">Mặc định</option>
+                    <option value="fee_asc" selected="@(feeSort == "fee_asc")">Học phí ↑</option>
+                    <option value="fee_desc" selected="@(feeSort == "fee_desc")">Học phí ↓</option>
+                </select>
+            </div>
+
+            <div class="cp-filter-actions">
+                <button type="submit" class="cp-btn cp-btn--primary">
+                    Lọc
+                </button>
+
+                <a asp-area="HocVu"
+                   asp-controller="Course"
+                   asp-action="Index"
+                   class="cp-btn cp-btn--ghost">
+                    Bỏ lọc
+                </a>
+            </div>
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(keyword) || !string.IsNullOrWhiteSpace(feeSort))
+        {
+            <div class="cp-filter-note">
+                Đang áp dụng bộ lọc
+                @if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    <span>theo từ khóa: <strong>@keyword</strong></span>
+                }
+            </div>
+        }
+    </div>
+
     <div class="cp-table-wrap">
-        <table class="cp-table" id="courseTable">
+        <table class="cp-table course-table" id="courseTable">
+            <colgroup>
+                <col style="width: 13%;" />
+                <col style="width: 27%;" />
+                <col style="width: 12%;" />
+                <col style="width: 15%;" />
+                <col style="width: 13%;" />
+                <col style="width: 20%;" />
+            </colgroup>
+
             <thead>
                 <tr>
-                    <th>Mã khóa học</th>
-                    <th>Tên khóa học</th>
-                    <th>Thời lượng</th>
-                    <th>Học phí</th>
-                    <th>Trạng thái</th>
-                    <th class="cp-col-action">Chức năng</th>
+                    <th class="text-center">Mã khóa học</th>
+                    <th class="text-center">Tên khóa học</th>
+                    <th class="text-center">Thời lượng</th>
+                    <th class="text-center">Học phí</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="cp-col-action text-center">Chức năng</th>
                 </tr>
             </thead>
+
             <tbody>
-                @foreach (var item in Model)
+                @if (Model != null && Model.Any())
                 {
-                    <tr class="cp-row">
-                        <td><span class="cp-code">@item.CourseCode</span></td>
-                        <td class="cp-name">@item.CourseName</td>
-                        <td>@item.DurationInMonths tháng</td>
-                        <td class="cp-fee">@item.Fee.ToString("N0") ₫</td>
-                        <td>
-                            <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
-                                @item.Status
-                            </span>
-                        </td>
-                        <td class="cp-actions">
-                            <a asp-area="HocVu" asp-controller="Course" asp-action="Details" asp-route-id="@item.Id" class="cp-btn cp-btn--info cp-btn--sm">Chi tiết</a>
-                            @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                            {
-                                <a asp-area="HocVu" asp-controller="Course" asp-action="Edit" asp-route-id="@item.Id" class="cp-btn cp-btn--warning cp-btn--sm">Sửa</a>
-                            }
-                            @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
-                            {
-                                <a asp-area="HocVu" asp-controller="Course" asp-action="Delete" asp-route-id="@item.Id" class="cp-btn cp-btn--danger cp-btn--sm">Xóa</a>
-                            }
-                        </td>
-                    </tr>
+                    foreach (var item in Model)
+                    {
+                        <tr class="cp-row">
+                            <td>
+                                <span class="cp-code">@item.CourseCode</span>
+                            </td>
+
+                            <td class="cp-name">
+                                @item.CourseName
+                            </td>
+
+                            <td>
+                                @item.DurationInMonths tháng
+                            </td>
+
+                            <td class="cp-fee">
+                                @item.Fee.ToString("N0") ₫
+                            </td>
+
+                            <td>
+                                <span class="cp-badge cp-badge--@item.Status.ToString().ToLower()">
+                                    @item.Status
+                                </span>
+                            </td>
+
+                            <td class="cp-actions">
+                                <a asp-area="HocVu"
+                                   asp-controller="Course"
+                                   asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="cp-btn cp-btn--info cp-btn--sm">
+                                    Chi tiết
+                                </a>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                {
+                                    <a asp-area="HocVu"
+                                       asp-controller="Course"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--warning cp-btn--sm">
+                                        Sửa
+                                    </a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
+                                {
+                                    <a asp-area="HocVu"
+                                       asp-controller="Course"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="cp-btn cp-btn--danger cp-btn--sm">
+                                        Xóa
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
                 }
-                @if (!Model.Any())
+                else
                 {
                     <tr>
-                        <td colspan="6" class="cp-empty">Chưa có khóa học nào.</td>
+                        <td colspan="6" class="cp-empty">
+                            Không có khóa học nào phù hợp.
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -77,4 +222,3 @@
 @section Scripts {
     <script src="~/js/AdminProfession.js" asp-append-version="true"></script>
 }
-

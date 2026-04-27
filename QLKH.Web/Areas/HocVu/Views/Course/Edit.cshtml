@@ -1,7 +1,7 @@
 ﻿@model QLKH.Domain.Entities.Course
 
 @{
-    ViewData["Title"] = "Sửa khóa học";
+    ViewData["Title"] = "Cập nhật khóa học";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 }
 
@@ -13,8 +13,7 @@
 
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Sửa khóa học</h1>
-            <p class="cp-subtitle">Cập nhật thông tin khóa học <strong>@Model.CourseCode</strong></p>
+            <h1 class="cp-title">CẬP NHẬT KHÓA HỌC</h1>
         </div>
         <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">← Quay lại</a>
     </div>
@@ -63,7 +62,7 @@
             </div>
 
             <div class="cp-form-actions">
-                <button type="submit" class="cp-btn cp-btn--primary">✔ Cập nhật</button>
+                <button type="submit" class="cp-btn cp-btn--primary">Cập nhật thay đổi</button>
                 <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>
 

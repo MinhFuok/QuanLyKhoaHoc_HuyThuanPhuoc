@@ -45,13 +45,10 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa khóa học</h1>
-            <p class="cp-subtitle">
-                Bạn đang chuẩn bị xóa khóa học <strong>@Model.CourseName</strong> (@Model.CourseCode).
-            </p>
+            <h1 class="cp-title">XÓA KHÓA HỌC</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="Course" asp-action="Delete" method="post" class="cp-form-card">
@@ -115,7 +112,7 @@
             <button type="submit"
                     class="cp-btn cp-btn--danger"
                     onclick="return confirm('Bạn có chắc chắn muốn xóa khóa học này và toàn bộ dữ liệu liên quan không?');">
-                Xóa khóa học
+                Xác nhận xóa
             </button>
 
             <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">

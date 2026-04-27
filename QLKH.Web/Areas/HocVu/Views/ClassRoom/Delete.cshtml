@@ -11,9 +11,9 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa lớp học</h1>
-            <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
+            <h1 class="cp-title">XÓA LỚP HỌC</h1>
         </div>
+        <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <div class="cp-delete-card">
@@ -60,7 +60,7 @@
         <form asp-area="HocVu" asp-controller="ClassRoom" asp-action="Delete" method="post" id="deleteForm" data-delete-label="lớp học">
             <input type="hidden" asp-for="Id" />
             <div class="cp-delete-actions">
-                <button type="submit" class="cp-btn cp-btn--danger">Xóa lớp học</button>
+                <button type="submit" class="cp-btn cp-btn--danger">Xác nhận xóa</button>
                 <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>
         </form>

@@ -1,7 +1,7 @@
-@model QLKH.Domain.Entities.StudentCertificate
+﻿@model QLKH.Domain.Entities.StudentCertificate
 
 @{
-    ViewData["Title"] = "Xóa chứng chỉ học viên";
+    ViewData["Title"] = "Chi tiết chứng chỉ học viên";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
@@ -12,24 +12,24 @@
 <div class="course-page admin-profession-page student-certificate-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa chứng chỉ học viên</h1>
-            <p class="cp-subtitle">Kiểm tra lại toàn bộ thông tin trước khi xác nhận xóa chứng chỉ.</p>
+            <h1 class="cp-title">THÔNG TIN CHI TIẾT</h1>
         </div>
+
+        <a asp-area="HocVu"
+           asp-controller="StudentCertificate"
+           asp-action="Index"
+           class="cp-btn cp-btn--ghost">
+            ←Quay lại
+        </a>
     </div>
 
     <div class="cp-delete-card">
-        <div class="cp-delete-warning">
-            <div class="cp-delete-warning-icon">!</div>
-            <div>
-                <strong>Bạn có chắc muốn xóa chứng chỉ này không?</strong>
-                <p>Hành động này sẽ xóa hồ sơ chứng chỉ và liên kết file minh chứng hiện tại.</p>
-            </div>
-        </div>
-
         <div class="cp-detail-body">
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Học viên</div>
-                <div class="cp-detail-value"><strong>@Model.Student?.FullName</strong></div>
+                <div class="cp-detail-value">
+                    <strong>@(Model.Student?.FullName ?? "Chưa có học viên")</strong>
+                </div>
             </div>
 
             <div class="cp-detail-row">
@@ -39,24 +39,46 @@
 
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Mã/Số chứng chỉ</div>
-                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.CertificateCode) ? Model.CertificateCode : "Chưa có")</div>
+                <div class="cp-detail-value">
+                    @(!string.IsNullOrWhiteSpace(Model.CertificateCode) ? Model.CertificateCode : "Chưa có")
+                </div>
             </div>
 
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Ngày cấp</div>
-                <div class="cp-detail-value">@(Model.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</div>
+                <div class="cp-detail-value">
+                    @(Model.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
+                </div>
             </div>
 
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Ngày hết hạn</div>
                 <div class="cp-detail-value">
-                    @(Model.ExpiryDate.HasValue? Model.ExpiryDate.Value.ToString("dd/MM/yyyy") : "Không thời hạn")
+                    @if (Model.ExpiryDate.HasValue)
+                    {
+                        if (Model.ExpiryDate.Value.Date < DateTime.Today)
+                        {
+                            <span>@Model.ExpiryDate.Value.ToString("dd/MM/yyyy")</span>
+                            <span class="cp-muted"> - Đã hết hạn</span>
+                        }
+                        else
+                        {
+                            <span>@Model.ExpiryDate.Value.ToString("dd/MM/yyyy")</span>
+                            <span class="cp-muted"> - Còn hiệu lực</span>
+                        }
+                    }
+                    else
+                    {
+                        <span>Không thời hạn</span>
+                    }
                 </div>
             </div>
 
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Đơn vị cấp</div>
-                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.IssuedBy) ? Model.IssuedBy : "Chưa có")</div>
+                <div class="cp-detail-value">
+                    @(!string.IsNullOrWhiteSpace(Model.IssuedBy) ? Model.IssuedBy : "Chưa có")
+                </div>
             </div>
 
             <div class="cp-detail-row">
@@ -75,7 +97,10 @@
                 <div class="cp-detail-value">
                     @if (!string.IsNullOrWhiteSpace(Model.EvidenceFilePath))
                     {
-                        <a href="@Model.EvidenceFilePath" target="_blank" rel="noopener noreferrer" class="cp-file-link">
+                        <a href="@Model.EvidenceFilePath"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="cp-file-link">
                             Xem file minh chứng
                         </a>
                     }
@@ -88,30 +113,28 @@
 
             <div class="cp-detail-row">
                 <div class="cp-detail-label">Ghi chú</div>
-                <div class="cp-detail-value">@(!string.IsNullOrWhiteSpace(Model.Note) ? Model.Note : "Không có ghi chú")</div>
+                <div class="cp-detail-value">
+                    @(!string.IsNullOrWhiteSpace(Model.Note) ? Model.Note : "Không có ghi chú")
+                </div>
             </div>
         </div>
 
-        <form asp-area="HocVu"
-              asp-controller="StudentCertificate"
-              asp-action="Delete"
-              asp-route-id="@Model.Id"
-              method="post"
-              id="deleteForm"
-              data-delete-form
-              data-delete-label="chứng chỉ này">
-            @Html.AntiForgeryToken()
+        <div class="cp-delete-actions">
+            <a asp-area="HocVu"
+               asp-controller="StudentCertificate"
+               asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="cp-btn cp-btn--warning">
+                Chỉnh sửa
+            </a>
 
-            <div class="cp-delete-actions">
-                <button type="submit" class="cp-btn cp-btn--danger">Xóa chứng chỉ</button>
-                <a asp-area="HocVu"
-                   asp-controller="StudentCertificate"
-                   asp-action="Index"
-                   class="cp-btn cp-btn--ghost">
-                    Quay lại
-                </a>
-            </div>
-        </form>
+            <a asp-area="HocVu"
+               asp-controller="StudentCertificate"
+               asp-action="Index"
+               class="cp-btn cp-btn--ghost">
+                Hủy
+            </a>
+        </div>
     </div>
 </div>
 

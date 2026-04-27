@@ -1,7 +1,7 @@
 ﻿@model QLKH.Domain.Entities.Enrollment
 
 @{
-    ViewData["Title"] = "Sửa ghi danh";
+    ViewData["Title"] = "Cập nhật ghi danh";
 }
 
 @section Styles {
@@ -11,11 +11,14 @@
 <div class="course-page admin-profession-page enrollment-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Sửa ghi danh</h1>
-            <p class="cp-subtitle">Cập nhật trạng thái ghi danh, giữ nguyên học viên và lớp học.</p>
+            <h1 class="cp-title">CẬP NHẬT GHI DANH</h1>
         </div>
-
-        <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu"
+           asp-controller="Enrollment"
+           asp-action="Index"
+           class="cp-btn cp-btn--ghost">
+            ←Quay lại
+        </a>
     </div>
 
     <form asp-area="HocVu" asp-controller="Enrollment" asp-action="Edit" method="post" id="enrollmentForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
@@ -26,7 +29,7 @@
 
         <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
-        <div class="cp-form-group-label">Thông tin cố định</div>
+        <div class="cp-form-group-label">Thông tin chung</div>
         <div class="cp-form-row">
             <div class="cp-field">
                 <label class="cp-label">Học viên</label>
@@ -49,8 +52,8 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật</button>
-            <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--warning">Cập nhật thay đổi</button>
+            <a asp-area="HocVu" asp-controller="Enrollment" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>

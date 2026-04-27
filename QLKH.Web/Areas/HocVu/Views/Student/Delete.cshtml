@@ -12,8 +12,8 @@
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">Xóa học viên</h1>
-            <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
         </div>
+        <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <div class="cp-delete-card">
@@ -73,7 +73,7 @@
                 <button type="submit"
                         class="cp-btn cp-btn--danger"
                         onclick="return confirm('Bạn có chắc chắn muốn xóa học viên này và vô hiệu hóa tài khoản liên kết không?');">
-                    Xóa học viên
+                    Xác nhận xóa
                 </button>
                 <a asp-area="HocVu" asp-controller="Student" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>

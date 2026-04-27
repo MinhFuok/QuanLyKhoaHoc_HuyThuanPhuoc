@@ -1,7 +1,7 @@
 ﻿@model QLKH.Application.ViewModels.ClassSchedulePickSessionViewModel
 
 @{
-    ViewData["Title"] = "Chọn kiểu sửa lịch học";
+    ViewData["Title"] = "Cập nhật lịch học";
 }
 
 @section Styles {
@@ -11,11 +11,10 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Chọn kiểu sửa lịch học</h1>
-            <p class="cp-subtitle">Bạn có thể sửa một buổi cụ thể hoặc sửa toàn bộ chuỗi lịch học.</p>
+            <h1 class="cp-title">CẬP NHẬT LỊCH HỌC</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="EditSelect" method="post" class="cp-form-card">
@@ -59,14 +58,11 @@
                 <input class="cp-input" value="@Model.Note" readonly />
             </div>
         </div>
-
-        <div class="cp-form-group-label">Chọn kiểu sửa</div>
-
         <div class="cp-form-row">
             <div class="cp-field" style="flex: 0 0 100%; max-width: 100%;">
                 <label style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
                     <input asp-for="EditAllSessions" id="editAllSessionsCheckbox" />
-                    <span>Sửa toàn bộ chuỗi lịch này</span>
+                    <span>Sửa tất cả các buổi</span>
                 </label>
             </div>
         </div>
@@ -88,7 +84,7 @@
 
         <div class="cp-form-actions">
             <button type="submit" class="cp-btn cp-btn--primary">Tiếp tục</button>
-            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>

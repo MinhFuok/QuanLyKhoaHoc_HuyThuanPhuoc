@@ -64,29 +64,15 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Chi tiết lịch học</h1>
-            <p class="cp-subtitle">
-                Thông tin chi tiết của một buổi học thuộc lớp
-                <strong>@(Model.ClassRoom?.ClassName ?? "Chưa xác định")</strong>.
-            </p>
+            <h1 class="cp-title">THÔNG TIN CHI TIẾT LỊCH HỌC</h1>
         </div>
+        <a asp-area="HocVu"
+           asp-controller="ClassSchedule"
+           asp-action="Index"
+           class="cp-btn cp-btn--ghost">
+            ←Quay lại
+        </a>
 
-        <div class="cp-header-actions">
-            <a asp-area="HocVu"
-               asp-controller="ClassSchedule"
-               asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="cp-btn cp-btn--warning">
-                Sửa
-            </a>
-
-            <a asp-area="HocVu"
-               asp-controller="ClassSchedule"
-               asp-action="Index"
-               class="cp-btn cp-btn--ghost">
-                Quay lại
-            </a>
-        </div>
     </div>
 
     <div class="cp-detail-card">
@@ -142,23 +128,6 @@
                 <div class="schedule-detail-label">Ghi chú</div>
                 <div class="schedule-detail-value">@(string.IsNullOrWhiteSpace(Model.Note) ? "Không có" : Model.Note)</div>
             </div>
-        </div>
-
-        <div class="cp-detail-footer" style="margin-top: 20px;">
-            <a asp-area="HocVu"
-               asp-controller="ClassSchedule"
-               asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="cp-btn cp-btn--warning">
-                Sửa lịch học
-            </a>
-
-            <a asp-area="HocVu"
-               asp-controller="ClassSchedule"
-               asp-action="Index"
-               class="cp-btn cp-btn--ghost">
-                Quay lại danh sách
-            </a>
         </div>
     </div>
 </div>

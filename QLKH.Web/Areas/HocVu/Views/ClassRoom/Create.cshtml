@@ -11,11 +11,10 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Thêm lớp học</h1>
-            <p class="cp-subtitle">Tạo lớp mới, gán khóa học, giảng viên và thời gian học.</p>
+            <h1 class="cp-title">LỚP HỌC MỚI</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="ClassRoom" asp-action="Create" method="post" id="classroomForm" data-admin-form data-loading-text="Đang lưu..." class="cp-form-card">
@@ -77,8 +76,8 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit" class="cp-btn cp-btn--primary">Lưu lớp học</button>
-            <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+            <button type="submit" class="cp-btn cp-btn--primary">Xác nhận</button>
+            <a asp-area="HocVu" asp-controller="ClassRoom" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
         </div>
     </form>
 </div>

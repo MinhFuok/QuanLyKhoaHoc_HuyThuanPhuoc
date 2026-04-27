@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Danh sách giảng viên";
-
+    var keyword = ViewBag.Keyword as string ?? "";
+    var ratingSort = ViewBag.RatingSort as string ?? "";
     var averageRatings = ViewBag.TeacherAverageRatings as Dictionary<int, double>
         ?? new Dictionary<int, double>();
 
@@ -79,15 +80,95 @@
                 overflow-x: auto;
             }
         }
+
+        .teacher-filter-card {
+            background: var(--cp-surface, rgba(13, 8, 30, .75));
+            border: 1px solid var(--cp-border, rgba(140, 80, 255, .18));
+            border-radius: var(--cp-radius, 10px);
+            padding: 16px;
+            margin: 18px 0;
+            box-shadow: var(--cp-shadow, 0 2px 12px rgba(0,0,0,.5));
+        }
+
+        .teacher-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(230px, 300px) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .teacher-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--cp-text-sub, rgba(210,185,255,.8));
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .teacher-filter-input,
+        .teacher-filter-select {
+            width: 100%;
+            min-height: 42px;
+            border: 1px solid var(--cp-border, rgba(140,80,255,.18));
+            border-radius: var(--cp-radius-sm, 7px);
+            padding: 9px 12px;
+            color: var(--cp-text, #f0e8ff);
+            background: var(--cp-surface-2, rgba(25,12,55,.65));
+            font-weight: 700;
+            outline: none;
+        }
+
+            .teacher-filter-input::placeholder {
+                color: var(--cp-text-muted, rgba(180,150,255,.55));
+            }
+
+            .teacher-filter-input:focus,
+            .teacher-filter-select:focus {
+                border-color: var(--cp-accent, #a855f7);
+                box-shadow: 0 0 0 0.18rem var(--cp-accent-light, rgba(168,85,247,.10));
+            }
+
+        .teacher-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .teacher-filter-actions .cp-btn {
+                min-height: 42px;
+                white-space: nowrap;
+            }
+
+        .teacher-filter-note {
+            margin-top: 10px;
+            color: var(--cp-text-muted, rgba(180,150,255,.55));
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        @@media (max-width: 991.98px) {
+            .teacher-filter-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @@media (max-width: 575.98px) {
+            .teacher-filter-actions {
+                flex-direction: column;
+            }
+
+                .teacher-filter-actions .cp-btn {
+                    width: 100%;
+                }
+        }
     </style>
 }
 
 <div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Danh sách giảng viên</h1>
+            <h1 class="cp-title">DANH SÁCH GIẢNG VIÊN</h1>
             <p class="cp-subtitle">
-                Quản lý hồ sơ giảng viên, chuyên môn, thông tin liên hệ và đánh giá từ học viên.
+                Quản lý hồ sơ giảng viên, chuyên môn, thông tin liên hệ và đánh giá...
             </p>
         </div>
 
@@ -95,8 +176,57 @@
            asp-controller="Teacher"
            asp-action="Create"
            class="cp-btn cp-btn--primary">
-            + Thêm mới
+            + Thêm giảng viên
         </a>
+    </div>
+    <div class="teacher-filter-card">
+        <form asp-area="HocVu"
+              asp-controller="Teacher"
+              asp-action="Index"
+              method="get"
+              class="teacher-filter-form">
+
+            <div class="teacher-filter-field">
+                <label>Tìm kiếm</label>
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="teacher-filter-input"/>
+            </div>
+
+            <div class="teacher-filter-field">
+                <label>Đánh giá</label>
+                <select name="ratingSort" class="teacher-filter-select">
+                    <option value="" selected="@(ratingSort == "")">Mặc định</option>
+                    <option value="rating_desc" selected="@(ratingSort == "rating_desc")">Sao ↓</option>
+                    <option value="rating_asc" selected="@(ratingSort == "rating_asc")">Sao ↑</option>
+                </select>
+            </div>
+
+            <div class="teacher-filter-actions">
+                <button type="submit" class="cp-btn cp-btn--primary">
+                    Lọc
+                </button>
+
+                <a asp-area="HocVu"
+                   asp-controller="Teacher"
+                   asp-action="Index"
+                   class="cp-btn cp-btn--ghost">
+                    Bỏ lọc
+                </a>
+            </div>
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(keyword) || !string.IsNullOrWhiteSpace(ratingSort))
+        {
+            <div class="teacher-filter-note">
+                Đang áp dụng bộ lọc
+                @if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    <span>theo từ khóa: <strong>@keyword</strong></span>
+                }
+            </div>
+        }
     </div>
 
     <div class="cp-table-wrap">

@@ -1,7 +1,7 @@
 ﻿@model QLKH.Application.ViewModels.ClassScheduleEditSeriesViewModel
 
 @{
-    ViewData["Title"] = "Sửa cả chuỗi lịch";
+    ViewData["Title"] = "Cập nhật tất cả buổi";
 }
 
 @section Styles {
@@ -11,11 +11,10 @@
 <div class="course-page admin-profession-page classroom-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Sửa cả chuỗi lịch</h1>
-            <p class="cp-subtitle">Cập nhật toàn bộ các buổi thuộc cùng một nhóm lịch học.</p>
+            <h1 class="cp-title">CẬP NHẬT TẤT CẢ BUỔI</h1>
         </div>
 
-        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">Quay lại</a>
+        <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <form asp-area="HocVu" asp-controller="ClassSchedule" asp-action="EditSeries" method="post" class="cp-form-card">
@@ -43,7 +42,7 @@
             </div>
         </div>
 
-        <div class="cp-form-group-label">Thông tin sẽ áp dụng cho toàn bộ chuỗi</div>
+        <div class="cp-form-group-label">Thông tin chỉnh sửa</div>
 
         <div class="cp-form-row">
             <div class="cp-field">
@@ -65,7 +64,7 @@
         <div class="cp-form-row">
             <div class="cp-field" style="flex: 0 0 100%; max-width: 100%;">
                 <label asp-for="Note" class="cp-label"></label>
-                <input asp-for="Note" class="cp-input" placeholder="Ghi chú sẽ áp dụng cho toàn bộ chuỗi" />
+                <input asp-for="Note" class="cp-input" />
                 <span asp-validation-for="Note" class="cp-field-error"></span>
             </div>
         </div>
@@ -74,11 +73,11 @@
             <button type="submit"
                     class="cp-btn cp-btn--primary"
                     onclick="return confirm('Bạn có chắc chắn muốn cập nhật toàn bộ chuỗi lịch này không?');">
-                Lưu cả chuỗi
+                Cập nhật thay đổi
             </button>
 
             <a asp-area="HocVu" asp-controller="ClassSchedule" asp-action="Index" class="cp-btn cp-btn--ghost">
-                Quay lại
+                Hủy
             </a>
         </div>
     </form>

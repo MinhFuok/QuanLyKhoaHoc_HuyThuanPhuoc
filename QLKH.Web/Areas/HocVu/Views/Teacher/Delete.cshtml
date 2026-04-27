@@ -1,7 +1,7 @@
 ﻿@model QLKH.Application.ViewModels.TeacherFormViewModel
 
 @{
-    ViewData["Title"] = "Xóa giáo viên";
+    ViewData["Title"] = "Xóa giảng viên";
 }
 
 @section Styles {
@@ -11,9 +11,9 @@
 <div class="course-page admin-profession-page teacher-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Xóa giáo viên</h1>
-            <p class="cp-subtitle">Kiểm tra kỹ thông tin trước khi xác nhận xóa.</p>
+            <h1 class="cp-title">XÓA GIẢNG VIÊN</h1>
         </div>
+        <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <div class="cp-delete-card">
@@ -78,7 +78,7 @@
                 <button type="submit"
                         class="cp-btn cp-btn--danger"
                         onclick="return confirm('Bạn có chắc chắn muốn xóa giáo viên này và vô hiệu hóa tài khoản liên kết không?');">
-                    Xóa giáo viên
+                    Xác nhận xóa
                 </button>
                 <a asp-area="HocVu" asp-controller="Teacher" asp-action="Index" class="cp-btn cp-btn--ghost">Hủy</a>
             </div>

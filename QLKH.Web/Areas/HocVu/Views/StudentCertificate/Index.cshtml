@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Chứng chỉ học viên";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+
+    var keyword = ViewBag.Keyword as string ?? "";
 }
 
 @section Styles {
@@ -88,24 +90,135 @@
                 min-width: 1150px;
             }
         }
+
+        .certificate-filter-card {
+            background: var(--cp-surface, rgba(13, 8, 30, .75));
+            border: 1px solid var(--cp-border, rgba(140, 80, 255, .18));
+            border-radius: var(--cp-radius, 10px);
+            padding: 16px;
+            margin: 18px 0;
+            box-shadow: var(--cp-shadow, 0 2px 12px rgba(0,0,0,.5));
+        }
+
+        .certificate-filter-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .certificate-filter-field label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--cp-text-sub, rgba(210,185,255,.8));
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .certificate-filter-input {
+            width: 100%;
+            min-height: 42px;
+            border: 1px solid var(--cp-border, rgba(140,80,255,.18));
+            border-radius: var(--cp-radius-sm, 7px);
+            padding: 9px 12px;
+            color: var(--cp-text, #f0e8ff);
+            background: var(--cp-surface-2, rgba(25,12,55,.65));
+            font-weight: 700;
+            outline: none;
+        }
+
+            .certificate-filter-input::placeholder {
+                color: var(--cp-text-muted, rgba(180,150,255,.55));
+            }
+
+            .certificate-filter-input:focus {
+                border-color: var(--cp-accent, #a855f7);
+                box-shadow: 0 0 0 0.18rem var(--cp-accent-light, rgba(168,85,247,.10));
+            }
+
+        .certificate-filter-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+            .certificate-filter-actions .cp-btn {
+                min-height: 42px;
+                white-space: nowrap;
+            }
+
+        .certificate-filter-note {
+            margin-top: 10px;
+            color: var(--cp-text-muted, rgba(180,150,255,.55));
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        @@media (max-width: 575.98px) {
+            .certificate-filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .certificate-filter-actions {
+                flex-direction: column;
+            }
+
+                .certificate-filter-actions .cp-btn {
+                    width: 100%;
+                }
+        }
     </style>
 }
 
 <div class="course-page admin-profession-page student-certificate-page">
     <div class="cp-header">
         <div class="cp-header-left">
-            <h1 class="cp-title">Quản lý chứng chỉ học viên</h1>
-            <p class="cp-subtitle">Theo dõi chứng chỉ, file minh chứng và trạng thái xác nhận của từng học viên.</p>
+            <h1 class="cp-title">CẤP CHỨNG CHỈ HỌC VIÊN</h1>
+            <p class="cp-subtitle">Danh sách cấp chứng chỉ cho học viên đã hoàn thành khóa học...</p>
         </div>
 
         <a asp-area="HocVu"
            asp-controller="StudentCertificate"
            asp-action="Create"
            class="cp-btn cp-btn--primary">
-            + Thêm chứng chỉ
+            + Cấp chứng chỉ
         </a>
     </div>
+    <div class="certificate-filter-card">
+        <form asp-area="HocVu"
+              asp-controller="StudentCertificate"
+              asp-action="Index"
+              method="get"
+              class="certificate-filter-form">
 
+            <div class="certificate-filter-field">
+                <label>Tìm kiếm</label>
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="certificate-filter-input"/>
+            </div>
+
+            <div class="certificate-filter-actions">
+                <button type="submit" class="cp-btn cp-btn--primary">
+                    Lọc
+                </button>
+
+                <a asp-area="HocVu"
+                   asp-controller="StudentCertificate"
+                   asp-action="Index"
+                   class="cp-btn cp-btn--ghost">
+                    Bỏ lọc
+                </a>
+            </div>
+        </form>
+
+        @if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            <div class="certificate-filter-note">
+                Đang tìm kiếm: <strong>@keyword</strong>
+            </div>
+        }
+    </div>
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="cp-inline-alert cp-inline-alert--success" data-cp-alert>
@@ -121,13 +234,14 @@
     <div class="cp-table-wrap">
         <table class="cp-table student-certificate-table">
             <colgroup>
-                <col style="width: 14%;" />
-                <col style="width: 23%;" />
                 <col style="width: 13%;" />
+                <col style="width: 20%;" />
+                <col style="width: 12%;" />
                 <col style="width: 10%;" />
+                <col style="width: 12%;" />
                 <col style="width: 10%;" />
-                <col style="width: 15%;" />
-                <col style="width: 15%;" />
+                <col style="width: 11%;" />
+                <col style="width: 12%;" />
             </colgroup>
 
             <thead>
@@ -136,6 +250,7 @@
                     <th class="text-center">Tên chứng chỉ</th>
                     <th class="text-center">Mã/Số chứng chỉ</th>
                     <th class="text-center">Ngày cấp</th>
+                    <th class="text-center">Ngày hết hạn</th>
                     <th class="text-center">Trạng thái</th>
                     <th class="text-center">Minh chứng</th>
                     <th class="cp-col-action text-center">Thao tác</th>
@@ -176,7 +291,29 @@
                                     @(item.IssuedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
                                 </span>
                             </td>
-
+                            <td>
+                                @if (item.ExpiryDate.HasValue)
+                                {
+                                    if (item.ExpiryDate.Value.Date < DateTime.Today)
+                                    {
+                                        <div>
+                                            <span class="date-cell">@item.ExpiryDate.Value.ToString("dd/MM/yyyy")</span>
+                                            <div class="cp-muted">Đã hết hạn</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <span class="date-cell">@item.ExpiryDate.Value.ToString("dd/MM/yyyy")</span>
+                                            <div class="cp-muted">Còn hiệu lực</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="cp-muted">Không thời hạn</span>
+                                }
+                            </td>
                             <td>
                                 <div class="certificate-status-cell">
                                     <div class="cp-status-surface cp-status-surface--@(item.IsApproved ? "confirmed" : "pending")">
@@ -209,18 +346,18 @@
                                 <div class="cp-actions certificate-actions">
                                     <a asp-area="HocVu"
                                        asp-controller="StudentCertificate"
-                                       asp-action="Edit"
+                                       asp-action="Details"
                                        asp-route-id="@item.Id"
-                                       class="cp-btn cp-btn--warning cp-btn--sm">
-                                        Sửa
+                                       class="cp-btn cp-btn--info cp-btn--sm">
+                                        Chi tiết
                                     </a>
 
                                     <a asp-area="HocVu"
                                        asp-controller="StudentCertificate"
-                                       asp-action="Delete"
+                                       asp-action="Edit"
                                        asp-route-id="@item.Id"
-                                       class="cp-btn cp-btn--danger cp-btn--sm">
-                                        Xóa
+                                       class="cp-btn cp-btn--warning cp-btn--sm">
+                                        Sửa
                                     </a>
                                 </div>
                             </td>
