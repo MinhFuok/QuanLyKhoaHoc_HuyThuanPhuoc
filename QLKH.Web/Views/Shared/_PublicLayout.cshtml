@@ -15,7 +15,6 @@
     var phoneDigits = string.Concat((contactPhone ?? string.Empty).Where(char.IsDigit));
     var phoneContactHref = !string.IsNullOrWhiteSpace(phoneDigits) ? phoneDigits : "0123456789";
 
-    // TODO: move these two fallbacks into dedicated SystemSetting fields when schema is available.
     var zaloFallbackUrl = "https://zalo.me/0123456789";
     var zaloContactUrlOverride = ViewData["ZaloContactUrl"] as string;
     var aiSupportUrlOverride = ViewData["AiSupportUrl"] as string;
@@ -27,7 +26,7 @@
     var aiSupportUrl = !string.IsNullOrWhiteSpace(aiSupportUrlOverride)
         ? aiSupportUrlOverride
         : Url.Action("Privacy", "Home") ?? "/Home/Privacy";
-    var aiSupportMeta = "Hỗ trợ nhanh cùng QLKH";
+    var aiSupportMeta = "Hỗ trợ cùng Trần Đức Bo";
     var aiSupportTarget = aiSupportUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? "_blank" : null;
     var aiSupportRel = aiSupportTarget != null ? "noopener noreferrer" : null;
 
@@ -143,7 +142,7 @@
                     </svg>
                 </span>
                 <span class="pl-floating-contact__item-copy">
-                    <span class="pl-floating-contact__item-title">Liên hệ qua số điện thoại</span>
+                    <span class="pl-floating-contact__item-title">Liên hệ qua điện thoại</span>
                     <span class="pl-floating-contact__item-meta">@contactPhone</span>
                 </span>
             </a>
@@ -167,7 +166,7 @@
                 </span>
 
                 <span class="pl-floating-contact__item-copy">
-                    <span class="pl-floating-contact__item-title">Chatbox hỗ trợ tư vấn</span>
+                    <span class="pl-floating-contact__item-title">Chatbox hỗ trợ</span>
                     <span class="pl-floating-contact__item-meta">@aiSupportMeta</span>
                 </span>
             </button>
@@ -205,10 +204,10 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="pl-ai-chat__title" id="pl-ai-chat-title">AI Tư vấn hỗ trợ</div>
+                        <div class="pl-ai-chat__title" id="pl-ai-chat-title">Chatbox Hỗ Trợ Tư Vấn</div>
                         <div class="pl-ai-chat__status">
                             <span></span>
-                            Nền tảng QLKH
+                            Trần Đức Bo
                         </div>
                     </div>
                 </div>
@@ -235,7 +234,7 @@
                     </div>
 
                     <div class="pl-ai-chat__bubble">
-                        Chào anh~ Em là Miu, trợ lý AI nhỏ xíu của QLKH nè. Anh muốn hỏi gì cũng được, từ cách dùng hệ thống, học tập, công nghệ đến chuyện thường ngày, em sẽ cố gắng trả lời thật dễ hiểu nha ✨
+                        Chào anh~ Em là Trần Đức Bo - Mèow Méow Meow Mèow Meo, trợ lý AI nhỏ xíu của QLKH nè. Anh muốn hỏi gì cũng được, từ cách dùng hệ thống, học tập, công nghệ đến chuyện thường ngày, em sẽ cố gắng trả lời thật dễ hiểu nha ✨
                     </div>
                 </div>
             </div>

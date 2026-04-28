@@ -1,6 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Bảo trì hệ thống";
     Layout = null;
+
+    var maintenanceMessage = ViewBag.MaintenanceMessage as string;
+    if (string.IsNullOrWhiteSpace(maintenanceMessage))
+    {
+        maintenanceMessage = "Hệ thống đang được nâng cấp để phục vụ bạn tốt hơn. Vui lòng quay lại sau ít phút.";
+    }
 }
 
 <!DOCTYPE html>
@@ -9,10 +15,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bảo trì hệ thống</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: "Roboto", Arial, Helvetica, sans-serif;
@@ -22,35 +34,256 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            padding: 24px;
+            position: relative;
+        }
+
+            body::before,
+            body::after {
+                content: "";
+                position: absolute;
+                width: 420px;
+                height: 420px;
+                border-radius: 999px;
+                filter: blur(18px);
+                opacity: 0.45;
+                pointer-events: none;
+            }
+
+            body::before {
+                left: -120px;
+                top: -120px;
+                background: radial-gradient(circle, rgba(59, 130, 246, 0.55), transparent 65%);
+            }
+
+            body::after {
+                right: -140px;
+                bottom: -140px;
+                background: radial-gradient(circle, rgba(168, 85, 247, 0.55), transparent 65%);
+            }
+
+        .maintenance-shell {
+            width: min(760px, 100%);
+            position: relative;
+            z-index: 1;
         }
 
         .maintenance-box {
-            width: min(680px, 92%);
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 20px;
-            padding: 36px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            width: 100%;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 24px;
+            padding: 40px 38px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
             text-align: center;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            position: relative;
+            overflow: hidden;
         }
 
-            .maintenance-box h1 {
-                margin: 0 0 16px;
-                font-size: 38px;
+            .maintenance-box::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 35%), radial-gradient(circle at top right, rgba(96, 165, 250, 0.18), transparent 36%);
+                pointer-events: none;
             }
 
-            .maintenance-box p {
-                margin: 0;
-                font-size: 18px;
-                line-height: 1.7;
-                color: #e7e7f7;
+        .maintenance-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .maintenance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 999px;
+            background: rgba(96, 165, 250, 0.14);
+            border: 1px solid rgba(147, 197, 253, 0.24);
+            color: #bfdbfe;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .maintenance-badge-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: #60a5fa;
+            box-shadow: 0 0 0 6px rgba(96, 165, 250, 0.16);
+        }
+
+        .maintenance-icon {
+            width: 86px;
+            height: 86px;
+            margin: 0 auto 22px;
+            border-radius: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.28), rgba(168, 85, 247, 0.22));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+        }
+
+            .maintenance-icon svg {
+                width: 44px;
+                height: 44px;
+                color: #ffffff;
             }
+
+        .maintenance-box h1 {
+            margin: 0 0 16px;
+            font-size: clamp(30px, 5vw, 42px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.12;
+        }
+
+        .maintenance-box p {
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.75;
+            color: #e7e7f7;
+            max-width: 620px;
+        }
+
+        .maintenance-note {
+            margin-top: 22px;
+            color: #cbd5e1;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .maintenance-actions {
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .maintenance-btn {
+            min-height: 44px;
+            padding: 11px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 800;
+            transition: all 0.18s ease;
+        }
+
+            .maintenance-btn:hover {
+                transform: translateY(-2px);
+                color: #ffffff;
+            }
+
+        .maintenance-btn-primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.26);
+        }
+
+        .maintenance-btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+
+        .maintenance-btn-icon {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        @@media (max-width: 575.98px) {
+            body {
+                padding: 18px;
+            }
+
+            .maintenance-box {
+                padding: 32px 22px;
+                border-radius: 22px;
+            }
+
+            .maintenance-icon {
+                width: 76px;
+                height: 76px;
+                border-radius: 22px;
+            }
+
+                .maintenance-icon svg {
+                    width: 38px;
+                    height: 38px;
+                }
+
+            .maintenance-box p {
+                font-size: 16px;
+            }
+
+            .maintenance-actions {
+                flex-direction: column;
+            }
+
+            .maintenance-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <div class="maintenance-box">
-        <h1>Website đang bảo trì</h1>
-        <p style="white-space: pre-line;">@ViewBag.MaintenanceMessage</p>
-    </div>
+    <main class="maintenance-shell">
+        <div class="maintenance-box">
+            <div class="maintenance-content">
+                <div class="maintenance-badge">
+                    <span class="maintenance-badge-dot"></span>
+                    Đang bảo trì
+                </div>
+
+                <div class="maintenance-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a4.5 4.5 0 0 0-5.1 5.1L3 18l3 3 6.6-6.6a4.5 4.5 0 0 0 5.1-5.1l-2.8 2.8-3-3 2.8-2.8Z" />
+                        <path d="M9 15l-3 3" />
+                    </svg>
+                </div>
+
+                <h1>Website đang bảo trì</h1>
+
+                <p style="white-space: pre-line;">@maintenanceMessage</p>
+
+                <div class="maintenance-actions">
+                    <a href="/" class="maintenance-btn maintenance-btn-icon-only maintenance-btn-primary" aria-label="Quay về trang chủ">
+                        <svg viewBox="0 0 24 24" class="maintenance-btn-icon" aria-hidden="true">
+                            <path d="M3 11.5L12 4L21 11.5" />
+                            <path d="M5 10.5V20H10V15H14V20H19V10.5" />
+                        </svg>
+                    </a>
+
+                    <a href="javascript:location.reload();" class="maintenance-btn maintenance-btn-icon-only maintenance-btn-secondary" aria-label="Tải lại trang">
+                        <svg viewBox="0 0 24 24" class="maintenance-btn-icon" aria-hidden="true">
+                            <path d="M21 12A9 9 0 1 1 18.36 5.64" />
+                            <path d="M21 4V10H15" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

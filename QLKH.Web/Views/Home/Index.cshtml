@@ -151,28 +151,85 @@
                 </a>
             </div>
         </div>
-
         <div class="home-hero__visual home-reveal">
-            <div class="e-card playing home-main-card">
-                <div class="image"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="infotop">
-                    <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M12 3 3 8l9 5 9-5-9-5Z" />
-                        <path d="M3 12l9 5 9-5" />
-                        <path d="M3 16l9 5 9-5" />
-                    </svg>
-                    <br />
-                    Quản lý khóa học
-                    <div class="name">@siteName.ToLower()</div>
-                </div>
-            </div>
+            <div class="home-hero-dashboard" aria-hidden="true">
+                <div class="home-hero-dashboard__orb home-hero-dashboard__orb--one"></div>
+                <div class="home-hero-dashboard__orb home-hero-dashboard__orb--two"></div>
 
-            <div class="home-orbit-card">
-                <span>Online</span>
-                <strong>Course Manager</strong>
+                <div class="home-hero-dashboard__card home-hero-dashboard__card--main">
+                    <div class="home-hero-dashboard__top">
+                        <div>
+                            <span class="home-hero-dashboard__kicker">Dashboard</span>
+                        </div>
+
+                        <span class="home-hero-dashboard__status">
+                            <i></i> Online
+                        </span>
+                    </div>
+
+                    <div class="home-hero-dashboard__stats">
+                        <div>
+                            <strong>128</strong>
+                            <span>Học viên</span>
+                        </div>
+
+                        <div>
+                            <strong>24</strong>
+                            <span>Lớp học</span>
+                        </div>
+
+                        <div>
+                            <strong>96%</strong>
+                            <span>Tiến độ</span>
+                        </div>
+                    </div>
+
+                    <div class="home-hero-dashboard__chart">
+                        <span style="--h: 48%"></span>
+                        <span style="--h: 64%"></span>
+                        <span style="--h: 42%"></span>
+                        <span style="--h: 78%"></span>
+                        <span style="--h: 58%"></span>
+                        <span style="--h: 88%"></span>
+                        <span style="--h: 70%"></span>
+                    </div>
+
+                    <div class="home-hero-dashboard__list">
+                        <div>
+                            <span class="home-hero-dashboard__dot home-hero-dashboard__dot--blue"></span>
+                            <p>Lớp</p>
+                            <strong>Đang học</strong>
+                        </div>
+
+                        <div>
+                            <span class="home-hero-dashboard__dot home-hero-dashboard__dot--green"></span>
+                            <p>Kiểm tra bài tập</p>
+                            <strong>Hoàn tất</strong>
+                        </div>
+
+                        <div>
+                            <span class="home-hero-dashboard__dot home-hero-dashboard__dot--orange"></span>
+                            <p>Tài liệu mới</p>
+                            <strong>12 file</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-hero-dashboard__card home-hero-dashboard__card--float home-hero-dashboard__card--left">
+                    <span>🎓</span>
+                    <div>
+                        <strong>Giảng viên</strong>
+                        <small>Quản lý lớp & điểm</small>
+                    </div>
+                </div>
+
+                <div class="home-hero-dashboard__card home-hero-dashboard__card--float home-hero-dashboard__card--right">
+                    <span>📚</span>
+                    <div>
+                        <strong>Học viên</strong>
+                        <small>Bài tập · Tài liệu</small>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

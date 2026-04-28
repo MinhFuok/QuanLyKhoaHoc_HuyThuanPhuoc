@@ -21,24 +21,89 @@
                 </p>
 
                 <div class="about-hero__actions">
-                    <a href="@Url.Action("Index", "Home")" class="about-btn about-btn--primary">Về trang chủ</a>
+                    <a href="@Url.Action("Index", "Home")" class="about-btn about-btn--primary">← Về trang chủ</a>
                     <a href="@Url.Action("Index", "Home")#lien-he" class="about-btn about-btn--ghost">Liên hệ tư vấn</a>
                 </div>
             </div>
 
-            <div class="about-hero__visual">
-                <div class="about-orb-card">
-                    <div class="about-orb-card__glow"></div>
-                    <div class="about-orb-card__inner">
-                        <div class="about-orb-card__icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M12 3L3 8l9 5 9-5-9-5z" />
-                                <path d="M3 12l9 5 9-5" />
-                                <path d="M3 16l9 5 9-5" />
-                            </svg>
+            <div class="home-hero__visual home-reveal">
+                <div class="home-hero-dashboard" aria-hidden="true">
+                    <div class="home-hero-dashboard__orb home-hero-dashboard__orb--one"></div>
+                    <div class="home-hero-dashboard__orb home-hero-dashboard__orb--two"></div>
+
+                    <div class="home-hero-dashboard__card home-hero-dashboard__card--main">
+                        <div class="home-hero-dashboard__top">
+                            <div>
+                                <span class="home-hero-dashboard__kicker">Dashboard</span>
+                            </div>
+
+                            <span class="home-hero-dashboard__status">
+                                <i></i> Online
+                            </span>
                         </div>
-                        <h3>QLKH</h3>
-                        <p>Quản lý tập trung • Vận hành rõ ràng • Học trực tuyến hiệu quả</p>
+
+                        <div class="home-hero-dashboard__stats">
+                            <div>
+                                <strong>128</strong>
+                                <span>Học viên</span>
+                            </div>
+
+                            <div>
+                                <strong>24</strong>
+                                <span>Lớp học</span>
+                            </div>
+
+                            <div>
+                                <strong>96%</strong>
+                                <span>Tiến độ</span>
+                            </div>
+                        </div>
+
+                        <div class="home-hero-dashboard__chart">
+                            <span style="--h: 48%"></span>
+                            <span style="--h: 64%"></span>
+                            <span style="--h: 42%"></span>
+                            <span style="--h: 78%"></span>
+                            <span style="--h: 58%"></span>
+                            <span style="--h: 88%"></span>
+                            <span style="--h: 70%"></span>
+                        </div>
+
+                        <div class="home-hero-dashboard__list">
+                            <div>
+                                <span class="home-hero-dashboard__dot home-hero-dashboard__dot--blue"></span>
+                                <p>Lớp</p>
+                                <strong>Đang học</strong>
+                            </div>
+
+                            <div>
+                                <span class="home-hero-dashboard__dot home-hero-dashboard__dot--green"></span>
+                                <p>Kiểm tra bài tập</p>
+                                <strong>Hoàn tất</strong>
+                            </div>
+
+                            <div>
+                                <span class="home-hero-dashboard__dot home-hero-dashboard__dot--orange"></span>
+                                <p>Tài liệu mới</p>
+                                <strong>12 file</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="home-hero-dashboard__card home-hero-dashboard__card--float home-hero-dashboard__card--left">
+                        <span>🎓</span>
+                        <div>
+                            <strong>Giảng viên</strong>
+                            <small>Quản lý lớp & điểm</small>
+                        </div>
+                    </div>
+
+                    <div class="home-hero-dashboard__card home-hero-dashboard__card--float home-hero-dashboard__card--right">
+                        <span>📚</span>
+                        <div>
+                            <strong>Học viên</strong>
+                            <small>Bài tập · Tài liệu</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,47 +229,11 @@
             </div>
         </div>
     </section>
-
-    <section class="about-section">
-        <div class="about-container">
-            <div class="about-grid about-grid--2">
-                <article class="about-card">
-                    <div class="about-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M12 20h9" />
-                            <path d="M12 4h9" />
-                            <path d="M4 9h16" />
-                            <path d="M4 15h16" />
-                        </svg>
-                    </div>
-                    <h2>Công nghệ sử dụng</h2>
-                    <ul class="about-list">
-                        <li>ASP.NET Core MVC</li>
-                        <li>Entity Framework Core</li>
-                        <li>SQL Server</li>
-                        <li>Razor Views</li>
-                        <li>Kiến trúc phân tầng</li>
-                    </ul>
-                </article>
-
-                <article class="about-card">
-                    <div class="about-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
-                        </svg>
-                    </div>
-                    <h2>Định hướng phát triển</h2>
-                    <p>
-                        Trong tương lai, hệ thống có thể tiếp tục mở rộng với các tính năng như báo cáo thống kê chuyên sâu,
-                        hỗ trợ AI tư vấn, tích hợp thông báo thông minh, chatbot hỗ trợ học viên và đồng bộ dữ liệu đa nền tảng.
-                    </p>
-                </article>
-            </div>
-        </div>
-    </section>
 </section>
 
 @section Styles {
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
     <style>
         .about-page {
             position: relative;
@@ -326,68 +355,6 @@
                 background: rgba(255,255,255,.10);
                 color: #fff;
             }
-
-        .about-hero__visual {
-            display: flex;
-            justify-content: center;
-        }
-
-        .about-orb-card {
-            position: relative;
-            width: min(360px, 100%);
-            border-radius: 28px;
-            padding: 22px;
-            background: rgba(255,255,255,.06);
-            border: 1px solid rgba(255,255,255,.10);
-            box-shadow: 0 20px 50px rgba(0,0,0,.28);
-            backdrop-filter: blur(10px);
-            overflow: hidden;
-        }
-
-        .about-orb-card__glow {
-            position: absolute;
-            inset: -30% auto auto -10%;
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(79,70,229,.4), transparent 65%);
-            filter: blur(12px);
-        }
-
-        .about-orb-card__inner {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 30px 18px;
-        }
-
-        .about-orb-card__icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, rgba(79,70,229,.25), rgba(34,211,238,.25));
-            border: 1px solid rgba(255,255,255,.10);
-        }
-
-            .about-orb-card__icon svg {
-                width: 28px;
-                height: 28px;
-                color: #fff;
-            }
-
-        .about-orb-card__inner h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .about-orb-card__inner p {
-            color: rgba(255,255,255,.76);
-            line-height: 1.7;
-        }
 
         .about-section {
             padding: 26px 0;
@@ -561,10 +528,6 @@
             .about-hero {
                 padding: 58px 0 34px;
             }
-
-            .about-hero__visual {
-                justify-content: flex-start;
-            }
         }
 
         @@media (max-width: 640px) {
@@ -574,14 +537,6 @@
 
             .about-title {
                 font-size: 2rem;
-            }
-
-            .about-subtitle,
-            .about-card p,
-            .about-feature p,
-            .about-list li,
-            .about-timeline__content p {
-                line-height: 1.7;
             }
 
             .about-card,
