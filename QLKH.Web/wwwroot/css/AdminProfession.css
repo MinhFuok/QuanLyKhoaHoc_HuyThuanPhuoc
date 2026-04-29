@@ -18,6 +18,7 @@ body.db-body-admin .admin-notification-page{--ap-page-accent:#f43f5e;--ap-page-a
 body.db-body-admin .admin-audit-page{--ap-page-accent:#0f77f0;--ap-page-alt:#5b45f2}
 body.db-body-admin .admin-banner-page{--ap-page-accent:#14b8a6;--ap-page-alt:#0f77f0}
 body.db-body-admin .admin-page-header{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:24px;padding:28px 30px;border-radius:30px;background:linear-gradient(135deg,var(--ap-page-accent) 0%,var(--ap-page-alt) 100%);box-shadow:0 24px 52px rgba(91,69,242,.22);overflow:hidden}
+body.db-body-admin .admin-page-header.admin-page-header--danger{background:linear-gradient(135deg,#b91c1c 0%,#ef4444 52%,#f97316 100%);box-shadow:0 24px 52px rgba(185,28,28,.24)}
 body.db-body-admin .admin-page-header:before,body.db-body-admin .admin-page-header:after{content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.1);pointer-events:none}
 body.db-body-admin .admin-page-header:before{width:220px;height:220px;top:-110px;right:8%}
 body.db-body-admin .admin-page-header:after{width:140px;height:140px;bottom:-72px;right:-18px}
