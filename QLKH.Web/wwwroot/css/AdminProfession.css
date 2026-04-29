@@ -102,14 +102,20 @@ body.db-body-admin :is(.admin-action-lock:hover,.admin-action-unlock:hover) .loc
 @keyframes adminTrashThrow{from{transform:translate(-400%,-700%);opacity:0}to{transform:translate(0,0);opacity:1}}
 @keyframes adminLockBling{50%{stroke-dasharray:3;stroke-dashoffset:12}100%{stroke-dasharray:3;stroke-dashoffset:9}}
 @keyframes adminLockPulse{50%{transform:translateY(1px)}}
+@keyframes adminConfirmRipple{0%{outline:0 solid transparent;outline-offset:-.08em}48%{outline:.2em solid var(--ap-btn-outline,rgba(91,69,242,.3));outline-offset:.18em}100%{outline:.38em solid transparent;outline-offset:.46em}}
 body.db-body-admin .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:16px;font-family:"Roboto",Arial,Helvetica,sans-serif;font-size:.94rem;font-weight:700;letter-spacing:-.01em;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease,border-color .2s ease}
 body.db-body-admin .btn:hover{transform:translateY(-1px)}
 body.db-body-admin .btn:active{transform:translateY(0)}
 body.db-body-admin .btn:focus-visible{box-shadow:0 0 0 4px rgba(91,69,242,.14)}
 body.db-body-admin .btn-sm{min-height:38px;padding:8px 14px;border-radius:12px;font-size:.82rem}
-body.db-body-admin .btn-primary{border:0;color:#fff;background:linear-gradient(135deg,var(--ap-page-accent) 0%,var(--ap-page-alt) 100%);box-shadow:0 16px 30px rgba(91,69,242,.18)}
+body.db-body-admin :is(.btn-primary.confirm-glow,.btn-danger.confirm-glow,.btn-success.confirm-glow){position:relative;overflow:visible;isolation:isolate;outline:0 solid transparent;outline-offset:.08em}
+body.db-body-admin :is(.btn-primary.confirm-glow,.btn-danger.confirm-glow,.btn-success.confirm-glow):is(:hover,:focus-visible){animation:adminConfirmRipple 1.05s linear infinite;box-shadow:0 0 1.1em 0 var(--ap-btn-shadow,rgba(91,69,242,.28)),0 22px 38px var(--ap-btn-lift,rgba(91,69,242,.28))}
+body.db-body-admin .btn-primary{--ap-btn-outline:rgba(139,92,246,.34);--ap-btn-outline:color-mix(in srgb,var(--ap-page-accent) 36%,transparent);--ap-btn-shadow:rgba(91,69,242,.34);--ap-btn-shadow:color-mix(in srgb,var(--ap-page-accent) 42%,transparent);--ap-btn-lift:rgba(91,69,242,.3);border:0;color:#fff;background:linear-gradient(135deg,var(--ap-page-accent) 0%,var(--ap-page-alt) 100%);box-shadow:0 16px 30px rgba(91,69,242,.18)}
+body.db-body-admin .btn-primary:hover{box-shadow:0 20px 36px rgba(91,69,242,.26)}
 body.db-body-admin .admin-page-header .btn-primary{background:#fff;color:var(--ap-page-accent);box-shadow:0 16px 30px rgba(15,23,42,.16)}
-body.db-body-admin .btn-danger{border:0;color:#fff;background:linear-gradient(135deg,#ef4444 0%,#f43f5e 100%);box-shadow:0 16px 30px rgba(244,63,94,.16)}
+body.db-body-admin .btn-danger{--ap-btn-outline:rgba(244,63,94,.3);--ap-btn-shadow:rgba(244,63,94,.3);--ap-btn-lift:rgba(244,63,94,.28);border:0;color:#fff;background:linear-gradient(135deg,#ef4444 0%,#f43f5e 100%);box-shadow:0 16px 30px rgba(244,63,94,.16)}
+body.db-body-admin .btn-danger:hover{box-shadow:0 20px 36px rgba(244,63,94,.24)}
+body.db-body-admin .btn-success{--ap-btn-outline:rgba(34,197,94,.3);--ap-btn-shadow:rgba(34,197,94,.3);--ap-btn-lift:rgba(34,197,94,.26)}
 body.db-body-admin :is(.btn-outline-secondary,.btn-outline-primary,.btn-outline-success,.btn-outline-danger){background:#fff}
 body.db-body-admin .btn-outline-secondary{border:1px solid var(--ap-border);color:var(--ap-text)}
 body.db-body-admin .btn-outline-primary{border:1px solid rgba(91,69,242,.2);color:var(--ap-page-accent)}
@@ -164,4 +170,4 @@ body.db-body-admin .ap-reveal.is-visible{opacity:1;transform:none}
 @media (max-width:1199.98px){body.db-body-admin .db-content{padding:28px 24px 40px}}
 @media (max-width:991.98px){body.db-body-admin .admin-page-header,body.db-body-admin .admin-tab-header{flex-direction:column;align-items:stretch}body.db-body-admin .admin-page-header .admin-btn-main{width:100%}body.db-body-admin .admin-filter-actions .btn,body.db-body-admin .admin-form-actions .btn{flex:1 1 180px}}
 @media (max-width:767.98px){body.db-body-admin .db-content{padding:22px 16px 34px}body.db-body-admin .db-main-wrap{background:#fff}body.db-body-admin :is(.admin-page-header,.admin-filter-card,.admin-form-card form,.admin-delete-body,.admin-system-body,.admin-system-tab-content){padding:18px}body.db-body-admin .admin-page-header{border-radius:24px}body.db-body-admin :is(.admin-table-title,.admin-form-title,.admin-delete-title){padding:16px 18px}body.db-body-admin :is(.admin-form-actions,.admin-filter-actions,.admin-tabbar){flex-direction:column}body.db-body-admin :is(.admin-form-actions .btn,.admin-filter-actions .btn,.admin-btn-main,.admin-tab){width:100%}body.db-body-admin .admin-detail-row{grid-template-columns:1fr;gap:4px}body.db-body-admin .admin-actions{justify-content:flex-start}body.db-body-admin .admin-password-tip{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){body.db-body-admin :is(.ap-reveal,.admin-filter-card,.admin-table-card,.admin-form-card,.admin-delete-card,.admin-system-card,.admin-feature-card,.admin-section-box,.btn,.admin-check-row,.toggle-arrow){transition:none!important;transform:none!important}}
+@media (prefers-reduced-motion:reduce){body.db-body-admin :is(.ap-reveal,.admin-filter-card,.admin-table-card,.admin-form-card,.admin-delete-card,.admin-system-card,.admin-feature-card,.admin-section-box,.btn,.admin-check-row,.toggle-arrow){transition:none!important;transform:none!important}body.db-body-admin :is(.btn-primary.confirm-glow,.btn-danger.confirm-glow,.btn-success.confirm-glow){animation:none!important;outline:none!important}}

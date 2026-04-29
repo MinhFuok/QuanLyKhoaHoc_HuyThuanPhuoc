@@ -34,6 +34,10 @@
         return points.join(', ');
     }
 
+    function normalizeButtonLabel(text) {
+        return (text || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+
     /* ------------------------------------------------
        Elements
     ------------------------------------------------ */
@@ -176,6 +180,17 @@
     });
 
     /* ------------------------------------------------
+       Confirm buttons glow
+    ------------------------------------------------ */
+    function initConfirmGlowButtons() {
+        $$('.btn, .cp-btn').forEach(function (btn) {
+            var label = normalizeButtonLabel(btn.textContent);
+            if (!label.startsWith('xác nhận')) return;
+            btn.classList.add('confirm-glow');
+        });
+    }
+
+    /* ------------------------------------------------
        Topbar title — tự điền từ <h1> trong content
     ------------------------------------------------ */
     var titleEl = document.querySelector('.db-topbar-title');
@@ -184,6 +199,7 @@
         if (h1) titleEl.textContent = h1.textContent.trim();
     }
 
+    initConfirmGlowButtons();
     initAdminSpaceBackground();
 
 })();
