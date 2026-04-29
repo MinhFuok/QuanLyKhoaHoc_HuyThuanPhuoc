@@ -19,5 +19,7 @@ namespace QLKH.Application.ViewModels
         public int GradedAssignments { get; set; }
 
         public decimal CompletionPercent { get; set; }
+
+        public int StudyYear { get; set; }
     }
 }

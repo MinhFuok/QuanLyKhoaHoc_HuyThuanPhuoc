@@ -319,6 +319,18 @@ namespace QLKH.Application.Services
                 overallCompletionPercent = Math.Round((decimal)submittedAssignments * 100 / totalAssignments, 2);
             }
 
+            var classRooms = new List<ClassRoom>();
+
+            foreach (var classRoomId in classRoomIds)
+            {
+                var classRoom = await _classRoomRepository.GetByIdWithDetailsAsync(classRoomId);
+
+                if (classRoom != null)
+                {
+                    classRooms.Add(classRoom);
+                }
+            }
+
             var classItems = classRoomIds
                 .Select(classRoomId =>
                 {
@@ -336,7 +348,8 @@ namespace QLKH.Application.Services
                         .Where(x => classAssignments.Any(a => a.Id == x.AssignmentId) && x.Score.HasValue)
                         .Count();
 
-                    var classRoom = classAssignments.FirstOrDefault()?.ClassRoom;
+                    var classRoom = classRooms.FirstOrDefault(x => x.Id == classRoomId)
+                        ?? classAssignments.FirstOrDefault()?.ClassRoom;
 
                     decimal completionPercent = 0;
                     if (classAssignments.Count > 0)
@@ -351,10 +364,12 @@ namespace QLKH.Application.Services
                         TotalAssignments = classAssignments.Count,
                         SubmittedAssignments = submittedInClass,
                         GradedAssignments = gradedInClass,
-                        CompletionPercent = completionPercent
+                        CompletionPercent = completionPercent,
+                        StudyYear = classRoom?.StartDate.Year ?? DateTime.Today.Year
                     };
                 })
-                .OrderBy(x => x.ClassName)
+                .OrderByDescending(x => x.StudyYear)
+                .ThenBy(x => x.ClassName)
                 .ToList();
 
             return new StudentLearningProgressOverviewViewModel

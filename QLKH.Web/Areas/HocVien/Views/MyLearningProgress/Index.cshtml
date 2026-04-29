@@ -1,13 +1,28 @@
 ﻿@model QLKH.Application.ViewModels.StudentLearningProgressOverviewViewModel
 @using System.Linq
+@using System.Globalization
 
 @{
     ViewData["Title"] = "Tiến độ học tập";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
     var classes = Model.Classes?.ToList() ?? new();
+    var classYearGroups = classes
+    .GroupBy(x => x.StudyYear > 0 ? x.StudyYear : DateTime.Today.Year)
+    .OrderByDescending(x => x.Key)
+    .Select(x => new
+    {
+        Year = x.Key,
+        Items = x
+            .OrderByDescending(item => item.CompletionPercent)
+            .ThenBy(item => item.ClassName)
+            .ToList()
+    })
+    .ToList();
 
     var completionPercent = Model?.OverallCompletionPercent ?? 0;
+    var completionPercentCss = completionPercent.ToString("0.##", CultureInfo.InvariantCulture);
+
     var averageScoreText = Model?.AverageScore.HasValue == true
         ? Model.AverageScore.Value.ToString("0.##")
         : "--";
@@ -206,8 +221,8 @@
             <div class="progress progress-track">
                 <div class="progress-bar custom-progress-bar @GetProgressClass(completionPercent)"
                      role="progressbar"
-                     style="width: @completionPercent.ToString("0.##")%;"
-                     aria-valuenow="@completionPercent.ToString("0.##")"
+                     style="width: @completionPercentCss%;"
+                     aria-valuenow="@completionPercentCss"
                      aria-valuemin="0"
                      aria-valuemax="100">
                 </div>
@@ -226,7 +241,7 @@
         <div class="card-header bg-white border-0 p-4 pb-2">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
                 <div>
-                    <h5 class="section-title mb-1">Tiến độ hoàn thành theo từng lớp</h5>
+                    <h5 class="section-title mb-1">Tiến độ học tập</h5>
                 </div>
 
                 <div class="progress-filter-note">
@@ -264,62 +279,144 @@
 
                         <thead>
                             <tr>
-                                <th>Lớp</th>
+                                <th class="text-center">Lớp</th>
                                 <th class="text-center">Tổng bài</th>
                                 <th class="text-center">Đã nộp</th>
                                 <th class="text-center">Đã chấm</th>
-                                <th>Tiến độ</th>
+                                <th class="text-center">Tiến độ</th>
                                 <th class="text-center">Đánh giá</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach (var item in classes.OrderByDescending(x => x.CompletionPercent))
+                            @foreach (var yearGroup in classYearGroups)
                             {
-                                var progressClass = GetProgressClass(item.CompletionPercent);
-                                var progressText = GetProgressText(item.CompletionPercent);
-
-                                <tr>
-                                    <td>
-                                        <div class="class-name">@item.ClassName</div>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <span class="number-pill">@item.TotalAssignments</span>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <span class="number-pill submitted">@item.SubmittedAssignments</span>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <span class="number-pill graded">@item.GradedAssignments</span>
-                                    </td>
-
-                                    <td>
-                                        <div class="class-progress-cell">
-                                            <div class="class-progress-top">
-                                                <span>@item.CompletionPercent.ToString("0.##")%</span>
-                                            </div>
-
-                                            <div class="progress class-progress-track">
-                                                <div class="progress-bar custom-progress-bar @progressClass"
-                                                     role="progressbar"
-                                                     style="width: @item.CompletionPercent.ToString("0.##")%;"
-                                                     aria-valuenow="@item.CompletionPercent.ToString("0.##")"
-                                                     aria-valuemin="0"
-                                                     aria-valuemax="100">
-                                                </div>
-                                            </div>
+                                <tr class="progress-year-row">
+                                    <td colspan="6">
+                                        <div class="progress-year-label">
+                                            <span class="progress-year-title">@yearGroup.Year</span>
                                         </div>
                                     </td>
-
-                                    <td class="text-center">
-                                        <span class="progress-status @progressClass">
-                                            @progressText
-                                        </span>
-                                    </td>
                                 </tr>
+
+                                @foreach (var item in yearGroup.Items)
+                                {
+                                    var progressClass = GetProgressClass(item.CompletionPercent);
+                                    var progressText = GetProgressText(item.CompletionPercent);
+                                    var itemCompletionPercentCss = item.CompletionPercent.ToString("0.##", CultureInfo.InvariantCulture);
+
+                                    <tr>
+                                        <td class="progress-class-mobile-cell">
+                                            <div class="progress-mobile-class-head">
+                                                <div class="class-name">@item.ClassName</div>
+
+                                                <button type="button"
+                                                        class="progress-mobile-detail-btn"
+                                                        aria-label="Xem chi tiết">
+                                                    <span class="progress-mobile-icon progress-mobile-icon-open">
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                            <path d="M6 9l6 6 6-6" />
+                                                        </svg>
+                                                    </span>
+
+                                                    <span class="progress-mobile-icon progress-mobile-icon-close">
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                            <path d="M18 15l-6-6-6 6" />
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            </div>
+
+                                            <div class="progress-mobile-detail-panel">
+                                                <div class="progress-mobile-detail-title">
+                                                    Thông tin tiến độ
+                                                </div>
+
+                                                <div class="progress-mobile-detail-grid">
+                                                    <div class="progress-mobile-detail-item">
+                                                        <span>Tổng bài</span>
+                                                        <strong>@item.TotalAssignments</strong>
+                                                    </div>
+
+                                                    <div class="progress-mobile-detail-item">
+                                                        <span>Đã nộp</span>
+                                                        <strong>@item.SubmittedAssignments</strong>
+                                                    </div>
+
+                                                    <div class="progress-mobile-detail-item">
+                                                        <span>Đã chấm</span>
+                                                        <strong>@item.GradedAssignments</strong>
+                                                    </div>
+
+                                                    <div class="progress-mobile-detail-item">
+                                                        <span>Hoàn thành</span>
+                                                        <strong>@item.CompletionPercent.ToString("0.##")%</strong>
+                                                    </div>
+                                                </div>
+
+                                                <div class="progress-mobile-detail-progress">
+                                                    <div class="progress-mobile-detail-row">
+                                                        <span>Tiến độ</span>
+                                                        <strong>@item.CompletionPercent.ToString("0.##")%</strong>
+                                                    </div>
+
+                                                    <div class="progress class-progress-track">
+                                                        <div class="progress-bar custom-progress-bar @progressClass"
+                                                             role="progressbar"
+                                                             style="width: @itemCompletionPercentCss%;"
+                                                             aria-valuenow="@itemCompletionPercentCss"
+                                                             aria-valuemin="0"
+                                                             aria-valuemax="100">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="progress-mobile-detail-row mt-2">
+                                                    <span>Đánh giá</span>
+                                                    <span class="progress-status @progressClass">
+                                                        @progressText
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="number-pill">@item.TotalAssignments</span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="number-pill submitted">@item.SubmittedAssignments</span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="number-pill graded">@item.GradedAssignments</span>
+                                        </td>
+
+                                        <td>
+                                            <div class="class-progress-cell">
+                                                <div class="class-progress-top">
+                                                    <span>@item.CompletionPercent.ToString("0.##")%</span>
+                                                </div>
+
+                                                <div class="progress class-progress-track">
+                                                    <div class="progress-bar custom-progress-bar @progressClass"
+                                                         role="progressbar"
+                                                         style="width: @itemCompletionPercentCss%;"
+                                                         aria-valuenow="@itemCompletionPercentCss"
+                                                         aria-valuemin="0"
+                                                         aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="progress-status @progressClass">
+                                                @progressText
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>
@@ -335,7 +432,26 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.progress-mobile-detail-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const row = button.closest('tr');
 
+                if (!row) return;
+
+                row.classList.toggle('is-open');
+
+                const isOpen = row.classList.contains('is-open');
+
+                button.setAttribute(
+                    'aria-label',
+                    isOpen ? 'Ẩn chi tiết' : 'Xem chi tiết'
+                );
+            });
+        });
+    });
+</script>
 @section Styles {
     <style>
         .student-progress-page {
@@ -636,6 +752,38 @@
                     background: #f8fbff;
                 }
 
+        .progress-year-row td {
+            padding: 10px 16px 8px !important;
+            background: #ffffff !important;
+            border-bottom: 1px solid #eef2f7 !important;
+        }
+
+        .progress-year-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 54px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .progress-year-title {
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+        }
+
+        .progress-mobile-detail-btn,
+        .progress-mobile-detail-panel {
+            display: none;
+        }
+        .progress-year-icon,
+        .progress-year-count {
+            display: none;
+        }
         .class-name {
             color: #0f172a;
             font-weight: 800;

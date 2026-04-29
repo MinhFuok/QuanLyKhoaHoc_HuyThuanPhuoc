@@ -11,12 +11,18 @@
         .OrderBy(x => x.StartDate)
         .ToList();
 
+    var upcomingClassRooms = classRooms
+        .Where(x => x.StartDate.Date > currentDate)
+        .OrderBy(x => x.StartDate)
+        .ToList();
+
     var endedClassRooms = classRooms
         .Where(x => x.EndDate.Date < currentDate)
         .OrderByDescending(x => x.EndDate)
         .ToList();
 
     var activeCount = activeClassRooms.Count;
+    var upcomingCount = upcomingClassRooms.Count;
     var endedCount = endedClassRooms.Count;
 }
 
@@ -358,6 +364,16 @@
 
             <button type="button"
                     class="classroom-tab-btn"
+                    data-tab="upcomingClassTab"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="upcomingClassTab">
+                Lớp sắp diễn ra
+                <span class="classroom-count">@upcomingCount</span>
+            </button>
+
+            <button type="button"
+                    class="classroom-tab-btn"
                     data-tab="endedClassTab"
                     role="tab"
                     aria-selected="false"
@@ -374,6 +390,13 @@
                         })
         </div>
 
+        <div id="upcomingClassTab" class="classroom-tab-pane" role="tabpanel" hidden>
+            @await Html.PartialAsync("_ClassRoomTablePartial", upcomingClassRooms, new ViewDataDictionary(ViewData)
+                        {
+                        ["Mode"] = "upcoming"
+                        })
+        </div>
+
         <div id="endedClassTab" class="classroom-tab-pane" role="tabpanel" hidden>
             @await Html.PartialAsync("_ClassRoomTablePartial", endedClassRooms, new ViewDataDictionary(ViewData)
                         {
@@ -384,6 +407,7 @@
 
     <div class="classroom-summary">
         <span>Đang diễn ra: <strong>@activeCount</strong></span>
+        <span>Đã kết thúc: <strong>@endedCount</strong></span>
         <span>Đã kết thúc: <strong>@endedCount</strong></span>
     </div>
 </div>

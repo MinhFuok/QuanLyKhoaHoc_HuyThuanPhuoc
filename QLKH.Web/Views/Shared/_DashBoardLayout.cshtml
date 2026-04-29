@@ -59,6 +59,8 @@
         <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
     }
     @await RenderSectionAsync("Styles", required: false)
+
+    <link rel="stylesheet" href="~/css/mobile.css" asp-append-version="true" />
     @if (isHocVuShell)
     {
         <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
@@ -260,6 +262,27 @@
     </aside>
 
     <div class="db-main-wrap">
+        <header class="db-mobile-topbar">
+            <button type="button"
+                    class="db-mobile-menu-btn"
+                    id="dbMenuToggle"
+                    aria-label="Mở menu"
+                    aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a class="db-mobile-brand" href="/">
+                <span class="db-mobile-brand-icon">🎓</span>
+                <span class="db-mobile-brand-text">@siteName</span>
+            </a>
+
+            <div class="db-mobile-user">
+                <span>@initials</span>
+            </div>
+        </header>
+
         <main class="db-content">
 
             <div id="dbAlertZone">

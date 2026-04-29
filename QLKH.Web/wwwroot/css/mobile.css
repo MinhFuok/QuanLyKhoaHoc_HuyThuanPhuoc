@@ -1,0 +1,6106 @@
+﻿/* =========================================
+   QLKH Mobile Responsive
+   Public Layout + Home Page
+   Chỉ áp dụng cho điện thoại/tablet nhỏ
+========================================= */
+
+@media (max-width: 768px) {
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .pl-page,
+    .home-index {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Header public */
+    .pl-header {
+        padding: 10px 14px;
+    }
+
+    .pl-header__inner {
+        min-height: 58px;
+        gap: 10px;
+    }
+
+    .pl-brand {
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .pl-brand__logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+    .pl-brand__text,
+    .pl-brand__name {
+        font-size: 1.35rem;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .pl-nav,
+    .pl-header__actions {
+        display: none !important;
+    }
+
+    .pl-theme-toggle {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        border-radius: 10px;
+    }
+
+    /* Home hero */
+    .home-shell {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .home-hero {
+        min-height: auto;
+        padding-top: 72px;
+        padding-bottom: 42px;
+        display: flex;
+        flex-direction: column;
+        gap: 34px;
+    }
+
+    .home-hero__content {
+        width: 100%;
+        text-align: center;
+    }
+
+    .home-hero__content h1 {
+        font-size: clamp(2.25rem, 12vw, 4.4rem);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .home-hero__content p {
+        max-width: 100%;
+        margin-top: 22px;
+        font-size: 1rem;
+        line-height: 1.7;
+        text-align: center;
+    }
+
+    .home-actions {
+        width: 100%;
+        margin-top: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .home-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .home-btn--enter,
+    .home-btn--consult {
+        min-height: 58px;
+    }
+
+    /* Hero visual */
+    .home-hero__visual {
+        width: 100%;
+        min-height: 320px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: none !important;
+    }
+
+    .home-main-card {
+        width: min(300px, 82vw);
+        height: 380px;
+        transform: rotate(-2deg) !important;
+    }
+
+    .home-orbit-card {
+        right: 10px;
+        bottom: 28px;
+        transform: scale(0.86);
+        transform-origin: right bottom;
+    }
+
+    /* Section */
+    .home-section {
+        padding-top: 54px;
+        padding-bottom: 54px;
+    }
+
+    .home-section__head {
+        margin-bottom: 28px;
+        text-align: center;
+    }
+
+    .home-section__head h2 {
+        font-size: clamp(1.8rem, 8vw, 2.45rem);
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+    }
+
+    /* Feature cards */
+    .home-card-grid,
+    .home-role-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+
+    .home-feature-card {
+        width: 100%;
+        min-height: 360px;
+    }
+
+    .home-feature-card .infotop {
+        padding-left: 22px;
+        padding-right: 22px;
+        font-size: 1.2rem;
+    }
+
+    .home-feature-card .name {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    /* Role cards */
+    .home-role__card {
+        min-height: auto;
+        padding: 22px;
+    }
+
+    .home-role__content h3 {
+        font-size: 1.45rem;
+    }
+
+    .home-role__content p {
+        font-size: 0.98rem;
+        line-height: 1.6;
+    }
+
+    .home-role__stamp {
+        opacity: 0.22;
+        transform: scale(0.82);
+        transform-origin: right bottom;
+    }
+
+    /* Carousel */
+    .home-carousel-wrap {
+        border-radius: 22px;
+    }
+
+    .home-carousel__image {
+        min-height: 220px;
+        object-fit: cover;
+    }
+
+    .home-carousel__caption {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        padding: 14px 16px;
+        border-radius: 16px;
+    }
+
+    .home-carousel__caption h3 {
+        font-size: 1.1rem;
+        line-height: 1.35;
+    }
+
+    /* Contact section */
+    .home-contact {
+        padding-bottom: 90px;
+    }
+
+    .home-contact__panel-wrap {
+        width: 100%;
+    }
+
+    .home-contact__body {
+        grid-template-columns: 1fr !important;
+        gap: 22px;
+        padding: 28px 22px;
+    }
+
+    .home-contact__body h2 {
+        font-size: 1.8rem;
+        line-height: 1.15;
+    }
+
+    .home-contact__body p {
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }
+
+    .home-contact__list {
+        gap: 12px;
+    }
+
+    .home-contact__item {
+        min-height: 64px;
+        padding: 14px 16px;
+        border-radius: 16px;
+    }
+
+    /* Floating contact */
+    .pl-floating-contact {
+        right: 14px;
+        bottom: 18px;
+        z-index: 330;
+    }
+
+    .pl-floating-contact__panel {
+        right: 0;
+        bottom: 78px;
+        width: min(330px, calc(100vw - 28px));
+    }
+
+    .pl-floating-contact__item {
+        min-height: 62px;
+        border-radius: 16px;
+    }
+
+    .pl-floating-contact__item-title {
+        font-size: 0.98rem;
+    }
+
+    .pl-floating-contact__item-meta {
+        font-size: 0.82rem;
+    }
+
+    .pl-floating-contact__toggle,
+    .pl-floating-contact__scrolltop {
+        width: 58px;
+        height: 58px;
+    }
+
+    /* AI popup */
+    .pl-ai-chat {
+        right: 10px;
+        bottom: 84px;
+        width: calc(100vw - 20px);
+        max-width: 420px;
+    }
+
+    .pl-ai-chat__card {
+        border-radius: 22px;
+    }
+
+    .pl-ai-chat__header {
+        padding: 14px;
+    }
+
+    .pl-ai-chat__messages {
+        height: min(52vh, 360px);
+        padding: 14px;
+    }
+
+    .pl-ai-chat__bubble {
+        max-width: 88%;
+        font-size: 13.5px;
+    }
+
+    .pl-ai-chat__suggestions {
+        padding: 10px;
+    }
+
+    .pl-ai-chat__form {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .pl-ai-chat__input {
+        min-height: 54px;
+        font-size: 14px;
+    }
+
+    .pl-ai-chat__send {
+        min-width: 64px;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    /* Footer */
+    .pl-footer {
+        padding: 44px 18px 90px;
+    }
+
+    .pl-footer__inner {
+        grid-template-columns: 1fr !important;
+        gap: 28px;
+    }
+
+    .pl-footer__brand,
+    .pl-footer__links,
+    .pl-footer__social {
+        text-align: left;
+    }
+}
+/* =========================================
+   FIX MOBILE PUBLIC HOME - STEP 2
+   Căn giữa card + gọn header/footer
+========================================= */
+
+@media (max-width: 768px) {
+    /* ===== HEADER PUBLIC MOBILE ===== */
+    .pl-header {
+        position: sticky;
+        top: 0;
+        z-index: 500;
+        padding: 10px 12px !important;
+        background: rgba(3, 7, 18, 0.92);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pl-header__inner {
+        min-height: 58px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+    }
+
+    .pl-brand {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        min-width: 0;
+    }
+
+    .pl-brand__logo {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 10px !important;
+    }
+
+    .pl-brand__name,
+    .pl-brand__text {
+        font-size: 1.45rem !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+    }
+
+    /*
+       Ẩn phần menu/dropdown đang bung ra dưới header trên mobile.
+       Desktop không bị ảnh hưởng vì chỉ trong media mobile.
+    */
+    .pl-nav,
+    .pl-header__actions,
+    .pl-mobile-nav,
+    .pl-mobile-menu,
+    .pl-header__menu,
+    .pl-header__collapse,
+    .pl-header__dropdown {
+        display: none !important;
+    }
+
+    .pl-theme-toggle {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Nếu nút Đăng nhập bị render thành một block riêng dưới header thì ép ẩn trên mobile */
+    .pl-header + .pl-nav,
+    .pl-header + .pl-header__actions,
+    .pl-header + .pl-mobile-nav,
+    .pl-header + .pl-mobile-menu {
+        display: none !important;
+    }
+
+    /* ===== HOME HERO MOBILE ===== */
+    .home-hero {
+        padding-top: 62px !important;
+        padding-bottom: 44px !important;
+    }
+
+    .home-hero__content {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+        .home-hero__content h1 {
+            text-align: center !important;
+            font-size: clamp(2.75rem, 11vw, 4.2rem) !important;
+            line-height: 0.98 !important;
+            letter-spacing: -0.055em !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        .home-hero__content p {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            max-width: 92% !important;
+        }
+
+    .home-actions {
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* ===== FIX CARD LỆCH TRÁI ===== */
+    .home-card-grid {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        justify-items: center !important;
+        align-items: stretch !important;
+        gap: 24px !important;
+    }
+
+    .home-feature-card {
+        width: min(330px, 88vw) !important;
+        max-width: 100% !important;
+        min-height: 390px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        justify-self: center !important;
+        border-radius: 24px !important;
+    }
+
+        .home-feature-card .infotop {
+            width: 100% !important;
+            padding-left: 26px !important;
+            padding-right: 26px !important;
+            text-align: center !important;
+        }
+
+        .home-feature-card .name {
+            max-width: 240px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            text-align: center !important;
+        }
+
+    .home-card-icon {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* ===== ROLE CARD CŨNG CĂN GIỮA ===== */
+    .home-role-grid {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        justify-items: center !important;
+        gap: 20px !important;
+    }
+
+    .home-role {
+        width: min(360px, 92vw) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .home-role__card {
+        width: 100% !important;
+    }
+
+    /* ===== FOOTER MOBILE GỌN HƠN ===== */
+    .pl-footer {
+        padding-left: 26px !important;
+        padding-right: 26px !important;
+        padding-bottom: 110px !important;
+    }
+
+    .pl-footer__inner {
+        width: 100% !important;
+        max-width: 420px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 26px !important;
+    }
+
+    .pl-footer__brand,
+    .pl-footer__links,
+    .pl-footer__social,
+    .pl-footer__support {
+        text-align: left !important;
+    }
+
+    .pl-footer a,
+    .pl-footer p,
+    .pl-footer li {
+        font-size: 0.98rem !important;
+        line-height: 1.65 !important;
+    }
+
+    /* ===== FLOATING BUTTON KHÔNG CHE CARD QUÁ NHIỀU ===== */
+    .pl-floating-contact {
+        right: 16px !important;
+        bottom: 18px !important;
+    }
+
+    .pl-floating-contact__toggle,
+    .pl-floating-contact__scrolltop {
+        width: 56px !important;
+        height: 56px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .home-feature-card {
+        width: min(320px, 90vw) !important;
+        min-height: 380px !important;
+    }
+
+    .home-hero__content h1 {
+        font-size: clamp(2.55rem, 12vw, 3.65rem) !important;
+    }
+
+    .home-section__head h2 {
+        font-size: clamp(1.75rem, 8vw, 2.3rem) !important;
+    }
+}
+/* =========================================
+   FIX MOBILE AI CHAT - STEP 3
+   Thu nhỏ chatbox trên điện thoại
+========================================= */
+
+@media (max-width: 768px) {
+    .pl-ai-chat {
+        right: 12px !important;
+        bottom: 84px !important;
+        width: min(320px, calc(100vw - 24px)) !important;
+        max-width: calc(100vw - 24px) !important;
+        z-index: 360 !important;
+    }
+
+    .pl-ai-chat__card {
+        border-radius: 22px !important;
+        overflow: hidden !important;
+        max-height: calc(100vh - 120px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .pl-ai-chat__header {
+        padding: 12px 14px !important;
+        min-height: 84px !important;
+    }
+
+    .pl-ai-chat__header-main {
+        gap: 10px !important;
+    }
+
+    .pl-ai-chat__avatar {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+    }
+
+        .pl-ai-chat__avatar svg {
+            width: 20px !important;
+            height: 20px !important;
+        }
+
+    .pl-ai-chat__title {
+        font-size: 1.08rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .pl-ai-chat__subtitle {
+        font-size: 0.88rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .pl-ai-chat__close {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+    }
+
+    .pl-ai-chat__messages {
+        height: 240px !important;
+        max-height: 240px !important;
+        padding: 12px !important;
+        overflow-y: auto !important;
+    }
+
+    .pl-ai-chat__message {
+        gap: 8px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .pl-ai-chat__message-avatar {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+    }
+
+        .pl-ai-chat__message-avatar svg {
+            width: 15px !important;
+            height: 15px !important;
+        }
+
+    .pl-ai-chat__bubble {
+        max-width: 86% !important;
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+        border-radius: 15px !important;
+    }
+
+    .pl-ai-chat__suggestions {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+    }
+
+        .pl-ai-chat__suggestions button,
+        .pl-ai-chat__suggestion,
+        .pl-ai-chat__chip {
+            min-height: 38px !important;
+            padding: 8px 14px !important;
+            font-size: 0.94rem !important;
+            border-radius: 999px !important;
+        }
+
+    .pl-ai-chat__form {
+        padding: 10px 12px 12px !important;
+        gap: 8px !important;
+        align-items: stretch !important;
+    }
+
+    .pl-ai-chat__input {
+        min-height: 50px !important;
+        max-height: 82px !important;
+        padding: 12px 14px !important;
+        font-size: 14px !important;
+        border-radius: 18px !important;
+    }
+
+    .pl-ai-chat__send {
+        min-width: 70px !important;
+        height: auto !important;
+        border-radius: 18px !important;
+        padding: 0 16px !important;
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .pl-ai-chat {
+        right: 10px !important;
+        bottom: 80px !important;
+        width: calc(100vw - 20px) !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+
+    .pl-ai-chat__header {
+        padding: 12px !important;
+    }
+
+    .pl-ai-chat__title {
+        font-size: 1rem !important;
+    }
+
+    .pl-ai-chat__subtitle {
+        font-size: 0.84rem !important;
+    }
+
+    .pl-ai-chat__messages {
+        height: 220px !important;
+        max-height: 220px !important;
+        padding: 10px !important;
+    }
+
+    .pl-ai-chat__bubble {
+        max-width: 88% !important;
+        font-size: 12.8px !important;
+    }
+
+    .pl-ai-chat__suggestions {
+        padding: 8px 10px !important;
+    }
+
+    .pl-ai-chat__form {
+        padding: 8px 10px 10px !important;
+    }
+
+    .pl-ai-chat__input {
+        min-height: 48px !important;
+        font-size: 13.5px !important;
+    }
+
+    .pl-ai-chat__send {
+        min-width: 66px !important;
+        font-size: 0.96rem !important;
+    }
+}
+/* =========================================
+   AI CHAT COMPACT OVERRIDE
+========================================= */
+
+@media (max-width: 768px) {
+    .pl-ai-chat {
+        width: min(300px, calc(100vw - 28px)) !important;
+        right: 14px !important;
+        bottom: 86px !important;
+    }
+
+    .pl-ai-chat__messages {
+        height: 200px !important;
+        max-height: 200px !important;
+    }
+
+    .pl-ai-chat__header {
+        min-height: 72px !important;
+        padding: 10px 12px !important;
+    }
+
+    .pl-ai-chat__suggestions {
+        max-height: 54px !important;
+        overflow-y: hidden !important;
+    }
+
+    .pl-ai-chat__form {
+        padding: 8px 10px 10px !important;
+    }
+
+    .pl-ai-chat__input {
+        min-height: 46px !important;
+    }
+
+    .pl-ai-chat__send {
+        min-width: 62px !important;
+    }
+}
+/* =========================================
+   MOBILE - ẨN DASHBOARD VISUAL TRANG CHỦ
+========================================= */
+
+@media (max-width: 768px) {
+    .home-hero__visual {
+        display: none !important;
+    }
+
+    .home-hero {
+        padding-top: 54px !important;
+        padding-bottom: 56px !important;
+        gap: 0 !important;
+    }
+
+    .home-hero__content {
+        max-width: 100% !important;
+    }
+
+        .home-hero__content h1 {
+            margin-top: 10px !important;
+        }
+
+    .home-actions {
+        margin-bottom: 0 !important;
+    }
+}
+/* =========================================
+   MOBILE - CARD SECTION NẰM NGANG 1 DÒNG
+   Áp dụng cho:
+   1. Nền tảng quản lý hiện đại...
+   2. Tối ưu trải nghiệm theo vai trò...
+========================================= */
+
+@media (max-width: 768px) {
+    /* ===== 4 FEATURE CARD: NẰM 1 DÒNG, VUỐT NGANG ===== */
+    .home-card-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 14px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 4px 12px !important;
+        justify-items: unset !important;
+    }
+
+        .home-card-grid::-webkit-scrollbar {
+            height: 0;
+        }
+
+    .home-feature-card {
+        flex: 0 0 220px !important;
+        width: 220px !important;
+        min-width: 220px !important;
+        max-width: 220px !important;
+        height: 280px !important;
+        min-height: 280px !important;
+        border-radius: 22px !important;
+        scroll-snap-align: start;
+        margin: 0 !important;
+    }
+
+        .home-feature-card .infotop {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+            font-size: 1rem !important;
+            line-height: 1.35 !important;
+            text-align: center !important;
+        }
+
+        .home-feature-card .name {
+            max-width: 180px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+    .home-card-icon {
+        width: 58px !important;
+        height: 58px !important;
+        min-width: 58px !important;
+        margin-bottom: 18px !important;
+        font-size: 1.05rem !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* ===== 4 ROLE CARD: NẰM 1 DÒNG, VUỐT NGANG ===== */
+    .home-role-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 14px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 4px 12px !important;
+        justify-items: unset !important;
+    }
+
+        .home-role-grid::-webkit-scrollbar {
+            height: 0;
+        }
+
+    .home-role {
+        flex: 0 0 240px !important;
+        width: 240px !important;
+        min-width: 240px !important;
+        max-width: 240px !important;
+        margin: 0 !important;
+        scroll-snap-align: start;
+    }
+
+    .home-role__card {
+        width: 100% !important;
+        min-height: 220px !important;
+        padding: 18px !important;
+        border-radius: 22px !important;
+    }
+
+    .home-role__label {
+        font-size: 0.72rem !important;
+        letter-spacing: 0.08em !important;
+    }
+
+    .home-role__content h3 {
+        font-size: 1.18rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .home-role__content p {
+        font-size: 0.82rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: 14px !important;
+    }
+
+    .home-role__action {
+        font-size: 0.78rem !important;
+        padding: 7px 10px !important;
+        border-radius: 999px !important;
+    }
+
+    .home-role__stamp {
+        transform: scale(0.68) !important;
+        transform-origin: right bottom !important;
+        opacity: 0.18 !important;
+    }
+
+    /* Tiêu đề section gọn hơn để không chiếm quá nhiều chiều cao */
+    .home-section__head {
+        margin-bottom: 20px !important;
+    }
+
+        .home-section__head h2 {
+            max-width: 94% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .home-feature-card {
+        flex-basis: 210px !important;
+        width: 210px !important;
+        min-width: 210px !important;
+        max-width: 210px !important;
+        height: 270px !important;
+        min-height: 270px !important;
+    }
+
+    .home-role {
+        flex-basis: 230px !important;
+        width: 230px !important;
+        min-width: 230px !important;
+        max-width: 230px !important;
+    }
+
+    .home-role__card {
+        min-height: 215px !important;
+    }
+}
+/* =========================================
+   MOBILE - FIX CARD SECTIONS 2x2 GRID
+   Thay cho kiểu vuốt ngang bị cắt card
+========================================= */
+
+@media (max-width: 768px) {
+    /* ===== SECTION FEATURE: 2 CỘT x 2 HÀNG ===== */
+    .home-card-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+        width: 100% !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        justify-items: stretch !important;
+        align-items: stretch !important;
+    }
+
+    .home-feature-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 245px !important;
+        min-height: 245px !important;
+        margin: 0 !important;
+        border-radius: 22px !important;
+        scroll-snap-align: unset !important;
+    }
+
+        .home-feature-card .infotop {
+            width: 100% !important;
+            padding: 18px 12px !important;
+            font-size: 0.92rem !important;
+            line-height: 1.32 !important;
+            text-align: center !important;
+        }
+
+        .home-feature-card .name {
+            max-width: 135px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            font-size: 0.76rem !important;
+            line-height: 1.42 !important;
+            text-align: center !important;
+        }
+
+    .home-card-icon {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        margin: 0 auto 14px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* ===== SECTION ROLE: 2 CỘT x 2 HÀNG ===== */
+    .home-role-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+        width: 100% !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        justify-items: stretch !important;
+    }
+
+    .home-role {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
+        scroll-snap-align: unset !important;
+    }
+
+    .home-role__card {
+        width: 100% !important;
+        min-height: 210px !important;
+        padding: 16px 14px !important;
+        border-radius: 22px !important;
+        overflow: hidden !important;
+    }
+
+    .home-role__label {
+        font-size: 0.64rem !important;
+        letter-spacing: 0.06em !important;
+        margin-bottom: 8px !important;
+    }
+
+    .home-role__content h3 {
+        font-size: 1rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 8px !important;
+    }
+
+    .home-role__content p {
+        font-size: 0.74rem !important;
+        line-height: 1.42 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .home-role__action {
+        font-size: 0.68rem !important;
+        padding: 6px 9px !important;
+        border-radius: 999px !important;
+    }
+
+    .home-role__stamp {
+        transform: scale(0.55) !important;
+        transform-origin: right bottom !important;
+        opacity: 0.14 !important;
+        right: 8px !important;
+        bottom: 8px !important;
+    }
+
+    /* Tiêu đề section gọn lại */
+    .home-section__head {
+        margin-bottom: 22px !important;
+    }
+
+        .home-section__head h2 {
+            max-width: 96% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            font-size: clamp(1.85rem, 8vw, 2.45rem) !important;
+            line-height: 1.08 !important;
+        }
+}
+
+/* Điện thoại nhỏ: giữ 2 cột nhưng card thấp hơn một chút */
+@media (max-width: 420px) {
+    .home-card-grid,
+    .home-role-grid {
+        gap: 12px !important;
+    }
+
+    .home-feature-card {
+        height: 235px !important;
+        min-height: 235px !important;
+    }
+
+        .home-feature-card .infotop {
+            padding: 16px 10px !important;
+            font-size: 0.86rem !important;
+        }
+
+        .home-feature-card .name {
+            max-width: 125px !important;
+            font-size: 0.72rem !important;
+        }
+
+    .home-role__card {
+        min-height: 205px !important;
+        padding: 15px 12px !important;
+    }
+
+    .home-role__content h3 {
+        font-size: 0.96rem !important;
+    }
+
+    .home-role__content p {
+        font-size: 0.71rem !important;
+    }
+}
+/* =========================================
+   MOBILE - FOOTER COMPACT CLEAN
+========================================= */
+
+@media (max-width: 768px) {
+    .pl-footer {
+        padding: 34px 22px 120px !important;
+    }
+
+    .pl-footer__inner {
+        max-width: 390px !important;
+        gap: 22px !important;
+    }
+
+    .pl-footer__brand {
+        padding-bottom: 4px !important;
+    }
+
+        .pl-footer__brand h2,
+        .pl-footer__brand-title,
+        .pl-footer__logo-text {
+            font-size: 1.35rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 8px !important;
+        }
+
+        .pl-footer__brand p {
+            font-size: 0.95rem !important;
+            line-height: 1.65 !important;
+            margin-bottom: 18px !important;
+        }
+
+    .pl-footer__contact,
+    .pl-footer__links,
+    .pl-footer__social,
+    .pl-footer__support {
+        display: grid !important;
+        gap: 10px !important;
+    }
+
+        .pl-footer__contact-item,
+        .pl-footer__links a,
+        .pl-footer__social a,
+        .pl-footer__support a {
+            min-height: 34px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            font-size: 0.96rem !important;
+            line-height: 1.4 !important;
+        }
+
+    .pl-footer__heading,
+    .pl-footer h3,
+    .pl-footer h4 {
+        margin: 8px 0 4px !important;
+        font-size: 0.78rem !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+        color: rgba(255, 255, 255, 0.72) !important;
+    }
+
+    .pl-footer__social-icon,
+    .pl-footer .social-icon {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+    }
+
+    .pl-footer__bottom,
+    .pl-footer__copyright {
+        margin-top: 8px !important;
+        padding-top: 16px !important;
+        font-size: 0.82rem !important;
+        line-height: 1.5 !important;
+        color: rgba(255, 255, 255, 0.58) !important;
+    }
+
+    /* tránh nút chat/lên đầu che footer */
+    .pl-floating-contact {
+        bottom: 18px !important;
+    }
+}
+/* =========================================
+   MOBILE DASHBOARD LAYOUT - STEP 1
+   Sidebar trượt + topbar mobile
+========================================= */
+
+@media (max-width: 768px) {
+    body.db-body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        background: #f3f6fb;
+    }
+
+    .db-main-wrap {
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    .db-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 78px 14px 24px !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Topbar mobile */
+    .db-mobile-topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 14px;
+        background: rgba(15, 23, 42, 0.94);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+    }
+
+    .db-mobile-menu-btn {
+        width: 42px;
+        height: 42px;
+        border: 0;
+        border-radius: 14px;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+    }
+
+        .db-mobile-menu-btn span {
+            width: 18px;
+            height: 2px;
+            border-radius: 999px;
+            background: #ffffff;
+            display: block;
+        }
+
+    .db-mobile-brand {
+        flex: 1;
+        min-width: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 900;
+    }
+
+    .db-mobile-brand-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        font-size: 1rem;
+    }
+
+    .db-mobile-brand-text {
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 1.08rem;
+    }
+
+    .db-mobile-user {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-weight: 900;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+        .db-mobile-user span {
+            line-height: 1;
+        }
+
+    /* Sidebar thành menu trượt */
+    .db-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: min(310px, 84vw) !important;
+        max-width: 84vw !important;
+        height: 100vh !important;
+        z-index: 1050 !important;
+        transform: translateX(-105%) !important;
+        transition: transform 0.25s ease !important;
+        box-shadow: 24px 0 60px rgba(15, 23, 42, 0.28) !important;
+    }
+
+        .db-sidebar.open {
+            transform: translateX(0) !important;
+        }
+
+    .db-overlay {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 1040 !important;
+        display: none;
+        background: rgba(15, 23, 42, 0.52);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+    }
+
+        .db-overlay.active {
+            display: block !important;
+        }
+
+    .db-sidebar-header {
+        min-height: 68px !important;
+        padding: 14px 16px !important;
+    }
+
+    .db-brand {
+        min-width: 0;
+    }
+
+    .db-brand-icon {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+    }
+
+    .db-brand-text {
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .db-sidebar-close {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        border-radius: 12px !important;
+    }
+
+    .db-nav {
+        padding: 10px 12px 14px !important;
+        overflow-y: auto !important;
+        max-height: calc(100vh - 184px) !important;
+    }
+
+    .db-nav-group {
+        margin-bottom: 14px !important;
+    }
+
+    .db-nav-group-label {
+        font-size: 0.72rem !important;
+        letter-spacing: 0.08em !important;
+        padding-left: 10px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .db-nav-link {
+        min-height: 46px !important;
+        padding: 11px 12px !important;
+        border-radius: 14px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .db-nav-icon {
+        width: 28px !important;
+        min-width: 28px !important;
+    }
+
+    .db-sidebar-footer {
+        padding: 12px !important;
+    }
+
+    .db-user-info {
+        padding: 10px !important;
+        border-radius: 16px !important;
+    }
+
+    .db-user-name {
+        max-width: 170px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .db-logout-btn {
+        min-height: 44px !important;
+        border-radius: 14px !important;
+        font-size: 0.95rem !important;
+    }
+
+    #dbAlertZone {
+        margin-top: 0 !important;
+    }
+
+    .db-alert {
+        border-radius: 14px !important;
+        padding: 12px 14px !important;
+        font-size: 0.92rem !important;
+    }
+}
+
+/* Desktop/tablet lớn thì ẩn topbar mobile */
+@media (min-width: 769px) {
+    .db-mobile-topbar {
+        display: none !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN DASHBOARD - STEP 2
+   Gọn dashboard học viên trên điện thoại
+========================================= */
+
+@media (max-width: 768px) {
+    .hv-dashboard-page {
+        margin-top: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+        .hv-dashboard-page > .mb-4:first-child {
+            margin-bottom: 18px !important;
+            padding: 18px 16px !important;
+            border-radius: 22px !important;
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+        }
+
+            .hv-dashboard-page > .mb-4:first-child h2 {
+                font-size: 1.55rem !important;
+                line-height: 1.15 !important;
+                color: #172554 !important;
+            }
+
+            .hv-dashboard-page > .mb-4:first-child p {
+                font-size: 0.94rem !important;
+                line-height: 1.55 !important;
+            }
+
+        /* Bootstrap row gọn hơn */
+        .hv-dashboard-page .row {
+            --bs-gutter-x: 0.9rem !important;
+            --bs-gutter-y: 0.9rem !important;
+        }
+
+        /* Card chung */
+        .hv-dashboard-page .card {
+            border-radius: 20px !important;
+            overflow: hidden !important;
+        }
+
+        .hv-dashboard-page .card-body {
+            padding: 18px !important;
+        }
+
+    /* 2 stat card */
+    .dashboard-stat-card {
+        border-radius: 20px !important;
+    }
+
+        .dashboard-stat-card .card-body {
+            min-height: 170px !important;
+        }
+
+    .stat-label {
+        font-size: 0.95rem !important;
+    }
+
+    .stat-value {
+        font-size: 1.7rem !important;
+    }
+
+    .stat-desc {
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+    }
+
+    .stat-icon {
+        width: 46px !important;
+        height: 46px !important;
+        border-radius: 14px !important;
+        font-size: 1.1rem !important;
+    }
+
+    .stat-link {
+        font-size: 0.9rem !important;
+    }
+
+    /* Chứng chỉ summary */
+    .certificate-summary {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+    }
+
+    .certificate-mini-stat {
+        min-width: 0 !important;
+        padding: 10px 8px !important;
+        border-radius: 14px !important;
+    }
+
+        .certificate-mini-stat span {
+            font-size: 0.7rem !important;
+        }
+
+        .certificate-mini-stat strong {
+            font-size: 1rem !important;
+        }
+
+    /* Chứng chỉ item */
+    .certificate-item {
+        padding: 14px !important;
+        border-radius: 18px !important;
+        align-items: flex-start !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .certificate-main {
+        width: 100% !important;
+        align-items: flex-start !important;
+    }
+
+    .certificate-icon {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        border-radius: 14px !important;
+    }
+
+    .certificate-name {
+        font-size: 0.98rem !important;
+        line-height: 1.35 !important;
+    }
+
+    .certificate-meta {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 5px !important;
+        font-size: 0.82rem !important;
+    }
+
+    .certificate-status-area {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        gap: 7px !important;
+    }
+
+    .cert-badge {
+        font-size: 0.72rem !important;
+        padding: 6px 9px !important;
+    }
+
+    /* Status box */
+    .status-box {
+        padding: 13px 14px !important;
+        border-radius: 16px !important;
+    }
+
+    .status-title {
+        font-size: 0.94rem !important;
+    }
+
+    .status-badge {
+        font-size: 0.8rem !important;
+        padding: 6px 10px !important;
+    }
+
+    .quick-item {
+        gap: 12px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Tiến độ học tập */
+    .progress-dashboard-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    .progress-donut-card {
+        padding: 16px !important;
+        border-radius: 18px !important;
+    }
+
+    .progress-donut {
+        width: 132px !important;
+        height: 132px !important;
+    }
+
+    .progress-donut-inner {
+        width: 94px !important;
+        height: 94px !important;
+    }
+
+        .progress-donut-inner strong {
+            font-size: 1.5rem !important;
+        }
+
+        .progress-donut-inner span {
+            font-size: 0.75rem !important;
+        }
+
+    .progress-detail-card {
+        gap: 13px !important;
+    }
+
+    .progress-row-header {
+        font-size: 0.86rem !important;
+    }
+
+    .mini-progress {
+        height: 8px !important;
+    }
+
+    /* Flow tiến độ thành card dọc */
+    .learning-flow {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        padding-top: 0 !important;
+    }
+
+    .flow-step {
+        width: 100% !important;
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        text-align: left !important;
+        padding: 12px 14px !important;
+        border-radius: 16px !important;
+        background: #f8fafc !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+    .flow-circle {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        margin: 0 !important;
+    }
+
+    .flow-title {
+        font-size: 0.92rem !important;
+        line-height: 1.25 !important;
+    }
+
+    .flow-text {
+        font-size: 0.8rem !important;
+        margin-top: 2px !important;
+    }
+
+    .flow-line {
+        display: none !important;
+    }
+
+    /* Nút trong card tiến độ */
+    .hv-dashboard-page .btn {
+        border-radius: 12px !important;
+        font-weight: 800 !important;
+    }
+
+    .hv-dashboard-page .d-flex.justify-content-between.align-items-center.mb-4 {
+        align-items: flex-start !important;
+        gap: 12px !important;
+        flex-direction: column !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .db-content {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .hv-dashboard-page .card-body {
+        padding: 16px !important;
+    }
+
+    .certificate-summary {
+        grid-template-columns: 1fr 1fr 1fr !important;
+    }
+
+    .certificate-mini-stat {
+        padding: 9px 6px !important;
+    }
+
+        .certificate-mini-stat span {
+            font-size: 0.66rem !important;
+        }
+}
+/* =========================================
+   MOBILE HOCVIEN - MY CLASSES
+   Chuyển table Lớp tôi học thành card mobile
+========================================= */
+
+@media (max-width: 768px) {
+    .student-classes-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-classes-page .classes-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-classes-page .classes-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-classes-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-classes-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* Card chính */
+        .student-classes-page > .card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+            .student-classes-page > .card > .card-header {
+                padding: 18px 18px 10px !important;
+            }
+
+            .student-classes-page > .card > .card-body {
+                padding: 16px !important;
+            }
+
+        .student-classes-page .section-title {
+            font-size: 1.05rem !important;
+        }
+
+        /* Ghi chú trạng thái */
+        .student-classes-page .class-filter-note {
+            width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px 12px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+            .student-classes-page .class-filter-note .ms-3 {
+                margin-left: 0 !important;
+            }
+
+        /* Tabs gọn hơn */
+        .student-classes-page .class-tabs {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            padding: 6px !important;
+            border-radius: 18px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .student-classes-page .class-tab {
+            min-width: 0 !important;
+            width: 100% !important;
+            padding: 10px 8px !important;
+            border-radius: 14px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 5px !important;
+            text-align: center !important;
+            font-size: 0.78rem !important;
+            line-height: 1.2 !important;
+        }
+
+            .student-classes-page .class-tab span {
+                display: block !important;
+            }
+
+            .student-classes-page .class-tab strong {
+                min-width: 24px !important;
+                height: 22px !important;
+                padding: 0 7px !important;
+                font-size: 0.76rem !important;
+            }
+
+        /* Tắt kiểu table ngang trên mobile */
+        .student-classes-page .class-table-wrap {
+            border: 0 !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        .student-classes-page .class-table {
+            width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background: transparent !important;
+        }
+
+            .student-classes-page .class-table colgroup,
+            .student-classes-page .class-table thead {
+                display: none !important;
+            }
+
+            .student-classes-page .class-table tbody {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+
+                .student-classes-page .class-table tbody tr {
+                    display: block !important;
+                    width: 100% !important;
+                    border: 1px solid #e5e7eb !important;
+                    border-radius: 20px !important;
+                    background: #ffffff !important;
+                    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06) !important;
+                    overflow: hidden !important;
+                }
+
+                    .student-classes-page .class-table tbody tr:hover {
+                        background: #ffffff !important;
+                    }
+
+                .student-classes-page .class-table tbody td {
+                    width: 100% !important;
+                    display: flex !important;
+                    align-items: flex-start !important;
+                    justify-content: space-between !important;
+                    gap: 14px !important;
+                    padding: 12px 14px !important;
+                    border-bottom: 1px solid #f1f5f9 !important;
+                    text-align: right !important;
+                    vertical-align: top !important;
+                }
+
+                    .student-classes-page .class-table tbody td:last-child {
+                        border-bottom: 0 !important;
+                    }
+
+                    /* Label cho từng dòng trong card */
+                    .student-classes-page .class-table tbody td::before {
+                        flex: 0 0 86px;
+                        color: #64748b;
+                        font-size: 0.78rem;
+                        font-weight: 900;
+                        text-align: left;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(1)::before {
+                        content: "Mã lớp";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(2)::before {
+                        content: "Tên lớp";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(3)::before {
+                        content: "Khóa học";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(4)::before {
+                        content: "Giáo viên";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(5)::before {
+                        content: "Bắt đầu";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(6)::before {
+                        content: "Kết thúc";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(7)::before {
+                        content: "Sĩ số";
+                    }
+
+                    .student-classes-page .class-table tbody td:nth-child(8)::before {
+                        content: "Thao tác";
+                    }
+
+                    /* Dòng mã lớp nổi bật */
+                    .student-classes-page .class-table tbody td:nth-child(1) {
+                        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+                        align-items: center !important;
+                    }
+
+        .student-classes-page .class-code {
+            font-size: 0.86rem !important;
+            padding: 7px 11px !important;
+            border-radius: 999px !important;
+        }
+
+        /* Tên lớp */
+        .student-classes-page .class-table tbody td:nth-child(2) {
+            display: grid !important;
+            grid-template-columns: 86px minmax(0, 1fr) !important;
+            align-items: start !important;
+            text-align: left !important;
+        }
+
+            .student-classes-page .class-table tbody td:nth-child(2)::before {
+                grid-column: 1;
+            }
+
+            .student-classes-page .class-table tbody td:nth-child(2) > * {
+                grid-column: 2;
+            }
+
+        .student-classes-page .class-name {
+            font-size: 1rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 6px !important;
+            color: #0f172a !important;
+        }
+
+        .student-classes-page .class-status {
+            font-size: 0.72rem !important;
+            padding: 5px 9px !important;
+        }
+
+        .student-classes-page .course-name,
+        .student-classes-page .teacher-name,
+        .student-classes-page .date-block {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.9rem !important;
+            line-height: 1.4 !important;
+            font-weight: 700 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+        }
+
+        .student-classes-page .capacity-pill {
+            min-width: 36px !important;
+            padding: 6px 9px !important;
+            font-size: 0.82rem !important;
+        }
+
+        /* Thao tác */
+        .student-classes-page .class-table tbody td:nth-child(8) {
+            display: block !important;
+            text-align: left !important;
+            padding: 14px !important;
+            background: #f8fafc !important;
+        }
+
+            .student-classes-page .class-table tbody td:nth-child(8)::before {
+                display: block !important;
+                content: "Thao tác" !important;
+                margin-bottom: 10px !important;
+                color: #64748b !important;
+                font-size: 0.78rem !important;
+                font-weight: 900 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.04em !important;
+            }
+
+        .student-classes-page .class-action-group,
+        .student-classes-page .class-action-icons {
+            width: 100% !important;
+            min-width: 0 !important;
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+            justify-content: stretch !important;
+            align-items: stretch !important;
+        }
+
+        .student-classes-page .icon-action-btn {
+            width: 100% !important;
+            height: 42px !important;
+            min-width: 0 !important;
+            border-radius: 14px !important;
+        }
+
+        .student-classes-page .action-svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+
+        /* Mobile không cần tooltip hover */
+        .student-classes-page .icon-action-btn::before,
+        .student-classes-page .icon-action-btn::after {
+            display: none !important;
+        }
+
+        .student-classes-page .action-btn-review {
+            width: 100% !important;
+            min-height: 42px !important;
+            border-radius: 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .student-classes-page .completed-class-message {
+            width: 100% !important;
+            min-width: 0 !important;
+            border-radius: 14px !important;
+            padding: 11px 12px !important;
+        }
+
+        /* Summary */
+        .student-classes-page .class-summary {
+            margin-top: 14px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-classes-page .class-summary span {
+                display: block !important;
+                padding: 10px 12px !important;
+                border-radius: 14px !important;
+                background: #f8fafc !important;
+                border: 1px solid #e5e7eb !important;
+                font-size: 0.82rem !important;
+                color: #64748b !important;
+            }
+
+            .student-classes-page .class-summary strong {
+                color: #172554 !important;
+            }
+
+        /* Empty state */
+        .student-classes-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-classes-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-classes-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-classes-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-classes-page .class-tabs {
+        gap: 6px !important;
+    }
+
+    .student-classes-page .class-tab {
+        padding: 9px 5px !important;
+        font-size: 0.72rem !important;
+    }
+
+    .student-classes-page .class-table tbody td {
+        padding: 11px 12px !important;
+    }
+
+        .student-classes-page .class-table tbody td::before {
+            flex-basis: 78px !important;
+            font-size: 0.72rem !important;
+        }
+
+        .student-classes-page .class-table tbody td:nth-child(2) {
+            grid-template-columns: 78px minmax(0, 1fr) !important;
+        }
+
+    .student-classes-page .class-summary {
+        grid-template-columns: 1fr !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - MY SCHEDULE
+   Chuyển thời khóa biểu thành card mobile
+========================================= */
+
+@media (max-width: 768px) {
+    .student-schedules-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-schedules-page .schedules-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-schedules-page .schedules-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-schedules-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-schedules-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* KPI: 2 cột */
+        .student-schedules-page > .row.g-4 {
+            --bs-gutter-x: 0.75rem !important;
+            --bs-gutter-y: 0.75rem !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-schedules-page > .row.g-4 > [class*="col-"] {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+            }
+
+        .student-schedules-page .schedule-stat-card {
+            border-radius: 18px !important;
+            min-height: 118px !important;
+        }
+
+            .student-schedules-page .schedule-stat-card .card-body {
+                padding: 14px !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+            }
+
+        .student-schedules-page .stat-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .student-schedules-page .stat-label {
+            font-size: 0.78rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-schedules-page .stat-value {
+            font-size: 1.45rem !important;
+            line-height: 1 !important;
+        }
+
+        /* Week nav */
+        .student-schedules-page .week-nav-card {
+            border-radius: 20px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-schedules-page .week-nav-card .card-body {
+                padding: 16px !important;
+            }
+
+        .student-schedules-page .section-title {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+        }
+
+        .student-schedules-page .section-subtitle {
+            font-size: 0.86rem !important;
+            line-height: 1.4 !important;
+        }
+
+        .student-schedules-page .week-nav-actions {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+        }
+
+            .student-schedules-page .week-nav-actions .btn {
+                width: 100% !important;
+                min-height: 42px !important;
+                border-radius: 14px !important;
+                padding: 9px 10px !important;
+                font-size: 0.84rem !important;
+                font-weight: 900 !important;
+            }
+
+        .student-schedules-page #currentWeekBtn {
+            grid-column: 1 / -1 !important;
+            order: -1 !important;
+        }
+
+        /* Week card */
+        .student-schedules-page .week-card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+            margin-bottom: 18px !important;
+        }
+
+            .student-schedules-page .week-card > .card-header {
+                padding: 18px 18px 10px !important;
+            }
+
+            .student-schedules-page .week-card > .card-body {
+                padding: 16px !important;
+            }
+
+        .student-schedules-page .current-week-pill {
+            margin-left: 0 !important;
+            margin-top: 8px !important;
+            width: fit-content !important;
+            display: flex !important;
+            font-size: 0.72rem !important;
+        }
+
+        .student-schedules-page .week-badge {
+            width: fit-content !important;
+            padding: 7px 11px !important;
+            border-radius: 999px !important;
+            font-size: 0.78rem !important;
+        }
+
+        /* Chuyển timetable table thành card list */
+        .student-schedules-page .timetable-wrap {
+            border: 0 !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        .student-schedules-page .timetable-table {
+            width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background: transparent !important;
+        }
+
+            .student-schedules-page .timetable-table thead {
+                display: none !important;
+            }
+
+            .student-schedules-page .timetable-table tbody {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+
+                .student-schedules-page .timetable-table tbody tr {
+                    display: grid !important;
+                    grid-template-columns: 1fr !important;
+                    gap: 12px !important;
+                    width: 100% !important;
+                    padding: 0 !important;
+                    border: 0 !important;
+                    background: transparent !important;
+                }
+
+        /* Ẩn cột Buổi cũ, nội dung buổi sẽ đưa lên từng card qua CSS */
+        .student-schedules-page .time-slot-cell {
+            display: none !important;
+        }
+
+        /* Mỗi ô ngày thành 1 card */
+        .student-schedules-page .timetable-cell {
+            display: block !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+        }
+
+            /* Ẩn ô trống */
+            .student-schedules-page .timetable-cell:has(.empty-slot) {
+                display: none !important;
+            }
+
+        .student-schedules-page .empty-slot {
+            display: none !important;
+        }
+
+        /* Lesson card mobile */
+        .student-schedules-page .lesson-card {
+            position: relative !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 44px 14px 14px !important;
+            border-radius: 20px !important;
+            border: 1px solid #dbeafe !important;
+            border-left: 5px solid #2563eb !important;
+            background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%) !important;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06) !important;
+            overflow: hidden !important;
+        }
+
+            .student-schedules-page .lesson-card + .lesson-card {
+                margin-top: 12px !important;
+            }
+
+        /* Label ngày bằng nth-child theo cột trong bảng gốc */
+        .student-schedules-page .timetable-cell::before {
+            position: absolute;
+            top: 12px;
+            left: 14px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.76rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(2)::before {
+            content: "Thứ 2";
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(3)::before {
+            content: "Thứ 3";
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(4)::before {
+            content: "Thứ 4";
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(5)::before {
+            content: "Thứ 5";
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(6)::before {
+            content: "Thứ 6";
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(7)::before {
+            content: "Thứ 7";
+        }
+
+        .student-schedules-page .timetable-table tbody tr td:nth-child(8)::before {
+            content: "Chủ nhật";
+        }
+
+        .student-schedules-page .today-cell .lesson-card {
+            border-left-color: #16a34a !important;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%) !important;
+        }
+
+        .student-schedules-page .today-cell::before {
+            background: #dcfce7 !important;
+            color: #166534 !important;
+            content: "Hôm nay" !important;
+        }
+
+        .student-schedules-page .lesson-meta {
+            margin-bottom: 8px !important;
+        }
+
+        .student-schedules-page .lesson-chip {
+            max-width: 100% !important;
+            padding: 6px 10px !important;
+            border-radius: 999px !important;
+            font-size: 0.76rem !important;
+            line-height: 1.35 !important;
+            white-space: normal !important;
+            text-align: left !important;
+        }
+
+        .student-schedules-page .lesson-course,
+        .student-schedules-page .teacher-info,
+        .student-schedules-page .lesson-info {
+            font-size: 0.86rem !important;
+            line-height: 1.48 !important;
+            margin-bottom: 7px !important;
+            color: #334155 !important;
+        }
+
+        .student-schedules-page .lesson-course {
+            font-weight: 700 !important;
+        }
+
+        .student-schedules-page .teacher-info {
+            font-weight: 700 !important;
+        }
+
+        .student-schedules-page .teams-code-row {
+            margin-top: 10px !important;
+            padding-top: 10px !important;
+            gap: 6px !important;
+        }
+
+        .student-schedules-page .teams-code-label {
+            font-size: 0.78rem !important;
+        }
+
+        .student-schedules-page .teams-code-value {
+            width: fit-content !important;
+            max-width: 100% !important;
+            padding: 7px 10px !important;
+            border-radius: 12px !important;
+            font-size: 0.82rem !important;
+            word-break: break-word !important;
+        }
+
+        /* Empty state */
+        .student-schedules-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-schedules-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-schedules-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-schedules-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-schedules-page > .row.g-4 {
+        --bs-gutter-x: 0.65rem !important;
+        --bs-gutter-y: 0.65rem !important;
+    }
+
+    .student-schedules-page .schedule-stat-card {
+        min-height: 112px !important;
+    }
+
+        .student-schedules-page .schedule-stat-card .card-body {
+            padding: 13px !important;
+        }
+
+    .student-schedules-page .stat-label {
+        font-size: 0.74rem !important;
+    }
+
+    .student-schedules-page .stat-value {
+        font-size: 1.35rem !important;
+    }
+
+    .student-schedules-page .week-nav-actions .btn {
+        font-size: 0.8rem !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .student-schedules-page .lesson-card {
+        padding: 42px 13px 13px !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - MY SCHEDULE FIX
+   Dùng bảng scroll ngang gọn, không ép card
+========================================= */
+
+@media (max-width: 768px) {
+    .student-schedules-page {
+        margin-top: 0 !important;
+    }
+
+        .student-schedules-page .schedules-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-schedules-page .schedules-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-schedules-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-schedules-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* KPI 2 cột */
+        .student-schedules-page > .row.g-4 {
+            --bs-gutter-x: 0.75rem !important;
+            --bs-gutter-y: 0.75rem !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-schedules-page > .row.g-4 > [class*="col-"] {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+            }
+
+        .student-schedules-page .schedule-stat-card {
+            border-radius: 18px !important;
+            min-height: 112px !important;
+        }
+
+            .student-schedules-page .schedule-stat-card .card-body {
+                padding: 14px !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+            }
+
+        .student-schedules-page .stat-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .student-schedules-page .stat-label {
+            font-size: 0.78rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-schedules-page .stat-value {
+            font-size: 1.45rem !important;
+            line-height: 1 !important;
+        }
+
+        /* Week nav */
+        .student-schedules-page .week-nav-card {
+            border-radius: 20px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-schedules-page .week-nav-card .card-body {
+                padding: 16px !important;
+            }
+
+        .student-schedules-page .week-nav-actions {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+        }
+
+            .student-schedules-page .week-nav-actions .btn {
+                width: 100% !important;
+                min-height: 42px !important;
+                border-radius: 14px !important;
+                padding: 9px 10px !important;
+                font-size: 0.84rem !important;
+                font-weight: 900 !important;
+            }
+
+        .student-schedules-page #currentWeekBtn {
+            grid-column: 1 / -1 !important;
+            order: -1 !important;
+        }
+
+        /* Week card */
+        .student-schedules-page .week-card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+            margin-bottom: 18px !important;
+        }
+
+            .student-schedules-page .week-card > .card-header {
+                padding: 18px 18px 10px !important;
+            }
+
+            .student-schedules-page .week-card > .card-body {
+                padding: 14px !important;
+            }
+
+        .student-schedules-page .section-title {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+        }
+
+        .student-schedules-page .section-subtitle {
+            font-size: 0.86rem !important;
+            line-height: 1.4 !important;
+        }
+
+        .student-schedules-page .current-week-pill {
+            margin-left: 0 !important;
+            margin-top: 8px !important;
+            width: fit-content !important;
+            display: flex !important;
+            font-size: 0.72rem !important;
+        }
+
+        .student-schedules-page .week-badge {
+            width: fit-content !important;
+            padding: 7px 11px !important;
+            border-radius: 999px !important;
+            font-size: 0.78rem !important;
+        }
+
+        /* Reset lại toàn bộ CSS card hóa timetable trước đó */
+        .student-schedules-page .timetable-wrap {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 18px !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            background: #ffffff !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+
+        .student-schedules-page .timetable-table {
+            display: table !important;
+            width: max-content !important;
+            min-width: 920px !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+            background: #ffffff !important;
+        }
+
+            .student-schedules-page .timetable-table thead {
+                display: table-header-group !important;
+            }
+
+            .student-schedules-page .timetable-table tbody {
+                display: table-row-group !important;
+            }
+
+                .student-schedules-page .timetable-table tbody tr {
+                    display: table-row !important;
+                    width: auto !important;
+                    padding: 0 !important;
+                    border: 0 !important;
+                    background: transparent !important;
+                }
+
+        .student-schedules-page .time-slot-cell,
+        .student-schedules-page .timetable-cell {
+            display: table-cell !important;
+        }
+
+        .student-schedules-page .timetable-table thead th {
+            padding: 12px 10px !important;
+            font-size: 0.74rem !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+        }
+
+        .student-schedules-page .time-col {
+            width: 70px !important;
+            min-width: 70px !important;
+            position: sticky !important;
+            left: 0 !important;
+            z-index: 5 !important;
+            background: #f8fafc !important;
+        }
+
+        .student-schedules-page .time-slot-cell {
+            width: 70px !important;
+            min-width: 70px !important;
+            position: sticky !important;
+            left: 0 !important;
+            z-index: 4 !important;
+            background: #fbfdff !important;
+        }
+
+        .student-schedules-page .day-col {
+            width: 120px !important;
+            min-width: 120px !important;
+        }
+
+        .student-schedules-page .timetable-cell {
+            width: 120px !important;
+            min-width: 120px !important;
+            padding: 9px !important;
+            border-bottom: 1px solid #eef2f7 !important;
+            border-right: 1px solid #eef2f7 !important;
+            background: #ffffff !important;
+            vertical-align: top !important;
+        }
+
+        .student-schedules-page .today-cell {
+            background: #fcfdff !important;
+        }
+
+        .student-schedules-page .time-slot-main {
+            font-size: 0.75rem !important;
+            line-height: 1.3 !important;
+        }
+
+        .student-schedules-page .day-name {
+            font-size: 0.78rem !important;
+            margin-bottom: 3px !important;
+        }
+
+        .student-schedules-page .day-date {
+            font-size: 0.72rem !important;
+        }
+
+        .student-schedules-page .lesson-card {
+            position: static !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 10px !important;
+            border-radius: 14px !important;
+            border: 1px solid #dbeafe !important;
+            border-left: 4px solid #2563eb !important;
+            background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%) !important;
+            box-shadow: none !important;
+            overflow: hidden !important;
+        }
+
+            .student-schedules-page .lesson-card + .lesson-card {
+                margin-top: 10px !important;
+            }
+
+        .student-schedules-page .timetable-cell::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(2)::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(3)::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(4)::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(5)::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(6)::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(7)::before,
+        .student-schedules-page .timetable-table tbody tr td:nth-child(8)::before {
+            content: none !important;
+            display: none !important;
+        }
+
+        .student-schedules-page .lesson-chip {
+            max-width: 100% !important;
+            padding: 5px 8px !important;
+            border-radius: 999px !important;
+            font-size: 0.68rem !important;
+            line-height: 1.35 !important;
+            white-space: normal !important;
+            text-align: left !important;
+        }
+
+        .student-schedules-page .lesson-course,
+        .student-schedules-page .teacher-info,
+        .student-schedules-page .lesson-info {
+            font-size: 0.72rem !important;
+            line-height: 1.42 !important;
+            margin-bottom: 5px !important;
+            color: #334155 !important;
+        }
+
+        .student-schedules-page .teams-code-row {
+            margin-top: 7px !important;
+            padding-top: 7px !important;
+            gap: 5px !important;
+        }
+
+        .student-schedules-page .teams-code-label {
+            font-size: 0.68rem !important;
+        }
+
+        .student-schedules-page .teams-code-value {
+            padding: 5px 8px !important;
+            border-radius: 10px !important;
+            font-size: 0.7rem !important;
+            word-break: break-word !important;
+        }
+
+        .student-schedules-page .empty-slot {
+            display: flex !important;
+            min-height: 60px !important;
+            font-size: 0.82rem !important;
+        }
+
+        .student-schedules-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-schedules-page .timetable-table {
+        min-width: 860px !important;
+    }
+
+    .student-schedules-page .day-col,
+    .student-schedules-page .timetable-cell {
+        width: 112px !important;
+        min-width: 112px !important;
+    }
+
+    .student-schedules-page .time-col,
+    .student-schedules-page .time-slot-cell {
+        width: 66px !important;
+        min-width: 66px !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - MY MATERIALS
+   Chuyển bảng tài liệu thành card mobile
+========================================= */
+
+@media (max-width: 768px) {
+    .student-materials-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-materials-page .materials-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-materials-page .materials-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-materials-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-materials-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* KPI 2 cột */
+        .student-materials-page > .row.g-4 {
+            --bs-gutter-x: 0.75rem !important;
+            --bs-gutter-y: 0.75rem !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-materials-page > .row.g-4 > [class*="col-"] {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+            }
+
+        .student-materials-page .material-stat-card {
+            min-height: 112px !important;
+            border-radius: 18px !important;
+        }
+
+            .student-materials-page .material-stat-card .card-body {
+                padding: 14px !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+            }
+
+        .student-materials-page .stat-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .student-materials-page .stat-label {
+            font-size: 0.78rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-materials-page .stat-value {
+            font-size: 1.45rem !important;
+            line-height: 1 !important;
+        }
+
+        /* Card chính */
+        .student-materials-page > .card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+            .student-materials-page > .card > .card-header {
+                padding: 18px 18px 10px !important;
+            }
+
+            .student-materials-page > .card > .card-body {
+                padding: 16px !important;
+            }
+
+        .student-materials-page .section-title {
+            font-size: 1.05rem !important;
+        }
+
+        .student-materials-page .material-filter-note {
+            width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px 12px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+            .student-materials-page .material-filter-note .ms-3 {
+                margin-left: 0 !important;
+            }
+
+        /* Filter */
+        .student-materials-page .material-filter-form {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+            padding: 14px !important;
+            border-radius: 18px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .student-materials-page .material-class-select {
+            min-height: 44px !important;
+            border-radius: 14px !important;
+            font-size: 0.92rem !important;
+        }
+
+        .student-materials-page .material-filter-actions {
+            display: grid !important;
+            grid-template-columns: 1fr 48px !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+            .student-materials-page .material-filter-actions .btn {
+                width: 100% !important;
+                min-height: 44px !important;
+                border-radius: 14px !important;
+                font-size: 0.92rem !important;
+                font-weight: 900 !important;
+            }
+
+        /* Tắt kiểu bảng ngang */
+        .student-materials-page .material-table-wrap {
+            border: 0 !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        .student-materials-page .material-table {
+            width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background: transparent !important;
+        }
+
+            .student-materials-page .material-table colgroup,
+            .student-materials-page .material-table thead {
+                display: none !important;
+            }
+
+            .student-materials-page .material-table tbody {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+
+                .student-materials-page .material-table tbody tr {
+                    display: block !important;
+                    width: 100% !important;
+                    border: 1px solid #e5e7eb !important;
+                    border-radius: 20px !important;
+                    background: #ffffff !important;
+                    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06) !important;
+                    overflow: hidden !important;
+                }
+
+                    .student-materials-page .material-table tbody tr:hover {
+                        background: #ffffff !important;
+                    }
+
+                .student-materials-page .material-table tbody td {
+                    width: 100% !important;
+                    display: flex !important;
+                    align-items: flex-start !important;
+                    justify-content: space-between !important;
+                    gap: 14px !important;
+                    padding: 12px 14px !important;
+                    border-bottom: 1px solid #f1f5f9 !important;
+                    text-align: right !important;
+                    vertical-align: top !important;
+                }
+
+                    .student-materials-page .material-table tbody td:last-child {
+                        border-bottom: 0 !important;
+                    }
+
+                    .student-materials-page .material-table tbody td::before {
+                        flex: 0 0 82px;
+                        color: #64748b;
+                        font-size: 0.76rem;
+                        font-weight: 900;
+                        text-align: left;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    .student-materials-page .material-table tbody td:nth-child(1)::before {
+                        content: "Tài liệu";
+                    }
+
+                    .student-materials-page .material-table tbody td:nth-child(2)::before {
+                        content: "Lớp";
+                    }
+
+                    .student-materials-page .material-table tbody td:nth-child(3)::before {
+                        content: "Khóa học";
+                    }
+
+                    .student-materials-page .material-table tbody td:nth-child(4)::before {
+                        content: "Giáo viên";
+                    }
+
+                    .student-materials-page .material-table tbody td:nth-child(5)::before {
+                        content: "Trạng thái";
+                    }
+
+                    .student-materials-page .material-table tbody td:nth-child(6)::before {
+                        content: "Thao tác";
+                    }
+
+                    /* Dòng tài liệu thành header card */
+                    .student-materials-page .material-table tbody td:nth-child(1) {
+                        display: block !important;
+                        text-align: left !important;
+                        padding: 14px !important;
+                        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+                    }
+
+                        .student-materials-page .material-table tbody td:nth-child(1)::before {
+                            display: block !important;
+                            margin-bottom: 10px !important;
+                        }
+
+        .student-materials-page .material-main {
+            width: 100% !important;
+            gap: 12px !important;
+        }
+
+        .student-materials-page .material-icon {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            border-radius: 14px !important;
+            font-size: 1.12rem !important;
+        }
+
+        .student-materials-page .material-title {
+            font-size: 1rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 5px !important;
+        }
+
+        .student-materials-page .material-desc {
+            font-size: 0.84rem !important;
+            line-height: 1.45 !important;
+            -webkit-line-clamp: 3 !important;
+        }
+
+        /* Dòng lớp */
+        .student-materials-page .material-table tbody td:nth-child(2) {
+            display: grid !important;
+            grid-template-columns: 82px minmax(0, 1fr) !important;
+            align-items: start !important;
+            text-align: left !important;
+        }
+
+            .student-materials-page .material-table tbody td:nth-child(2)::before {
+                grid-column: 1;
+            }
+
+            .student-materials-page .material-table tbody td:nth-child(2) > * {
+                grid-column: 2;
+            }
+
+        .student-materials-page .class-name {
+            font-size: 0.92rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-materials-page .class-small {
+            font-size: 0.8rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+        .student-materials-page .course-name,
+        .student-materials-page .teacher-name {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.88rem !important;
+            line-height: 1.42 !important;
+            font-weight: 700 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+        }
+
+        .student-materials-page .material-status {
+            font-size: 0.74rem !important;
+            padding: 6px 10px !important;
+            border-radius: 999px !important;
+        }
+
+        /* Thao tác */
+        .student-materials-page .material-table tbody td:nth-child(6) {
+            display: block !important;
+            text-align: left !important;
+            padding: 14px !important;
+            background: #f8fafc !important;
+        }
+
+            .student-materials-page .material-table tbody td:nth-child(6)::before {
+                display: block !important;
+                content: "Thao tác" !important;
+                margin-bottom: 10px !important;
+                color: #64748b !important;
+                font-size: 0.76rem !important;
+                font-weight: 900 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.04em !important;
+            }
+
+        .student-materials-page .action-group {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-materials-page .action-group .btn {
+                width: 100% !important;
+                min-height: 42px !important;
+                border-radius: 14px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 0.9rem !important;
+                font-weight: 900 !important;
+            }
+
+        /* Summary */
+        .student-materials-page .material-summary {
+            margin-top: 14px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-materials-page .material-summary span {
+                display: block !important;
+                padding: 10px 12px !important;
+                border-radius: 14px !important;
+                background: #f8fafc !important;
+                border: 1px solid #e5e7eb !important;
+                font-size: 0.82rem !important;
+                color: #64748b !important;
+            }
+
+            .student-materials-page .material-summary strong {
+                color: #172554 !important;
+            }
+
+        /* Empty state */
+        .student-materials-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-materials-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-materials-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-materials-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-materials-page .material-table tbody td {
+        padding: 11px 12px !important;
+    }
+
+        .student-materials-page .material-table tbody td::before {
+            flex-basis: 76px !important;
+            font-size: 0.7rem !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(2) {
+            grid-template-columns: 76px minmax(0, 1fr) !important;
+        }
+
+    .student-materials-page .material-summary {
+        grid-template-columns: 1fr !important;
+    }
+}
+/* =========================================
+   PATCH MOBILE - ĐẨY GIÁ TRỊ SANG PHẢI
+   Áp dụng trước cho Học viên / Tài liệu
+   (sẽ dùng cùng pattern cho Bài tập / Bảng điểm)
+========================================= */
+
+@media (max-width: 768px) {
+    /* 1) Dòng TÀI LIỆU:
+       từ kiểu block đổi thành 2 cột:
+       trái = label, phải = nội dung */
+    .student-materials-page .material-table tbody td:nth-child(1) {
+        display: grid !important;
+        grid-template-columns: 82px minmax(0, 1fr) !important;
+        align-items: start !important;
+        gap: 0 !important;
+        text-align: left !important;
+        padding: 14px !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+    }
+
+        .student-materials-page .material-table tbody td:nth-child(1)::before {
+            grid-column: 1 !important;
+            display: block !important;
+            margin-bottom: 0 !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(1) > * {
+            grid-column: 2 !important;
+        }
+
+        /* 2) Bên trong phần nội dung tài liệu:
+       icon bên trái nhỏ, text nằm bên phải và canh phải */
+        .student-materials-page .material-table tbody td:nth-child(1) .material-main {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 42px minmax(0, 1fr) !important;
+            align-items: start !important;
+            gap: 12px !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(1) .material-icon {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            border-radius: 14px !important;
+            font-size: 1.1rem !important;
+            justify-self: start !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(1) .material-main-content {
+            min-width: 0 !important;
+            text-align: right !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(1) .material-title,
+        .student-materials-page .material-table tbody td:nth-child(1) .material-desc {
+            text-align: right !important;
+        }
+
+    /* 3) Dòng LỚP:
+       giữ 2 cột trái/phải nhưng canh nội dung về bên phải rõ hơn */
+    .student-materials-page .material-table tbody td:nth-child(2) {
+        display: grid !important;
+        grid-template-columns: 82px minmax(0, 1fr) !important;
+        align-items: start !important;
+        text-align: left !important;
+    }
+
+        .student-materials-page .material-table tbody td:nth-child(2)::before {
+            grid-column: 1 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(2) > * {
+            grid-column: 2 !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(2) .class-name,
+        .student-materials-page .material-table tbody td:nth-child(2) .class-small {
+            width: 100% !important;
+            text-align: right !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(2) .class-name {
+            font-size: 0.92rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(2) .class-small {
+            font-size: 0.8rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-materials-page .material-table tbody td:nth-child(1),
+    .student-materials-page .material-table tbody td:nth-child(2) {
+        grid-template-columns: 76px minmax(0, 1fr) !important;
+    }
+
+        .student-materials-page .material-table tbody td:nth-child(1) .material-main {
+            grid-template-columns: 38px minmax(0, 1fr) !important;
+            gap: 10px !important;
+        }
+
+        .student-materials-page .material-table tbody td:nth-child(1) .material-icon {
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+            font-size: 1rem !important;
+        }
+}
+/* =========================================
+   PATCH MOBILE - MATERIAL ICON FIX
+   Ẩn icon tài liệu bị lơ lửng trên mobile
+========================================= */
+
+@media (max-width: 768px) {
+    .student-materials-page .material-table tbody td:nth-child(1) .material-main {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .student-materials-page .material-table tbody td:nth-child(1) .material-icon {
+        display: none !important;
+    }
+
+    .student-materials-page .material-table tbody td:nth-child(1) .material-main-content {
+        width: 100% !important;
+        min-width: 0 !important;
+        text-align: right !important;
+    }
+
+    .student-materials-page .material-table tbody td:nth-child(1) .material-title {
+        text-align: right !important;
+        margin-bottom: 4px !important;
+    }
+
+    .student-materials-page .material-table tbody td:nth-child(1) .material-desc {
+        text-align: right !important;
+        margin-left: auto !important;
+        max-width: 100% !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - MY ASSIGNMENTS
+   Chuyển bảng bài tập thành card mobile
+========================================= */
+
+@media (max-width: 768px) {
+    .student-assignments-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-assignments-page .assignments-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-assignments-page .assignments-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-assignments-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-assignments-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* KPI 2 cột */
+        .student-assignments-page > .row.g-4 {
+            --bs-gutter-x: 0.75rem !important;
+            --bs-gutter-y: 0.75rem !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-assignments-page > .row.g-4 > [class*="col-"] {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+            }
+
+        .student-assignments-page .assignment-stat-card {
+            min-height: 112px !important;
+            border-radius: 18px !important;
+        }
+
+            .student-assignments-page .assignment-stat-card .card-body {
+                padding: 14px !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+            }
+
+        .student-assignments-page .stat-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .student-assignments-page .stat-label {
+            font-size: 0.78rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-assignments-page .stat-value {
+            font-size: 1.45rem !important;
+            line-height: 1 !important;
+        }
+
+        /* Card chính */
+        .student-assignments-page > .card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+            .student-assignments-page > .card > .card-header {
+                padding: 18px 18px 10px !important;
+            }
+
+            .student-assignments-page > .card > .card-body {
+                padding: 16px !important;
+            }
+
+        .student-assignments-page .section-title {
+            font-size: 1.05rem !important;
+        }
+
+        .student-assignments-page .assignment-filter-note {
+            width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px 12px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+            .student-assignments-page .assignment-filter-note .ms-3 {
+                margin-left: 0 !important;
+            }
+
+        /* Filter */
+        .student-assignments-page .assignment-filter-form {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+            padding: 14px !important;
+            border-radius: 18px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .student-assignments-page .assignment-class-select {
+            min-height: 44px !important;
+            border-radius: 14px !important;
+            font-size: 0.92rem !important;
+        }
+
+        .student-assignments-page .assignment-filter-actions {
+            display: grid !important;
+            grid-template-columns: 1fr 48px !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+            .student-assignments-page .assignment-filter-actions .btn {
+                width: 100% !important;
+                min-height: 44px !important;
+                border-radius: 14px !important;
+                font-size: 0.92rem !important;
+                font-weight: 900 !important;
+            }
+
+        /* Tắt kiểu bảng ngang */
+        .student-assignments-page .assignment-table-wrap {
+            border: 0 !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        .student-assignments-page .assignment-table {
+            width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background: transparent !important;
+        }
+
+            .student-assignments-page .assignment-table colgroup,
+            .student-assignments-page .assignment-table thead {
+                display: none !important;
+            }
+
+            .student-assignments-page .assignment-table tbody {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+
+                .student-assignments-page .assignment-table tbody tr {
+                    display: block !important;
+                    width: 100% !important;
+                    border: 1px solid #e5e7eb !important;
+                    border-radius: 20px !important;
+                    background: #ffffff !important;
+                    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06) !important;
+                    overflow: hidden !important;
+                }
+
+                    .student-assignments-page .assignment-table tbody tr:hover {
+                        background: #ffffff !important;
+                    }
+
+                .student-assignments-page .assignment-table tbody td {
+                    width: 100% !important;
+                    display: flex !important;
+                    align-items: flex-start !important;
+                    justify-content: space-between !important;
+                    gap: 14px !important;
+                    padding: 12px 14px !important;
+                    border-bottom: 1px solid #f1f5f9 !important;
+                    text-align: right !important;
+                    vertical-align: top !important;
+                }
+
+                    .student-assignments-page .assignment-table tbody td:last-child {
+                        border-bottom: 0 !important;
+                    }
+
+                    .student-assignments-page .assignment-table tbody td::before {
+                        flex: 0 0 82px;
+                        color: #64748b;
+                        font-size: 0.76rem;
+                        font-weight: 900;
+                        text-align: left;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(1)::before {
+                        content: "Bài tập";
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(2)::before {
+                        content: "Lớp";
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(3)::before {
+                        content: "Khóa học";
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(4)::before {
+                        content: "Giáo viên";
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(5)::before {
+                        content: "Hạn nộp";
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(6)::before {
+                        content: "Nộp bài";
+                    }
+
+                    .student-assignments-page .assignment-table tbody td:nth-child(7)::before {
+                        content: "Thao tác";
+                    }
+
+                    /* Dòng bài tập */
+                    .student-assignments-page .assignment-table tbody td:nth-child(1) {
+                        display: grid !important;
+                        grid-template-columns: 82px minmax(0, 1fr) !important;
+                        align-items: start !important;
+                        gap: 0 !important;
+                        text-align: left !important;
+                        padding: 14px !important;
+                        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+                    }
+
+                        .student-assignments-page .assignment-table tbody td:nth-child(1)::before {
+                            grid-column: 1 !important;
+                            display: block !important;
+                            margin-bottom: 0 !important;
+                        }
+
+                        .student-assignments-page .assignment-table tbody td:nth-child(1) > * {
+                            grid-column: 2 !important;
+                        }
+
+        .student-assignments-page .assignment-main {
+            display: block !important;
+            width: 100% !important;
+        }
+
+        .student-assignments-page .assignment-icon {
+            display: none !important;
+        }
+
+        .student-assignments-page .assignment-main-content {
+            width: 100% !important;
+            min-width: 0 !important;
+            text-align: right !important;
+        }
+
+        .student-assignments-page .assignment-title {
+            font-size: 1rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 5px !important;
+            text-align: right !important;
+        }
+
+        .student-assignments-page .assignment-desc {
+            font-size: 0.84rem !important;
+            line-height: 1.45 !important;
+            -webkit-line-clamp: 3 !important;
+            text-align: right !important;
+            margin-left: auto !important;
+            max-width: 100% !important;
+        }
+
+        /* Dòng lớp */
+        .student-assignments-page .assignment-table tbody td:nth-child(2) {
+            display: grid !important;
+            grid-template-columns: 82px minmax(0, 1fr) !important;
+            align-items: start !important;
+            text-align: left !important;
+        }
+
+            .student-assignments-page .assignment-table tbody td:nth-child(2)::before {
+                grid-column: 1 !important;
+                margin-bottom: 0 !important;
+            }
+
+            .student-assignments-page .assignment-table tbody td:nth-child(2) > * {
+                grid-column: 2 !important;
+            }
+
+            .student-assignments-page .assignment-table tbody td:nth-child(2) .class-name,
+            .student-assignments-page .assignment-table tbody td:nth-child(2) .class-small {
+                width: 100% !important;
+                text-align: right !important;
+            }
+
+        .student-assignments-page .class-name {
+            font-size: 0.92rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-assignments-page .class-small {
+            font-size: 0.8rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+        .student-assignments-page .course-name,
+        .student-assignments-page .teacher-name {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.88rem !important;
+            line-height: 1.42 !important;
+            font-weight: 700 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+        }
+
+        /* Hạn nộp */
+        .student-assignments-page .date-block {
+            width: 100% !important;
+            align-items: flex-end !important;
+            text-align: right !important;
+            gap: 4px !important;
+        }
+
+        .student-assignments-page .date-main {
+            font-size: 0.9rem !important;
+        }
+
+        .student-assignments-page .date-small {
+            font-size: 0.8rem !important;
+        }
+
+        .student-assignments-page .assignment-status,
+        .student-assignments-page .submit-status,
+        .student-assignments-page .submit-done,
+        .student-assignments-page .submit-pending {
+            font-size: 0.74rem !important;
+            padding: 6px 10px !important;
+            border-radius: 999px !important;
+            white-space: nowrap !important;
+        }
+
+        /* Thao tác */
+        .student-assignments-page .assignment-table tbody td:nth-child(7) {
+            display: block !important;
+            text-align: left !important;
+            padding: 14px !important;
+            background: #f8fafc !important;
+        }
+
+            .student-assignments-page .assignment-table tbody td:nth-child(7)::before {
+                display: block !important;
+                content: "Thao tác" !important;
+                margin-bottom: 10px !important;
+                color: #64748b !important;
+                font-size: 0.76rem !important;
+                font-weight: 900 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.04em !important;
+            }
+
+        .student-assignments-page .action-group {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-assignments-page .action-group .btn {
+                width: 100% !important;
+                min-height: 42px !important;
+                border-radius: 14px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 0.9rem !important;
+                font-weight: 900 !important;
+            }
+
+            /* Nếu có 2 nút Sửa + Kết quả thì cho 2 cột */
+            .student-assignments-page .action-group:has(a:nth-child(2)) {
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+        /* Summary */
+        .student-assignments-page .assignment-summary {
+            margin-top: 14px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-assignments-page .assignment-summary span {
+                display: block !important;
+                padding: 10px 12px !important;
+                border-radius: 14px !important;
+                background: #f8fafc !important;
+                border: 1px solid #e5e7eb !important;
+                font-size: 0.82rem !important;
+                color: #64748b !important;
+            }
+
+            .student-assignments-page .assignment-summary strong {
+                color: #172554 !important;
+            }
+
+        /* Empty state */
+        .student-assignments-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-assignments-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-assignments-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-assignments-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-assignments-page .assignment-table tbody td {
+        padding: 11px 12px !important;
+    }
+
+        .student-assignments-page .assignment-table tbody td::before {
+            flex-basis: 76px !important;
+            font-size: 0.7rem !important;
+        }
+
+        .student-assignments-page .assignment-table tbody td:nth-child(1),
+        .student-assignments-page .assignment-table tbody td:nth-child(2) {
+            grid-template-columns: 76px minmax(0, 1fr) !important;
+        }
+
+    .student-assignments-page .assignment-summary {
+        grid-template-columns: 1fr !important;
+    }
+}
+/* =========================================
+   PATCH MOBILE - FILTER BUTTON ALIGN FIX
+   Căn giữa nút x cạnh nút Lọc
+   Dùng chung cho Bài tập + Tài liệu
+========================================= */
+
+@media (max-width: 768px) {
+    .student-assignments-page .assignment-filter-actions,
+    .student-materials-page .material-filter-actions {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 58px !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+        .student-assignments-page .assignment-filter-actions .btn,
+        .student-materials-page .material-filter-actions .btn {
+            height: 54px !important;
+            min-height: 54px !important;
+            margin: 0 !important;
+            padding: 0 14px !important;
+            border-radius: 16px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            font-weight: 900 !important;
+        }
+
+        .student-assignments-page .assignment-filter-actions .btn-outline-secondary,
+        .student-materials-page .material-filter-actions .btn-outline-secondary {
+            width: 58px !important;
+            min-width: 58px !important;
+            padding: 0 !important;
+            font-size: 1rem !important;
+            text-transform: uppercase !important;
+        }
+}
+/* =========================================
+   MOBILE HOCVIEN - MY GRADES
+   Chuyển bảng điểm thành card mobile
+========================================= */
+
+@media (max-width: 768px) {
+    .student-grades-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-grades-page .grades-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-grades-page .grades-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-grades-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-grades-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* KPI 2 cột */
+        .student-grades-page > .row.g-4 {
+            --bs-gutter-x: 0.75rem !important;
+            --bs-gutter-y: 0.75rem !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-grades-page > .row.g-4 > [class*="col-"] {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+            }
+
+        .student-grades-page .grade-stat-card {
+            min-height: 112px !important;
+            border-radius: 18px !important;
+        }
+
+            .student-grades-page .grade-stat-card .card-body {
+                padding: 14px !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+            }
+
+        .student-grades-page .stat-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .student-grades-page .stat-label {
+            font-size: 0.78rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-grades-page .stat-value {
+            font-size: 1.45rem !important;
+            line-height: 1 !important;
+        }
+
+        /* Card chính */
+        .student-grades-page > .card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+            .student-grades-page > .card > .card-header {
+                padding: 18px 18px 10px !important;
+            }
+
+            .student-grades-page > .card > .card-body {
+                padding: 16px !important;
+            }
+
+        .student-grades-page .section-title {
+            font-size: 1.05rem !important;
+        }
+
+        .student-grades-page .grade-filter-note {
+            width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px 12px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+            .student-grades-page .grade-filter-note .ms-3 {
+                margin-left: 0 !important;
+            }
+
+        /* Filter */
+        .student-grades-page .grade-class-filter-form {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+            padding: 14px !important;
+            border-radius: 18px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .student-grades-page .grade-class-select {
+            min-height: 44px !important;
+            border-radius: 14px !important;
+            font-size: 0.92rem !important;
+        }
+
+        .student-grades-page .grade-class-filter-actions {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) 58px !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+
+            .student-grades-page .grade-class-filter-actions .btn {
+                width: 100% !important;
+                height: 54px !important;
+                min-height: 54px !important;
+                margin: 0 !important;
+                padding: 0 14px !important;
+                border-radius: 16px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                line-height: 1 !important;
+                font-size: 0.92rem !important;
+                font-weight: 900 !important;
+            }
+
+            .student-grades-page .grade-class-filter-actions .btn-outline-secondary {
+                width: 58px !important;
+                min-width: 58px !important;
+                padding: 0 !important;
+                font-size: 1rem !important;
+                text-transform: uppercase !important;
+            }
+
+        /* Tắt kiểu bảng ngang */
+        .student-grades-page .grade-table-wrap {
+            border: 0 !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        .student-grades-page .grade-table {
+            width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background: transparent !important;
+        }
+
+            .student-grades-page .grade-table colgroup,
+            .student-grades-page .grade-table thead {
+                display: none !important;
+            }
+
+            .student-grades-page .grade-table tbody {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+
+                .student-grades-page .grade-table tbody tr {
+                    display: block !important;
+                    width: 100% !important;
+                    border: 1px solid #e5e7eb !important;
+                    border-radius: 20px !important;
+                    background: #ffffff !important;
+                    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06) !important;
+                    overflow: hidden !important;
+                }
+
+                    .student-grades-page .grade-table tbody tr:hover {
+                        background: #ffffff !important;
+                    }
+
+                .student-grades-page .grade-table tbody td {
+                    width: 100% !important;
+                    display: flex !important;
+                    align-items: flex-start !important;
+                    justify-content: space-between !important;
+                    gap: 14px !important;
+                    padding: 12px 14px !important;
+                    border-bottom: 1px solid #f1f5f9 !important;
+                    text-align: right !important;
+                    vertical-align: top !important;
+                }
+
+                    .student-grades-page .grade-table tbody td:last-child {
+                        border-bottom: 0 !important;
+                    }
+
+                    .student-grades-page .grade-table tbody td::before {
+                        flex: 0 0 92px;
+                        color: #64748b;
+                        font-size: 0.76rem;
+                        font-weight: 900;
+                        text-align: left;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(1)::before {
+                        content: "Lớp";
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(2)::before {
+                        content: "Bài tập";
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(3)::before {
+                        content: "Hạn nộp";
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(4)::before {
+                        content: "Nộp bài";
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(5)::before {
+                        content: "Thời gian nộp";
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(6)::before {
+                        content: "Điểm";
+                    }
+
+                    .student-grades-page .grade-table tbody td:nth-child(7)::before {
+                        content: "Nhận xét";
+                    }
+
+                    /* Header card: lớp */
+                    .student-grades-page .grade-table tbody td:nth-child(1) {
+                        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+                    }
+
+        .student-grades-page .class-name {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.92rem !important;
+            line-height: 1.35 !important;
+            font-weight: 900 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+        .student-grades-page .assignment-title {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.92rem !important;
+            line-height: 1.4 !important;
+            font-weight: 900 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+        .student-grades-page .date-block,
+        .student-grades-page .submitted-date {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.88rem !important;
+            line-height: 1.42 !important;
+            font-weight: 800 !important;
+            text-align: right !important;
+            white-space: normal !important;
+        }
+
+            .student-grades-page .submitted-date small {
+                display: block !important;
+                margin-top: 2px !important;
+                color: #64748b !important;
+                font-size: 0.78rem !important;
+                text-align: right !important;
+            }
+
+        .student-grades-page .empty-text {
+            width: 100% !important;
+            text-align: right !important;
+        }
+
+        .student-grades-page .submit-status,
+        .student-grades-page .score-pill {
+            font-size: 0.74rem !important;
+            padding: 6px 10px !important;
+            border-radius: 999px !important;
+            white-space: nowrap !important;
+            margin-left: auto !important;
+        }
+
+        .student-grades-page .score-pill {
+            min-width: 54px !important;
+        }
+
+        .student-grades-page .feedback-text {
+            width: 100% !important;
+            max-width: 100% !important;
+            color: #475569 !important;
+            font-size: 0.86rem !important;
+            line-height: 1.45 !important;
+            font-weight: 600 !important;
+            text-align: right !important;
+            -webkit-line-clamp: 3 !important;
+            margin-left: auto !important;
+        }
+
+        /* Summary */
+        .student-grades-page .grade-summary {
+            margin-top: 14px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-grades-page .grade-summary span {
+                display: block !important;
+                padding: 10px 12px !important;
+                border-radius: 14px !important;
+                background: #f8fafc !important;
+                border: 1px solid #e5e7eb !important;
+                font-size: 0.82rem !important;
+                color: #64748b !important;
+            }
+
+            .student-grades-page .grade-summary strong {
+                color: #172554 !important;
+            }
+
+        /* Empty state */
+        .student-grades-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-grades-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-grades-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-grades-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-grades-page .grade-table tbody td {
+        padding: 11px 12px !important;
+    }
+
+        .student-grades-page .grade-table tbody td::before {
+            flex-basis: 84px !important;
+            font-size: 0.7rem !important;
+        }
+
+    .student-grades-page .grade-summary {
+        grid-template-columns: 1fr !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - SUBMIT ASSIGNMENT
+   Trang Nộp bài / Cập nhật bài nộp
+========================================= */
+
+@media (max-width: 768px) {
+    .student-submit-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-submit-page .submit-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-submit-page .submit-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-submit-page .page-title {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-submit-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        .student-submit-page .hero-action-btn {
+            width: 100% !important;
+            min-height: 44px !important;
+            border-radius: 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 0.92rem !important;
+            font-weight: 900 !important;
+        }
+
+        /* Alert */
+        .student-submit-page .custom-alert {
+            border-radius: 18px !important;
+            padding: 14px !important;
+            gap: 10px !important;
+            font-size: 0.92rem !important;
+        }
+
+        .student-submit-page .alert-icon {
+            font-size: 1.15rem !important;
+        }
+
+        /* Card chung */
+        .student-submit-page .assignment-info-card,
+        .student-submit-page .form-card,
+        .student-submit-page .note-card,
+        .student-submit-page .support-card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+        .student-submit-page .assignment-info-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-submit-page .card-header {
+            padding: 18px 18px 8px !important;
+        }
+
+        .student-submit-page .card-body {
+            padding: 18px !important;
+        }
+
+        .student-submit-page .section-title {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+        }
+
+        .student-submit-page .section-subtitle {
+            font-size: 0.88rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Thông tin bài tập: chuyển thành list gọn */
+        .student-submit-page .assignment-info-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        .student-submit-page .info-wide {
+            grid-column: auto !important;
+        }
+
+        .student-submit-page .info-item {
+            display: grid !important;
+            grid-template-columns: 92px minmax(0, 1fr) !important;
+            gap: 12px !important;
+            align-items: start !important;
+            padding: 13px 14px !important;
+            border-radius: 16px !important;
+            background: #f8fafc !important;
+        }
+
+        .student-submit-page .info-label {
+            margin-bottom: 0 !important;
+            color: #64748b !important;
+            font-size: 0.76rem !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+            line-height: 1.35 !important;
+        }
+
+        .student-submit-page .info-value {
+            color: #0f172a !important;
+            font-size: 0.9rem !important;
+            line-height: 1.45 !important;
+            font-weight: 800 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+        /* Layout form */
+        .student-submit-page .row.g-4 {
+            --bs-gutter-y: 1rem !important;
+        }
+
+        .student-submit-page .submit-form .mb-4 {
+            margin-bottom: 18px !important;
+        }
+
+        .student-submit-page .custom-label {
+            font-size: 0.92rem !important;
+            margin-bottom: 8px !important;
+        }
+
+        .student-submit-page textarea.custom-control {
+            min-height: 150px !important;
+            border-radius: 16px !important;
+            padding: 12px 14px !important;
+            font-size: 0.94rem !important;
+            line-height: 1.55 !important;
+        }
+
+        .student-submit-page .custom-control {
+            border-radius: 16px !important;
+            font-size: 0.94rem !important;
+        }
+
+        /* Upload box */
+        .student-submit-page .upload-box {
+            display: block !important;
+            padding: 14px !important;
+            border-radius: 18px !important;
+            background: #f8fafc !important;
+        }
+
+        .student-submit-page .upload-icon {
+            display: none !important;
+        }
+
+        .student-submit-page .upload-content {
+            width: 100% !important;
+        }
+
+        .student-submit-page input[type="file"].custom-control {
+            width: 100% !important;
+            min-height: 46px !important;
+            padding: 10px !important;
+            border-radius: 14px !important;
+            background: #ffffff !important;
+        }
+
+        .student-submit-page .form-hint {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+            margin-top: 8px !important;
+        }
+
+        .student-submit-page .current-file-box {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 6px !important;
+            padding: 12px !important;
+            border-radius: 14px !important;
+            margin-top: 12px !important;
+        }
+
+        .student-submit-page .current-file-label {
+            font-size: 0.8rem !important;
+        }
+
+        .student-submit-page .current-file-link {
+            font-size: 0.9rem !important;
+            word-break: break-word !important;
+        }
+
+        /* Nút form */
+        .student-submit-page .form-actions {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+            padding-top: 2px !important;
+        }
+
+            .student-submit-page .form-actions .btn {
+                width: 100% !important;
+                min-height: 46px !important;
+                border-radius: 15px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 0.94rem !important;
+                font-weight: 900 !important;
+            }
+
+        .student-submit-page .submit-btn {
+            order: -1 !important;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18) !important;
+        }
+
+        /* Note card */
+        .student-submit-page .note-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-submit-page .note-list {
+            gap: 12px !important;
+        }
+
+        .student-submit-page .note-item {
+            gap: 10px !important;
+            padding-bottom: 12px !important;
+        }
+
+        .student-submit-page .note-icon {
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            border-radius: 13px !important;
+            font-size: 1rem !important;
+        }
+
+        .student-submit-page .note-title {
+            font-size: 0.92rem !important;
+            margin-bottom: 2px !important;
+        }
+
+        .student-submit-page .note-desc {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+        }
+
+        .student-submit-page .support-icon {
+            width: 42px !important;
+            height: 42px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+            margin-bottom: 10px !important;
+        }
+
+        .student-submit-page .support-title {
+            font-size: 1rem !important;
+        }
+
+        .student-submit-page .support-desc {
+            font-size: 0.86rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Empty state */
+        .student-submit-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-submit-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-submit-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-submit-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-submit-page .info-item {
+        grid-template-columns: 82px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    .student-submit-page .info-label {
+        font-size: 0.7rem !important;
+    }
+
+    .student-submit-page .info-value {
+        font-size: 0.86rem !important;
+    }
+
+    .student-submit-page .card-body {
+        padding: 16px !important;
+    }
+
+    .student-submit-page textarea.custom-control {
+        min-height: 140px !important;
+    }
+    /* =========================================
+   PATCH MOBILE - SUBMIT BACK BUTTON SMALL
+   Nút Quay lại nhỏ ở góc trên phải
+========================================= */
+
+    @media (max-width: 768px) {
+        .student-submit-page .submit-hero .card-body {
+            position: relative !important;
+            padding: 20px 18px !important;
+            padding-right: 118px !important;
+        }
+
+        .student-submit-page .submit-hero .hero-action-btn {
+            position: absolute !important;
+            top: 18px !important;
+            right: 18px !important;
+            width: auto !important;
+            min-width: auto !important;
+            min-height: 36px !important;
+            height: 36px !important;
+            padding: 0 12px !important;
+            border-radius: 999px !important;
+            font-size: 0.78rem !important;
+            font-weight: 900 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+            line-height: 1 !important;
+        }
+
+        .student-submit-page .submit-hero .page-title {
+            padding-right: 0 !important;
+            max-width: 100% !important;
+        }
+
+        .student-submit-page .submit-hero .page-eyebrow {
+            max-width: 100% !important;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .student-submit-page .submit-hero .card-body {
+            padding-right: 110px !important;
+        }
+
+        .student-submit-page .submit-hero .hero-action-btn {
+            top: 16px !important;
+            right: 16px !important;
+            height: 34px !important;
+            padding: 0 10px !important;
+            font-size: 0.74rem !important;
+        }
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - SUBMISSION RESULT
+   Trang Kết quả bài nộp
+========================================= */
+
+@media (max-width: 768px) {
+    .student-submission-result-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-submission-result-page .result-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-submission-result-page .result-hero .card-body {
+                position: relative !important;
+                padding: 20px 18px !important;
+                padding-right: 118px !important;
+            }
+
+        .student-submission-result-page .page-title {
+            font-size: 1.35rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-submission-result-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* Nút quay lại nhỏ góc phải */
+        .student-submission-result-page .result-hero .hero-action-btn {
+            position: absolute !important;
+            top: 18px !important;
+            right: 18px !important;
+            width: auto !important;
+            min-width: auto !important;
+            min-height: 36px !important;
+            height: 36px !important;
+            padding: 0 12px !important;
+            border-radius: 999px !important;
+            font-size: 0.78rem !important;
+            font-weight: 900 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+            line-height: 1 !important;
+        }
+
+        /* Card chung */
+        .student-submission-result-page .assignment-info-card,
+        .student-submission-result-page .content-card,
+        .student-submission-result-page .feedback-card,
+        .student-submission-result-page .note-card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+        .student-submission-result-page .assignment-info-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-submission-result-page .card-header {
+            padding: 18px 18px 8px !important;
+        }
+
+        .student-submission-result-page .card-body {
+            padding: 18px !important;
+        }
+
+        .student-submission-result-page .section-title {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+        }
+
+        /* Thông tin bài tập: nhãn trái - dữ liệu phải */
+        .student-submission-result-page .assignment-info-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        .student-submission-result-page .info-wide {
+            grid-column: auto !important;
+        }
+
+        .student-submission-result-page .info-item {
+            display: grid !important;
+            grid-template-columns: 92px minmax(0, 1fr) !important;
+            gap: 12px !important;
+            align-items: start !important;
+            padding: 13px 14px !important;
+            border-radius: 16px !important;
+            background: #f8fafc !important;
+        }
+
+        .student-submission-result-page .info-label {
+            margin-bottom: 0 !important;
+            color: #64748b !important;
+            font-size: 0.76rem !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+            line-height: 1.35 !important;
+        }
+
+        .student-submission-result-page .info-value {
+            color: #0f172a !important;
+            font-size: 0.9rem !important;
+            line-height: 1.45 !important;
+            font-weight: 800 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+        /* Nội dung bài nộp + nhận xét */
+        .student-submission-result-page .submission-text-box,
+        .student-submission-result-page .feedback-box {
+            min-height: auto !important;
+            padding: 14px !important;
+            border-radius: 16px !important;
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+            white-space: pre-line !important;
+        }
+
+        .student-submission-result-page .content-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-submission-result-page .feedback-card {
+            margin-bottom: 16px !important;
+        }
+
+        /* File box */
+        .student-submission-result-page .file-box {
+            display: block !important;
+            padding: 14px !important;
+            border-radius: 18px !important;
+            margin-top: 16px !important;
+        }
+
+        .student-submission-result-page .file-icon {
+            display: none !important;
+        }
+
+        .student-submission-result-page .file-content {
+            width: 100% !important;
+        }
+
+        .student-submission-result-page .file-title {
+            font-size: 0.95rem !important;
+            margin-bottom: 8px !important;
+        }
+
+        .student-submission-result-page .file-box .btn {
+            width: 100% !important;
+            min-height: 42px !important;
+            border-radius: 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 0.9rem !important;
+            font-weight: 900 !important;
+        }
+
+        .student-submission-result-page .file-empty {
+            width: 100% !important;
+            min-height: 38px !important;
+            border-radius: 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 0.86rem !important;
+        }
+
+        /* Tổng kết */
+        .student-submission-result-page .note-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-submission-result-page .note-list {
+            gap: 12px !important;
+        }
+
+        .student-submission-result-page .note-item {
+            gap: 10px !important;
+            padding-bottom: 12px !important;
+        }
+
+        .student-submission-result-page .note-icon {
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            border-radius: 13px !important;
+            font-size: 1rem !important;
+        }
+
+        .student-submission-result-page .note-title {
+            font-size: 0.92rem !important;
+            margin-bottom: 2px !important;
+        }
+
+        .student-submission-result-page .note-desc {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+            word-break: break-word !important;
+        }
+
+        /* Empty state */
+        .student-submission-result-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-submission-result-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-submission-result-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-submission-result-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-submission-result-page .result-hero .card-body {
+        padding-right: 110px !important;
+    }
+
+    .student-submission-result-page .result-hero .hero-action-btn {
+        top: 16px !important;
+        right: 16px !important;
+        height: 34px !important;
+        padding: 0 10px !important;
+        font-size: 0.74rem !important;
+    }
+
+    .student-submission-result-page .page-title {
+        font-size: 1.22rem !important;
+    }
+
+    .student-submission-result-page .info-item {
+        grid-template-columns: 82px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    .student-submission-result-page .info-label {
+        font-size: 0.7rem !important;
+    }
+
+    .student-submission-result-page .info-value {
+        font-size: 0.86rem !important;
+    }
+
+    .student-submission-result-page .card-body {
+        padding: 16px !important;
+    }
+}
+/* =========================================
+   MOBILE - CANNOT EDIT SUBMISSION
+========================================= */
+
+@media (max-width: 768px) {
+    .student-assignments-page .cannot-edit-message {
+        width: 100% !important;
+        min-height: 42px !important;
+        border-radius: 14px !important;
+        padding: 9px 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 0.86rem !important;
+        font-weight: 900 !important;
+        background: #f1f5f9 !important;
+        color: #64748b !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - LEARNING PROGRESS
+   Trang Tiến độ học tập
+========================================= */
+
+@media (max-width: 768px) {
+    .student-progress-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-progress-page .progress-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-progress-page .progress-hero .card-body {
+                padding: 20px 18px !important;
+            }
+
+        .student-progress-page .page-title {
+            font-size: 1.42rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-progress-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* Alert */
+        .student-progress-page .custom-alert {
+            border-radius: 18px !important;
+            padding: 14px !important;
+            gap: 10px !important;
+            font-size: 0.92rem !important;
+        }
+
+        .student-progress-page .alert-icon {
+            font-size: 1.15rem !important;
+        }
+
+        /* Card chung */
+        .student-progress-page .student-info-card,
+        .student-progress-page .progress-stat-card,
+        .student-progress-page .overall-progress-card,
+        .student-progress-page > .card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+        .student-progress-page .card-header {
+            padding: 18px 18px 8px !important;
+        }
+
+        .student-progress-page .card-body {
+            padding: 18px !important;
+        }
+
+        .student-progress-page .section-title {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+        }
+
+        .student-progress-page .section-subtitle {
+            font-size: 0.86rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Tổng quan học viên */
+        .student-progress-page .student-info-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        .student-progress-page .info-wide {
+            grid-column: auto !important;
+        }
+
+        .student-progress-page .info-item {
+            display: grid !important;
+            grid-template-columns: 108px minmax(0, 1fr) !important;
+            gap: 12px !important;
+            align-items: start !important;
+            padding: 13px 14px !important;
+            border-radius: 16px !important;
+            background: #f8fafc !important;
+        }
+
+        .student-progress-page .info-label {
+            margin-bottom: 0 !important;
+            color: #64748b !important;
+            font-size: 0.74rem !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+            line-height: 1.35 !important;
+        }
+
+        .student-progress-page .info-value {
+            color: #0f172a !important;
+            font-size: 0.9rem !important;
+            line-height: 1.45 !important;
+            font-weight: 800 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+            .student-progress-page .info-value .progress-status {
+                margin-left: auto !important;
+            }
+
+        /* KPI 6 card: 2 cột x 3 hàng */
+        .student-progress-page > .row.g-4 {
+            --bs-gutter-x: 0.75rem !important;
+            --bs-gutter-y: 0.75rem !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-progress-page > .row.g-4 > [class*="col-"] {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+            }
+
+        .student-progress-page .progress-stat-card {
+            min-height: 112px !important;
+        }
+
+            .student-progress-page .progress-stat-card .card-body {
+                padding: 14px !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+            }
+
+        .student-progress-page .stat-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .student-progress-page .stat-label {
+            font-size: 0.76rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-progress-page .stat-value {
+            font-size: 1.35rem !important;
+            line-height: 1 !important;
+        }
+
+        /* Mức độ hoàn thành tổng thể */
+        .student-progress-page .overall-progress-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-progress-page .overall-percent {
+            width: fit-content !important;
+            margin-top: 6px !important;
+            padding: 8px 12px !important;
+            border-radius: 999px !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+            font-size: 1.1rem !important;
+            line-height: 1 !important;
+        }
+
+        .student-progress-page .progress-track {
+            height: 14px !important;
+            border-radius: 999px !important;
+        }
+
+        .student-progress-page .progress-caption {
+            font-size: 0.78rem !important;
+        }
+
+        /* Ghi chú trạng thái */
+        .student-progress-page .progress-filter-note {
+            width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px 12px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+        }
+
+            .student-progress-page .progress-filter-note .ms-3 {
+                margin-left: 0 !important;
+            }
+
+        /* Bảng tiến độ -> card */
+        .student-progress-page .progress-table-wrap {
+            border: 0 !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            background: transparent !important;
+        }
+
+        .student-progress-page .progress-table {
+            width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background: transparent !important;
+        }
+
+            .student-progress-page .progress-table colgroup,
+            .student-progress-page .progress-table thead {
+                display: none !important;
+            }
+
+            .student-progress-page .progress-table tbody {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+
+                .student-progress-page .progress-table tbody tr {
+                    display: block !important;
+                    width: 100% !important;
+                    border: 1px solid #e5e7eb !important;
+                    border-radius: 20px !important;
+                    background: #ffffff !important;
+                    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06) !important;
+                    overflow: hidden !important;
+                }
+
+                    .student-progress-page .progress-table tbody tr:hover {
+                        background: #ffffff !important;
+                    }
+
+                .student-progress-page .progress-table tbody td {
+                    width: 100% !important;
+                    display: flex !important;
+                    align-items: flex-start !important;
+                    justify-content: space-between !important;
+                    gap: 14px !important;
+                    padding: 12px 14px !important;
+                    border-bottom: 1px solid #f1f5f9 !important;
+                    text-align: right !important;
+                    vertical-align: top !important;
+                }
+
+                    .student-progress-page .progress-table tbody td:last-child {
+                        border-bottom: 0 !important;
+                    }
+
+                    .student-progress-page .progress-table tbody td::before {
+                        flex: 0 0 92px;
+                        color: #64748b;
+                        font-size: 0.76rem;
+                        font-weight: 900;
+                        text-align: left;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(1)::before {
+                        content: "Lớp";
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(2)::before {
+                        content: "Tổng bài";
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(3)::before {
+                        content: "Đã nộp";
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(4)::before {
+                        content: "Đã chấm";
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(5)::before {
+                        content: "Tiến độ";
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(6)::before {
+                        content: "Đánh giá";
+                    }
+
+                    .student-progress-page .progress-table tbody td:nth-child(1) {
+                        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+                    }
+
+        .student-progress-page .class-name {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.92rem !important;
+            line-height: 1.35 !important;
+            font-weight: 900 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+        .student-progress-page .number-pill {
+            min-width: 42px !important;
+            padding: 6px 10px !important;
+            font-size: 0.78rem !important;
+            margin-left: auto !important;
+        }
+
+        .student-progress-page .class-progress-cell {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        .student-progress-page .class-progress-top {
+            justify-content: flex-end !important;
+            font-size: 0.86rem !important;
+            margin-bottom: 7px !important;
+        }
+
+        .student-progress-page .class-progress-track {
+            height: 9px !important;
+            border-radius: 999px !important;
+        }
+
+        .student-progress-page .progress-status {
+            font-size: 0.74rem !important;
+            padding: 6px 10px !important;
+            border-radius: 999px !important;
+            white-space: nowrap !important;
+            margin-left: auto !important;
+        }
+
+        /* Summary */
+        .student-progress-page .progress-summary {
+            margin-top: 14px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            justify-content: stretch !important;
+        }
+
+            .student-progress-page .progress-summary span {
+                display: block !important;
+                padding: 10px 12px !important;
+                border-radius: 14px !important;
+                background: #f8fafc !important;
+                border: 1px solid #e5e7eb !important;
+                font-size: 0.82rem !important;
+                color: #64748b !important;
+            }
+
+            .student-progress-page .progress-summary strong {
+                color: #172554 !important;
+            }
+
+        /* Empty state */
+        .student-progress-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-progress-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-progress-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-progress-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-progress-page .page-title {
+        font-size: 1.28rem !important;
+    }
+
+    .student-progress-page .info-item {
+        grid-template-columns: 94px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    .student-progress-page .info-label {
+        font-size: 0.68rem !important;
+    }
+
+    .student-progress-page .info-value {
+        font-size: 0.84rem !important;
+    }
+
+    .student-progress-page .progress-table tbody td {
+        padding: 11px 12px !important;
+    }
+
+        .student-progress-page .progress-table tbody td::before {
+            flex-basis: 84px !important;
+            font-size: 0.7rem !important;
+        }
+
+    .student-progress-page .progress-summary {
+        grid-template-columns: 1fr !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - LEARNING PROGRESS YEAR LABEL
+   Label chia lớp theo năm
+========================================= */
+
+@media (max-width: 768px) {
+    .student-progress-page .progress-table tbody tr.progress-year-row {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        overflow: visible !important;
+    }
+
+        .student-progress-page .progress-table tbody tr.progress-year-row td {
+            display: block !important;
+            width: 100% !important;
+            padding: 4px 2px 2px !important;
+            border-bottom: 0 !important;
+            background: transparent !important;
+            text-align: left !important;
+        }
+
+            .student-progress-page .progress-table tbody tr.progress-year-row td::before {
+                display: none !important;
+                content: none !important;
+            }
+
+    .student-progress-page .progress-year-label {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 9px !important;
+        padding: 10px 12px !important;
+        border-radius: 16px !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+        border: 1px solid #dbeafe !important;
+        color: #1d4ed8 !important;
+        font-weight: 900 !important;
+    }
+
+    .student-progress-page .progress-year-title {
+        flex: 1 !important;
+        font-size: 0.92rem !important;
+    }
+
+    .student-progress-page .progress-year-count {
+        padding: 5px 9px !important;
+        border-radius: 999px !important;
+        background: #ffffff !important;
+        color: #475569 !important;
+        font-size: 0.76rem !important;
+        white-space: nowrap !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - COMPACT YEAR LABEL
+   Chỉ hiện số năm nhỏ
+========================================= */
+
+@media (max-width: 768px) {
+    .student-progress-page .progress-year-label {
+        width: fit-content !important;
+        min-width: 52px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 10px !important;
+        border-radius: 999px !important;
+        background: #eff6ff !important;
+        border: 1px solid #dbeafe !important;
+        color: #1d4ed8 !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+    }
+
+    .student-progress-page .progress-year-title {
+        flex: unset !important;
+        font-size: 0.76rem !important;
+        letter-spacing: 0.04em !important;
+    }
+
+    .student-progress-page .progress-year-icon,
+    .student-progress-page .progress-year-count {
+        display: none !important;
+    }
+
+    .student-progress-page .progress-table tbody tr.progress-year-row td {
+        padding: 6px 2px 2px !important;
+        text-align: left !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - PROGRESS LEARNING COMPACT
+   Mobile chỉ hiện lớp + nút chi tiết
+========================================= */
+
+@media (max-width: 768px) {
+    /* Hàng năm: chỉ hiện số năm nhỏ */
+    .student-progress-page .progress-table tbody tr.progress-year-row {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        overflow: visible !important;
+    }
+
+        .student-progress-page .progress-table tbody tr.progress-year-row td {
+            display: block !important;
+            width: 100% !important;
+            padding: 6px 2px 4px !important;
+            border-bottom: 0 !important;
+            background: transparent !important;
+            text-align: left !important;
+        }
+
+            .student-progress-page .progress-table tbody tr.progress-year-row td::before {
+                display: none !important;
+                content: none !important;
+            }
+
+    .student-progress-page .progress-year-label {
+        width: fit-content !important;
+        min-width: 50px !important;
+        padding: 5px 10px !important;
+        border-radius: 999px !important;
+        background: #eff6ff !important;
+        border: 1px solid #dbeafe !important;
+        color: #1d4ed8 !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+    }
+
+    .student-progress-page .progress-year-title {
+        font-size: 0.74rem !important;
+        letter-spacing: 0.04em !important;
+    }
+
+    /* Dòng lớp mobile: chỉ giữ cột đầu */
+    .student-progress-page .progress-table tbody tr:not(.progress-year-row) {
+        display: block !important;
+        width: 100% !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 18px !important;
+        background: #ffffff !important;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.055) !important;
+        overflow: hidden !important;
+    }
+
+        .student-progress-page .progress-table tbody tr:not(.progress-year-row) td {
+            display: none !important;
+        }
+
+            .student-progress-page .progress-table tbody tr:not(.progress-year-row) td:first-child {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+                border-bottom: 0 !important;
+                background: #ffffff !important;
+                text-align: left !important;
+            }
+
+                .student-progress-page .progress-table tbody tr:not(.progress-year-row) td:first-child::before {
+                    display: none !important;
+                    content: none !important;
+                }
+
+    .student-progress-page .progress-mobile-class-head {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 14px !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+    }
+
+        .student-progress-page .progress-mobile-class-head .class-name {
+            width: 100% !important;
+            min-width: 0 !important;
+            color: #0f172a !important;
+            font-size: 0.92rem !important;
+            line-height: 1.35 !important;
+            font-weight: 900 !important;
+            text-align: left !important;
+            word-break: break-word !important;
+        }
+
+    .student-progress-page .progress-mobile-detail-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 76px !important;
+        height: 36px !important;
+        padding: 0 12px !important;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 0.78rem !important;
+        font-weight: 900 !important;
+        white-space: nowrap !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-panel {
+        display: none !important;
+        padding: 14px !important;
+        border-top: 1px solid #e5e7eb !important;
+        background: #ffffff !important;
+    }
+
+    .student-progress-page .progress-table tbody tr.is-open .progress-mobile-detail-panel {
+        display: block !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-title {
+        color: #172554 !important;
+        font-size: 0.95rem !important;
+        font-weight: 900 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-item {
+        padding: 10px !important;
+        border-radius: 14px !important;
+        background: #f8fafc !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+        .student-progress-page .progress-mobile-detail-item span {
+            display: block !important;
+            color: #64748b !important;
+            font-size: 0.72rem !important;
+            font-weight: 800 !important;
+            margin-bottom: 4px !important;
+        }
+
+        .student-progress-page .progress-mobile-detail-item strong {
+            display: block !important;
+            color: #0f172a !important;
+            font-size: 1rem !important;
+            font-weight: 900 !important;
+        }
+
+    .student-progress-page .progress-mobile-detail-progress {
+        padding: 12px !important;
+        border-radius: 16px !important;
+        background: #f8fafc !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+        color: #64748b !important;
+        font-size: 0.84rem !important;
+        font-weight: 800 !important;
+    }
+
+        .student-progress-page .progress-mobile-detail-row strong {
+            color: #0f172a !important;
+            font-weight: 900 !important;
+        }
+
+    .student-progress-page .progress-mobile-detail-panel .class-progress-track {
+        height: 9px !important;
+        margin-top: 8px !important;
+        border-radius: 999px !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-panel .progress-status {
+        margin-left: 0 !important;
+        font-size: 0.72rem !important;
+        padding: 6px 10px !important;
+        border-radius: 999px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .student-progress-page .progress-mobile-class-head {
+        padding: 13px !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 7px !important;
+    }
+
+    .student-progress-page .progress-mobile-detail-btn {
+        min-width: 70px !important;
+        height: 34px !important;
+        padding: 0 10px !important;
+        font-size: 0.74rem !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - PROGRESS DETAIL ICON BUTTON
+   Đổi Chi tiết / Ẩn chi tiết thành icon
+========================================= */
+
+@media (max-width: 768px) {
+    .student-progress-page .progress-mobile-detail-btn {
+        width: 38px !important;
+        min-width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 14px !important;
+        background: #2563eb !important;
+        color: #ffffff !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22) !important;
+    }
+
+    .student-progress-page .progress-mobile-icon {
+        width: 20px !important;
+        height: 20px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+        .student-progress-page .progress-mobile-icon svg {
+            width: 20px !important;
+            height: 20px !important;
+            display: block !important;
+        }
+
+        .student-progress-page .progress-mobile-icon path {
+            fill: none !important;
+            stroke: currentColor !important;
+            stroke-width: 3 !important;
+            stroke-linecap: round !important;
+            stroke-linejoin: round !important;
+        }
+
+    .student-progress-page .progress-mobile-icon-close {
+        display: none !important;
+    }
+
+    .student-progress-page .progress-table tbody tr.is-open .progress-mobile-icon-open {
+        display: none !important;
+    }
+
+    .student-progress-page .progress-table tbody tr.is-open .progress-mobile-icon-close {
+        display: inline-flex !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .student-progress-page .progress-mobile-detail-btn {
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        border-radius: 13px !important;
+    }
+
+    .student-progress-page .progress-mobile-icon,
+    .student-progress-page .progress-mobile-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+}
+/* =========================================
+   MOBILE HOCVIEN - TEACHER REVIEW
+   Trang Đánh giá giáo viên
+========================================= */
+
+@media (max-width: 768px) {
+    .student-review-page {
+        margin-top: 0 !important;
+    }
+
+        /* Hero */
+        .student-review-page .review-hero {
+            border-radius: 22px !important;
+            margin-bottom: 16px !important;
+        }
+
+            .student-review-page .review-hero .card-body {
+                position: relative !important;
+                padding: 20px 18px !important;
+                padding-right: 118px !important;
+            }
+
+        .student-review-page .page-title {
+            font-size: 1.35rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .student-review-page .page-eyebrow {
+            font-size: 0.72rem !important;
+        }
+
+        /* Nút quay lại nhỏ góc phải */
+        .student-review-page .review-hero .hero-action-btn {
+            position: absolute !important;
+            top: 18px !important;
+            right: 18px !important;
+            width: auto !important;
+            min-width: auto !important;
+            height: 36px !important;
+            min-height: 36px !important;
+            padding: 0 12px !important;
+            border-radius: 999px !important;
+            font-size: 0.78rem !important;
+            font-weight: 900 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+            line-height: 1 !important;
+        }
+
+        /* Alert */
+        .student-review-page .custom-alert {
+            border-radius: 18px !important;
+            padding: 14px !important;
+            gap: 10px !important;
+            font-size: 0.92rem !important;
+        }
+
+        .student-review-page .alert-icon {
+            font-size: 1.15rem !important;
+        }
+
+        /* Card chung */
+        .student-review-page .class-info-card,
+        .student-review-page .form-card,
+        .student-review-page .note-card,
+        .student-review-page .support-card {
+            border-radius: 22px !important;
+            overflow: hidden !important;
+        }
+
+        .student-review-page .class-info-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-review-page .card-header {
+            padding: 18px 18px 8px !important;
+        }
+
+        .student-review-page .card-body {
+            padding: 18px !important;
+        }
+
+        .student-review-page .section-title {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+        }
+
+        .student-review-page .section-subtitle {
+            font-size: 0.86rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Thông tin lớp học: nhãn trái - dữ liệu phải */
+        .student-review-page .class-info-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        .student-review-page .info-item {
+            display: grid !important;
+            grid-template-columns: 86px minmax(0, 1fr) !important;
+            gap: 12px !important;
+            align-items: start !important;
+            padding: 13px 14px !important;
+            border-radius: 16px !important;
+            background: #f8fafc !important;
+        }
+
+        .student-review-page .info-label {
+            margin-bottom: 0 !important;
+            color: #64748b !important;
+            font-size: 0.74rem !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+            line-height: 1.35 !important;
+        }
+
+        .student-review-page .info-value {
+            color: #0f172a !important;
+            font-size: 0.9rem !important;
+            line-height: 1.45 !important;
+            font-weight: 800 !important;
+            text-align: right !important;
+            word-break: break-word !important;
+        }
+
+        .student-review-page .review-status {
+            margin-left: auto !important;
+            font-size: 0.74rem !important;
+            padding: 6px 10px !important;
+            border-radius: 999px !important;
+        }
+
+        /* Form */
+        .student-review-page .review-form .mb-4 {
+            margin-bottom: 18px !important;
+        }
+
+        .student-review-page .custom-label {
+            font-size: 0.92rem !important;
+            margin-bottom: 8px !important;
+        }
+
+        .student-review-page .form-hint {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+            margin-top: 8px !important;
+        }
+
+        /* Rating: 5 ô sao nằm 1 hàng cho gọn */
+        .student-review-page .rating-options {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: 7px !important;
+        }
+
+        .student-review-page .rating-option {
+            min-height: 54px !important;
+            padding: 8px 4px !important;
+            border-radius: 15px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .student-review-page .rating-star {
+            font-size: 0.68rem !important;
+            letter-spacing: -1px !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+        }
+
+        .student-review-page .rating-option.active {
+            background: #eff6ff !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12) !important;
+        }
+
+        .student-review-page .rating-option:has(input:disabled) {
+            cursor: default !important;
+            opacity: 0.9 !important;
+        }
+
+        /* Textarea */
+        .student-review-page textarea.custom-control {
+            min-height: 135px !important;
+            border-radius: 16px !important;
+            padding: 12px 14px !important;
+            font-size: 0.94rem !important;
+            line-height: 1.55 !important;
+        }
+
+        .student-review-page .custom-control {
+            border-radius: 16px !important;
+            font-size: 0.94rem !important;
+        }
+
+        /* Nút form */
+        .student-review-page .form-actions {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+            padding-top: 2px !important;
+        }
+
+            .student-review-page .form-actions .btn {
+                width: 100% !important;
+                min-height: 46px !important;
+                border-radius: 15px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 0.94rem !important;
+                font-weight: 900 !important;
+            }
+
+        .student-review-page .submit-btn {
+            order: -1 !important;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18) !important;
+        }
+
+            .student-review-page .submit-btn:disabled {
+                box-shadow: none !important;
+                opacity: 0.82 !important;
+            }
+
+        /* Note card */
+        .student-review-page .note-card {
+            margin-bottom: 16px !important;
+        }
+
+        .student-review-page .note-list {
+            gap: 12px !important;
+        }
+
+        .student-review-page .note-item {
+            gap: 10px !important;
+            padding-bottom: 12px !important;
+        }
+
+        .student-review-page .note-icon {
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            border-radius: 13px !important;
+            font-size: 1rem !important;
+        }
+
+        .student-review-page .note-title {
+            font-size: 0.92rem !important;
+            margin-bottom: 2px !important;
+        }
+
+        .student-review-page .note-desc {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+        }
+
+        .student-review-page .support-icon {
+            width: 42px !important;
+            height: 42px !important;
+            border-radius: 14px !important;
+            font-size: 1.15rem !important;
+            margin-bottom: 10px !important;
+        }
+
+        .student-review-page .support-title {
+            font-size: 1rem !important;
+        }
+
+        .student-review-page .support-desc {
+            font-size: 0.86rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Empty state */
+        .student-review-page .empty-state {
+            padding: 34px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        .student-review-page .empty-icon {
+            font-size: 2.4rem !important;
+        }
+
+        .student-review-page .empty-state h5 {
+            font-size: 1.05rem !important;
+        }
+
+        .student-review-page .empty-state p {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+        }
+}
+
+@media (max-width: 420px) {
+    .student-review-page .review-hero .card-body {
+        padding-right: 110px !important;
+    }
+
+    .student-review-page .review-hero .hero-action-btn {
+        top: 16px !important;
+        right: 16px !important;
+        height: 34px !important;
+        padding: 0 10px !important;
+        font-size: 0.74rem !important;
+    }
+
+    .student-review-page .page-title {
+        font-size: 1.2rem !important;
+    }
+
+    .student-review-page .info-item {
+        grid-template-columns: 76px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    .student-review-page .info-label {
+        font-size: 0.68rem !important;
+    }
+
+    .student-review-page .info-value {
+        font-size: 0.84rem !important;
+    }
+
+    .student-review-page .card-body {
+        padding: 16px !important;
+    }
+
+    .student-review-page .rating-options {
+        gap: 6px !important;
+    }
+
+    .student-review-page .rating-option {
+        min-height: 50px !important;
+        border-radius: 14px !important;
+    }
+
+    .student-review-page .rating-star {
+        font-size: 0.62rem !important;
+    }
+
+    .student-review-page textarea.custom-control {
+        min-height: 125px !important;
+    }
+}

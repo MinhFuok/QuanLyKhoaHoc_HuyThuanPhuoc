@@ -36,7 +36,7 @@
                 <div class="col-12 col-md-6 col-xl-3">
                     <label class="form-label admin-label">Admin</label>
                     <select name="adminEmail" class="form-select admin-input">
-                        <option value="">-- Tất cả admin --</option>
+                        <option value="">-- Tất cả account --</option>
                         @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.AdminEmailList)
                         {
                             <option value="@item.Value" selected="@(ViewBag.AdminEmail == item.Value)">
@@ -110,8 +110,8 @@
         <div class="table-responsive">
             <table class="table admin-table admin-audit-table align-middle mb-0">
                 <colgroup>
-                    <col style="width: 15%;" />
-                    <col style="width: 19%;" />
+                    <col style="width: 10%;" />
+                    <col style="width: 24%;" />
                     <col style="width: 13%;" />
                     <col style="width: 12%;" />
                     <col style="width: 24%;" />
@@ -190,4 +190,170 @@
         </div>
     </div>
 </div>
+@section Styles {
+    <style>
+        .admin-audit-page {
+            padding-bottom: 40px;
+        }
 
+            .admin-audit-page .admin-filter-card {
+                margin-bottom: 24px;
+            }
+
+            .admin-audit-page .admin-table-card {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                z-index: 2 !important;
+                margin-top: 24px !important;
+                padding: 24px !important;
+                background: #ffffff !important;
+                border: 1px solid #dbeafe !important;
+                border-radius: 24px !important;
+                box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08) !important;
+                overflow: hidden !important;
+            }
+
+            .admin-audit-page .admin-table-title {
+                display: flex !important;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 16px;
+                padding-bottom: 16px;
+                color: #0f172a;
+                font-size: 18px;
+                font-weight: 800;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .admin-audit-page .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .admin-audit-page .admin-table {
+                width: 100%;
+                min-width: 1120px;
+                table-layout: fixed;
+                border-collapse: separate;
+                border-spacing: 0;
+                color: #0f172a;
+            }
+
+                .admin-audit-page .admin-table thead th {
+                    padding: 16px 16px;
+                    background: #f8fafc;
+                    color: #64748b;
+                    font-size: 13px;
+                    font-weight: 900;
+                    letter-spacing: 0.06em;
+                    text-transform: uppercase;
+                    border-bottom: 1px solid #94a3b8;
+                    white-space: nowrap;
+                    vertical-align: middle;
+                }
+
+                .admin-audit-page .admin-table tbody td {
+                    padding: 18px 16px;
+                    border-bottom: 1px solid #eef2f7;
+                    vertical-align: middle;
+                    color: #64748b;
+                    font-size: 15px;
+                    line-height: 1.45;
+                }
+
+                .admin-audit-page .admin-table tbody tr:hover td {
+                    background: #f8fbff;
+                }
+
+                .admin-audit-page .admin-table tbody tr:last-child td {
+                    border-bottom: none;
+                }
+
+                .admin-audit-page .admin-table td:nth-child(1) {
+                    white-space: normal;
+                }
+
+                .admin-audit-page .admin-table td:nth-child(3),
+                .admin-audit-page .admin-table td:nth-child(4) {
+                    text-align: center;
+                    white-space: nowrap;
+                }
+
+            .admin-audit-page .admin-time {
+                display: block;
+                max-width: 100%;
+                color: #64748b;
+                font-size: 14px;
+                font-weight: 800;
+                line-height: 1.45;
+                white-space: normal;
+                word-break: normal;
+            }
+
+            .admin-audit-page .admin-email {
+                display: block;
+                max-width: 100%;
+                color: #64748b;
+                font-weight: 800;
+                line-height: 1.45;
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+
+            .admin-audit-page .admin-text-limit {
+                display: block;
+                max-width: 100%;
+                color: #64748b;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .admin-audit-page td:nth-child(5) .admin-text-limit,
+            .admin-audit-page td:nth-child(6) .admin-text-limit {
+                white-space: normal;
+                overflow-wrap: anywhere;
+                word-break: break-word;
+                line-height: 1.55;
+            }
+
+            .admin-audit-page .admin-badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 34px;
+                padding: 8px 14px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 900;
+                line-height: 1;
+                white-space: nowrap;
+            }
+
+            .admin-audit-page .admin-badge-role {
+                color: #4c1d95;
+                background: #ede9fe;
+                border: 1px solid #ddd6fe;
+            }
+
+            .admin-audit-page .admin-table-note {
+                margin-top: 14px;
+                color: #64748b;
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+        @@media (max-width: 768px) {
+            .admin-audit-page .admin-table-card {
+                padding: 16px !important;
+                border-radius: 18px !important;
+            }
+
+            .admin-audit-page .admin-table {
+                min-width: 1050px;
+            }
+        }
+    </style>
+}

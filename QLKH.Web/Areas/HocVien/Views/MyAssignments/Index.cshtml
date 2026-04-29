@@ -5,6 +5,7 @@
     ViewData["Title"] = "Bài tập lớp tôi học";
     Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
 
+    var now = DateTime.Now;
     var today = DateTime.Today;
     var assignments = Model?.ToList() ?? new List<QLKH.Domain.Entities.Assignment>();
 
@@ -14,10 +15,14 @@
     int? selectedClassRoomId = ViewBag.SelectedClassRoomId as int?;
 
     var totalAssignments = assignments.Count;
-    var activeAssignments = assignments.Count(x => x.DueDate.Date >= today);
-    var dueSoonAssignments = assignments.Count(x => x.DueDate.Date >= today && x.DueDate.Date <= today.AddDays(3));
-    var overdueAssignments = assignments.Count(x => x.DueDate.Date < today);
+    var activeAssignments = assignments.Count(x => x.DueDate >= now);
+    var dueSoonAssignments = assignments.Count(x => x.DueDate >= now && x.DueDate <= now.AddDays(3));
+    var overdueAssignments = assignments.Count(x => x.DueDate < now);
+
     var submittedAssignmentIds = (ViewBag.SubmittedAssignmentIds as IEnumerable<int>)?.ToHashSet()
+        ?? new HashSet<int>();
+
+    var gradedAssignmentIds = (ViewBag.GradedAssignmentIds as IEnumerable<int>)?.ToHashSet()
         ?? new HashSet<int>();
 }
 
@@ -186,13 +191,16 @@
                                 var dueStatusText = "";
                                 var dueStatusClass = "";
                                 var isSubmitted = submittedAssignmentIds.Contains(item.Id);
+                                var isGraded = gradedAssignmentIds.Contains(item.Id);
+                                var isOverDueDateTime = item.DueDate < now;
+                                var canEditSubmission = isSubmitted && !isOverDueDateTime && !isGraded;
 
-                                if (item.DueDate.Date < today)
+                                if (item.DueDate < now)
                                 {
                                     dueStatusText = "Quá hạn";
                                     dueStatusClass = "badge-overdue";
                                 }
-                                else if (item.DueDate.Date <= today.AddDays(3))
+                                else if (item.DueDate <= now.AddDays(3))
                                 {
                                     dueStatusText = "Sắp hết hạn";
                                     dueStatusClass = "badge-due-soon";
@@ -262,13 +270,23 @@
                                         <div class="action-group action-group-center">
                                             @if (isSubmitted)
                                             {
-                                                <a asp-area="HocVien"
-                                                   asp-controller="MySubmissions"
-                                                   asp-action="Submit"
-                                                   asp-route-assignmentId="@item.Id"
-                                                   class="btn btn-sm btn-outline-warning">
-                                                    Sửa
-                                                </a>
+                                                if (canEditSubmission)
+                                                {
+                                                    <a asp-area="HocVien"
+                                                       asp-controller="MySubmissions"
+                                                       asp-action="Submit"
+                                                       asp-route-assignmentId="@item.Id"
+                                                       class="btn btn-sm btn-outline-warning">
+                                                        Sửa
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="cannot-edit-message">
+                                                        Không thể sửa
+                                                    </span>
+                                                }
+
                                                 <a asp-area="HocVien"
                                                    asp-controller="MySubmissionResults"
                                                    asp-action="Details"
@@ -632,6 +650,20 @@
         .submit-pending {
             color: #92400e;
             background: #ffedd5;
+        }
+
+        .cannot-edit-message {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 7px 11px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-weight: 800;
+            font-size: 0.78rem;
+            white-space: nowrap;
         }
         .badge-active {
             color: #166534;

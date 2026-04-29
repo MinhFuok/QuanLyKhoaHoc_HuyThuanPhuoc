@@ -135,12 +135,16 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClassRoom classRoom)
         {
+            await ValidateClassRoomDateByCourseDurationAsync(classRoom);
+
             if (!ModelState.IsValid)
             {
                 await LoadDropdownDataAsync(classRoom.CourseId, classRoom.TeacherId);
                 return View(classRoom);
             }
+
             classRoom.ClassCode = await GenerateNextClassCodeAsync();
+
             var result = await _classRoomService.CreateAsync(classRoom);
             if (!result)
             {
@@ -168,6 +172,8 @@ namespace QLKH.Web.Areas.HocVu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ClassRoom classRoom)
         {
+            await ValidateClassRoomDateByCourseDurationAsync(classRoom);
+
             if (!ModelState.IsValid)
             {
                 await LoadDropdownDataAsync(classRoom.CourseId, classRoom.TeacherId);
@@ -182,6 +188,7 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
         [Authorize(Roles = "Admin,HocVu")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -217,7 +224,42 @@ namespace QLKH.Web.Areas.HocVu.Controllers
 
             return View(classRoom);
         }
+        private async Task ValidateClassRoomDateByCourseDurationAsync(ClassRoom classRoom)
+        {
+            var courses = await _courseService.GetAllAsync();
+            var course = courses.FirstOrDefault(x => x.Id == classRoom.CourseId);
 
+            if (course == null)
+            {
+                ModelState.AddModelError(nameof(classRoom.CourseId), "Khóa học không tồn tại.");
+                return;
+            }
+
+            var durationMonths = course.DurationInMonths;
+
+            if (durationMonths <= 0)
+            {
+                ModelState.AddModelError(nameof(classRoom.CourseId), "Thời lượng khóa học không hợp lệ.");
+                return;
+            }
+
+            if (classRoom.EndDate.Date < classRoom.StartDate.Date)
+            {
+                ModelState.AddModelError(nameof(classRoom.EndDate), "Ngày kết thúc không được nhỏ hơn ngày bắt đầu.");
+                return;
+            }
+
+            var maxDays = durationMonths * 30;
+            var maxEndDate = classRoom.StartDate.Date.AddDays(maxDays);
+
+            if (classRoom.EndDate.Date > maxEndDate)
+            {
+                ModelState.AddModelError(
+                    nameof(classRoom.EndDate),
+                    $"Ngày kết thúc lớp không được vượt quá thời lượng khóa học. Khóa học \"{course.CourseName}\" có thời lượng {durationMonths} tháng, tối đa {maxDays} ngày. Ngày kết thúc tối đa là {maxEndDate:dd/MM/yyyy}."
+                );
+            }
+        }
         private async Task LoadDropdownDataAsync(int? selectedCourseId = null, int? selectedTeacherId = null)
         {
             var courses = await _courseService.GetAllAsync();
