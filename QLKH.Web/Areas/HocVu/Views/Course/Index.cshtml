@@ -10,47 +10,6 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/dashboardlayout.css" />
-    <style>
-        .course-table {
-            width: 100%;
-            table-layout: fixed;
-        }
-
-            .course-table th,
-            .course-table td {
-                vertical-align: middle;
-            }
-
-                .course-table th:nth-child(1),
-                .course-table td:nth-child(1),
-                .course-table th:nth-child(3),
-                .course-table td:nth-child(3),
-                .course-table th:nth-child(4),
-                .course-table td:nth-child(4),
-                .course-table th:nth-child(5),
-                .course-table td:nth-child(5),
-                .course-table th:nth-child(6),
-                .course-table td:nth-child(6) {
-                    text-align: center;
-                }
-
-                .course-table th:nth-child(2),
-                .course-table td:nth-child(2) {
-                    text-align: left;
-                    word-break: break-word;
-                }
-
-            .course-table .cp-actions {
-                justify-content: center;
-            }
-
-        @@media (max-width: 1199.98px) {
-            .course-table {
-                min-width: 980px;
-            }
-        }
-    </style>
 }
 
 <div class="course-page course-index">
@@ -58,7 +17,7 @@
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">DANH SÁCH KHÓA HỌC</h1>
-            <p class="cp-subtitle">Quản lý các khóa học có trên nền tảng...</p>
+            <p class="cp-subtitle">Theo dõi học phí, thời lượng và trạng thái mở bán của toàn bộ khóa học trong cùng một bảng quản trị gọn, dễ lọc và dễ thao tác.</p>
         </div>
 
         @if (User.IsInRole("Admin") || User.IsInRole("HocVu"))
@@ -84,7 +43,8 @@
                 <input type="text"
                        name="keyword"
                        value="@keyword"
-                       class="cp-input"/>
+                       class="cp-input"
+                       placeholder="Nhập mã hoặc tên khóa học..." />
             </div>
 
             <div class="cp-filter-field">

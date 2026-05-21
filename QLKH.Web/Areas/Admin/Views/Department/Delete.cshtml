@@ -9,6 +9,9 @@
     <div class="admin-page-header admin-page-header--danger">
         <div>
             <h2 class="admin-page-title">XÓA CHƯƠNG TRÌNH/KHÓA</h2>
+            <p class="admin-page-subtitle">
+                Kiểm tra lại thông tin trước khi xóa để tránh ảnh hưởng nhầm tới cấu trúc đào tạo đang vận hành.
+            </p>
         </div>
 
         <a asp-area="Admin"
@@ -42,7 +45,7 @@
                 </div>
 
                 <div class="admin-detail-row">
-                    <div class="admin-detail-label">Mã t?</div>
+                    <div class="admin-detail-label">Mô tả</div>
                     <div class="admin-detail-value">
                         @(string.IsNullOrWhiteSpace(Model.Description) ? "Chưa có mô tả" : Model.Description)
                     </div>
@@ -63,15 +66,19 @@
                 </div>
             </div>
 
-            <form asp-area="Admin" asp-controller="Department" asp-action="Delete" method="post">
+            <form asp-area="Admin"
+                  asp-controller="Department"
+                  asp-action="Delete"
+                  method="post"
+                  data-delete-form
+                  data-delete-label="chương trình/khóa này"
+                  data-delete-message="Bạn có chắc chắn muốn xóa chương trình/khóa này không?">
                 @Html.AntiForgeryToken()
 
                 <input type="hidden" asp-for="Id" />
 
                 <div class="admin-form-actions">
-                    <button type="submit"
-                            class="btn btn-danger"
-                            onclick="return confirm('Bạn có chắc chắn muốn xóa chương trình/khóa này không?');">
+                    <button type="submit" class="btn btn-danger">
                         Xác nhận xóa
                     </button>
 

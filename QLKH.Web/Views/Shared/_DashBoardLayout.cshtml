@@ -51,9 +51,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/dashboardlayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-core.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QLKH.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-pages.css" asp-append-version="true" />
     @if (isAdminShell)
     {
         <link rel="stylesheet" href="~/css/AdminProfession.css" asp-append-version="true" />
@@ -61,10 +63,6 @@
     @await RenderSectionAsync("Styles", required: false)
 
     <link rel="stylesheet" href="~/css/mobile.css" asp-append-version="true" />
-    @if (isHocVuShell)
-    {
-        <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
-    }
 </head>
 <body class="@dashboardBodyClass">
 
@@ -312,7 +310,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/dashboardlayout.js" asp-append-version="true"></script>
+    <script src="~/js/admin-core.js" asp-append-version="true"></script>
+    <script src="~/js/admin-pages.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @if (isAdminShell)
     {

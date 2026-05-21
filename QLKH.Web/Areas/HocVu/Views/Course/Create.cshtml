@@ -14,12 +14,13 @@
     <div class="cp-header">
         <div class="cp-header-left">
             <h1 class="cp-title">KHÓA HỌC MỚI</h1>
+            <p class="cp-subtitle">Thiết lập nhanh thông tin khóa học với bố cục biểu mẫu rõ ràng, vẫn giữ nguyên binding và validation hiện tại.</p>
         </div>
         <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
     <div class="cp-form-card">
-        <form asp-area="HocVu" asp-controller="Course" asp-action="Create" method="post" id="courseForm">
+        <form asp-area="HocVu" asp-controller="Course" asp-action="Create" method="post" id="courseForm" data-admin-form>
             <div asp-validation-summary="ModelOnly" class="cp-validation-summary"></div>
 
             <div class="cp-form-group-label">Thông tin cơ bản</div>

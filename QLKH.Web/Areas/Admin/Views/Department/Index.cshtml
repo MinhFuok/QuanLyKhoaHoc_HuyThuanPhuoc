@@ -69,7 +69,7 @@
         <div>
             <h2 class="admin-page-title">CHƯƠNG TRÌNH ĐÀO TẠO</h2>
             <p class="admin-page-subtitle">
-                Quản lý danh sách chương trình và khóa đào tạo của nền tảng...
+                Quản lý cấu trúc chương trình, khóa trực thuộc và trạng thái vận hành theo cùng một giao diện quản trị thống nhất.
             </p>
         </div>
 
@@ -142,7 +142,7 @@
                     <tr>
                         <th class="text-center">Mã</th>
                         <th class="text-center">Tên chương trình</th>
-                        <th class="text-center">Mã t?</th>
+                        <th class="text-center">Mô tả</th>
                         <th class="text-center">Loại</th>
                         <th class="text-center">Trạng thái</th>
                         <th class="text-center">Thao tác</th>
@@ -167,11 +167,13 @@
 
                                 <td>
                                     <div class="program-name-wrap">
-                                        <span class="toggle-arrow"
-                                              data-target="@groupId"
-                                              title="Ẩn/hiện khóa thuộc chương trình">
-                                            ?
-                                        </span>
+                                        <button type="button"
+                                                class="toggle-arrow"
+                                                data-target="@groupId"
+                                                aria-expanded="true"
+                                                title="Ẩn/hiện khóa thuộc chương trình">
+                                            <span class="toggle-arrow-icon">▾</span>
+                                        </button>
 
                                         <span class="admin-name">@parent.DepartmentName</span>
                                     </div>
@@ -252,7 +254,7 @@
 
                                         <td>
                                             <div class="program-child-name">
-                                                <span class="child-mark">?</span>
+                                                <span class="child-mark">↳</span>
                                                 <span>@child.DepartmentName</span>
                                             </div>
                                         </td>
@@ -347,31 +349,3 @@
 </div>
 
 
-@section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const arrows = document.querySelectorAll(".toggle-arrow");
-
-            arrows.forEach(arrow => {
-                arrow.addEventListener("click", function () {
-                    const targetClass = this.getAttribute("data-target");
-                    const rows = document.querySelectorAll("." + targetClass);
-
-                    let isVisible = false;
-
-                    rows.forEach(row => {
-                        if (row.style.display !== "none") {
-                            isVisible = true;
-                        }
-                    });
-
-                    rows.forEach(row => {
-                        row.style.display = isVisible ? "none" : "table-row";
-                    });
-
-                    this.textContent = isVisible ? "?" : "?";
-                });
-            });
-        });
-    </script>
-}

@@ -1,0 +1,1555 @@
+body.db-body :is(
+    .admin-account-page,
+    .course-page,
+    .admin-profession-page,
+    .student-page,
+    .teacher-page,
+    .enrollment-page,
+    .classschedule-page,
+    .classroom-page,
+    .student-certificate-page
+) {
+    position: relative;
+    color: var(--ui-text);
+}
+
+body.db-body :is(
+    .admin-account-page,
+    .course-page,
+    .admin-profession-page,
+    .student-page,
+    .teacher-page,
+    .enrollment-page,
+    .classschedule-page,
+    .classroom-page,
+    .student-certificate-page
+) :is(.small, .text-muted) {
+    color: var(--ui-muted) !important;
+}
+
+body.db-body :is(.admin-page-header, .cp-header) {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding: 28px 30px;
+    border-radius: 32px;
+    background: linear-gradient(135deg, var(--page-primary) 0%, var(--page-secondary) 100%);
+    box-shadow: 0 20px 44px rgba(var(--page-primary-rgb), 0.18);
+    overflow: hidden;
+}
+
+body.db-body :is(.admin-page-header, .cp-header)::before,
+body.db-body :is(.admin-page-header, .cp-header)::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+}
+
+body.db-body :is(.admin-page-header, .cp-header)::before {
+    width: 220px;
+    height: 220px;
+    top: -112px;
+    right: 6%;
+}
+
+body.db-body :is(.admin-page-header, .cp-header)::after {
+    width: 150px;
+    height: 150px;
+    right: -24px;
+    bottom: -74px;
+}
+
+body.db-body :is(.admin-page-header, .cp-header) > * {
+    position: relative;
+    z-index: 1;
+}
+
+body.db-body :is(.admin-page-header.admin-page-header--danger, .cp-header.cp-header--danger) {
+    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 52%, #f97316 100%);
+    box-shadow: 0 20px 44px rgba(185, 28, 28, 0.2);
+}
+
+body.db-body :is(.admin-page-title, .cp-title) {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(1.9rem, 3vw, 2.7rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+}
+
+body.db-body :is(.admin-page-subtitle, .cp-subtitle) {
+    margin: 10px 0 0;
+    max-width: 64ch;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.98rem;
+    line-height: 1.72;
+}
+
+body.db-body .cp-header-left,
+body.db-body .admin-page-header > div:first-child {
+    min-width: 0;
+}
+
+body.db-body :is(.cp-header-actions, .admin-filter-actions, .admin-form-actions, .admin-actions, .admin-banner-actions, .cp-filter-actions, .cp-form-actions, .cp-delete-actions, .cp-detail-footer, .filter-actions, .student-filter-actions, .teacher-filter-actions) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+body.db-body :is(.admin-filter-actions, .admin-form-actions, .cp-filter-actions) {
+    justify-content: flex-end;
+}
+
+body.db-body :is(.admin-form-actions, .cp-form-actions, .cp-delete-actions, .cp-detail-footer) {
+    margin-top: 24px;
+}
+
+body.db-body :is(.admin-form-actions, .cp-form-actions, .cp-delete-actions) {
+    padding-top: 20px;
+    border-top: 1px solid var(--ui-border);
+}
+
+body.db-body :is(.admin-actions form, .admin-banner-actions form, .cp-actions form) {
+    display: flex;
+    margin: 0;
+}
+
+body.db-body :is(
+    .admin-filter-card,
+    .admin-table-card,
+    .admin-form-card,
+    .admin-delete-card,
+    .admin-system-card,
+    .admin-feature-card,
+    .admin-section-box,
+    .admin-info-box,
+    .admin-warning-box,
+    .admin-danger-box,
+    .admin-current-image-box,
+    .cp-filter-card,
+    .cp-table-wrap,
+    .cp-form-card,
+    .cp-detail-card,
+    .cp-delete-card,
+    .cp-switch-card,
+    .student-filter-card,
+    .teacher-filter-card,
+    .enrollment-filter-card,
+    .certificate-filter-card,
+    .schedule-detail-box,
+    .delete-impact-item
+) {
+    border: 1px solid var(--ui-border);
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--ui-text);
+    box-shadow: var(--ui-shadow-md);
+    transition:
+        transform 220ms ease,
+        box-shadow 220ms ease,
+        border-color 220ms ease,
+        background-color 220ms ease;
+}
+
+body.db-body :is(
+    .admin-filter-card,
+    .admin-table-card,
+    .admin-form-card,
+    .admin-delete-card,
+    .admin-system-card,
+    .cp-filter-card,
+    .cp-table-wrap,
+    .cp-form-card,
+    .cp-detail-card,
+    .cp-delete-card,
+    .student-filter-card,
+    .teacher-filter-card,
+    .enrollment-filter-card,
+    .certificate-filter-card
+) {
+    margin-bottom: 20px;
+    border-radius: var(--ui-radius-xl);
+    overflow: hidden;
+}
+
+body.db-body :is(
+    .admin-feature-card,
+    .admin-section-box,
+    .admin-info-box,
+    .admin-warning-box,
+    .admin-danger-box,
+    .admin-current-image-box,
+    .cp-switch-card,
+    .schedule-detail-box,
+    .delete-impact-item
+) {
+    border-radius: var(--ui-radius-lg);
+}
+
+body.db-body :is(
+    .admin-filter-card,
+    .admin-table-card,
+    .admin-form-card,
+    .admin-delete-card,
+    .admin-system-card,
+    .admin-feature-card,
+    .cp-filter-card,
+    .cp-table-wrap,
+    .cp-form-card,
+    .cp-detail-card,
+    .cp-delete-card,
+    .cp-switch-card,
+    .student-filter-card,
+    .teacher-filter-card,
+    .enrollment-filter-card,
+    .certificate-filter-card
+):hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--page-primary-rgb), 0.16);
+    box-shadow: var(--ui-shadow-lg);
+}
+
+body.db-body :is(.admin-filter-card, .cp-filter-card, .student-filter-card, .teacher-filter-card, .enrollment-filter-card, .certificate-filter-card) {
+    padding: 22px 24px;
+}
+
+body.db-body :is(.admin-form-card > form, .admin-delete-body, .admin-system-body, .cp-detail-body) {
+    padding: 24px;
+}
+
+body.db-body .cp-form-card {
+    padding: 24px;
+}
+
+body.db-body :is(.admin-table-title, .admin-form-title, .admin-delete-title) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--ui-border);
+    background: linear-gradient(180deg, #ffffff 0%, var(--ui-surface-alt) 100%);
+    color: var(--ui-text);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+body.db-body :is(.cp-form-group-label, .admin-section-title, .admin-feature-title, .admin-section-label) {
+    margin: 0 0 18px;
+    color: var(--ui-text);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+body.db-body .admin-tabbar,
+body.db-body :is(.classroom-tabs, .enrollment-tabs) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 10px;
+    border: 1px solid var(--ui-border);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: var(--ui-shadow-sm);
+}
+
+body.db-body :is(.admin-tab, .classroom-tab-btn, .enrollment-tab-btn) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 14px !important;
+    background: #f2f6fd !important;
+    color: var(--ui-muted) !important;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease;
+}
+
+body.db-body :is(.admin-tab, .classroom-tab-btn, .enrollment-tab-btn):hover {
+    background: #eef4ff !important;
+    color: var(--ui-text) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(var(--page-primary-rgb), 0.12);
+}
+
+body.db-body :is(.admin-tab.active, .admin-tab.show, .admin-tab[aria-selected="true"], .classroom-tab-btn.active, .enrollment-tab-btn.active) {
+    background: linear-gradient(135deg, var(--page-primary) 0%, var(--page-secondary) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 12px 24px rgba(var(--page-primary-rgb), 0.18);
+}
+
+body.db-body :is(.classroom-count, .enrollment-count) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+    color: inherit;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+body.db-body .classroom-tab-pane {
+    display: none;
+}
+
+body.db-body .classroom-tab-pane.active,
+body.db-body .enrollment-tab-pane.active {
+    display: block;
+}
+
+body.db-body :is(.admin-label, .cp-label, .cp-filter-field label, .student-filter-field label, .teacher-filter-field label, .filter-label, .certificate-filter-field label) {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ui-text);
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+body.db-body :is(.admin-input, .cp-input, .student-filter-input, .teacher-filter-input, .teacher-filter-select, .filter-select, .certificate-filter-input) {
+    width: 100%;
+    min-height: 50px;
+    padding: 12px 14px;
+    border: 1px solid var(--ui-border);
+    border-radius: 16px;
+    background: #ffffff;
+    color: var(--ui-text);
+    font-size: 0.96rem;
+    font-weight: 600;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease;
+}
+
+body.db-body :is(.admin-input, .cp-input, .student-filter-input, .teacher-filter-input, .teacher-filter-select, .filter-select, .certificate-filter-input)::placeholder {
+    color: var(--ui-soft);
+}
+
+body.db-body :is(.admin-input, .cp-input, .student-filter-input, .teacher-filter-input, .teacher-filter-select, .filter-select, .certificate-filter-input):focus {
+    border-color: rgba(var(--page-primary-rgb), 0.38);
+    background: #ffffff;
+    box-shadow:
+        0 0 0 4px rgba(var(--page-primary-rgb), 0.12),
+        0 10px 24px rgba(var(--page-primary-rgb), 0.08);
+}
+
+body.db-body :is(.admin-input, .cp-input, .student-filter-input, .teacher-filter-input, .teacher-filter-select, .filter-select, .certificate-filter-input)[readonly],
+body.db-body :is(.admin-input, .cp-input, .student-filter-input, .teacher-filter-input, .teacher-filter-select, .filter-select, .certificate-filter-input):disabled {
+    background: #eef4fb;
+    color: var(--ui-muted);
+}
+
+body.db-body .admin-input[type="file"] {
+    padding: 7px 10px;
+}
+
+body.db-body .admin-input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(var(--page-primary-rgb), 0.12) 0%, rgba(var(--page-secondary-rgb), 0.12) 100%);
+    color: var(--ui-text);
+    font-weight: 700;
+}
+
+body.db-body :is(.admin-textarea, .cp-textarea) {
+    min-height: 136px;
+    resize: vertical;
+}
+
+body.db-body .cp-select {
+    padding-right: 42px;
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--ui-muted) 50%),
+        linear-gradient(135deg, var(--ui-muted) 50%, transparent 50%);
+    background-position:
+        calc(100% - 20px) calc(50% - 3px),
+        calc(100% - 14px) calc(50% - 3px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    appearance: none;
+}
+
+body.db-body :is(.admin-validation, .cp-validation-summary) {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(var(--ui-danger-rgb), 0.18);
+    border-radius: 18px;
+    background: #fff4f6;
+    color: #be123c;
+}
+
+body.db-body :is(.admin-validation ul, .cp-validation-summary ul) {
+    margin: 0;
+    padding-left: 18px;
+}
+
+body.db-body :is(.admin-field-error, .cp-field-error) {
+    display: block;
+    margin-top: 6px;
+    color: var(--ui-danger) !important;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+body.db-body :is(.input-validation-error, .input-validation-error:focus) {
+    border-color: rgba(var(--ui-danger-rgb), 0.35) !important;
+    box-shadow: 0 0 0 4px rgba(var(--ui-danger-rgb), 0.1) !important;
+}
+
+body.db-body :is(.admin-help-text, .admin-filter-note, .cp-form-hint, .cp-filter-note, .student-filter-note, .teacher-filter-note, .active-filter-note, .certificate-filter-note, .classroom-summary) {
+    margin-top: 10px;
+    color: var(--ui-muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.72;
+}
+
+body.db-body :is(.admin-filter-note strong, .classroom-summary strong) {
+    color: var(--ui-text);
+}
+
+body.db-body .cp-form-row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 18px;
+}
+
+body.db-body .cp-form-row + .cp-field,
+body.db-body .cp-field + .cp-form-group-label {
+    margin-top: 20px;
+}
+
+body.db-body .cp-field {
+    grid-column: span 4;
+    min-width: 0;
+}
+
+body.db-body .cp-field--full {
+    grid-column: 1 / -1;
+}
+
+body.db-body :is(.cp-filter-form, .student-filter-form, .teacher-filter-form, .classroom-filter-form) {
+    display: grid;
+    gap: 14px;
+}
+
+body.db-body .cp-filter-form {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: end;
+}
+
+body.db-body .cp-filter-field {
+    grid-column: span 4;
+    min-width: 0;
+}
+
+body.db-body .cp-filter-field--wide {
+    grid-column: span 8;
+}
+
+body.db-body :is(.db-content .btn, .db-content .cp-btn) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    font-size: 0.94rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none !important;
+    white-space: nowrap;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        opacity 180ms ease;
+}
+
+body.db-body :is(.db-content .btn, .db-content .cp-btn):hover {
+    transform: translateY(-1px);
+}
+
+body.db-body :is(.db-content .btn, .db-content .cp-btn):active {
+    transform: translateY(0);
+}
+
+body.db-body :is(.db-content .btn, .db-content .cp-btn):focus-visible {
+    box-shadow:
+        0 0 0 4px rgba(var(--page-primary-rgb), 0.14),
+        0 16px 30px rgba(var(--page-primary-rgb), 0.16);
+}
+
+body.db-body :is(.btn-sm, .cp-btn--sm) {
+    min-height: 38px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+}
+
+body.db-body .btn-primary,
+body.db-body .cp-btn--primary {
+    --btn-glow-rgb: var(--page-primary-rgb);
+    --btn-lift-shadow: 0 18px 34px rgba(var(--page-primary-rgb), 0.24);
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--page-primary) 0%, var(--page-secondary) 100%);
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(var(--page-primary-rgb), 0.18);
+}
+
+body.db-body .btn-primary:hover,
+body.db-body .cp-btn--primary:hover {
+    color: #ffffff;
+    box-shadow: 0 16px 30px rgba(var(--page-primary-rgb), 0.22);
+}
+
+body.db-body .btn-danger,
+body.db-body .cp-btn--danger {
+    --btn-glow-rgb: var(--ui-danger-rgb);
+    --btn-lift-shadow: 0 18px 34px rgba(var(--ui-danger-rgb), 0.16);
+    border-color: rgba(var(--ui-danger-rgb), 0.18);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(var(--ui-danger-rgb), 0.14) 100%);
+    color: #be123c;
+    box-shadow: none;
+}
+
+body.db-body .btn-success,
+body.db-body .cp-btn--add {
+    --btn-glow-rgb: var(--ui-success-rgb);
+    --btn-lift-shadow: 0 18px 34px rgba(var(--ui-success-rgb), 0.22);
+    border-color: transparent;
+    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(var(--ui-success-rgb), 0.18);
+}
+
+body.db-body .btn-outline-secondary,
+body.db-body .cp-btn--ghost {
+    border-color: var(--ui-border);
+    background: #ffffff;
+    color: var(--ui-text);
+    box-shadow: var(--ui-shadow-sm);
+}
+
+body.db-body .btn-outline-primary,
+body.db-body .cp-btn--info {
+    --btn-glow-rgb: var(--ui-info-rgb);
+    --btn-lift-shadow: 0 18px 34px rgba(var(--ui-info-rgb), 0.22);
+    border-color: rgba(var(--ui-info-rgb), 0.18);
+    background: linear-gradient(135deg, rgba(var(--ui-info-rgb), 0.98) 0%, #2563eb 100%);
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(var(--ui-info-rgb), 0.18);
+}
+
+body.db-body .btn-outline-success {
+    border-color: rgba(var(--ui-success-rgb), 0.2);
+    background: #ffffff;
+    color: #15803d;
+}
+
+body.db-body .btn-outline-danger,
+body.db-body .cp-btn--warning {
+    --btn-glow-rgb: var(--ui-warning-rgb);
+    --btn-lift-shadow: 0 18px 34px rgba(var(--ui-warning-rgb), 0.18);
+    border-color: rgba(var(--ui-warning-rgb), 0.22);
+    background: linear-gradient(135deg, rgba(var(--ui-warning-rgb), 0.12) 0%, rgba(var(--ui-danger-rgb), 0.08) 100%);
+    color: #b45309;
+    box-shadow: none;
+}
+
+body.db-body :is(.btn-primary, .btn-danger, .btn-success, .cp-btn--primary, .cp-btn--danger, .cp-btn--add, .cp-btn--info, .cp-btn--warning).confirm-glow {
+    box-shadow: 0 14px 28px rgba(var(--page-primary-rgb), 0.2);
+}
+
+body.db-body :is(.btn-primary, .btn-danger, .btn-success, .cp-btn--primary, .cp-btn--danger, .cp-btn--add, .cp-btn--info, .cp-btn--warning).confirm-glow:is(:hover, :focus-visible) {
+    animation: adminConfirmRipple 1.05s linear infinite;
+    box-shadow:
+        0 0 1.05rem 0 rgba(var(--btn-glow-rgb, var(--page-primary-rgb)), 0.3),
+        var(--btn-lift-shadow, 0 18px 34px rgba(var(--page-primary-rgb), 0.22));
+}
+
+body.db-body .admin-btn-main {
+    min-width: 160px;
+}
+
+body.db-body :is(.admin-table, .cp-table) {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+    color: var(--ui-text);
+}
+
+body.db-body :is(.admin-table, .cp-table) thead th {
+    padding: 15px 16px 14px;
+    border-bottom: 1px solid var(--ui-border);
+    background: linear-gradient(180deg, #ffffff 0%, var(--ui-surface-alt) 100%);
+    color: var(--ui-muted);
+    font-size: 0.73rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+body.db-body :is(.admin-table, .cp-table) tbody td {
+    padding: 16px;
+    border-top: 1px solid rgba(219, 229, 243, 0.82);
+    vertical-align: middle;
+    background: transparent;
+    transition:
+        background-color 160ms ease,
+        color 160ms ease;
+}
+
+body.db-body :is(.admin-table, .cp-table) tbody tr:hover td {
+    background: rgba(var(--page-primary-rgb), 0.05);
+}
+
+body.db-body .admin-table-note,
+body.db-body .cp-empty {
+    padding: 18px 24px;
+    color: var(--ui-muted);
+    font-weight: 700;
+    text-align: center;
+}
+
+body.db-body :is(.admin-code, .admin-badge, .cp-code, .cp-badge, .schedule-badge, .schedule-date-chip, .schedule-session-badge, .teacher-rating, .teacher-rating-empty, .capacity-badge) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-height: 32px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+}
+
+body.db-body :is(.admin-code, .cp-code) {
+    min-width: 68px;
+    background: linear-gradient(135deg, rgba(var(--page-primary-rgb), 0.12) 0%, rgba(var(--page-secondary-rgb), 0.1) 100%);
+    color: var(--page-primary);
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.82rem;
+}
+
+body.db-body .cp-code--lg {
+    min-height: 36px;
+    padding: 7px 14px;
+}
+
+body.db-body .admin-badge,
+body.db-body .cp-badge {
+    border: 1px solid transparent;
+    font-size: 0.76rem;
+}
+
+body.db-body .admin-badge-role {
+    background: rgba(var(--page-primary-rgb), 0.12);
+    color: #4c1d95;
+}
+
+body.db-body .admin-badge-linked,
+body.db-body .cp-badge--pending {
+    background: rgba(var(--ui-info-rgb), 0.12);
+    color: #0369a1;
+}
+
+body.db-body :is(.admin-badge-success, .cp-badge--active, .cp-badge--confirmed) {
+    background: rgba(var(--ui-success-rgb), 0.12);
+    color: #15803d;
+}
+
+body.db-body :is(.admin-badge-danger, .cp-badge--inactive, .cp-badge--cancelled) {
+    background: rgba(var(--ui-danger-rgb), 0.12);
+    color: #be123c;
+}
+
+body.db-body :is(.admin-badge-muted, .cp-badge--muted) {
+    background: #f1f5f9;
+    color: var(--ui-muted);
+}
+
+body.db-body .cp-badge--lg {
+    min-height: 36px;
+    padding: 7px 14px;
+}
+
+body.db-body :is(.admin-name, .admin-username, .admin-email, .admin-detail-value, .cp-name, .cp-detail-value, .schedule-detail-value, .schedule-highlight, .delete-impact-value) {
+    color: var(--ui-text);
+    font-weight: 700;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+body.db-body :is(.admin-text-limit, .admin-time, .cp-fee, .cp-muted, .date-text, .teacher-rating-count, .schedule-meta, .schedule-detail-label, .delete-impact-title) {
+    color: var(--ui-muted);
+}
+
+body.db-body .admin-time,
+body.db-body .date-text {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+body.db-body .admin-detail-list {
+    display: grid;
+    gap: 12px;
+}
+
+body.db-body :is(.admin-detail-row, .cp-detail-row) {
+    display: grid;
+    grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+    gap: 8px 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: var(--ui-surface-alt);
+}
+
+body.db-body :is(.admin-detail-label, .cp-detail-label) {
+    color: var(--ui-muted);
+    font-weight: 700;
+}
+
+body.db-body .cp-detail-hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid var(--ui-border);
+    border-radius: 22px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--ui-surface-alt) 100%);
+}
+
+body.db-body .cp-detail-name {
+    margin: 10px 0 0;
+    color: var(--ui-text);
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+body.db-body :is(.admin-warning-box, .cp-delete-warning, .delete-warning-box) {
+    padding: 16px 18px;
+    border: 1px solid rgba(var(--ui-danger-rgb), 0.14);
+    border-radius: 18px;
+    background: rgba(var(--ui-danger-rgb), 0.06);
+    color: #9f1239;
+    line-height: 1.7;
+}
+
+body.db-body .admin-info-box {
+    padding: 20px 22px;
+    background: linear-gradient(135deg, rgba(var(--page-primary-rgb), 0.08) 0%, rgba(var(--page-secondary-rgb), 0.06) 100%);
+    color: #312e81;
+    font-weight: 600;
+}
+
+body.db-body .admin-danger-box {
+    padding: 20px 22px;
+    background: rgba(var(--ui-danger-rgb), 0.08);
+    color: #9f1239;
+}
+
+body.db-body :is(.admin-current-image, .admin-delete-image, .admin-banner-img) {
+    max-width: 100%;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: #ffffff;
+    object-fit: cover;
+}
+
+body.db-body .admin-banner-img {
+    width: 112px;
+    height: 72px;
+}
+
+body.db-body .admin-current-image,
+body.db-body .admin-delete-image {
+    max-height: 220px;
+    object-fit: contain;
+}
+
+body.db-body .admin-current-image-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 152px;
+    padding: 20px;
+}
+
+body.db-body .admin-check-list {
+    display: grid;
+    gap: 12px;
+}
+
+body.db-body .admin-check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+body.db-body .admin-check-row.is-checked {
+    border-color: rgba(var(--page-primary-rgb), 0.24);
+    background: linear-gradient(135deg, rgba(var(--page-primary-rgb), 0.06) 0%, rgba(var(--page-secondary-rgb), 0.05) 100%);
+}
+
+body.db-body .admin-check-row.is-disabled {
+    opacity: 0.64;
+    cursor: not-allowed;
+}
+
+body.db-body .admin-check-input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--page-primary);
+    flex: 0 0 auto;
+}
+
+body.db-body :is(.admin-check-label, .admin-check-row > span) {
+    color: var(--ui-text);
+    font-weight: 700;
+    line-height: 1.55;
+}
+
+body.db-body :is(.admin-icon-action, .cp-icon-action) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--ui-border-strong);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: var(--ui-shadow-sm);
+    color: #ffffff;
+    text-decoration: none !important;
+    cursor: pointer;
+    flex: 0 0 auto;
+    position: relative;
+    overflow: visible;
+    transition:
+        transform 250ms ease,
+        box-shadow 250ms ease,
+        background-color 250ms ease,
+        border-color 250ms ease,
+        color 250ms ease,
+        opacity 250ms ease;
+}
+
+body.db-body :is(.admin-icon-action, .cp-icon-action):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 24px rgba(15, 23, 42, 0.18);
+}
+
+body.db-body :is(.admin-icon-action, .cp-icon-action):active {
+    transform: scale(0.92);
+}
+
+body.db-body :is(.admin-icon-action, .cp-icon-action):focus-visible {
+    box-shadow:
+        0 0 0 4px rgba(var(--page-primary-rgb), 0.14),
+        0 14px 24px rgba(15, 23, 42, 0.18);
+}
+
+body.db-body :is(.admin-icon-action, .cp-icon-action)::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, 4px);
+    pointer-events: none;
+    z-index: 4;
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+}
+
+body.db-body :is(.admin-icon-action, .cp-icon-action):hover::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+body.db-body :is(.admin-action-edit, .cp-action-edit) {
+    border-color: rgba(37, 99, 235, 0.16);
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+body.db-body :is(.admin-action-delete, .cp-action-delete) {
+    border-color: rgba(var(--ui-danger-rgb), 0.16);
+    background: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+}
+
+body.db-body :is(.admin-action-lock, .cp-action-lock) {
+    border-color: rgba(var(--ui-success-rgb), 0.16);
+    background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+}
+
+body.db-body :is(.admin-action-unlock, .cp-action-unlock) {
+    border-color: rgba(var(--ui-warning-rgb), 0.2);
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+}
+
+body.db-body :is(.edit-svgIcon, .cp-edit-svg) {
+    width: 17px;
+    transition: transform 300ms ease;
+}
+
+body.db-body :is(.edit-svgIcon path, .cp-edit-svg path) {
+    fill: currentColor;
+}
+
+body.db-body :is(.bin-top, .cp-bin-top) {
+    position: absolute;
+    top: 8px;
+    width: 15px;
+    z-index: 2;
+    transform-origin: right;
+    transition:
+        transform 300ms ease,
+        opacity 180ms ease;
+}
+
+body.db-body :is(.bin-bottom, .cp-bin-bottom) {
+    position: absolute;
+    bottom: 8px;
+    width: 13px;
+    z-index: 2;
+    transition:
+        transform 300ms ease,
+        opacity 180ms ease;
+}
+
+body.db-body :is(.garbage, .cp-garbage) {
+    position: absolute;
+    top: 11px;
+    left: 14px;
+    width: 12px;
+    opacity: 0;
+    transform: translate(-220%, -260%);
+    transition:
+        transform 300ms ease,
+        opacity 180ms ease;
+    z-index: 1;
+}
+
+body.db-body .lock-action-svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+}
+
+body.db-body .lock-action-svg .bling {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 3;
+    stroke-dashoffset: 15;
+    transition:
+        stroke-dashoffset 300ms ease,
+        opacity 300ms ease;
+}
+
+body.db-body .lock-action-svg .lock {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 36;
+    transition:
+        stroke-dasharray 400ms ease,
+        stroke 300ms ease;
+}
+
+body.db-body .lock-action-svg .lockb {
+    fill: currentColor;
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    transform: rotate(8deg);
+    transform-origin: 14px 20px;
+    transition: transform 220ms ease;
+}
+
+body.db-body :is(.admin-action-unlock, .cp-action-unlock) .lock {
+    stroke-dasharray: 48;
+}
+
+body.db-body :is(.admin-action-unlock, .cp-action-unlock) .lockb {
+    transform: rotate(0);
+    transform-origin: 14px 22px;
+}
+
+body.db-body :is(.admin-action-edit, .cp-action-edit):hover :is(.edit-svgIcon, .cp-edit-svg) {
+    transform: rotate(360deg) scale(1.08);
+}
+
+body.db-body :is(.admin-action-delete, .cp-action-delete):hover :is(.bin-top, .cp-bin-top) {
+    transform: rotate(45deg);
+}
+
+body.db-body :is(.admin-action-delete, .cp-action-delete):hover :is(.garbage, .cp-garbage) {
+    animation: adminTrashThrow 400ms linear forwards;
+}
+
+body.db-body :is(.admin-action-lock:hover, .admin-action-unlock:hover, .cp-action-lock:hover, .cp-action-unlock:hover) .bling {
+    animation: adminLockBling 300ms linear forwards;
+    animation-delay: 200ms;
+}
+
+body.db-body :is(.admin-action-lock:hover, .admin-action-unlock:hover, .cp-action-lock:hover, .cp-action-unlock:hover) .lock {
+    stroke-dasharray: 48;
+    animation: adminLockPulse 300ms linear forwards;
+}
+
+body.db-body :is(.admin-action-lock:hover, .admin-action-unlock:hover, .cp-action-lock:hover, .cp-action-unlock:hover) .lockb {
+    transform: rotate(0);
+    transform-origin: 14px 22px;
+}
+
+@keyframes adminConfirmRipple {
+    from {
+        box-shadow:
+            0 0 1.05rem 0 rgba(var(--btn-glow-rgb, var(--page-primary-rgb)), 0.3),
+            var(--btn-lift-shadow, 0 18px 34px rgba(var(--page-primary-rgb), 0.22));
+    }
+
+    to {
+        box-shadow:
+            0 0 1.55rem 0 rgba(var(--btn-glow-rgb, var(--page-primary-rgb)), 0.18),
+            var(--btn-lift-shadow, 0 18px 34px rgba(var(--page-primary-rgb), 0.22));
+    }
+}
+
+@keyframes adminTrashThrow {
+    from {
+        transform: translate(-220%, -260%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes adminLockBling {
+    50% {
+        stroke-dashoffset: 12;
+    }
+
+    100% {
+        stroke-dashoffset: 9;
+    }
+}
+
+@keyframes adminLockPulse {
+    0% {
+        stroke-dasharray: 36;
+    }
+
+    100% {
+        stroke-dasharray: 48;
+    }
+}
+
+body.db-body .program-parent-row td {
+    background: rgba(var(--page-primary-rgb), 0.04);
+}
+
+body.db-body .child-row td {
+    background: rgba(var(--page-secondary-rgb), 0.03);
+}
+
+body.db-body .child-row[hidden] {
+    display: none;
+}
+
+body.db-body :is(.program-name-wrap, .program-child-name) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+body.db-body .toggle-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(var(--page-primary-rgb), 0.14);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--page-primary);
+    box-shadow: var(--ui-shadow-sm);
+    cursor: pointer;
+}
+
+body.db-body .toggle-arrow-icon {
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: 800;
+    transition: transform var(--ui-transition);
+}
+
+body.db-body .toggle-arrow[aria-expanded="false"] .toggle-arrow-icon {
+    transform: rotate(-90deg);
+}
+
+body.db-body .child-mark {
+    color: var(--page-primary);
+    font-weight: 900;
+}
+
+body.db-body .teacher-rating {
+    gap: 6px;
+    border: 1px solid rgba(var(--ui-warning-rgb), 0.18);
+    background: rgba(var(--ui-warning-rgb), 0.12);
+    color: #c2410c;
+}
+
+body.db-body .teacher-rating-empty {
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    background: #f1f5f9;
+    color: var(--ui-muted);
+}
+
+body.db-body .capacity-badge {
+    min-width: 44px;
+    height: 44px;
+    border: 1px solid rgba(var(--page-primary-rgb), 0.16);
+    background: linear-gradient(135deg, rgba(var(--page-primary-rgb), 0.12) 0%, rgba(var(--page-secondary-rgb), 0.08) 100%);
+    color: var(--page-primary);
+    font-weight: 900;
+}
+
+body.db-body :is(.schedule-badge, .schedule-date-chip, .schedule-session-badge) {
+    border: 1px solid rgba(var(--page-primary-rgb), 0.16);
+    background: linear-gradient(135deg, rgba(var(--page-primary-rgb), 0.12) 0%, rgba(var(--page-secondary-rgb), 0.08) 100%);
+    color: var(--page-primary);
+    font-size: 0.82rem;
+}
+
+body.db-body .schedule-detail-grid,
+body.db-body .delete-impact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+body.db-body .schedule-detail-box,
+body.db-body .delete-impact-item {
+    padding: 14px 16px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--ui-surface-alt) 100%);
+    box-shadow: var(--ui-shadow-sm);
+}
+
+body.db-body .delete-impact-value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+body.db-body .cp-status-surface {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 999px;
+    background: #f8fbff;
+}
+
+body.db-body .cp-status-surface--confirmed {
+    background: rgba(var(--ui-success-rgb), 0.08);
+}
+
+body.db-body .cp-status-surface--pending {
+    background: rgba(var(--ui-info-rgb), 0.08);
+}
+
+body.db-body .cp-status-surface--cancelled {
+    background: rgba(var(--ui-danger-rgb), 0.08);
+}
+
+body.db-body .cp-inline-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: var(--ui-shadow-sm);
+}
+
+body.db-body .cp-inline-alert--success {
+    border-color: rgba(var(--ui-success-rgb), 0.16);
+    background: rgba(240, 253, 244, 0.96);
+}
+
+body.db-body .cp-inline-alert-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #10b981 0%, #22c55e 100%);
+    color: #ffffff;
+    font-weight: 900;
+}
+
+body.db-body .cp-inline-alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+body.db-body .cp-inline-alert-close {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: var(--ui-muted);
+}
+
+body.db-body .cp-file-picker,
+body.db-body .cp-current-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+body.db-body .cp-file-input,
+body.db-body .cp-switch-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.db-body :is(.cp-file-name, .cp-current-file-label) {
+    color: var(--ui-muted);
+    font-weight: 700;
+}
+
+body.db-body .cp-current-file {
+    margin-top: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: var(--ui-surface-alt);
+}
+
+body.db-body .cp-file-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ui-info);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.db-body .cp-file-link:hover {
+    color: #0b5ed7;
+    text-decoration: underline;
+}
+
+body.db-body .cp-switch-card {
+    display: block;
+    padding: 16px 18px;
+    background: var(--ui-surface-alt);
+}
+
+body.db-body .cp-switch {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+body.db-body .cp-switch-slider {
+    position: relative;
+    width: 54px;
+    height: 30px;
+    border-radius: 999px;
+    background: #cbd5e1;
+}
+
+body.db-body .cp-switch-slider::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+    transition: transform var(--ui-transition);
+}
+
+body.db-body .cp-switch-input:checked + .cp-switch-slider {
+    background: linear-gradient(135deg, var(--page-primary) 0%, var(--page-secondary) 100%);
+}
+
+body.db-body .cp-switch-input:checked + .cp-switch-slider::before {
+    transform: translateX(24px);
+}
+
+body.db-body .cp-switch-content {
+    display: grid;
+    gap: 4px;
+}
+
+body.db-body .cp-switch-title {
+    color: var(--ui-text);
+    font-weight: 800;
+}
+
+body.db-body .cp-switch-subtitle {
+    color: var(--ui-muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+body.db-body .course-index .course-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+body.db-body .course-index .course-table :is(th, td) {
+    vertical-align: middle;
+}
+
+body.db-body .course-index .course-table :is(th:nth-child(1), td:nth-child(1), th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5), th:nth-child(6), td:nth-child(6)) {
+    text-align: center;
+}
+
+body.db-body .course-index .course-table :is(th:nth-child(2), td:nth-child(2)) {
+    text-align: left;
+    word-break: break-word;
+}
+
+body.db-body .course-index .cp-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+    body.db-body .course-index .cp-actions > .cp-btn,
+    body.db-body .course-index .cp-actions > .cp-icon-action {
+        flex: 0 0 auto;
+        margin: 0;
+        vertical-align: middle;
+    }
+
+body.db-body .course-delete-page .cp-consent-row {
+    margin-top: 18px;
+}
+
+body.db-body .course-delete-page .cp-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: var(--ui-surface-alt);
+    color: var(--ui-text);
+    font-weight: 600;
+}
+
+body.db-body .course-delete-page .cp-consent input {
+    margin-top: 2px;
+    accent-color: var(--page-primary);
+}
+
+body.db-body :is(.ap-reveal, .hv-reveal) {
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+body.db-body :is(.ap-reveal.is-visible, .hv-reveal.is-visible) {
+    opacity: 1;
+    transform: none;
+}
+
+body.db-body :is(
+    .admin-filter-card,
+    .admin-table-card,
+    .admin-form-card,
+    .admin-delete-card,
+    .admin-system-card,
+    .admin-feature-card,
+    .cp-filter-card,
+    .cp-table-wrap,
+    .cp-form-card,
+    .cp-detail-card,
+    .cp-delete-card,
+    .cp-switch-card,
+    .student-filter-card,
+    .teacher-filter-card,
+    .enrollment-filter-card,
+    .certificate-filter-card
+):is(.ap-reveal.is-visible, .hv-reveal.is-visible):hover {
+    transform: translateY(-3px);
+}
+
+@media (max-width: 1199.98px) {
+    body.db-body .course-index .course-table {
+        min-width: 980px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    body.db-body :is(.admin-page-header, .cp-header) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.db-body :is(.admin-btn-main, .cp-header-actions .cp-btn) {
+        width: 100%;
+    }
+
+    body.db-body .cp-form-row,
+    body.db-body .cp-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.db-body :is(.cp-field, .cp-filter-field, .cp-filter-field--wide) {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body.db-body :is(.admin-page-header, .cp-header) {
+        padding: 20px;
+        border-radius: 24px;
+    }
+
+    body.db-body :is(.admin-filter-card, .admin-form-card > form, .admin-delete-body, .admin-system-body, .cp-filter-card, .cp-form-card, .cp-detail-body, .student-filter-card, .teacher-filter-card, .enrollment-filter-card, .certificate-filter-card) {
+        padding: 18px;
+    }
+
+    body.db-body :is(.admin-table-title, .admin-form-title, .admin-delete-title) {
+        padding: 16px 18px;
+    }
+
+    body.db-body .cp-form-row,
+    body.db-body .cp-filter-form,
+    body.db-body .schedule-detail-grid,
+    body.db-body .delete-impact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body.db-body :is(.cp-field, .cp-filter-field, .cp-filter-field--wide) {
+        grid-column: 1 / -1;
+    }
+
+    body.db-body :is(.admin-form-actions, .admin-filter-actions, .cp-form-actions, .cp-delete-actions, .cp-filter-actions, .filter-actions, .student-filter-actions, .teacher-filter-actions, .cp-header-actions, .admin-tabbar, .classroom-tabs, .enrollment-tabs) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.db-body :is(.db-content .btn, .db-content .cp-btn, .admin-tab, .classroom-tab-btn, .enrollment-tab-btn) {
+        width: 100%;
+    }
+
+    body.db-body :is(.admin-detail-row, .cp-detail-row, .cp-detail-hero) {
+        grid-template-columns: 1fr;
+    }
+
+    body.db-body .cp-detail-hero {
+        flex-direction: column;
+    }
+}
+
+/* Nút tạo/thêm trên header: xanh lục + chữ trắng */
+body.db-body .admin-page-header .btn-primary,
+body.db-body .admin-page-header .admin-btn-main,
+body.db-body .cp-page-header .btn-primary,
+body.db-body .cp-page-header .cp-btn-primary,
+body.db-body .cp-page-header .cp-btn-main {
+    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    box-shadow: 0 14px 28px rgba(34, 197, 94, 0.28);
+}
+
+    body.db-body .admin-page-header .btn-primary:hover,
+    body.db-body .admin-page-header .admin-btn-main:hover,
+    body.db-body .cp-page-header .btn-primary:hover,
+    body.db-body .cp-page-header .cp-btn-primary:hover,
+    body.db-body .cp-page-header .cp-btn-main:hover {
+        background: linear-gradient(135deg, #15803d 0%, #16a34a 100%) !important;
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 18px 34px rgba(34, 197, 94, 0.36);
+    }
+
+    body.db-body .admin-page-header .btn-primary:active,
+    body.db-body .admin-page-header .admin-btn-main:active,
+    body.db-body .cp-page-header .btn-primary:active,
+    body.db-body .cp-page-header .cp-btn-primary:active,
+    body.db-body .cp-page-header .cp-btn-main:active {
+        transform: translateY(0) scale(0.98);
+    }

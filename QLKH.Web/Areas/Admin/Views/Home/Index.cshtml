@@ -406,6 +406,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/dashboardAdmin.css" asp-append-version="true" />
 }
 
@@ -425,35 +426,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        (function () {
-            const dataElement = document.getElementById('adminDashboardData');
-
-            if (!dataElement) {
-                window.adminDashboardData = {};
-                return;
-            }
-
-            const getNumber = function (name) {
-                return Number(dataElement.dataset[name] || 0);
-            };
-
-            window.adminDashboardData = {
-                TotalStudents: getNumber('totalStudents'),
-                TotalTeachers: getNumber('totalTeachers'),
-                TotalCourses: getNumber('totalCourses'),
-                TotalClassRooms: getNumber('totalClassRooms'),
-                TotalDepartments: getNumber('totalDepartments'),
-                ActiveUsers: getNumber('activeUsers'),
-                LockedUsers: getNumber('lockedUsers'),
-                LinkedStudents: getNumber('linkedStudents'),
-                UnlinkedStudents: getNumber('unlinkedStudents'),
-                LinkedTeachers: getNumber('linkedTeachers'),
-                UnlinkedTeachers: getNumber('unlinkedTeachers')
-            };
-        })();
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="~/js/admin-dashboard.js" asp-append-version="true" defer></script>
     <script src="~/js/dashboardAdmin.js" asp-append-version="true" defer></script>
 }

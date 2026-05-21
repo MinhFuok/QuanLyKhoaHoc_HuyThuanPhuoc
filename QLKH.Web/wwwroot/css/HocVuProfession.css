@@ -1,226 +1,139 @@
-body.db-body-hocvu{--hv-bg:#fff;--hv-bg-soft:#f8fbff;--hv-surface:#fff;--hv-surface-alt:#f8fbff;--hv-border:#dbe5f3;--hv-border-strong:#c9d7ea;--hv-text:#0f172a;--hv-muted:#64748b;--hv-soft:#94a3b8;--hv-primary:#5b45f2;--hv-primary-alt:#8b5cf6;--hv-blue:#0f77f0;--hv-cyan:#18b8f2;--hv-success:#22c55e;--hv-amber:#fb923c;--hv-danger:#f43f5e;--hv-shadow-sm:0 12px 24px rgba(15,23,42,.06);--hv-shadow-md:0 22px 42px rgba(15,23,42,.08);--hv-shadow-lg:0 28px 56px rgba(15,23,42,.12);background:#fff;color:var(--hv-text)}
-body.db-body-hocvu .db-main-wrap{min-height:100vh;background:#fff}
-body.db-body-hocvu .db-content{max-width:1500px;padding:32px 32px 48px;color:var(--hv-text)}
-body.db-body-hocvu #dbAlertZone{display:grid;gap:12px;margin-bottom:20px}
-body.db-body-hocvu .db-alert{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--hv-border);border-radius:18px;background:rgba(255,255,255,.96);box-shadow:var(--hv-shadow-sm);color:var(--hv-text)}
-body.db-body-hocvu .db-alert-icon{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--hv-primary),var(--hv-cyan))}
-body.db-body-hocvu .db-alert-success{border-color:rgba(34,197,94,.18)}
-body.db-body-hocvu .db-alert-success .db-alert-icon{background:linear-gradient(135deg,#10b981,#22c55e)}
-body.db-body-hocvu .db-alert-danger{border-color:rgba(244,63,94,.18)}
-body.db-body-hocvu .db-alert-danger .db-alert-icon{background:linear-gradient(135deg,#ef4444,#f43f5e)}
-body.db-body-hocvu .db-alert-text{flex:1;min-width:0}
-body.db-body-hocvu .db-alert-close{width:32px;height:32px;border:0;border-radius:999px;background:#f1f5f9;color:var(--hv-muted)}
-body.db-body-hocvu .db-alert-close:hover{background:#e2e8f0;color:var(--hv-text)}
-
-body.db-body-hocvu :is(.course-page,.admin-profession-page,.student-certificate-page,.student-page,.teacher-page,.enrollment-page,.classschedule-page,.classroom-page){--hv-page-accent:#5b45f2;--hv-page-alt:#18b8f2;width:min(100%,1500px);max-width:1500px;margin:0 auto;color:var(--hv-text);font-family:"Roboto",Arial,Helvetica,sans-serif;position:relative}
-body.db-body-hocvu .student-page{--hv-page-accent:#0f77f0;--hv-page-alt:#18b8f2}
-body.db-body-hocvu .teacher-page{--hv-page-accent:#0f77f0;--hv-page-alt:#5b45f2}
-body.db-body-hocvu .enrollment-page{--hv-page-accent:#14b8a6;--hv-page-alt:#0f77f0}
-body.db-body-hocvu .student-certificate-page{--hv-page-accent:#0ea5e9;--hv-page-alt:#8b5cf6}
-body.db-body-hocvu .course-form{--hv-page-accent:#5b45f2;--hv-page-alt:#8b5cf6}
-
-body.db-body-hocvu .cp-header{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:24px;padding:28px 30px;border-radius:30px;background:linear-gradient(135deg,var(--hv-page-accent) 0%,var(--hv-page-alt) 100%);box-shadow:0 24px 52px rgba(91,69,242,.22);overflow:hidden}
-body.db-body-hocvu .cp-header.cp-header--danger{background:linear-gradient(135deg,#b91c1c 0%,#ef4444 52%,#f97316 100%);box-shadow:0 24px 52px rgba(185,28,28,.24)}
-body.db-body-hocvu .cp-header:before,body.db-body-hocvu .cp-header:after{content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.1);pointer-events:none}
-body.db-body-hocvu .cp-header:before{width:220px;height:220px;top:-110px;right:8%}
-body.db-body-hocvu .cp-header:after{width:140px;height:140px;bottom:-72px;right:-18px}
-body.db-body-hocvu .cp-header>*{position:relative;z-index:1}
-body.db-body-hocvu .cp-header-left{min-width:0}
-body.db-body-hocvu .cp-title{margin:0;color:#fff;font-size:clamp(1.9rem,3vw,2.6rem);font-weight:900;letter-spacing:-.03em;line-height:1.08}
-body.db-body-hocvu .cp-subtitle{margin:12px 0 0;max-width:62ch;color:rgba(255,255,255,.84);font-size:.98rem;line-height:1.75}
-body.db-body-hocvu .cp-header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-
-body.db-body-hocvu :is(.cp-filter-card,.cp-table-wrap,.cp-form-card,.cp-detail-card,.cp-delete-card,.cp-switch-card,.student-filter-card,.teacher-filter-card,.enrollment-filter-card){border:1px solid var(--hv-border);border-radius:28px;background:var(--hv-surface);color:var(--hv-text);box-shadow:var(--hv-shadow-md)}
-body.db-body-hocvu :is(.cp-filter-card,.student-filter-card,.teacher-filter-card,.enrollment-filter-card){margin-bottom:20px;padding:22px 24px}
-body.db-body-hocvu :is(.cp-table-wrap,.cp-form-card,.cp-detail-card,.cp-delete-card){overflow:hidden}
-body.db-body-hocvu :is(.cp-filter-card,.cp-table-wrap,.cp-form-card,.cp-detail-card,.cp-delete-card,.student-filter-card,.teacher-filter-card,.enrollment-filter-card):hover{transform:translateY(-3px);transition:transform .22s ease,box-shadow .22s ease;box-shadow:var(--hv-shadow-lg)}
-body.db-body-hocvu .cp-form-card{padding:24px}
-body.db-body-hocvu .cp-form-card>form{display:block}
-body.db-body-hocvu .cp-detail-card,body.db-body-hocvu .cp-delete-card{padding:0}
-body.db-body-hocvu .cp-detail-body{padding:24px}
-body.db-body-hocvu .cp-table-wrap{position:relative}
-
-body.db-body-hocvu .cp-form-group-label{margin:0 0 18px;color:var(--hv-text);font-size:1rem;font-weight:800;letter-spacing:-.01em}
-body.db-body-hocvu .cp-form-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
-body.db-body-hocvu .cp-form-row+.cp-field,body.db-body-hocvu .cp-field+.cp-form-group-label{margin-top:20px}
-body.db-body-hocvu .cp-field{grid-column:span 4;min-width:0}
-body.db-body-hocvu .cp-field--full{grid-column:1/-1}
-body.db-body-hocvu .cp-label,body.db-body-hocvu :is(.cp-filter-field label,.student-filter-field label,.teacher-filter-field label,.filter-label){display:block;margin-bottom:8px;color:var(--hv-text);font-size:.92rem;font-weight:700}
-body.db-body-hocvu :is(.cp-input,.student-filter-input,.teacher-filter-input,.teacher-filter-select,.filter-select){width:100%;min-height:50px;border:1px solid var(--hv-border);border-radius:16px;padding:12px 14px;background:#fff;color:var(--hv-text);font-size:.96rem;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.75);outline:none;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
-body.db-body-hocvu :is(.cp-input,.student-filter-input,.teacher-filter-input,.teacher-filter-select,.filter-select)::placeholder{color:var(--hv-soft)}
-body.db-body-hocvu :is(.cp-input,.student-filter-input,.teacher-filter-input,.teacher-filter-select,.filter-select):focus{border-color:rgba(91,69,242,.38);box-shadow:0 0 0 4px rgba(91,69,242,.12)}
-body.db-body-hocvu :is(.cp-input,.student-filter-input,.teacher-filter-input,.teacher-filter-select,.filter-select)[readonly],body.db-body-hocvu :is(.cp-input,.student-filter-input,.teacher-filter-input,.teacher-filter-select,.filter-select):disabled{background:#eef4fb;color:var(--hv-muted)}
-body.db-body-hocvu .cp-textarea{min-height:136px;resize:vertical}
-body.db-body-hocvu .cp-select{padding-right:42px;background-image:linear-gradient(45deg,transparent 50%,var(--hv-muted) 50%),linear-gradient(135deg,var(--hv-muted) 50%,transparent 50%);background-position:calc(100% - 20px) calc(50% - 3px),calc(100% - 14px) calc(50% - 3px);background-size:6px 6px,6px 6px;background-repeat:no-repeat;appearance:none}
-body.db-body-hocvu .cp-validation-summary{margin-bottom:18px;padding:14px 16px;border:1px solid rgba(244,63,94,.18);border-radius:18px;background:#fff4f6;color:#be123c}
-body.db-body-hocvu .cp-validation-summary ul{margin:0;padding-left:18px}
-body.db-body-hocvu .cp-field-error{display:block;margin-top:6px;color:#e11d48!important;font-size:.84rem;font-weight:600}
-body.db-body-hocvu .input-validation-error,body.db-body-hocvu .input-validation-error:focus{border-color:rgba(244,63,94,.35)!important;box-shadow:0 0 0 4px rgba(244,63,94,.1)!important}
-body.db-body-hocvu .cp-form-hint,body.db-body-hocvu :is(.cp-filter-note,.student-filter-note,.teacher-filter-note,.active-filter-note,.classroom-summary){margin-top:10px;color:var(--hv-muted);font-size:.88rem;font-weight:700;line-height:1.7}
-body.db-body-hocvu .classroom-summary strong{color:var(--hv-text)}
-
-body.db-body-hocvu :is(.cp-filter-form,.student-filter-form,.teacher-filter-form,.classroom-filter-form){display:grid;gap:14px}
-body.db-body-hocvu .cp-filter-form{grid-template-columns:repeat(12,minmax(0,1fr));align-items:end}
-body.db-body-hocvu .cp-filter-field{grid-column:span 4;min-width:0}
-body.db-body-hocvu .cp-filter-field--wide{grid-column:span 8}
-body.db-body-hocvu :is(.cp-filter-actions,.student-filter-actions,.teacher-filter-actions,.filter-actions){display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-body.db-body-hocvu .cp-filter-actions{justify-content:flex-end}
-body.db-body-hocvu .filter-main{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
-body.db-body-hocvu .filter-field{flex:1;min-width:260px}
-
-@keyframes hocvuConfirmRipple{0%{outline:0 solid transparent;outline-offset:-.08em}48%{outline:.2em solid var(--hv-btn-outline,rgba(91,69,242,.3));outline-offset:.18em}100%{outline:.38em solid transparent;outline-offset:.46em}}
-body.db-body-hocvu .cp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border:1px solid transparent;border-radius:16px;background:#fff;color:var(--hv-text);font-family:"Roboto",Arial,Helvetica,sans-serif;font-size:.94rem;font-weight:700;letter-spacing:-.01em;text-decoration:none!important;white-space:nowrap;box-shadow:var(--hv-shadow-sm);transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease,border-color .2s ease}
-body.db-body-hocvu .cp-btn:hover{transform:translateY(-1px);box-shadow:var(--hv-shadow-md)}
-body.db-body-hocvu .cp-btn:active{transform:translateY(0)}
-body.db-body-hocvu .cp-btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(91,69,242,.14),var(--hv-shadow-sm)}
-body.db-body-hocvu :is(.cp-btn--primary.confirm-glow,.cp-btn--info.confirm-glow,.cp-btn--danger.confirm-glow,.cp-btn--add.confirm-glow){position:relative;overflow:visible;isolation:isolate;outline:0 solid transparent;outline-offset:.08em}
-body.db-body-hocvu :is(.cp-btn--primary.confirm-glow,.cp-btn--info.confirm-glow,.cp-btn--danger.confirm-glow,.cp-btn--add.confirm-glow):is(:hover,:focus-visible){animation:hocvuConfirmRipple 1.05s linear infinite;box-shadow:0 0 1.1em 0 var(--hv-btn-shadow,rgba(91,69,242,.28)),0 22px 38px var(--hv-btn-lift,rgba(91,69,242,.28))}
-body.db-body-hocvu .cp-btn--primary{--hv-btn-outline:rgba(139,92,246,.34);--hv-btn-outline:color-mix(in srgb,var(--hv-page-accent) 36%,transparent);--hv-btn-shadow:rgba(91,69,242,.34);--hv-btn-shadow:color-mix(in srgb,var(--hv-page-accent) 42%,transparent);--hv-btn-lift:rgba(91,69,242,.3);color:#fff;background:linear-gradient(135deg,var(--hv-page-accent) 0%,var(--hv-page-alt) 100%);box-shadow:0 16px 30px rgba(91,69,242,.18)}
-body.db-body-hocvu .cp-btn--primary:hover{box-shadow:0 20px 36px rgba(91,69,242,.26)}
-body.db-body-hocvu .cp-btn--ghost{border-color:var(--hv-border);background:#fff;color:var(--hv-text)}
-body.db-body-hocvu .cp-btn--info{--hv-btn-outline:rgba(15,119,240,.3);--hv-btn-shadow:rgba(15,119,240,.3);--hv-btn-lift:rgba(15,76,189,.28);border-color:#0f4cbd;background:linear-gradient(135deg,#0f4cbd 0%,#0f77f0 100%);color:#fff;box-shadow:0 16px 30px rgba(15,76,189,.18)}
-body.db-body-hocvu .cp-btn--info:hover{box-shadow:0 20px 36px rgba(15,76,189,.24)}
-body.db-body-hocvu .cp-btn--warning{border-color:rgba(251,146,60,.22);background:linear-gradient(135deg,rgba(251,146,60,.12) 0%,rgba(244,63,94,.1) 100%);color:#c2410c}
-body.db-body-hocvu .cp-btn--danger{--hv-btn-outline:rgba(244,63,94,.28);--hv-btn-shadow:rgba(244,63,94,.26);--hv-btn-lift:rgba(244,63,94,.22);border-color:rgba(244,63,94,.18);background:linear-gradient(135deg,rgba(244,63,94,.1) 0%,rgba(239,68,68,.1) 100%);color:#be123c}
-body.db-body-hocvu .cp-btn--danger:hover{box-shadow:0 18px 34px rgba(244,63,94,.18)}
-body.db-body-hocvu .cp-btn--add{--hv-btn-outline:rgba(34,197,94,.3);--hv-btn-shadow:rgba(34,197,94,.3);--hv-btn-lift:rgba(34,197,94,.28);border-color:#16a34a!important;background:linear-gradient(135deg,#16a34a 0%,#22c55e 100%)!important;color:#fff!important;box-shadow:0 16px 30px rgba(34,197,94,.18)}
-body.db-body-hocvu .cp-btn--add:hover{box-shadow:0 20px 36px rgba(34,197,94,.24)}
-body.db-body-hocvu .cp-btn--sm{min-height:38px;padding:8px 14px;border-radius:12px;font-size:.82rem}
-
-body.db-body-hocvu .cp-table{width:100%;margin-bottom:0;border-collapse:collapse;color:var(--hv-text)}
-body.db-body-hocvu .cp-table thead th{padding:15px 16px 14px;border-bottom:1px solid var(--hv-border);background:#f8fbff;color:var(--hv-muted);font-size:.73rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
-body.db-body-hocvu .cp-table tbody td{padding:16px;border-top:1px solid rgba(219,229,243,.8);vertical-align:middle;color:var(--hv-text)}
-body.db-body-hocvu .cp-table tbody tr:hover td{background:rgba(248,251,255,.95)}
-body.db-body-hocvu .cp-row{transition:background .2s ease}
-body.db-body-hocvu .cp-name,body.db-body-hocvu .cp-detail-value{color:var(--hv-text);font-weight:700;line-height:1.55;word-break:break-word}
-body.db-body-hocvu :is(.cp-fee,.cp-muted,.teacher-rating-count,.date-text){color:var(--hv-muted)}
-body.db-body-hocvu .date-text{font-weight:700;white-space:nowrap}
-body.db-body-hocvu .cp-code,body.db-body-hocvu .cp-badge{display:inline-flex;align-items:center;justify-content:center;max-width:100%;min-height:32px;padding:6px 12px;border-radius:999px;font-weight:700;line-height:1.3;text-align:center;white-space:normal}
-body.db-body-hocvu .cp-code{min-width:68px;background:linear-gradient(135deg,rgba(91,69,242,.12) 0%,rgba(24,184,242,.1) 100%);color:var(--hv-page-accent);font-family:Consolas,"Courier New",monospace;font-size:.82rem}
-body.db-body-hocvu .cp-code--lg{min-height:36px;padding:7px 14px}
-body.db-body-hocvu .cp-badge{border:1px solid transparent;font-size:.76rem}
-body.db-body-hocvu .cp-badge--active,body.db-body-hocvu .cp-badge--confirmed{background:rgba(34,197,94,.12);color:#15803d}
-body.db-body-hocvu .cp-badge--inactive,body.db-body-hocvu .cp-badge--cancelled{background:rgba(244,63,94,.12);color:#be123c}
-body.db-body-hocvu .cp-badge--pending{background:rgba(15,119,240,.12);color:#0369a1}
-body.db-body-hocvu .cp-badge--lg{min-height:36px;padding:7px 14px}
-body.db-body-hocvu .cp-status-surface{display:inline-flex;align-items:center;padding:4px;border-radius:999px;background:#f8fbff}
-body.db-body-hocvu .cp-status-surface--confirmed{background:rgba(34,197,94,.08)}
-body.db-body-hocvu .cp-status-surface--pending{background:rgba(15,119,240,.08)}
-body.db-body-hocvu .cp-status-surface--cancelled{background:rgba(244,63,94,.08)}
-body.db-body-hocvu .cp-empty{padding:42px 18px!important;color:var(--hv-muted);font-weight:700;text-align:center}
-body.db-body-hocvu .cp-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-body.db-body-hocvu .cp-actions form{display:flex;margin:0}
-body.db-body-hocvu .cp-icon-action{--ca-bg:#fff;--ca-border:#cbd5e1;--ca-shadow:0 10px 20px rgba(15,23,42,.12);position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:2px solid var(--ca-border);border-radius:50%;background:var(--ca-bg);color:#fff;text-decoration:none!important;cursor:pointer;overflow:hidden;flex:0 0 auto;box-shadow:var(--ca-shadow);transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;-webkit-tap-highlight-color:transparent}
-body.db-body-hocvu button.cp-icon-action{-webkit-appearance:none;appearance:none}
-body.db-body-hocvu .cp-icon-action svg{pointer-events:none}
-body.db-body-hocvu .cp-icon-action:hover{transform:translateY(-2px);box-shadow:0 14px 24px rgba(15,23,42,.18)}
-body.db-body-hocvu .cp-icon-action:active{transform:scale(.92)}
-body.db-body-hocvu .cp-icon-action:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(91,69,242,.14),var(--ca-shadow)}
-body.db-body-hocvu .cp-icon-action::after{content:attr(data-label);position:absolute;left:50%;bottom:calc(100% + 8px);padding:5px 9px;border-radius:999px;background:#0f172a;color:#fff;font-size:.7rem;font-weight:700;line-height:1;white-space:nowrap;opacity:0;transform:translate(-50%,4px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
-body.db-body-hocvu .cp-icon-action:hover::after{opacity:1;transform:translate(-50%,0)}
-body.db-body-hocvu .cp-action-edit{--ca-bg:#2563eb;--ca-border:#bfdbfe}
-body.db-body-hocvu .cp-action-edit:hover{background:#1d4ed8}
-body.db-body-hocvu .cp-edit-svg{width:17px;transition:transform .3s ease}
-body.db-body-hocvu .cp-edit-svg path{fill:#fff}
-body.db-body-hocvu .cp-action-edit:hover .cp-edit-svg{transform:rotate(360deg) scale(1.08)}
-body.db-body-hocvu .cp-action-delete{--ca-bg:#ff5f5f;--ca-border:#ffc9c9}
-body.db-body-hocvu .cp-action-delete:hover{background:#ff2525}
-body.db-body-hocvu .cp-bin-top{position:absolute;top:8px;width:15px;transform-origin:right;transition:transform .3s ease;z-index:2}
-body.db-body-hocvu .cp-bin-bottom{position:absolute;bottom:8px;width:13px;z-index:2}
-body.db-body-hocvu .cp-garbage{position:absolute;top:11px;left:14px;width:12px;height:auto;z-index:1;opacity:0}
-body.db-body-hocvu .cp-action-delete:hover .cp-bin-top{transform:rotate(45deg)}
-body.db-body-hocvu .cp-action-delete:hover .cp-garbage{animation:cpTrashThrow .4s linear forwards}
-
-body.db-body-hocvu .teacher-rating{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(251,146,60,.14);border:1px solid rgba(251,146,60,.18);color:#c2410c;font-weight:900;white-space:nowrap}
-body.db-body-hocvu .teacher-rating-empty{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;background:#f1f5f9;border:1px solid rgba(148,163,184,.16);color:var(--hv-muted);font-weight:800;white-space:nowrap}
-body.db-body-hocvu .capacity-badge{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;border-radius:999px;background:linear-gradient(135deg,rgba(91,69,242,.12) 0%,rgba(24,184,242,.08) 100%);border:1px solid rgba(91,69,242,.16);color:var(--hv-page-accent);font-weight:900}
-
-body.db-body-hocvu :is(.classroom-tabs,.enrollment-tabs){display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding:10px;border:1px solid var(--hv-border);border-radius:20px;background:rgba(255,255,255,.78);box-shadow:var(--hv-shadow-sm)}
-body.db-body-hocvu :is(.classroom-tab-btn,.enrollment-tab-btn){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:0;border-radius:14px;background:#f2f6fd;color:var(--hv-muted);font-weight:700;transition:background .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease}
-body.db-body-hocvu :is(.classroom-tab-btn,.enrollment-tab-btn):hover{color:var(--hv-text);transform:translateY(-1px)}
-body.db-body-hocvu :is(.classroom-tab-btn,.enrollment-tab-btn).active{background:linear-gradient(135deg,var(--hv-page-accent) 0%,var(--hv-page-alt) 100%);color:#fff;box-shadow:0 16px 30px rgba(91,69,242,.2)}
-body.db-body-hocvu :is(.classroom-count,.enrollment-count){display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:rgba(255,255,255,.18);color:inherit;font-size:.82rem;font-weight:900}
-body.db-body-hocvu .classroom-tab-pane{display:none}
-body.db-body-hocvu .classroom-tab-pane.active{display:block}
-
-body.db-body-hocvu .cp-detail-row{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:8px 16px;padding:16px 18px;border-bottom:1px solid rgba(219,229,243,.8)}
-body.db-body-hocvu .cp-detail-row:last-child{border-bottom:0}
-body.db-body-hocvu .cp-detail-label{color:var(--hv-muted);font-weight:700}
-body.db-body-hocvu .cp-detail-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px;padding:20px;border:1px solid var(--hv-border);border-radius:22px;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%)}
-body.db-body-hocvu .cp-detail-hero-left{min-width:0}
-body.db-body-hocvu .cp-detail-name{margin:10px 0 0;color:var(--hv-text);font-size:1.2rem;font-weight:900;letter-spacing:-.02em}
-body.db-body-hocvu .cp-detail-footer,body.db-body-hocvu .cp-delete-actions,body.db-body-hocvu .cp-form-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-body.db-body-hocvu .cp-delete-actions,body.db-body-hocvu .cp-form-actions{padding:20px 24px;border-top:1px solid var(--hv-border)}
-body.db-body-hocvu .cp-delete-warning{display:flex;align-items:flex-start;gap:14px;margin:0 24px 20px;padding:16px 18px;border:1px solid rgba(244,63,94,.18);border-radius:18px;background:#fff4f6;color:#9f1239;line-height:1.7}
-body.db-body-hocvu .cp-delete-warning-icon{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;color:#fff;font-weight:900;background:linear-gradient(135deg,#ef4444,#f43f5e)}
-
-body.db-body-hocvu .cp-file-picker,body.db-body-hocvu .cp-current-file{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-body.db-body-hocvu .cp-file-input{position:absolute;opacity:0;pointer-events:none}
-body.db-body-hocvu .cp-file-name,body.db-body-hocvu .cp-current-file-label{color:var(--hv-muted);font-weight:700}
-body.db-body-hocvu .cp-current-file{margin-top:12px;padding:14px 16px;border:1px solid var(--hv-border);border-radius:18px;background:#f8fbff}
-body.db-body-hocvu .cp-file-link{display:inline-flex;align-items:center;gap:8px;color:#0f77f0;font-weight:700;text-decoration:none}
-body.db-body-hocvu .cp-file-link:hover{color:#0b5ed7;text-decoration:underline}
-
-body.db-body-hocvu .cp-switch-card{display:block;padding:16px 18px;border:1px solid var(--hv-border);border-radius:22px;background:#f8fbff}
-body.db-body-hocvu .cp-switch{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:flex-start;cursor:pointer}
-body.db-body-hocvu .cp-switch-input{position:absolute;opacity:0;pointer-events:none}
-body.db-body-hocvu .cp-switch-slider{position:relative;width:54px;height:30px;border-radius:999px;background:#cbd5e1;transition:background .2s ease}
-body.db-body-hocvu .cp-switch-slider:before{content:"";position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:999px;background:#fff;box-shadow:0 4px 10px rgba(15,23,42,.18);transition:transform .2s ease}
-body.db-body-hocvu .cp-switch-input:checked+.cp-switch-slider{background:linear-gradient(135deg,var(--hv-page-accent) 0%,var(--hv-page-alt) 100%)}
-body.db-body-hocvu .cp-switch-input:checked+.cp-switch-slider:before{transform:translateX(24px)}
-body.db-body-hocvu .cp-switch-content{display:grid;gap:4px}
-body.db-body-hocvu .cp-switch-title{color:var(--hv-text);font-weight:800}
-body.db-body-hocvu .cp-switch-subtitle{color:var(--hv-muted);font-size:.88rem;line-height:1.65}
-
-body.db-body-hocvu .cp-inline-alert{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--hv-border);border-radius:18px;background:#fff;box-shadow:var(--hv-shadow-sm);margin-bottom:18px}
-body.db-body-hocvu .cp-inline-alert--success{border-color:rgba(34,197,94,.18);background:rgba(240,253,244,.96)}
-body.db-body-hocvu .cp-inline-alert-icon{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:900;color:#fff;background:linear-gradient(135deg,#10b981,#22c55e)}
-body.db-body-hocvu .cp-inline-alert-content{flex:1;min-width:0;color:var(--hv-text)}
-body.db-body-hocvu .cp-inline-alert-close{width:32px;height:32px;border:0;border-radius:999px;background:#f1f5f9;color:var(--hv-muted)}
-
-body.db-body-hocvu :is(.certificate-filter-card,.delete-impact-item,.schedule-detail-box){border:1px solid var(--hv-border);border-radius:18px;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);box-shadow:var(--hv-shadow-sm)}
-body.db-body-hocvu .certificate-filter-card{margin-bottom:20px;padding:22px 24px}
-body.db-body-hocvu .certificate-filter-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end}
-body.db-body-hocvu .certificate-filter-field label{display:block;margin-bottom:8px;color:var(--hv-text);font-size:.92rem;font-weight:700}
-body.db-body-hocvu .certificate-filter-input{width:100%;min-height:50px;border:1px solid var(--hv-border);border-radius:16px;padding:12px 14px;background:#fff;color:var(--hv-text);font-size:.96rem;font-weight:600;outline:none}
-body.db-body-hocvu .certificate-filter-input::placeholder{color:var(--hv-soft)}
-body.db-body-hocvu .certificate-filter-input:focus{border-color:rgba(91,69,242,.38);box-shadow:0 0 0 4px rgba(91,69,242,.12)}
-body.db-body-hocvu .certificate-filter-actions{display:flex;gap:10px;flex-wrap:wrap}
-body.db-body-hocvu .certificate-filter-note{margin-top:10px;color:var(--hv-muted);font-size:.88rem;font-weight:700}
-body.db-body-hocvu .certificate-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-body.db-body-hocvu .certificate-actions .cp-btn{width:100%;min-width:0;justify-content:center}
-body.db-body-hocvu .date-cell{white-space:nowrap;font-weight:700;color:var(--hv-muted)}
-
-body.db-body-hocvu .schedule-badge,body.db-body-hocvu .schedule-date-chip,body.db-body-hocvu .schedule-session-badge{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:linear-gradient(135deg,rgba(91,69,242,.12) 0%,rgba(24,184,242,.08) 100%);border:1px solid rgba(91,69,242,.16);color:var(--hv-page-accent);font-size:.82rem;font-weight:700}
-body.db-body-hocvu .schedule-summary-box{display:flex;flex-direction:column;gap:6px}
-body.db-body-hocvu .schedule-badges,body.db-body-hocvu .schedule-dates-wrap{display:flex;flex-wrap:wrap;gap:6px}
-body.db-body-hocvu .schedule-meta,body.db-body-hocvu .schedule-detail-label,body.db-body-hocvu .delete-impact-title{color:var(--hv-muted);font-size:.82rem}
-body.db-body-hocvu .schedule-highlight,body.db-body-hocvu .schedule-detail-value,body.db-body-hocvu .delete-impact-value{color:var(--hv-text);font-weight:700}
-body.db-body-hocvu .schedule-detail-grid,body.db-body-hocvu .delete-impact-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:14px}
-body.db-body-hocvu .schedule-detail-box,body.db-body-hocvu .delete-impact-item{padding:14px 16px}
-body.db-body-hocvu .delete-impact-value{font-size:1.5rem;font-weight:900;letter-spacing:-.02em}
-body.db-body-hocvu .delete-warning-box{margin-top:18px;padding:16px 18px;border-radius:18px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.16);color:#9f1239}
-
-body.db-body-hocvu .hv-reveal{opacity:0;transform:translateY(18px);transition:opacity .42s ease,transform .42s ease}
-body.db-body-hocvu .hv-reveal.is-visible{opacity:1;transform:none}
-@keyframes cpTrashThrow{from{transform:translate(-400%,-700%);opacity:0}to{transform:translate(0,0);opacity:1}}
-
-@media (max-width:1199.98px){body.db-body-hocvu .db-content{padding:28px 24px 40px}}
-@media (max-width:991.98px){
-body.db-body-hocvu .cp-header{flex-direction:column;align-items:stretch}
-body.db-body-hocvu .cp-form-row,body.db-body-hocvu .cp-filter-form{grid-template-columns:repeat(2,minmax(0,1fr))}
-body.db-body-hocvu .cp-field,body.db-body-hocvu .cp-filter-field,body.db-body-hocvu .cp-filter-field--wide{grid-column:span 1}
-body.db-body-hocvu .cp-filter-actions,body.db-body-hocvu .teacher-filter-actions,body.db-body-hocvu .student-filter-actions,body.db-body-hocvu .filter-actions,body.db-body-hocvu .cp-form-actions,body.db-body-hocvu .cp-delete-actions{justify-content:flex-start}
+body.db-body-hocvu :is(
+    .course-page,
+    .admin-profession-page,
+    .student-page,
+    .teacher-page,
+    .enrollment-page,
+    .classschedule-page,
+    .classroom-page,
+    .student-certificate-page
+) {
+    width: min(100%, 1500px);
+    margin: 0 auto;
 }
-@media (max-width:767.98px){
-body.db-body-hocvu .db-content{padding:22px 16px 34px}
-body.db-body-hocvu .cp-header{padding:20px;border-radius:24px}
-body.db-body-hocvu :is(.cp-filter-card,.student-filter-card,.teacher-filter-card,.enrollment-filter-card,.cp-form-card,.cp-detail-body){padding:18px}
-body.db-body-hocvu .cp-form-row,body.db-body-hocvu .cp-filter-form{grid-template-columns:1fr}
-body.db-body-hocvu .cp-field,body.db-body-hocvu .cp-filter-field,body.db-body-hocvu .cp-filter-field--wide{grid-column:1/-1}
-body.db-body-hocvu :is(.cp-btn,.cp-header-actions .cp-btn,.cp-form-actions .cp-btn,.cp-delete-actions .cp-btn,.filter-actions .cp-btn,.student-filter-actions .cp-btn,.teacher-filter-actions .cp-btn){width:100%}
-body.db-body-hocvu :is(.cp-form-actions,.cp-delete-actions,.classroom-tabs,.enrollment-tabs,.cp-header-actions){flex-direction:column;align-items:stretch}
-body.db-body-hocvu .cp-detail-row{grid-template-columns:1fr;gap:4px}
-body.db-body-hocvu .cp-actions{justify-content:flex-start}
+
+body.db-body-hocvu .course-page {
+    --page-primary: #5b45f2;
+    --page-secondary: #8b5cf6;
+    --page-primary-rgb: 91, 69, 242;
+    --page-secondary-rgb: 139, 92, 246;
 }
-@media (prefers-reduced-motion:reduce){body.db-body-hocvu :is(.cp-btn,.cp-filter-card,.cp-table-wrap,.cp-form-card,.cp-detail-card,.cp-delete-card,.hv-reveal){transition:none!important;transform:none!important}body.db-body-hocvu :is(.cp-btn--primary.confirm-glow,.cp-btn--info.confirm-glow,.cp-btn--danger.confirm-glow,.cp-btn--add.confirm-glow){animation:none!important;outline:none!important}}
+
+body.db-body-hocvu .student-page {
+    --page-primary: #0f77f0;
+    --page-secondary: #18b8f2;
+    --page-primary-rgb: 15, 119, 240;
+    --page-secondary-rgb: 24, 184, 242;
+}
+
+body.db-body-hocvu .teacher-page {
+    --page-primary: #0f77f0;
+    --page-secondary: #5b45f2;
+    --page-primary-rgb: 15, 119, 240;
+    --page-secondary-rgb: 91, 69, 242;
+}
+
+body.db-body-hocvu .enrollment-page {
+    --page-primary: #14b8a6;
+    --page-secondary: #0f77f0;
+    --page-primary-rgb: 20, 184, 166;
+    --page-secondary-rgb: 15, 119, 240;
+}
+
+body.db-body-hocvu .classroom-page {
+    --page-primary: #5b45f2;
+    --page-secondary: #0ea5e9;
+    --page-primary-rgb: 91, 69, 242;
+    --page-secondary-rgb: 14, 165, 233;
+}
+
+body.db-body-hocvu .student-certificate-page {
+    --page-primary: #0ea5e9;
+    --page-secondary: #8b5cf6;
+    --page-primary-rgb: 14, 165, 233;
+    --page-secondary-rgb: 139, 92, 246;
+}
+
+body.db-body-hocvu .course-form,
+body.db-body-hocvu .course-details {
+    --page-primary: #5b45f2;
+    --page-secondary: #8b5cf6;
+    --page-primary-rgb: 91, 69, 242;
+    --page-secondary-rgb: 139, 92, 246;
+}
+
+body.db-body-hocvu .filter-main {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+body.db-body-hocvu .filter-field {
+    flex: 1;
+    min-width: 260px;
+}
+
+body.db-body-hocvu .certificate-filter-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: end;
+}
+
+body.db-body-hocvu .certificate-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+body.db-body-hocvu .certificate-actions .cp-btn {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+}
+
+body.db-body-hocvu .date-cell {
+    white-space: nowrap;
+    color: var(--ui-muted);
+    font-weight: 700;
+}
+
+body.db-body-hocvu .schedule-summary-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+body.db-body-hocvu .schedule-badges,
+body.db-body-hocvu .schedule-dates-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+body.db-body-hocvu .cp-delete-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+body.db-body-hocvu .cp-delete-warning-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+    color: #ffffff;
+    font-weight: 900;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 767.98px) {
+    body.db-body-hocvu .certificate-filter-form,
+    body.db-body-hocvu .certificate-actions {
+        grid-template-columns: 1fr;
+    }
+}

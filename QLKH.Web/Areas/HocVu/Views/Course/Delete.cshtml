@@ -6,52 +6,26 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/HocVuProfession.css" asp-append-version="true" />
-    <style>
-        .delete-impact-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 1fr));
-            gap: 14px;
-        }
-
-        .delete-impact-item {
-            padding: 14px 16px;
-            border-radius: 14px;
-            background: rgba(255,255,255,.03);
-            border: 1px solid rgba(255,255,255,.08);
-        }
-
-        .delete-impact-title {
-            font-size: 13px;
-            color: #aeb3d1;
-            margin-bottom: 6px;
-        }
-
-        .delete-impact-value {
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .delete-warning-box {
-            margin-top: 18px;
-            padding: 16px 18px;
-            border-radius: 14px;
-            background: rgba(255, 99, 99, .08);
-            border: 1px solid rgba(255, 99, 99, .18);
-        }
-    </style>
 }
 
-<div class="course-page admin-profession-page classroom-page">
+<div class="course-page course-delete-page admin-profession-page classroom-page">
     <div class="cp-header cp-header--danger">
         <div class="cp-header-left">
             <h1 class="cp-title">XÓA KHÓA HỌC</h1>
+            <p class="cp-subtitle">Xem trước toàn bộ dữ liệu phụ thuộc trước khi xác nhận xóa để tránh tác động ngoài ý muốn tới lớp, lịch học và tài liệu.</p>
         </div>
 
         <a asp-area="HocVu" asp-controller="Course" asp-action="Index" class="cp-btn cp-btn--ghost">←Quay lại</a>
     </div>
 
-    <form asp-area="HocVu" asp-controller="Course" asp-action="Delete" method="post" class="cp-form-card">
+    <form asp-area="HocVu"
+          asp-controller="Course"
+          asp-action="Delete"
+          method="post"
+          class="cp-form-card"
+          data-delete-form
+          data-delete-label="khóa học này và toàn bộ dữ liệu liên quan"
+          data-delete-message="Bạn có chắc chắn muốn xóa khóa học này và toàn bộ dữ liệu liên quan không?">
         <input type="hidden" name="courseId" value="@Model.CourseId" />
 
         <div class="cp-form-group-label">Các dữ liệu sẽ bị ảnh hưởng</div>
@@ -99,9 +73,9 @@
             Hãy cân nhắc kỹ trước khi tiếp tục.
         </div>
 
-        <div class="cp-form-row" style="margin-top:18px; width:100%;">
-            <div class="cp-field" style="width:100% !important; max-width:100% !important; flex:0 0 100% !important;">
-                <label style="display:flex; gap:8px; align-items:center; width:100%;">
+        <div class="cp-form-row cp-consent-row">
+            <div class="cp-field cp-field--full">
+                <label class="cp-consent">
                     <input type="checkbox" name="confirmCascadeDelete" value="true" />
                     <span>Tôi hiểu rằng thao tác này sẽ xóa cả dữ liệu liên quan.</span>
                 </label>
@@ -109,9 +83,7 @@
         </div>
 
         <div class="cp-form-actions">
-            <button type="submit"
-                    class="cp-btn cp-btn--danger"
-                    onclick="return confirm('Bạn có chắc chắn muốn xóa khóa học này và toàn bộ dữ liệu liên quan không?');">
+            <button type="submit" class="cp-btn cp-btn--danger">
                 Xác nhận xóa
             </button>
 
